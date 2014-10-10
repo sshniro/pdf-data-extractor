@@ -1,0 +1,5 @@
+C:\Projects\ExcelTest1\ExcelWithOpen\ExcelBusinessLogicLayer\bin\Debug\ExcelBusinessLogicLayer.dll
+C:\Projects\ExcelTest1\ExcelWithOpen\ExcelBusinessLogicLayer\bin\Debug\ExcelBusinessLogicLayer.pdb
+C:\Projects\ExcelTest1\ExcelWithOpen\ExcelBusinessLogicLayer\obj\Debug\ExcelBusinessLogicLayer.dll
+C:\Projects\ExcelTest1\ExcelWithOpen\ExcelBusinessLogicLayer\obj\Debug\ExcelBusinessLogicLayer.pdb
+C:\Projects\ExcelTest1\ExcelWithOpen\ExcelBusinessLogicLayer\obj\Debug\ExcelBusinessLogicLayer.csprojResolveAssemblyReference.cache

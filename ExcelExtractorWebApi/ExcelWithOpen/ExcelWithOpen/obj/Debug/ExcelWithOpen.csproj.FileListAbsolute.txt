@@ -1,0 +1,8 @@
+C:\Projects\ExcelTest1\ExcelWithOpen\ExcelWithOpen\bin\Debug\ExcelWithOpen.exe.config
+C:\Projects\ExcelTest1\ExcelWithOpen\ExcelWithOpen\bin\Debug\ExcelWithOpen.exe
+C:\Projects\ExcelTest1\ExcelWithOpen\ExcelWithOpen\bin\Debug\ExcelWithOpen.pdb
+C:\Projects\ExcelTest1\ExcelWithOpen\ExcelWithOpen\bin\Debug\ClosedXML.dll
+C:\Projects\ExcelTest1\ExcelWithOpen\ExcelWithOpen\bin\Debug\ClosedXML.xml
+C:\Projects\ExcelTest1\ExcelWithOpen\ExcelWithOpen\obj\Debug\ExcelWithOpen.exe
+C:\Projects\ExcelTest1\ExcelWithOpen\ExcelWithOpen\obj\Debug\ExcelWithOpen.pdb
+C:\Projects\ExcelTest1\ExcelWithOpen\ExcelWithOpen\obj\Debug\ExcelWithOpen.csprojResolveAssemblyReference.cache
