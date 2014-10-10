@@ -231,11 +231,17 @@
 
 
 
-<script type="text/javascript" src="assets/js/knockout-3.2.0.js" ></script>
+<%--script type="text/javascript" src="assets/js/knockout-3.2.0.js" ></script>
 <script type="text/javascript" src="assets/js/ExtractorUIVerFunctions.js"> </script>
 <script type="text/javascript" src="assets/js/ExtractorUiVer2Models.js"> </script>
 <script type="text/javascript" src="assets/js/ExtractorUIVer2ViewModel.js"> </script>
-<script type="text/javascript" src="assets/js/messsageBroker.js"> </script>
+<script type="text/javascript" src="assets/js/messsageBroker.js"> </script--%>
+
+<script type="text/javascript" src="assets/js/knockout-3.2.0.js" ></script>
+<script type="text/javascript" src="assets/js/markUpTemplateRegionsScripts/uiFunctions.js"> </script>
+<script type="text/javascript" src="assets/js/markUpTemplateRegionsScripts/models.js"> </script>
+<script type="text/javascript" src="assets/js/markUpTemplateRegionsScripts/viewModel.js"> </script>
+<script type="text/javascript" src="assets/js/markUpTemplateRegionsScripts/messsageBroker.js"> </script>
 
 </body>
 
