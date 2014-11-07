@@ -1,3 +1,11 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: K D K Madusanka
+  Date: 10/11/2014
+  Time: 1:40 AM
+  To change this template use File | Settings | File Templates.
+--%>
+<!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -6,7 +14,7 @@
 
     <!-------------------------------- JS Files------------------------------------>
     <script type="text/javascript" src="assets/js/jquery-1.10.2.js"></script>
-    <script type="text/javascript" src="assets/js/bootstrap.js"></script>
+    <script type="text/javascript" src="assets/js/markUpTemplateRegionsScripts/customBundle.js"></script>
     <script type="text/javascript" src="assets/js/JspFormPopulate.js"></script>
     <script type="text/javascript" src="assets/js/PageNavigator.js"></script>
 
@@ -53,7 +61,27 @@
             </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->
     </nav>
+
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+                    <span class="sr-only">Toggle navigation</span>
+                </button>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+                <ul class="nav navbar-nav">
+                    <li><a href="#">Create Categories</a></li>
+                    <li><a href="#">Create Templates</a></li>
+                    <li><a href="#">Delete</a></li>
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </nav>
 </header>
+
+
+
 
 <div class="row">
     <div class="col-md-12">
@@ -83,7 +111,7 @@
         function createMC() {
             var mcName= document.getElementById("createMainCategory").value;
             var CreateMCData={ request : "createMainCategory",
-                        mainCategory: mcName};
+                mainCategory: mcName};
 
             if(mcName==""){
                 alert("Main Category Name is Required");
@@ -145,3 +173,4 @@
 </div>
 </body>
 </html>
+
