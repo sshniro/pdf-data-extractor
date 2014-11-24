@@ -120,13 +120,16 @@ var selectionInitializer = (function (element,onSelectEndCb){
 });
 
 
-        
+var currentWorkingImg = undefined;
 
 var drawingRouter = (function (baseUiComponent, selection){
 
     if (selection.width<10 || selection.height<10){
         return;
     }
+
+    currentWorkingImg = baseUiComponent;
+
     $("*").css('cursor','default');
     var rectangle = drawRectangle(baseUiComponent, selection);
     rectangle.pageNumber =  vm.currentPage();
@@ -174,15 +177,18 @@ var drawingRouter = (function (baseUiComponent, selection){
 })
 
 
+//// for div draggability and resizability
+var reDrawingRouter = (function (baseUiComponent, selection, editDiv){
 
+    drawingRouter(baseUiComponent, selection);
+    //vm.removeElement(editDiv);
+
+})
 
 
 
 //Granular function to draw rectangle on the html DOM
 var drawRectangle = (function(baseUiComponent, selection){
-
-
-
     var rectangle = {}
     rectangle.baseUiComponentStartX = $('#'+baseUiComponent.id +'.baseUI' ).offset().left;
     rectangle.baseUiComponentStartY = $('#'+baseUiComponent.id+'.baseUI').offset().top;
