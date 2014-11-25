@@ -100,6 +100,35 @@
 
 </head>
 <body>
+
+<!-- nav bar -->
+<header>
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="navbar_collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">Enhan<i>z</i>er</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="navbar_collapse">
+                <ul class="nav navbar-nav">
+                    <li><a id="templateExtract" href="#">Extract Doc</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li style="margin: 15px 15px 0 0">Login as: <b>administrator</b></li>
+                    <li><a class="btn btn-default" style="padding: 5px; margin-top: 10px; max-width: 100px;">Logout <span class="glyphicon glyphicon-log-out"></span></a></li>
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </nav>
+</header>
+
+
 <nav class="navbar navbar-default" style="position:fixed; width:100%; z-index: 2;" role="navigation">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
