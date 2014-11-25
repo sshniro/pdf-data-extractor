@@ -171,7 +171,7 @@
 <script type="text/html" id="rectangleTemplate">
 
 
-    <div class="bs-docs-section elementDecoMeta" data-bind="id:id, style:{left:uiData.metaStartX, top:uiData.metaStartY}" style="position:absolute;min-width:220px; padding:10px" >
+    <div class="bs-docs-section elementDecoMeta" data-bind="id:id, style:{left:uiData.metaStartX, top:uiData.metaStartY}" style="position:absolute;min-width:220px; padding:10px z-index:2" >
         <legend style="margin-bottom: 10px">Meta Name</legend>
         <input type="text" class="form-control" data-bind="value:metaName"/>
     </div>
@@ -182,7 +182,7 @@
         <span class="glyphicon glyphicon-remove-circle"></span>
     </button>
 
-    <div class="bs-docs-section elementDecoExtracted" style="position: absolute; min-width: 175;" data-bind="style:{top:uiData.extractedY, left:uiData.extractedX, maxWidth:width}, id:id" >
+    <div class="bs-docs-section elementDecoExtracted" style="position: absolute; min-width: 175;z-index:2" data-bind="style:{top:uiData.extractedY, left:uiData.extractedX, maxWidth:width}, id:id" >
 
         <!--Appears only for text and table elements-->
         <div class="bs-callout" data-bind="visible:(elementType() != 'picture')">
