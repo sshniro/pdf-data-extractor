@@ -10,13 +10,13 @@ var ajaxExtract = function(urlData,sendData,asyncState,methodType){
         contentType: 'application/json; charset=utf-8',
         dataType: 'json'
     }).fail(function(jqXHR, textStatus, errorThrown) {
-      extractedData="ajax extraction failed textStatus: "+textStatus.toString()+"  errorThrown: "+errorThrown.toString();
-      console.log(jqXHR);
-      console.log(extractedData);
+        extractedData="ajax extraction failed textStatus: "+textStatus.toString()+"  errorThrown: "+errorThrown.toString();
+        console.log(jqXHR);
+        console.log(extractedData);
     })
-    .done(function(data) {
-      extractedData =data;
-    });
+        .done(function(data) {
+            extractedData =data;
+        });
     return extractedData;
 }
 
@@ -25,21 +25,21 @@ var ajaxExtract = function(urlData,sendData,asyncState,methodType){
 //First Pulse Extraction call method
 //sneds coordinates of a reactangle and gets any data within it[picture(url), text]
 var getMainExtraction =  function(rectangleObject, dataType){
-	var ajaxReponse;
-	switch (dataType){
-		case 'text':
-			var dataDTO = new TextDataDTO(initData);
-			var textDataElement = new TextDataElementDTO(rectangleObject);
-			dataDTO.textDataElements.push(textDataElement);
-			ajaxReponse = ajaxExtract('MarkUpTemplateRegionController',dataDTO,false,'POST');
+    var ajaxReponse;
+    switch (dataType){
+        case 'text':
+            var dataDTO = new TextDataDTO(initData);
+            var textDataElement = new TextDataElementDTO(rectangleObject);
+            dataDTO.textDataElements.push(textDataElement);
+            ajaxReponse = ajaxExtract('MarkUpTemplateRegionController',dataDTO,false,'POST');
 
-			break;
-		case 'table':
+            break;
+        case 'table':
             var data = {};
             data.extractedData = "Pulse Extractions Not implemented for Table, Select all column headers and click on [Extract Table]";
             ajaxReponse = data;
-			break;
-		case 'picture':
+            break;
+        case 'picture':
             var dataDTO = new ImageDataDTO(initData);
             var textDataElement = new ImageDataElementDTO(rectangleObject);
             dataDTO.imageDataElements.push(textDataElement);
@@ -48,36 +48,36 @@ var getMainExtraction =  function(rectangleObject, dataType){
             imageRelativePath = imageRelativePath.split("\\").join("/");
             ajaxReponse.extractedData = imageRelativePath;
             ///Transform to proper relative path format
-			break;						
-	}
-	return ajaxReponse;
+            break;
+    }
+    return ajaxReponse;
 }
 
 //Specially meant for text extraction where the label dat has to be removed
 var getSubExtraction=  function(rectangleObject, dataType){
-	var ajaxReponse; 
-	var bufferedElement = ko.utils.unwrapObservable(vm.elementBuffer);
-	switch (dataType){
-		case 'text':
-			var dataDTO = new TextDataDTO(initData);
-			var textDataElement = new TextDataElementDTO(bufferedElement,rectangleObject);
-			dataDTO.textDataElements.push(textDataElement);
-			ajaxReponse = ajaxExtract('MarkUpTemplateRegionController',dataDTO,false,'POST');
+    var ajaxReponse;
+    var bufferedElement = ko.utils.unwrapObservable(vm.elementBuffer);
+    switch (dataType){
+        case 'text':
+            var dataDTO = new TextDataDTO(initData);
+            var textDataElement = new TextDataElementDTO(bufferedElement,rectangleObject);
+            dataDTO.textDataElements.push(textDataElement);
+            ajaxReponse = ajaxExtract('MarkUpTemplateRegionController',dataDTO,false,'POST');
 
-			break;
-		case 'table':
+            break;
+        case 'table':
             var data = {};
             data.extractedData = "Table Sub Extraction Not Implemented";
             ajaxReponse = data;
 
-			break;
-		case 'picture':
+            break;
+        case 'picture':
             var data = {};
             data.extractedData = "Picture Sub Extraction Not Implemented";
             ajaxReponse = data;
-			break;
-	}
-	return ajaxReponse;
+            break;
+    }
+    return ajaxReponse;
 }
 
 //gets a table extraction preview since pulse extraction is not supported
@@ -146,8 +146,7 @@ var  transformToTableParser= function(tableDataElements){
 
 //Total Text Data Object containing arrays of text elements
 function TextDataDTO(pageData){
-    this.mainCategory       = pageData.mainCategory;
-    this.subCategory        = pageData.subCategory;
+    this.id = pageData.id;
     this.templateName       = pageData.templateName;
     this.status             = "extract";///Static Data
     this.dataType           = "text";////Static Data
@@ -166,26 +165,24 @@ function TextDataElementDTO(dataElement, metaElement){
     this.pageNumber     = dataElement.pageNumber;/////////???????GetFromCookie
 
     this.metaX1 =-1;
-    this.metaY1 =-1; 
-    this.metaWidth =-1;   
+    this.metaY1 =-1;
+    this.metaWidth =-1;
     this.metaHeight =-1;
     this.metaAvailable;
     var self = this;
     if(metaElement !== undefined){
-	    self.metaX1      =  self.totalX1 + ko.utils.unwrapObservable(metaElement.startX);
-	    self.metaY1      =  self.totalY1 + ko.utils.unwrapObservable(metaElement.startY);
-	    self.metaWidth   =  self.metaX1 +  ko.utils.unwrapObservable(metaElement.width);
-	    self.metaHeight  =  self.metaY1 + ko.utils.unwrapObservable(metaElement.height);
+        self.metaX1      =  self.totalX1 + ko.utils.unwrapObservable(metaElement.startX);
+        self.metaY1      =  self.totalY1 + ko.utils.unwrapObservable(metaElement.startY);
+        self.metaWidth   =  self.metaX1 +  ko.utils.unwrapObservable(metaElement.width);
+        self.metaHeight  =  self.metaY1 + ko.utils.unwrapObservable(metaElement.height);
         self.metaAvailable = true;
     }
 
- }
+}
 
 //Total image data object containing arrays of image data elements
 function ImageDataDTO(pageData){
-    this.mainCategory       = pageData.mainCategory;
-    this.subCategory        = pageData.subCategory;
-    this.templateName       = pageData.templateName;
+    this.id = pageData.id;
     this.status= "extract";///Static Data
     this.dataType= "image";////Static Data
     this.imageDataElements=[];
@@ -217,9 +214,7 @@ function ImageDataElementDTO(dataElement, metaElement){
 
 //Total table DTO containing arrays of table elements
 function TableDataDTO(pageData){
-    this.mainCategory       = pageData.mainCategory;
-    this.subCategory        = pageData.subCategory;
-    this.templateName       = pageData.templateName;
+    this.id = pageData.id;
     this.status= "extract";///Static Data
     this.dataType= "table";////Static Data
     this.tableDataElements=[];
@@ -256,4 +251,3 @@ function TableDataColumnDTO(dataElement, metaElement){
     this.metaHeight     =   this.metaY1 + (metaElement.height);
 
 }
-
