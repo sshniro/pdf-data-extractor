@@ -1,8 +1,10 @@
 package com.data.extractor.model.template.markup;
 
+import com.data.extractor.model.beans.manage.categories.Node;
 import com.data.extractor.model.beans.markup.template.MarkUpResponse;
 import com.data.extractor.model.beans.template.info.text.TextDataElement;
 import com.data.extractor.model.beans.template.info.text.TextDataParser;
+import com.data.extractor.model.data.access.layer.TemplatesDAO;
 import com.data.extractor.model.extractors.text.FullSelectionTextExtractor;
 import com.data.extractor.model.extractors.text.MetaSelectionTextExtractor;
 import com.data.extractor.model.template.markup.calculate.coordinates.TextDataCoordinates;
@@ -21,6 +23,7 @@ public class TextDataExtractor {
 
         String extractedText;
         MarkUpResponse markUpResponse=new MarkUpResponse();
+        TemplatesDAO templatesDAO =  new TemplatesDAO(mongoClient);
 
         /* Assign the input from the user to the textDataParser */
         Gson gson=new Gson();
@@ -29,8 +32,9 @@ public class TextDataExtractor {
 
         List<TextDataElement> textDataElements=textDataParser.getTextDataElements();
 
-        TextPDDocument textPDDocument=new TextPDDocument();
-        PDDocument doc=textPDDocument.retrievePDDoc(textDataParser, mongoClient);
+        Node node = templatesDAO.getNode(textDataParser.getId());
+        textDataParser.setPdfFile(node.getPdfFile());
+        PDDocument doc =PDDocument.load(textDataParser.getPdfFile());
 
         /* Get the first textDataElement because only  textDataElement to extract*/
         TextDataElement textDataElement=textDataElements.get(0);

@@ -25,14 +25,12 @@ public class TextDataInserter {
 
             /* Only check once from the DB when the loop starts */
             if(i==0){
-                templateInfoSize=templateInfoDAO.getTemplateInfoSize(textDataParser.getMainCategory(),textDataParser.getSubCategory(),
-                                                                    textDataParser.getTemplateName(),textDataParser.getDataType());
+                templateInfoSize=templateInfoDAO.getTemplateInfoSize(textDataParser.getId(),textDataParser.getDataType());
             }
 
             if (templateInfoSize == 0) {
                 /* If there is no record exists create a new record and insert */
-                templateInfoDAO.createTemplateInfo(textDataParser.getMainCategory(),textDataParser.getSubCategory(),
-                        textDataParser.getTemplateName(),textDataParser.getDataType(),textDataElement);
+                templateInfoDAO.createTemplateInfo(textDataParser.getId() ,textDataParser.getDataType(),textDataElement);
                 templateInfoSize=1;
 
             } else {

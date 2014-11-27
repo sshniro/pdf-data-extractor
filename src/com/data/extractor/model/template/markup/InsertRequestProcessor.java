@@ -1,10 +1,12 @@
 package com.data.extractor.model.template.markup;
 
 
+import com.data.extractor.model.beans.manage.categories.Node;
 import com.data.extractor.model.beans.template.info.image.ImageDataParser;
 import com.data.extractor.model.beans.template.info.insert.InsertDataParser;
 import com.data.extractor.model.beans.template.info.table.TableDataParser;
 import com.data.extractor.model.beans.template.info.text.TextDataParser;
+import com.data.extractor.model.data.access.layer.TemplatesDAO;
 import com.data.extractor.model.template.markup.calculate.coordinates.ImageDataCoordinates;
 import com.data.extractor.model.template.markup.calculate.coordinates.TableDataCoordinates;
 import com.data.extractor.model.template.markup.calculate.coordinates.TextDataCoordinates;
@@ -25,6 +27,7 @@ public class InsertRequestProcessor {
     public void processRequest(String jsonRequest,MongoClient mongoClient) throws IOException {
 
         Gson gson=new Gson();
+        TemplatesDAO templatesDAO = new TemplatesDAO(mongoClient);
         InsertDataParser insertDataParser = gson.fromJson(jsonRequest,InsertDataParser.class);
         TextDataParser textDataParser=insertDataParser.getTextDataParser();
         ImageDataParser imageDataParser=insertDataParser.getImageDataParser();
@@ -38,7 +41,9 @@ public class InsertRequestProcessor {
             TextPDDocument textPDDocument=new TextPDDocument();
 
             /* Load the Template PDF in to pdf BOX and return the PDDoc to set pdf Properties*/
-            PDDocument doc=textPDDocument.retrievePDDoc(textDataParser,mongoClient);
+            Node node = templatesDAO.getNode(textDataParser.getId());
+            textDataParser.setPdfFile(node.getPdfFile());
+            PDDocument doc =PDDocument.load(textDataParser.getPdfFile());
 
             TextDataCoordinates textDataCoordinates=new TextDataCoordinates();
             /* Set Values for the PDF width, Height and Rotation for each textDataElement*/
@@ -57,7 +62,9 @@ public class InsertRequestProcessor {
 
             ImagePDDocument textPDDocument=new ImagePDDocument();
             /* Load the Template PDF in to pdf BOX and return the PDDoc to set pdf Properties*/
-            PDDocument doc=textPDDocument.retrievePDDoc(imageDataParser,mongoClient);
+            Node node = templatesDAO.getNode(imageDataParser.getId());
+            imageDataParser.setPdfFile(node.getPdfFile());
+            PDDocument doc =PDDocument.load(imageDataParser.getPdfFile());
 
             ImageDataCoordinates imageDataCoordinates=new ImageDataCoordinates();
             /* Set Values for the PDF width, Height and Rotation for each imageDataElement*/
@@ -76,7 +83,10 @@ public class InsertRequestProcessor {
 
             TablePDDocument tablePDDocument=new TablePDDocument();
             /* Load the Template PDF in to pdf BOX and return the PDDoc to set pdf Properties*/
-            PDDocument doc=tablePDDocument.retrievePDDoc(tableDataParser,mongoClient);
+            Node node = templatesDAO.getNode(tableDataParser.getId());
+            tableDataParser.setPdfFile(node.getPdfFile());
+            PDDocument doc =PDDocument.load(tableDataParser.getPdfFile());
+
 
             TableDataCoordinates tableDataCoordinates=new TableDataCoordinates();
             /* Set Values for the PDF width, Height and Rotation for each tableDataElement*/

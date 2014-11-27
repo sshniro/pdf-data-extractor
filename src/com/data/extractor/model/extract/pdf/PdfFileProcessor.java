@@ -34,17 +34,17 @@ public class PdfFileProcessor {
         /*
         spaceReplaced[0]=mainCategory,spaceReplaced[1]=subCategory,spaceReplaced[2]=templateName
          */
-        String[] spaceReplaced=replaceSpace(extractStatus);
+        //String[] spaceReplaced=replaceSpace(extractStatus);
         File uploadLocation = new File(rootPath + File.separator + "uploads"+File.separator+"temp");
         if (!uploadLocation.exists()) {
             boolean status = uploadLocation.mkdirs();
         }
 
         // Concatenate TemplateName with Document Name
-        File uploadedFile = new File(uploadLocation + File.separator + spaceReplaced[0]+spaceReplaced[1]+".pdf");
+        File uploadedFile = new File(uploadLocation + File.separator + extractStatus.getParent() + extractStatus.getId() +".pdf");
 
         extractStatus.setPdfLocation(uploadLocation.getAbsolutePath());
-        extractStatus.setPdfName(spaceReplaced[0]+spaceReplaced[1]); // templateName space replaced with "_"
+        extractStatus.setPdfName(extractStatus.getParent() + extractStatus.getId()); // templateName space replaced with "_"
         extractStatus.setUploadedPdfFile(extractStatus.getPdfLocation()+File.separator+extractStatus.getPdfName()+".pdf");
 
         pdfItem.write(uploadedFile);

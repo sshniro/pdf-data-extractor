@@ -25,9 +25,7 @@ public class DocumentIdAuthenticator {
         DBCollection dataCollection = dbInitializer.getCollection(db,dataColl);
 
         BasicDBObject basicDBObject = new BasicDBObject();
-        basicDBObject.put("mainCategory", extractStatus.getMainCategory());
-        basicDBObject.put("subCategory", extractStatus.getSubCategory());
-        basicDBObject.put("templateName", extractStatus.getTemplateName());
+        basicDBObject.put("parent", extractStatus.getParent());
         basicDBObject.put("documentId", extractStatus.getDocumentId());
 
         DBCursor templateCursor = dataCollection.find(basicDBObject);

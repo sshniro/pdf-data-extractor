@@ -9,10 +9,6 @@ import javax.annotation.Generated;
 @Generated("org.jsonschema2pojo")
 public class RawDataElement {
 
-    @SerializedName("_id")
-    //TODO: Figure out ID scene and parser functionality
-    @Expose
-    private com.data.extractor.model.beans.template.info.text.Id id;
     @Expose
     private Double baseUiComponentStartY;
     @Expose
@@ -27,8 +23,8 @@ public class RawDataElement {
     private Double width;
     @Expose
     private Double height;
-    //@Expose
-    //private String id;
+    @Expose
+    private String id;
     @Expose
     private String elementType;
 
@@ -107,13 +103,6 @@ public class RawDataElement {
         this.height = height;
     }
 
-    /*public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }*/
 
 
 }

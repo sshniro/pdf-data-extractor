@@ -30,7 +30,7 @@ public class PdfToImage {
             }
 
             /* spaceReplaced[0]=mainCategory,spaceReplaced[1]=subCategory,spaceReplaced[2]=templateName */
-            String[] spaceReplaced=replaceSpace(uploadStatus);
+            //String[] spaceReplaced=replaceSpace(uploadStatus);
             String[] imageRelativePaths=new String[pages.size()];
             String imgPath=uploadStatus.getPdfLocation()+File.separator+"images"+File.separator;
 
@@ -38,12 +38,10 @@ public class PdfToImage {
             while (i.hasNext()) {
                 PDPage page = i.next();
                 BufferedImage bi = page.convertToImage();
-                ImageIO.write(bi, "jpg", new File(imgPath + uploadStatus.getPdfName() + count + ".jpg"));
+                ImageIO.write(bi, "jpg", new File(imgPath + uploadStatus.getId() + count + ".jpg"));
 
                 /*imageRelativePaths=uploads/mainCategory/SubCategory/imageName */
-                imageRelativePaths[count-1]="uploads"+File.separator + spaceReplaced[0] +
-                                            File.separator+spaceReplaced[1]+File.separator + "images"+ File.separator+
-                                            spaceReplaced[2]+count+".jpg";
+                imageRelativePaths[count-1]="uploads"+File.separator + uploadStatus.getId()+ File.separator + "images"+ File.separator+ uploadStatus.getId() + count+".jpg";
                 count++;
             }
 
@@ -55,14 +53,5 @@ public class PdfToImage {
             ie.printStackTrace();
         }
         return uploadStatus;
-    }
-
-    public String[] replaceSpace(UploadStatus uploadStatus){
-
-        String[] spaceReplacedProperties=new String[3];
-        spaceReplacedProperties[0]=uploadStatus.getMainCategory().replaceAll("\\s+","_");
-        spaceReplacedProperties[1]=uploadStatus.getSubCategory().replaceAll("\\s+","_");
-        spaceReplacedProperties[2]=uploadStatus.getTemplateName().replaceAll("\\s+","_");
-        return spaceReplacedProperties;
     }
 }

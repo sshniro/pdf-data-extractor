@@ -12,11 +12,23 @@ public class ExtractStatus {
     private String  uploadedPdfFile;
     private String  documentId;
     private String  errorCause;
-
-
-
     private Boolean  status;
     private Boolean isDocumentIdValid;
+    private String  id;
+
+    public String getParent() {
+        return parent;
+    }
+
+    public void setParent(String parent) {
+        this.parent = parent;
+    }
+
+    private String  parent;
+
+    public String getId() {        return id;    }
+
+    public void setId(String id) {        this.id = id;    }
 
     public Boolean getIsDocumentIdValid() {
         return isDocumentIdValid;

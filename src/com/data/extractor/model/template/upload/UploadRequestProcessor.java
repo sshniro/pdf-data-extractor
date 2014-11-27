@@ -1,6 +1,9 @@
 package com.data.extractor.model.template.upload;
 
+import com.data.extractor.model.beans.manage.categories.Node;
 import com.data.extractor.model.beans.upload.template.UploadStatus;
+import com.data.extractor.model.data.access.layer.CounterDAO;
+import com.data.extractor.model.data.access.layer.TemplatesDAO;
 import com.mongodb.MongoClient;
 import org.apache.commons.fileupload.FileItemFactory;
 import org.apache.commons.fileupload.FileUploadException;
@@ -16,7 +19,8 @@ public class UploadRequestProcessor {
     public UploadStatus processRequest(HttpServletRequest request, UploadStatus uploadStatus,MongoClient mongoClient) {
 
         boolean isMultipart = ServletFileUpload.isMultipartContent(request);
-        TemplatePropertyAuthenticator authenticator=new TemplatePropertyAuthenticator();
+        TemplatesDAO templatesDAO = new TemplatesDAO(mongoClient);
+        CounterDAO counterDAO = new CounterDAO(mongoClient);
 
         if (isMultipart) {
             // Create a factory for disk-based file items
@@ -31,17 +35,28 @@ public class UploadRequestProcessor {
                 uploadStatus=formValues.assignTemplateProperties(items, uploadStatus);
 
                 // Sets the uploadStatus to true if the templateName is valid
-                uploadStatus=authenticator.isNameValid(uploadStatus,mongoClient);
+                List<Node> nodeList =templatesDAO.getNodes(uploadStatus.getParent());
+
+                /* If there is a Record Present parse the MongoObject returned */
+                for (Node n : nodeList){
+                    if(n.getText().equals(uploadStatus.getText())){
+                        uploadStatus.setIsTemplateNameValid(false);
+                        uploadStatus.setTemplateNameErrorCause("Template Name Already Taken");
+                    }
+                }
+                uploadStatus.setIsTemplateNameValid(true);
+
+                /* Assign an ID for the template Node */
+                Integer id = counterDAO.getNextId();
+                uploadStatus.setId(id.toString());
 
                 if (uploadStatus.getIsTemplateNameValid()){
                     PdfFileProcessor fileProcessor=new PdfFileProcessor();
                     fileProcessor.processFile(items,uploadStatus);
 
                     if(uploadStatus.getPdfUploadStatus()){
-                       //Inserts the template Name in to template Collection is pdf to image conversion is success
-                       TemplateNameInsert db=new TemplateNameInsert();
-                       db.insertTemplateName(uploadStatus,mongoClient);
-                       return  uploadStatus;
+                        templatesDAO.createLeafNode(uploadStatus.getId(),uploadStatus.getParent(),uploadStatus.getText(),uploadStatus.getUploadedPdfFile());
+                        return uploadStatus;
                     }
                 }
             } catch (FileUploadException e) {
