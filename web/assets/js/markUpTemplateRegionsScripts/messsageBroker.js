@@ -1,5 +1,4 @@
-
-
+//Generic Extraction function call to the back end
 var ajaxExtract = function(urlData,sendData,asyncState,methodType){
     var extractedData;
     var sendData = JSON.stringify(sendData);
@@ -22,6 +21,9 @@ var ajaxExtract = function(urlData,sendData,asyncState,methodType){
 }
 
 //Pulse Extraction Models
+
+//First Pulse Extraction call method
+//sneds coordinates of a reactangle and gets any data within it[picture(url), text]
 var getMainExtraction =  function(rectangleObject, dataType){
 	var ajaxReponse;
 	switch (dataType){
@@ -51,6 +53,7 @@ var getMainExtraction =  function(rectangleObject, dataType){
 	return ajaxReponse;
 }
 
+//Specially meant for text extraction where the label dat has to be removed
 var getSubExtraction=  function(rectangleObject, dataType){
 	var ajaxReponse; 
 	var bufferedElement = ko.utils.unwrapObservable(vm.elementBuffer);
@@ -77,6 +80,8 @@ var getSubExtraction=  function(rectangleObject, dataType){
 	return ajaxReponse;
 }
 
+//gets a table extraction preview since pulse extraction is not supported
+//This is called with an object that has the total table rectabgle coordinates and an array of column header coordinates
 var getTableExtraction =  function(tableDataElement){
     var ajaxReponse;
     var dataDTO = new TableDataDTO(initData);
@@ -87,7 +92,7 @@ var getTableExtraction =  function(tableDataElement){
     return ajaxReponse;
 }
 
-
+//Final saving of the whole Template to the DB
 var sendBulkData=  function(sendingJSON){
     var finalDataDTO = {};
     //var sendingJSON = JSON.parse(sendingJSONString);
@@ -138,6 +143,8 @@ var  transformToTableParser= function(tableDataElements){
 
 
 ///Message Broker Models
+
+//Total Text Data Object containing arrays of text elements
 function TextDataDTO(pageData){
     this.mainCategory       = pageData.mainCategory;
     this.subCategory        = pageData.subCategory;
@@ -146,7 +153,10 @@ function TextDataDTO(pageData){
     this.dataType           = "text";////Static Data
     this.textDataElements=[];
 }
+
+//A single text element
 function TextDataElementDTO(dataElement, metaElement){
+    this.rawData = dataElement.rectangle;
     this.metaId         = ko.utils.unwrapObservable(dataElement.id);    //////Switched meta with id
     this.elementId      = ko.utils.unwrapObservable(dataElement.metaName);//// Switch due to data layer requirement
     this.totalX1        =ko.utils.unwrapObservable(dataElement.startX);
@@ -171,7 +181,7 @@ function TextDataElementDTO(dataElement, metaElement){
 
  }
 
-
+//Total image data object containing arrays of image data elements
 function ImageDataDTO(pageData){
     this.mainCategory       = pageData.mainCategory;
     this.subCategory        = pageData.subCategory;
@@ -181,7 +191,9 @@ function ImageDataDTO(pageData){
     this.imageDataElements=[];
 }
 
+//A single image data element
 function ImageDataElementDTO(dataElement, metaElement){
+    this.rawData = dataElement.rectangle;
     this.metaId = ko.utils.unwrapObservable(dataElement.id);
     this.totalX1 =ko.utils.unwrapObservable(dataElement.startX);
     this.totalY1 =ko.utils.unwrapObservable(dataElement.startY);
@@ -203,6 +215,7 @@ function ImageDataElementDTO(dataElement, metaElement){
 }
 
 
+//Total table DTO containing arrays of table elements
 function TableDataDTO(pageData){
     this.mainCategory       = pageData.mainCategory;
     this.subCategory        = pageData.subCategory;
@@ -212,7 +225,9 @@ function TableDataDTO(pageData){
     this.tableDataElements=[];
 }
 
+//a single table element
 function TableDataElementDTO(dataElement, metaElements){
+    this.rawData = dataElement.rectangle;
     this.metaId         = ko.utils.unwrapObservable(dataElement.id);    //////Switched meta with id
     this.elementId      = ko.utils.unwrapObservable(dataElement.metaName);//// Switch due to data layer requirement
     this.totalX1        =ko.utils.unwrapObservable(dataElement.startX);
@@ -231,7 +246,9 @@ function TableDataElementDTO(dataElement, metaElements){
 
 }
 
+// a single column element in the table
 function TableDataColumnDTO(dataElement, metaElement){
+    this.rawData = dataElement.rectangle;
     this.metaId         =   metaElement.id;    //////Switched meta with id
     this.metaX1         =   dataElement.startX + (metaElement.startX);
     this.metaY1         =   dataElement.startY + (metaElement.startY);
