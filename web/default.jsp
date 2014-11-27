@@ -4,7 +4,7 @@
   Time: 10:51 AM
   ----------------------------------
   Log:
-  October 26, 2014 -    - K D K Madusanka    - Created basic UI wireframe
+  October 26, 2014 -    - K D K Madusanka    - Creating basic UI wireframe
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
@@ -14,6 +14,7 @@
 
     <!-------------------------------- JS Files------------------------------------>
     <script type="text/javascript" src="assets/js/jquery-1.10.2.js"></script>
+    <script type="text/javascript" src="assets/ex-libraries/jstree/jstree.js"></script>
     <script type="text/javascript" src="assets/js/bootstrap.js"></script>
 
     <!-- custom css -->
@@ -80,7 +81,7 @@
                 <span>- Select to create category or template -</span>
                 <br/>
                 <!-- tree -->
-                <div>
+                <div id="treeViewDiv">
                 </div>
             </div>
             <!-- new category -->
@@ -215,8 +216,17 @@
 </div>
 
 
+<!-- js tree script -->
+<script type="text/javascript">
+    $('#treeViewDiv').jstree({ 'core' : {
+        'data' : [
+            { "id" : "data1", "parent" : "#", "text" : "Root node 1" },
+            { "id" : "data2", "parent" : "#", "text" : "Root node 2" },
+            { "id" : "data3", "parent" : "data2", "text" : "Child 1" },
+            { "id" : "data4", "parent" : "data2", "text" : "Child 2" }
+        ]
+    } });
+</script>
+
 </body>
-
-
-
 </html>
