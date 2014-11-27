@@ -146,8 +146,7 @@ var  transformToTableParser= function(tableDataElements){
 
 //Total Text Data Object containing arrays of text elements
 function TextDataDTO(pageData){
-    this.mainCategory       = pageData.mainCategory;
-    this.subCategory        = pageData.subCategory;
+    this.id = pageData.id;
     this.templateName       = pageData.templateName;
     this.status             = "extract";///Static Data
     this.dataType           = "text";////Static Data
@@ -183,9 +182,7 @@ function TextDataElementDTO(dataElement, metaElement){
 
 //Total image data object containing arrays of image data elements
 function ImageDataDTO(pageData){
-    this.mainCategory       = pageData.mainCategory;
-    this.subCategory        = pageData.subCategory;
-    this.templateName       = pageData.templateName;
+    this.id = pageData.id;
     this.status= "extract";///Static Data
     this.dataType= "image";////Static Data
     this.imageDataElements=[];
@@ -217,9 +214,7 @@ function ImageDataElementDTO(dataElement, metaElement){
 
 //Total table DTO containing arrays of table elements
 function TableDataDTO(pageData){
-    this.mainCategory       = pageData.mainCategory;
-    this.subCategory        = pageData.subCategory;
-    this.templateName       = pageData.templateName;
+    this.id = pageData.id;
     this.status= "extract";///Static Data
     this.dataType= "table";////Static Data
     this.tableDataElements=[];
