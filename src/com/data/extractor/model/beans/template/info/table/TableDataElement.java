@@ -1,5 +1,6 @@
 package com.data.extractor.model.beans.template.info.table;
 
+import com.data.extractor.model.beans.template.info.RawDataElement;
 import com.google.gson.annotations.Expose;
 
 import javax.annotation.Generated;
@@ -8,6 +9,11 @@ import java.util.List;
 
 @Generated("org.jsonschema2pojo")
 public class TableDataElement {
+
+
+
+    @Expose
+    private RawDataElement rawData;
 
     @Expose
     private String metaId;
@@ -147,5 +153,13 @@ public class TableDataElement {
     public List<Column> getColumns() {        return columns;    }
 
     public void setColumns(List<Column> columns) {        this.columns = columns;    }
+
+    public RawDataElement getRawData() {
+        return rawData;
+    }
+
+    public void setRawData(RawDataElement rawData) {
+        this.rawData = rawData;
+    }
 
 }
