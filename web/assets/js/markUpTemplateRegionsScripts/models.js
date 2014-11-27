@@ -21,13 +21,7 @@ function Page(data) {
     this.pageNumberName     = ko.observable('Page '+this.pageNumber().toString());
     this.activeStatus       = ko.observable(data.activeStatus);
 
-//    //Cached Data
-//    self.selectionInProgress = false;
-//    self.subElementSelectionInProgress = false;
-//    self.currentSelection = undefined;
-//    self.textElements=[];
-//    self.tableElements=[];
-//    self.pictureElements=[];
+
 }
 
 function PageCache(pageNumber) {
@@ -43,6 +37,7 @@ function PageCache(pageNumber) {
 // Models
 function DataElement(rectangle){
     var self = this;
+    self.rectangle = rectangle;
     self.id = ko.observable(rectangle.id);
     self.name = ko.observable();
     self.elementId  = self.id();
@@ -74,14 +69,21 @@ function DataElement(rectangle){
     if(rectangle.subElements === undefined ) {
         self.subElements = ko.observableArray([]);
     }
+    else{
+        self.tempSubElements = $.map( rectangle.subElements, function(subElement) { return new SubDataElement(subElement) });
+        self.subElements = ko.observableArray(self.tempSubElements);
+
+    }
 
     self.uiData = new UiData(rectangle);
     
 }
+
+
 //Coordinates Relative to parent ELement!!!!
 function SubDataElement(rectangle){
     var self = this;
-
+    self.rectangle = rectangle;
     self.elementId  = ko.observable(rectangle.elementId);
     self.id = ko.observable(rectangle.id);
     self.elementType = ko.observable(rectangle.elementType);
@@ -109,15 +111,14 @@ function SubDataElement(rectangle){
 
 function UiData(rectangle){
     var self = this;
-    self.rectangle = rectangle;
-    self.baseUiComponentStartX = ko.observable(self.rectangle.baseUiComponentStartX);
-    self.baseUiComponentStartY = ko.observable(self.rectangle.baseUiComponentStartY);
-    self.baseUiComponentHeight = ko.observable(self.rectangle.baseUiComponentHeight);
-    self.baseUiComponentWidth = ko.observable(self.rectangle.baseUiComponentWidth);
-    self.startX =  self.rectangle.startX;
-    self.startY =  self.rectangle.startY;
-    self.width = self.rectangle.width;
-    self.height = self.rectangle.height;
+    self.baseUiComponentStartX = ko.observable(rectangle.baseUiComponentStartX);
+    self.baseUiComponentStartY = ko.observable(rectangle.baseUiComponentStartY);
+    self.baseUiComponentHeight = ko.observable(rectangle.baseUiComponentHeight);
+    self.baseUiComponentWidth = ko.observable(rectangle.baseUiComponentWidth);
+    self.startX =  rectangle.startX;
+    self.startY =  rectangle.startY;
+    self.width = rectangle.width;
+    self.height = rectangle.height;
 
     self.metaStartY = ko.computed(function(){
         return self.baseUiComponentStartY() + self.startY - 97
@@ -164,8 +165,10 @@ function UiData(rectangle){
 
 }
 
+/*
 function MappingDataElement(dataElement){
     var self = this;
+    self.rectangle = rectangle;
     self.id = ko.observable(dataElement.id);
     self.name = ko.observable();
     self.elementId  = self.id();
@@ -201,6 +204,7 @@ function MappingDataElement(dataElement){
     self.uiData = new UiData(dataElement.uiData);
 
 }
+*/
 
 
 

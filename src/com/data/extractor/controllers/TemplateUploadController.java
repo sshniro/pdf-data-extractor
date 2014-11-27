@@ -15,29 +15,29 @@ import java.io.IOException;
     IF file uploaded is not PDF or Template Name already exists sends response back to TemplateUpload JSP
  */
 public class TemplateUploadController extends javax.servlet.http.HttpServlet {
-    protected void doPost(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws javax.servlet.ServletException, IOException {
+                protected void doPost(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws javax.servlet.ServletException, IOException {
 
-        UploadRequestProcessor requestProcessor = new UploadRequestProcessor();
-        UploadStatus uploadStatus = new UploadStatus();
-        uploadStatus.setRootPath(getServletContext().getRealPath(File.separator));
+                    UploadRequestProcessor requestProcessor = new UploadRequestProcessor();
+                    UploadStatus uploadStatus = new UploadStatus();
+                    uploadStatus.setRootPath(getServletContext().getRealPath(File.separator));
 
         /* Get the mongo client from the servletContext */
-        MongoClient mongoClient = (MongoClient) request.getServletContext().getAttribute("MONGO_CLIENT");
+                    MongoClient mongoClient = (MongoClient) request.getServletContext().getAttribute("MONGO_CLIENT");
 
-        uploadStatus = requestProcessor.processRequest(request, uploadStatus,mongoClient);
+                    uploadStatus = requestProcessor.processRequest(request, uploadStatus,mongoClient);
 
-        if (uploadStatus.getIsTemplateNameValid()) {
-            if (uploadStatus.getPdfUploadStatus()) {
-                HttpSession session=request.getSession();
-                String uploadJsonResponse = new ResponseGenerator().generateJsonResponse(uploadStatus);
-                session.setAttribute("uploadJsonResponse", uploadJsonResponse);
-                response.getWriter().print("success");
+                    if (uploadStatus.getIsTemplateNameValid()) {
+                        if (uploadStatus.getPdfUploadStatus()) {
+                            HttpSession session=request.getSession();
+                            String uploadJsonResponse = new ResponseGenerator().generateJsonResponse(uploadStatus);
+                            session.setAttribute("uploadJsonResponse", uploadJsonResponse);
+                            response.getWriter().print("success");
 
-            }
-            else {
-                // Code to send response back to the TemplateUpload JSP [File is Not a PDF]
-                response.getWriter().print(uploadStatus.getPdfUploadErrorCause());
-            }
+                        }
+                        else {
+                            // Code to send response back to the TemplateUpload JSP [File is Not a PDF]
+                            response.getWriter().print(uploadStatus.getPdfUploadErrorCause());
+                        }
         } else {
             // Code to send response back to the TemplateUpload JSP [Template Name already Taken]
             response.getWriter().print(uploadStatus.getTemplateNameErrorCause());

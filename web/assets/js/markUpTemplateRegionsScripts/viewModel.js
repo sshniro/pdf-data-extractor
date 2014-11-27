@@ -27,6 +27,11 @@ function ViewModel(){
     self.pictureElements = ko.observableArray([]);
     self.elementBuffer;
 
+
+    //Holds temporary sub elements
+    self.tempSubs = ko.observableArray([]);
+
+    //Initializes the extraction environment
     self.initExtractionPages = (function(){
         var imageArray = initData.imageRelativePaths;
         for(var key in imageArray){
@@ -44,7 +49,7 @@ function ViewModel(){
         }
     });
 
-
+    //changes pages
     self.changePage = function(data){
         self.savePage(self.currentPage());
         var newPageNumber = data.pageNumber();
@@ -81,16 +86,16 @@ function ViewModel(){
             self.pictureElements.removeAll();
         }
     }
+
+    //Loads the various elements for the currently laoded page
     self.loadNewPageData = function(newPageNumber){
-//        var newPage = self.pagesDataCache.remove(function(item) {
-//            return item.pageNumber === newPageNumber;
-//        })[0];
+
         var elementPos = self.pagesDataCache.map(function(pageCache) {return pageCache.pageNumber; }).indexOf(newPageNumber);
         var newPageTemp = self.pagesDataCache[elementPos];
         var newPage = {};
-        newPage.textElements = $.map( newPageTemp.textElements, function(element) { return new MappingDataElement(element) });
-        newPage.tableElements = $.map( newPageTemp.tableElements, function(element) { return new MappingDataElement(element) });
-        newPage.pictureElements = $.map( newPageTemp.pictureElements, function(element) { return new MappingDataElement(element) });
+        newPage.textElements = $.map( newPageTemp.textElements, function(element) { return new DataElement(element.rectangle) });
+        newPage.tableElements = $.map( newPageTemp.tableElements, function(element) { return new DataElement(element.rectangle) });
+        newPage.pictureElements = $.map( newPageTemp.pictureElements, function(element) { return new DataElement(element.rectangle) });
 
         self.selectionInProgress(newPageTemp.selectionInProgress);
         self.subElementSelectionInProgress(newPageTemp.subElementSelectionInProgress);
@@ -107,16 +112,16 @@ function ViewModel(){
             if(newPage.pictureElements[key] !== undefined ){   self.pictureElements.push(newPage.pictureElements[key]) };
         }
 
-        for(var key in  self.dataElements()){
-            disappearDecos(self.dataElements()[key].elementId);
+        for(var key in  self.dataElements()()){
+            disappearDecos(self.dataElements()()[key].elementId);
         }
 
 
     }
 
 
-
-    self.tempSubs = ko.observableArray([]);
+    //This contains the master collection of main elements
+    // which is iterated in knockout using template binding
     self.dataElements = ko.computed(function(){
         elements = ko.observableArray([]);
         for(var key in self.textElements()){
@@ -129,10 +134,10 @@ function ViewModel(){
             elements.push(self.pictureElements()[key]);
         }
         return elements;
-
-
     });
 
+    //This contains the master collection of sub elements[the rectabgles within]
+    // which is iterated in knockout using template binding
     self.subDataElements = ko.computed(function(){
         elements = ko.observableArray([]);
         for(var key in self.textElements()){
@@ -155,6 +160,7 @@ function ViewModel(){
 
 
 
+    //Adds a main element to the UI logic in turn showin it in the UI
     self.addTextElement = function (data){
         var element = new DataElement(data);
         self.textElements.push(element);
@@ -173,6 +179,7 @@ function ViewModel(){
 
     }
 
+    //Adding sub element
     self.addSubElement = function (data){
         var subElement = new SubDataElement(data);
         self.elementBuffer.subElements.push(ko.toJS(subElement));
@@ -206,7 +213,7 @@ function ViewModel(){
             ////////////////
     }
 
-
+    //Can remove elements on demand
     self.removeElement = function (removedElement){
         if(removedElement.elementClass() === 'main'){
             self.elementBuffer = undefined;
@@ -267,9 +274,13 @@ function ViewModel(){
         
     }
 
+    //element is anyway saved already
+    //The buffer is maintained only when its needed to remove the inserted element or cancel selection
     self.saveSelection = function(element,selection){
         self.elementBuffer = undefined;
     }
+
+    //Allows a currently processing element selection to be cancelled
     self.cancelSelection = function(){
         if (self.elementBuffer !== undefined){
             if (self.elementBuffer.elementType === 'text') {
@@ -296,6 +307,8 @@ function ViewModel(){
 
     self.sendingJsonFinal = ko.observable("Content Creating");
 
+    //The alternative method to pulse extraction
+    //specially tailored for table extraction
     self.extractTable = function(element){
         var table = ko.toJS(element);
         var response = getTableExtraction(table)
@@ -303,6 +316,7 @@ function ViewModel(){
     }
 
 
+    //The final call which saves the total bulk data to the DB
     self.sendJson = function (){
         var data = {};
 //        data.textDataElements   =   self.textElements();
