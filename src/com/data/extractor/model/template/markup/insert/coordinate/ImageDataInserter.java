@@ -23,14 +23,12 @@ public class ImageDataInserter {
 
             /* Only check once from the DB when the loop starts */
             if(i==0){
-                templateInfoSize=templateInfoDAO.getTemplateInfoSize(imageDataParser.getMainCategory(),imageDataParser.getSubCategory(),
-                        imageDataParser.getTemplateName(),imageDataParser.getDataType());
+                templateInfoSize=templateInfoDAO.getTemplateInfoSize(imageDataParser.getId() ,imageDataParser.getDataType());
             }
 
             if (templateInfoSize == 0) {
                 /* If there is no record exists create a new record and insert */
-                templateInfoDAO.createTemplateInfo(imageDataParser.getMainCategory(),imageDataParser.getSubCategory(),
-                        imageDataParser.getTemplateName(),imageDataParser.getDataType(),imageDataElement);
+                templateInfoDAO.createTemplateInfo(imageDataParser.getId(),imageDataParser.getDataType(),imageDataElement);
                 templateInfoSize=1;
 
             } else {

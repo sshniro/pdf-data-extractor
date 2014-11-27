@@ -80,6 +80,16 @@ public class TemplateInfoDAO implements TemplateInfo {
         return templateCursor.size();
     }
 
+    // TODO override this method from templates
+    public int getTemplateInfoSize(String nodeId, String dataType){
+        BasicDBObject searchQuery = new BasicDBObject();
+        searchQuery.put("id" , nodeId);
+        searchQuery.put("dataType" , dataType);
+
+        DBCursor templateCursor = infoColl.find(searchQuery);
+        return templateCursor.size();
+    }
+
     @Override
     public List<TextDataParser> getTextTemplateInfo(String mainCat , String subCat,String tempName,String dataType){
 
@@ -90,6 +100,28 @@ public class TemplateInfoDAO implements TemplateInfo {
         searchQuery.put("mainCategory", mainCat);
         searchQuery.put("subCategory", subCat);
         searchQuery.put("templateName", tempName);
+        searchQuery.put("dataType", dataType);
+
+        DBCursor templateCursor = infoColl.find(searchQuery);
+
+        while (templateCursor.hasNext()){
+            // If there is a Record Present parse the MongoObject returned
+            Gson gson = new Gson();
+            textDataParser = gson.fromJson(templateCursor.next().toString()
+                    ,TextDataParser.class);
+            textDataParserList.add(textDataParser);
+        }
+
+        return textDataParserList;
+    }
+
+    public List<TextDataParser> getTextTemplateInfo(String id,String dataType){
+
+        BasicDBObject searchQuery = new BasicDBObject();
+        TextDataParser textDataParser;
+        List<TextDataParser> textDataParserList=new ArrayList<TextDataParser>();
+
+        searchQuery.put("id", id);
         searchQuery.put("dataType", dataType);
 
         DBCursor templateCursor = infoColl.find(searchQuery);
@@ -192,6 +224,38 @@ public class TemplateInfoDAO implements TemplateInfo {
         infoColl.insert(insertObject);
     }
 
+    public void createTemplateInfo(String nodeId,String dataType,TextDataElement textDataElement){
+
+        BasicDBObject insertObject = new BasicDBObject();
+        insertObject.put("id", nodeId);
+        insertObject.put("dataType", dataType);
+
+        List<BasicDBObject> textDataElementsInsert = new ArrayList<BasicDBObject>();
+
+        BasicDBObject textElementObject = new BasicDBObject();
+
+        textElementObject.put("metaId", textDataElement.getMetaId());
+        textElementObject.put("pageNumber", textDataElement.getPageNumber());
+        textElementObject.put("pageRotation", textDataElement.getPageRotation());
+
+        textElementObject.put("totalX1", textDataElement.getTotalX1());
+        textElementObject.put("totalY1", textDataElement.getTotalY1());
+        textElementObject.put("totalWidth", textDataElement.getTotalWidth());
+        textElementObject.put("totalHeight", textDataElement.getTotalHeight());
+
+        textElementObject.put("metaX1", textDataElement.getMetaX1());
+        textElementObject.put("metaY1", textDataElement.getMetaY1());
+        textElementObject.put("metaWidth", textDataElement.getMetaWidth());
+        textElementObject.put("metaHeight", textDataElement.getMetaHeight());
+
+
+        textDataElementsInsert.add(textElementObject);
+
+        insertObject.put("textDataElements", textDataElementsInsert);
+
+        infoColl.insert(insertObject);
+    }
+
     /* Method creates a new record of imageDataParser to the templateInfo collection  */
     @Override
     public void createTemplateInfo(String mainCat , String subCat,String tempName,String dataType,
@@ -201,6 +265,33 @@ public class TemplateInfoDAO implements TemplateInfo {
         insertObject.put("mainCategory", mainCat);
         insertObject.put("subCategory", subCat);
         insertObject.put("templateName", tempName);
+        insertObject.put("dataType", dataType);
+
+        List<BasicDBObject> imageDataElementsInsert=new ArrayList<BasicDBObject>();
+
+        BasicDBObject imageElementObject=new BasicDBObject();
+
+        imageElementObject.put("metaId",imageDataElement.getMetaId());
+        imageElementObject.put("pageNumber",imageDataElement.getPageNumber());
+        imageElementObject.put("pageRotation",imageDataElement.getPageRotation());
+
+        imageElementObject.put("totalX1",imageDataElement.getTotalX1());
+        imageElementObject.put("totalY1",imageDataElement.getTotalY1());
+        imageElementObject.put("totalWidth",imageDataElement.getTotalWidth());
+        imageElementObject.put("totalHeight",imageDataElement.getTotalHeight());
+
+        imageDataElementsInsert.add(imageElementObject);
+
+        insertObject.put("imageDataElements", imageDataElementsInsert);
+
+        infoColl.insert(insertObject);
+    }
+
+    public void createTemplateInfo(String nodeId,String dataType,
+                                   ImageDataElement imageDataElement){
+
+        BasicDBObject insertObject = new BasicDBObject();
+        insertObject.put("id", nodeId);
         insertObject.put("dataType", dataType);
 
         List<BasicDBObject> imageDataElementsInsert=new ArrayList<BasicDBObject>();
@@ -263,15 +354,49 @@ public class TemplateInfoDAO implements TemplateInfo {
 
     }
 
+    public void createTemplateInfo(String nodeId,String dataType,
+                                   TableDataElement tableDataElement){
+
+        BasicDBObject insertObject=new BasicDBObject();
+        insertObject.put("id",nodeId);
+        insertObject.put("dataType",dataType);
+
+        List<BasicDBObject> tableDataElementsInsert=new ArrayList<BasicDBObject>();
+
+        BasicDBObject tableElementObject=new BasicDBObject();
+
+        tableElementObject.put("metaId",tableDataElement.getMetaId());
+        tableElementObject.put("pageNumber",tableDataElement.getPageNumber());
+        tableElementObject.put("pageRotation",tableDataElement.getPageRotation());
+
+        tableElementObject.put("totalX1",tableDataElement.getTotalX1());
+        tableElementObject.put("totalY1",tableDataElement.getTotalY1());
+        tableElementObject.put("totalWidth",tableDataElement.getTotalWidth());
+        tableElementObject.put("totalHeight",tableDataElement.getTotalHeight());
+
+        List<Column> columns=tableDataElement.getColumns();
+        ArrayList columnData = new ArrayList();
+
+        for(Column c:columns){
+            columnData.add(new BasicDBObject("metaId",c.getMetaId()).append("metaX1",c.getMetaX1())
+                    .append("metaY1",c.getMetaY1()).append("metaWidth",c.getMetaWidth())
+                    .append("metaHeight",c.getMetaHeight()));
+        }
+
+        tableElementObject.put("columns",columnData);
+        tableDataElementsInsert.add(tableElementObject);
+        insertObject.put("tableDataElements",tableDataElementsInsert);
+        infoColl.insert(insertObject);
+
+    }
+
     /* Method updates the previously available record of textDataParser in the templateInfo collection  */
     @Override
     public void updateTemplateInfo(TextDataParser textDataParser,TextDataElement textDataElement){
 
         BasicDBObject searchQuery = new BasicDBObject();
 
-        searchQuery.put("mainCategory", textDataParser.getMainCategory());
-        searchQuery.put("subCategory", textDataParser.getSubCategory());
-        searchQuery.put("templateName", textDataParser.getTemplateName());
+        searchQuery.put("id", textDataParser.getId());
         searchQuery.put("dataType", textDataParser.getDataType());
 
         BasicDBObject textElementObject = new BasicDBObject();
@@ -300,9 +425,7 @@ public class TemplateInfoDAO implements TemplateInfo {
     public void updateTemplateInfo(ImageDataParser imageDataParser,ImageDataElement imageDataElement){
 
         BasicDBObject searchQuery = new BasicDBObject();
-        searchQuery.put("mainCategory", imageDataParser.getMainCategory());
-        searchQuery.put("subCategory", imageDataParser.getSubCategory());
-        searchQuery.put("templateName", imageDataParser.getTemplateName());
+        searchQuery.put("id", imageDataParser.getId());
         searchQuery.put("dataType", imageDataParser.getDataType());
 
         BasicDBObject imageElementObject = new BasicDBObject();
@@ -323,15 +446,14 @@ public class TemplateInfoDAO implements TemplateInfo {
 
     }
 
+
     /* Method updates the previously available record of imageDataParser in the templateInfo collection  */
     @Override
     public void updateTemplateInfo(TableDataParser tableDataParser,TableDataElement tableDataElement){
 
         BasicDBObject searchQuery = new BasicDBObject();
 
-        searchQuery.put("mainCategory", tableDataParser.getMainCategory());
-        searchQuery.put("subCategory", tableDataParser.getSubCategory());
-        searchQuery.put("templateName", tableDataParser.getTemplateName());
+        searchQuery.put("id", tableDataParser.getId());
         searchQuery.put("dataType", tableDataParser.getDataType());
 
         BasicDBObject tableElementObject = new BasicDBObject();

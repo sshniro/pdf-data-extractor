@@ -63,6 +63,8 @@ var initBindings =  (function(){
         vm.currentSelection("text");
         selectionStarted();
         selectionInitializer("img",drawingRouter);
+        $("#runningInstructions").text('Select Text Element');
+
 
     });
 
@@ -70,7 +72,9 @@ var initBindings =  (function(){
     $("button#tableSelect").click(function(){
         vm.currentSelection("table");
         selectionStarted();
-        selectionInitializer("img",drawingRouter);       
+        selectionInitializer("img",drawingRouter);
+        $("#runningInstructions").text('Select Table Element');
+
     });
 
     //PICTURE BUTTON
@@ -78,6 +82,8 @@ var initBindings =  (function(){
         vm.currentSelection("picture");
         selectionStarted();
         selectionInitializer("img",drawingRouter);
+        $("#runningInstructions").text('Select Picure Element');
+
 
     });
 
@@ -106,7 +112,7 @@ var initBindings =  (function(){
 
 
 
-
+// This activates the imgAreaSelect on a given element and is the main plugin which drives the element selection
 var selectionInitializer = (function (element,onSelectEndCb){
 
     selectedImgAreInstance = $(element).imgAreaSelect({
@@ -122,6 +128,11 @@ var selectionInitializer = (function (element,onSelectEndCb){
 
 var currentWorkingImg = undefined;
 
+
+// The drawing router controls the workflow of the application
+// It is invoked each time the image area select plugin fires its selection end event
+// the base ui component is the current element on which was drawn
+// selection contains the dimensions of the selection
 var drawingRouter = (function (baseUiComponent, selection){
 
     if (selection.width<10 || selection.height<10){
@@ -134,11 +145,15 @@ var drawingRouter = (function (baseUiComponent, selection){
     var rectangle = drawRectangle(baseUiComponent, selection);
     rectangle.pageNumber =  vm.currentPage();
 
+    //If this is the very first selction after either of the  [text/image/table] buttons were selected
+    // then it enters into this flow
     if(!vm.subElementSelectionInProgress()){
         var response = getMainExtraction(rectangle,vm.currentSelection());
         rectangle.extractedData = response.extractedData;
         rectangle.elementId = rectangle.id;
-
+        //Releases the imageAreaSelect binding on the image
+        // because the rest of the selection will be done inside the current selection element
+        // until save or cancel is pressed
         $('#'+baseUiComponent.id).unbind();
         switch (vm.currentSelection()) {
             case 'text':
@@ -154,11 +169,15 @@ var drawingRouter = (function (baseUiComponent, selection){
 
         vm.subElementSelectionInProgress(true);
         $('div#'+rectangle.id+'.mainElement').css('cursor','crosshair');
+        // new selection is initialized to select WITHIN the currently selected element
         selectionInitializer('div#'+rectangle.id+'.mainElement',drawingRouter);
     }
-    else{//If table allow selection of multiple sub elements
+    else{
+        //This is the end of the work flow for elements other than the table
+
         var response  = getSubExtraction(rectangle,vm.currentSelection());
         rectangle.relevantData = response.extractedData;
+        //The table selection allows to select an infinite amount of sub elements within the main table rectangle
         if (vm.currentSelection() === 'table') {
             rectangle.elementId = baseUiComponent.id;
             vm.addSubElement(rectangle)
@@ -190,18 +209,18 @@ var reDrawingRouter = (function (baseUiComponent, selection, editDiv){
 //Granular function to draw rectangle on the html DOM
 var drawRectangle = (function(baseUiComponent, selection){
     var rectangle = {}
-    rectangle.baseUiComponentStartX = $('#'+baseUiComponent.id +'.baseUI' ).offset().left;
-    rectangle.baseUiComponentStartY = $('#'+baseUiComponent.id+'.baseUI').offset().top;
-    rectangle.baseUiComponentHeight =baseUiComponent.height;
-    rectangle.baseUiComponentWidth =baseUiComponent.width;
+    rectangle.baseUiComponentStartX     = $('#'+baseUiComponent.id +'.baseUI' ).offset().left;
+    rectangle.baseUiComponentStartY     = $('#'+baseUiComponent.id+'.baseUI').offset().top;
+    rectangle.baseUiComponentHeight     =baseUiComponent.clientHeight;
+    rectangle.baseUiComponentWidth      =baseUiComponent.clientWidth;
 
-    rectangle.startX = selection.x1;
-    rectangle.startY = selection.y1;
-    rectangle.width =selection.width;
-    rectangle.height = selection.height;
+    rectangle.startX                    = selection.x1;
+    rectangle.startY                    = selection.y1;
+    rectangle.width                     =selection.width;
+    rectangle.height                    = selection.height;
 
-    rectangle.id = rectangle.startX +"px"+ rectangle.startY+"px"+rectangle.width+"px"+rectangle.height+"px";
-    rectangle.elementType = vm.currentSelection();
+    rectangle.id                        = rectangle.startX +"px"+ rectangle.startY+"px"+rectangle.width+"px"+rectangle.height+"px";
+    rectangle.elementType       = vm.currentSelection();
 
     return rectangle;
 })
@@ -252,7 +271,6 @@ function resetEnvironment(){
     $("img").unbind();
     initBindings();
 
-    $("#runningInstructions").attr('text', 'Select Data Type');
     vm.currentSelection = ko.observable();
     vm.selectionInProgress(false);
     vm.subElementSelectionInProgress(false)
@@ -271,7 +289,6 @@ function selectionStarted(currentElement){
     $("button#saveSelection").attr('disabled', false);
     $("button#persist").attr('disabled', true);
 
-    $("#runningInstructions").text('Select Picture Element');  
     $('img').css('cursor','crosshair');
     $('img').unbind();
     $("button.removeElement").css('visibility','hidden');
@@ -283,13 +300,6 @@ function selectionStarted(currentElement){
 function selectionComplete(currentElement){
     $("#runningInstructions").text('Click On Save Or Cancel');
     $("*").css('cursor','default');
-    //var id = currentElement.elementId;
-
-    //var closeDivId = id+"Remove";
-    //var saveButtonId = id + "SaveButton";
-
-    //$("button#"+saveButtonId).css('visibility', 'hidden');
-    //$("div#"+closeDivId).css('visibility', 'visible');    
 }
 
 
@@ -317,25 +327,10 @@ $(".btn-group > .btn").click(function(){
 var selectionStartedCallBack = function (){
     $("*").css('cursor','crosshair');
 }
-/*
-    self.init = function(){
-        for (var i = 0; i <500; i+=100) {
-            var rectangle = {}
-            rectangle.elementRectId = i+"px"+i+"px"
-            rectangle.elementLeftStart=i;de
-            rectangle.elementTopStart =i;
-            rectangle.elementWidth =i+100;
-            rectangle.elementHeight = i+100;
-
-            self.addElement(rectangle);
-        }
-    }
-*/
 
 function preview(img, selection) {
     if (!selection.width || !selection.height)
         return;
-
     $('#starting').text(selection.x1 +" "+ selection.y1);
     $('#ending').text(selection.x2 +" "+ selection.y2);
 }

@@ -43,6 +43,28 @@ public class CounterDAO {
         return nextId;
     }
 
+    public int getNextExtractId(){
+
+        BasicDBObject searchQuery = new BasicDBObject();
+        searchQuery.put("reference","extractId");
+        int nextId = 0;
+
+        DBCursor cursor = counterColl.find(searchQuery);
+        if(cursor.size() == 0){
+            searchQuery.put("id",0);
+            counterColl.insert( searchQuery );
+        }else {
+            Gson gson = new Gson();
+            Counter counter = gson.fromJson(cursor.next().toString(),Counter.class);
+            nextId = counter.getId()+1;
+            counter.setId(counter.getId()+1);
+            BasicDBObject updateQuery = new BasicDBObject();
+            updateQuery.append("$set", new BasicDBObject("id", counter.getId()));
+            counterColl.update(searchQuery,updateQuery);
+        }
+        return nextId;
+    }
+
 
 
 }
