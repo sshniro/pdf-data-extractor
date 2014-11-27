@@ -10,9 +10,11 @@ import java.util.List;
 @Generated("org.jsonschema2pojo")
 public class TextDataParser {
 
-    @SerializedName("_id")
+    //@SerializedName("_id")
+    //@Expose
+    //private Id id;
     @Expose
-    private Id id;
+    private String id;
     @Expose
     private String mainCategory;
     @Expose
@@ -26,13 +28,18 @@ public class TextDataParser {
     @Expose
     private List<TextDataElement> textDataElements = new ArrayList<TextDataElement>();
 
-    public Id getId() {
-        return id;
-    }
+//    public Id getId() {
+//        return id;
+//    }
+//
+//    public void setId(Id id) {
+//        this.id = id;
+//    }
 
-    public void setId(Id id) {
-        this.id = id;
-    }
+
+    public String getId() {        return id;    }
+
+    public void setId(String id) {        this.id = id;    }
 
     public String getMainCategory() {
         return mainCategory;

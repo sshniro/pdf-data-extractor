@@ -1,6 +1,8 @@
 package com.data.extractor.model.data.access.layer;
 
 
+import com.data.extractor.model.beans.manage.categories.ManageCategoriesData;
+import com.data.extractor.model.beans.manage.categories.Node;
 import com.data.extractor.model.beans.templates.TemplatesParser;
 import com.data.extractor.model.db.connect.dbInitializer;
 import com.data.extractor.model.interfaces.Templates;
@@ -73,35 +75,88 @@ public class TemplatesDAO implements Templates {
         }
     }
 
-    @Override
-    public void removeTemplate(String mainCategory) {
-        BasicDBObject searchQuery=new BasicDBObject();
-        searchQuery.put("mainCategory", mainCategory);
-        templatesColl.remove(searchQuery);
-    }
 
-    @Override
-    public void removeTemplate(String mainCategory, String subCategory) {
-        BasicDBObject searchQuery=new BasicDBObject();
-        searchQuery.put("mainCategory", mainCategory);
-        searchQuery.put("subCategory", subCategory);
-        templatesColl.remove(searchQuery);
-    }
+    public List<TemplatesParser> getTemplates(List<String> categories){
+        TemplatesParser template;
+        List<TemplatesParser> templatesParserList=new ArrayList<TemplatesParser>();
 
-    @Override
-    /*
-    Removes only the templateName from the templates array with ' pull ' command
-     */
-    public void removeTemplate(String mainCategory, String subCategory, String templateName) {
         BasicDBObject searchQuery = new BasicDBObject();
-        searchQuery.put("mainCategory", mainCategory);
-        searchQuery.put("subCategory", subCategory);
+        searchQuery.put( "categories" , categories);
+        DBCursor templatesCursor = templatesColl.find(searchQuery);
+        Gson gson=new Gson();
 
-        BasicDBObject removeObject=new BasicDBObject();
-        removeObject.put("templates",new BasicDBObject("templateName", templateName));
+        while (templatesCursor.hasNext()){
+            template = gson.fromJson(templatesCursor.next().toString(),TemplatesParser.class);
+            templatesParserList.add(template);
+        }
+        return templatesParserList;
+    }
 
-        /* Remove the templateNames from the templates array from the templates Collection */
-        templatesColl.update(searchQuery, new BasicDBObject("$pull",removeObject));
+    public void createNode(String id , String parent , String text ){
+        DBObject insertQuery = new BasicDBObject();
+        insertQuery.put("id",id);
+        insertQuery.put("parent" , parent);
+        insertQuery.put("text" , text);
+        templatesColl.insert(insertQuery);
+
+    }
+
+    public void createLeafNode(String id , String parent , String text, String pdfFile ){
+        DBObject insertQuery = new BasicDBObject();
+        insertQuery.put("id",id);
+        insertQuery.put("parent" , parent);
+        insertQuery.put("text" , text);
+        insertQuery.put("pdfFile" , pdfFile);
+        insertQuery.put("node" , "leaf" );
+        templatesColl.insert(insertQuery);
+
+    }
+
+    public  ManageCategoriesData getAllNodes(ManageCategoriesData data){
+
+        BasicDBObject searchQuery = new BasicDBObject();
+        DBCursor cursor = templatesColl.find(null);
+
+        Gson gson=new Gson();
+        Node node;
+        List<Node> nodeList=new ArrayList<Node>();
+        while(cursor.hasNext()){
+            node= gson.fromJson(cursor.next().toString(),Node.class);
+            nodeList.add(node);
+        }
+        data.setNodes(nodeList);
+        return data;
+    }
+
+    public List<Node> getNodes(String parentName){
+        BasicDBObject basicDBObject = new BasicDBObject();
+        basicDBObject.put("parent", parentName);
+
+        DBCursor templateCursor = templatesColl.find(basicDBObject);
+
+        Node node;
+        Gson gson = new Gson();
+        List<Node> nodeList= new ArrayList<Node>();
+        while (templateCursor.hasNext()){
+            node = gson.fromJson(templateCursor.next().toString(),Node.class);
+            nodeList.add(node);
+        }
+        return nodeList;
+    }
+
+    public Node getNode(String nodeId){
+
+        BasicDBObject basicDBObject = new BasicDBObject();
+        basicDBObject.put("id", nodeId);
+
+        DBCursor templateCursor = templatesColl.find(basicDBObject);
+
+        Node node=new Node();
+        Gson gson = new Gson();
+        if(templateCursor.hasNext()){
+            node = gson.fromJson(templateCursor.next().toString(),Node.class);
+        }
+        return node;
     }
 
     @Override
@@ -139,6 +194,21 @@ public class TemplatesDAO implements Templates {
             templatesParserList.add(template);
         }
         return templatesParserList;
+    }
+
+    @Override
+    public void removeTemplate(String mainCategory) {
+
+    }
+
+    @Override
+    public void removeTemplate(String mainCategory, String subCategory) {
+
+    }
+
+    @Override
+    public void removeTemplate(String mainCategory, String subCategory, String templateName) {
+
     }
 
 }

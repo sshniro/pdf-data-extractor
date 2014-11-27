@@ -1,6 +1,7 @@
 package com.data.extractor.controllers;
 
 import com.data.extractor.model.beans.manage.categories.ManageCategoriesData;
+import com.data.extractor.model.data.access.layer.CounterDAO;
 import com.data.extractor.model.manage.categories.RequestProcessor;
 import com.google.gson.Gson;
 import com.mongodb.MongoClient;
@@ -20,14 +21,13 @@ public class ManageCategoriesController extends HttpServlet {
         while ((s = request.getReader().readLine()) != null) {
             sb.append(s);
         }
-
         Gson gson = new Gson();
         ManageCategoriesData manageCategoriesData;
         manageCategoriesData=gson.fromJson(sb.toString(),ManageCategoriesData.class);
 
         /* Get the mongo client from the servletContext */
         MongoClient mongoClient = (MongoClient) request.getServletContext().getAttribute("MONGO_CLIENT");
-        RequestProcessor requestProcessor=new RequestProcessor();
+        RequestProcessor requestProcessor=new RequestProcessor(mongoClient);
         /* @return manageCategoriesData with relevantData set if successful or error message */
         requestProcessor.processRequest(manageCategoriesData,mongoClient);
 

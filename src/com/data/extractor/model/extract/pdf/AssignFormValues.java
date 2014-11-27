@@ -24,17 +24,8 @@ public class AssignFormValues {
                 String fieldName = templateProperty.getFieldName();
 
                 // Assign the Value for the mainCategory
-                if(fieldName.equals("mainCategory")){
-                    extractStatus.setMainCategory(templateProperty.getString());
-                }
-
-                // Assign the value for the subcategory
-                if(fieldName.equals("subCategory")){
-                    extractStatus.setSubCategory(templateProperty.getString());
-                }
-                // Assign the value for the template name
-                if(fieldName.equals("templateName")){
-                    extractStatus.setTemplateName(templateProperty.getString());
+                if(fieldName.equals("parent")){
+                    extractStatus.setParent(templateProperty.getString());
                 }
                 // Assign the value for the template name
                 if(fieldName.equals("documentId")){

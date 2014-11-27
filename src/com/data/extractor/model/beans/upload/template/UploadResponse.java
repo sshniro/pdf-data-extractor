@@ -3,10 +3,16 @@ package com.data.extractor.model.beans.upload.template;
 
 public class UploadResponse {
 
+    private String  id;
     private String  mainCategory;
     private String  subCategory;
     private String  templateName;
     private String[] imageRelativePaths;
+
+
+    public String getId() {        return id;    }
+
+    public void setId(String id) {        this.id = id;    }
 
     public String getMainCategory() {
         return mainCategory;

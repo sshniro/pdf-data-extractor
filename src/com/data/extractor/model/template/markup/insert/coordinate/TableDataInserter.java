@@ -22,14 +22,12 @@ public class TableDataInserter {
 
             /* Only check once from the DB when the loop starts */
             if(i==0){
-                templateInfoSize=templateInfoDAO.getTemplateInfoSize(tableDataParser.getMainCategory(),tableDataParser.getSubCategory(),
-                        tableDataParser.getTemplateName(),tableDataParser.getDataType());
+                templateInfoSize=templateInfoDAO.getTemplateInfoSize(tableDataParser.getId(),tableDataParser.getDataType());
             }
 
             if (templateInfoSize == 0) {
                 /* If there is no record exists create a new record and input */
-                templateInfoDAO.createTemplateInfo(tableDataParser.getMainCategory(),tableDataParser.getSubCategory(),
-                        tableDataParser.getTemplateName(),tableDataParser.getDataType(),tableDataElement);
+                templateInfoDAO.createTemplateInfo(tableDataParser.getId(),tableDataParser.getDataType(),tableDataElement);
                 templateInfoSize=1;
             } else {
                 /* If record exists update the record */

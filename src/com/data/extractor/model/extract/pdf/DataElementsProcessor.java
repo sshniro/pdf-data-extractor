@@ -38,8 +38,7 @@ public class DataElementsProcessor {
 
         List<TextDataParser> textDataList;
         TextDataParser textDataParser=null;
-        textDataList = templateInfoDAO.getTextTemplateInfo(extractStatus.getMainCategory(), extractStatus.getSubCategory() ,
-                                                            extractStatus.getTemplateName(), "text" );
+        textDataList = templateInfoDAO.getTextTemplateInfo(extractStatus.getParent() , "text" );
 
         /* Check if no text data available to extract then skip*/
         if(textDataList.size() !=0 ){

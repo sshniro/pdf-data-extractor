@@ -2,6 +2,8 @@ package com.data.extractor.model.extract.pdf;
 
 import com.data.extractor.model.beans.extract.pdf.ExtractStatus;
 import com.data.extractor.model.beans.template.info.insert.InsertDataParser;
+import com.data.extractor.model.data.access.layer.CounterDAO;
+import com.data.extractor.model.data.access.layer.TemplatesDAO;
 import com.mongodb.MongoClient;
 import org.apache.commons.fileupload.FileItemFactory;
 import org.apache.commons.fileupload.FileUploadException;
@@ -18,6 +20,7 @@ public class ExtractRequestProcessor {
     public ExtractStatus processRequest(InsertDataParser extractedData,HttpServletRequest request, ExtractStatus extractStatus , MongoClient mongoClient) {
 
         boolean isMultipart = ServletFileUpload.isMultipartContent(request);
+        CounterDAO counterDAO = new CounterDAO(mongoClient);
 
         if (isMultipart) {
             /* Create a factory for disk-based file items */
@@ -35,12 +38,14 @@ public class ExtractRequestProcessor {
                 DocumentIdAuthenticator authenticator = new DocumentIdAuthenticator();
                 authenticator.isDocIdValid(extractStatus,mongoClient);
 
+
                 if (extractStatus.getStatus()){
+                    Integer extractId = counterDAO.getNextExtractId();
+                    extractStatus.setId(extractId.toString());
+                    PdfFileProcessor fileProcessor = new PdfFileProcessor();
+                    extractStatus = fileProcessor.processFile(items, extractStatus);
 
-                PdfFileProcessor fileProcessor = new PdfFileProcessor();
-                extractStatus = fileProcessor.processFile(items, extractStatus);
-
-                DataElementsProcessor dataElementsProcessor = new DataElementsProcessor(mongoClient);
+                    DataElementsProcessor dataElementsProcessor = new DataElementsProcessor(mongoClient);
                     /* Check to ensure the uploaded file is a PDF. Status set in the isPDF Function*/
                     // TODO CHECK WITH ANOTHER VARIABLE RATHER THAN STATUS
                     if (extractStatus.getStatus()) {

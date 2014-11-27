@@ -1,11 +1,13 @@
 package com.data.extractor.model.template.markup;
 
 import com.data.extractor.model.beans.extract.pdf.ExtractStatus;
+import com.data.extractor.model.beans.manage.categories.Node;
 import com.data.extractor.model.beans.markup.template.MarkUpResponse;
 import com.data.extractor.model.beans.template.info.table.Cell;
 import com.data.extractor.model.beans.template.info.table.Column;
 import com.data.extractor.model.beans.template.info.table.TableDataElement;
 import com.data.extractor.model.beans.template.info.table.TableDataParser;
+import com.data.extractor.model.data.access.layer.TemplatesDAO;
 import com.data.extractor.model.extract.pdf.table.DataProcessor;
 import com.data.extractor.model.template.markup.calculate.coordinates.TableDataCoordinates;
 import com.data.extractor.model.template.markup.pdf.retreiver.TablePDDocument;
@@ -31,11 +33,13 @@ public class TableDataExtractor {
         Gson gson=new Gson();
         TableDataParser tableDataParser;
         tableDataParser=gson.fromJson(jsonRequest, TableDataParser.class);
+        TemplatesDAO templatesDAO = new TemplatesDAO(mongoClient);
 
         List<TableDataElement> tableDataElements=tableDataParser.getTableDataElements();
         try {
-            TablePDDocument tablePDDocument=new TablePDDocument();
-            PDDocument doc=tablePDDocument.retrievePDDoc(tableDataParser,mongoClient);
+            Node node = templatesDAO.getNode(tableDataParser.getId());
+            tableDataParser.setPdfFile(node.getPdfFile());
+            PDDocument doc =PDDocument.load(tableDataParser.getPdfFile());
 
             TableDataCoordinates tableDataCoordinates=new TableDataCoordinates();
             /* Set Values for the PDF width, Height and Rotation for the first tableDataElement*/
