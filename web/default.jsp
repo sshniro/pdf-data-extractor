@@ -9,13 +9,14 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <!-------------------------------- CSS Files------------------------------------>
-    <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.css">
-
-    <!-------------------------------- JS Files------------------------------------>
+    <!-- jQuery -->
     <script type="text/javascript" src="assets/js/jquery-1.10.2.js"></script>
-    <script type="text/javascript" src="assets/ex-libraries/jstree/jstree.js"></script>
+    <!-- bootstrap -->
     <script type="text/javascript" src="assets/js/bootstrap.js"></script>
+    <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.css">
+    <!-- jstree -->
+    <script type="text/javascript" src="assets/ex-libraries/jstree/jstree.js"></script>
+    <link rel="stylesheet" href="assets/ex-libraries/jstree/themes/default/style.css" />
 
     <!-- custom css -->
     <style type="text/css">

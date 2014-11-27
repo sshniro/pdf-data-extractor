@@ -23,13 +23,12 @@ public class AssignFormValues {
                 String fieldName = templateProperty.getFieldName();
 
                 // Assign the Value for the mainCategory
-                if(fieldName.equals("mainCategory")){
-                    uploadStatus.setMainCategory(templateProperty.getString());
+                if(fieldName.equals("parent")){
+                    uploadStatus.setParent(templateProperty.getString());
                 }
-
                 // Assign the value for the subcategory
-                if(fieldName.equals("subCategory")){
-                    uploadStatus.setSubCategory(templateProperty.getString());
+                if(fieldName.equals("text")){
+                    uploadStatus.setText(templateProperty.getString());
                 }
                 // Assign the value for the template name
                 if(fieldName.equals("templateName")){

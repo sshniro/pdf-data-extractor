@@ -2,37 +2,30 @@ package com.data.extractor.model.manage.categories;
 
 
 import com.data.extractor.model.beans.manage.categories.ManageCategoriesData;
+import com.data.extractor.model.data.access.layer.CounterDAO;
+import com.data.extractor.model.data.access.layer.TemplatesDAO;
 import com.mongodb.MongoClient;
 
 public class RequestProcessor {
 
-    public ManageCategoriesData processRequest(ManageCategoriesData manageCategoriesData,MongoClient mongoClient){
+    TemplatesDAO templatesDAO;
 
-        if(manageCategoriesData.getRequest().equals("createMainCategory")) {
-            CreateRequestProcessor requestProcessor=new CreateRequestProcessor();
-            requestProcessor.createMainCat(manageCategoriesData,mongoClient);
+    public RequestProcessor(MongoClient mongoClient){
+        this.templatesDAO = new TemplatesDAO(mongoClient);
+    }
+
+    public ManageCategoriesData processRequest(ManageCategoriesData data,MongoClient mongoClient){
+
+        if(data.getRequest().equals("createNode")){
+            CounterDAO counterDAO=new CounterDAO(mongoClient);
+            Integer id = counterDAO.getNextId();
+            templatesDAO.createNode(id.toString(), data.getParent(), data.getText());
         }
 
-        if(manageCategoriesData.getRequest().equals("createSubCategory")) {
-            CreateRequestProcessor requestProcessor=new CreateRequestProcessor();
-            requestProcessor.createSubCat(manageCategoriesData,mongoClient);
-        }
+        if (data.getRequest().equals("getAllNodes")){
+            data = templatesDAO.getAllNodes(data);
 
-        if(manageCategoriesData.getRequest().equals("deleteTemp")){
-            Remover remover=new Remover();
-            remover.removeTemplates(manageCategoriesData,mongoClient);
         }
-
-        if(manageCategoriesData.getRequest().equals("deleteSubCat")){
-            Remover remover=new Remover();
-            remover.removeSubCat(manageCategoriesData , mongoClient);
-        }
-
-        if(manageCategoriesData.getRequest().equals("deleteMainCat")){
-            Remover remover=new Remover();
-            remover.removeMainCat(manageCategoriesData,mongoClient);
-        }
-
-        return manageCategoriesData;
+        return data;
     }
 }

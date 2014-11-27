@@ -1,8 +1,10 @@
 package com.data.extractor.model.template.markup;
 
+import com.data.extractor.model.beans.manage.categories.Node;
 import com.data.extractor.model.beans.markup.template.MarkUpResponse;
 import com.data.extractor.model.beans.template.info.image.ImageDataElement;
 import com.data.extractor.model.beans.template.info.image.ImageDataParser;
+import com.data.extractor.model.data.access.layer.TemplatesDAO;
 import com.data.extractor.model.extractors.image.FullSelectionImageExtractor;
 import com.data.extractor.model.template.markup.calculate.coordinates.ImageDataCoordinates;
 import com.data.extractor.model.template.markup.pdf.retreiver.ImagePDDocument;
@@ -21,6 +23,7 @@ public class ImageDataExtractor {
         String imageFile;
         String imageRelativePath;
         String imageWritePath[];
+        TemplatesDAO templatesDAO = new TemplatesDAO(mongoClient);
 
         MarkUpResponse markUpResponse=new MarkUpResponse();
 
@@ -30,8 +33,9 @@ public class ImageDataExtractor {
 
         List<ImageDataElement> imageDataElements=imageDataParser.getImageDataElements();
 
-        ImagePDDocument imagePDDocument=new ImagePDDocument();
-        PDDocument doc=imagePDDocument.retrievePDDoc(imageDataParser,mongoClient);
+        Node node = templatesDAO.getNode(imageDataParser.getId());
+        imageDataParser.setPdfFile(node.getPdfFile());
+        PDDocument doc =PDDocument.load(imageDataParser.getPdfFile());
 
         /* Get the first textDataElement because only  textDataElement to extract */
         ImageDataElement imageDataElement=imageDataElements.get(0);

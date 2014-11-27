@@ -1,5 +1,6 @@
 package com.data.extractor.model.beans.template.info.text;
 
+import com.data.extractor.model.beans.template.info.RawDataElement;
 import com.google.gson.annotations.Expose;
 
 import javax.annotation.Generated;
@@ -7,6 +8,10 @@ import javax.annotation.Generated;
 @Generated("org.jsonschema2pojo")
 public class TextDataElement {
 
+
+
+    @Expose
+    private RawDataElement rawData;
     @Expose
     private String metaId;
     @Expose
@@ -145,5 +150,13 @@ public class TextDataElement {
     public String getExtractedText() {        return extractedText;    }
 
     public void setExtractedText(String extractedText) {        this.extractedText = extractedText;    }
+
+    public RawDataElement getRawData() {
+        return rawData;
+    }
+
+    public void setRawData(RawDataElement rawData) {
+        this.rawData = rawData;
+    }
 
 }

@@ -14,6 +14,8 @@ public class TemplatesParser {
     @Expose
     private Id id;
     @Expose
+    private List<String> categories;
+    @Expose
     private String mainCategory;
     @Expose
     private String subCategory;
@@ -27,6 +29,10 @@ public class TemplatesParser {
     public void setId(Id id) {
         this.id = id;
     }
+
+    public List<String> getCategories() {        return categories;    }
+
+    public void setCategories(List<String> categories) {        this.categories = categories;    }
 
     public String getMainCategory() {
         return mainCategory;

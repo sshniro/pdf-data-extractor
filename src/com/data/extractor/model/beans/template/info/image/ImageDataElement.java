@@ -1,5 +1,6 @@
 package com.data.extractor.model.beans.template.info.image;
 
+import com.data.extractor.model.beans.template.info.RawDataElement;
 import com.google.gson.annotations.Expose;
 
 import javax.annotation.Generated;
@@ -7,6 +8,16 @@ import javax.annotation.Generated;
 @Generated("org.jsonschema2pojo")
 public class ImageDataElement {
 
+    public RawDataElement getRawData() {
+        return rawData;
+    }
+
+    public void setRawData(RawDataElement rawData) {
+        this.rawData = rawData;
+    }
+
+    @Expose
+    private RawDataElement rawData;
     @Expose
     private String metaId;
     @Expose
@@ -29,6 +40,7 @@ public class ImageDataElement {
     private Double pdfHeight;
     @Expose
     private String extractedImage;
+
 
     public String getMetaId() {
         return metaId;

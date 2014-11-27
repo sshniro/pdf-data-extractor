@@ -10,12 +10,12 @@ import java.io.File;
 import java.io.IOException;
 
 /*
-    Precess the AJAX POST request from the TemplateUpload JSP
+    Process the AJAX POST request from the TemplateUpload JSP
     IF uploaded file is PDF and template Name valid dispatch the request to Extract Template Region JSP
     IF file uploaded is not PDF or Template Name already exists sends response back to TemplateUpload JSP
  */
 public class TemplateUploadController extends javax.servlet.http.HttpServlet {
-    protected void doPost(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws javax.servlet.ServletException, IOException {
+        protected void doPost(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws javax.servlet.ServletException, IOException {
 
         UploadRequestProcessor requestProcessor = new UploadRequestProcessor();
         UploadStatus uploadStatus = new UploadStatus();

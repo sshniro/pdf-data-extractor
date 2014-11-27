@@ -34,17 +34,16 @@ public class PdfFileProcessor {
         /*
         spaceReplaced[0]=mainCategory,spaceReplaced[1]=subCategory,spaceReplaced[2]=templateName
          */
-        String[] spaceReplaced=replaceSpace(uploadStatus);
-        File uploadLocation = new File(rootPath + File.separator + "uploads"+File.separator+
-                                    spaceReplaced[0]+File.separator+spaceReplaced[1]);
+        //String[] spaceReplaced=replaceSpace(uploadStatus);
+        File uploadLocation = new File(rootPath + File.separator + "uploads"+File.separator+ uploadStatus.getId());
         if (!uploadLocation.exists()) {
             boolean status = uploadLocation.mkdirs();
         }
 
-        File uploadedFile = new File(uploadLocation + File.separator + spaceReplaced[2] +".pdf");
+        File uploadedFile = new File(uploadLocation + File.separator + uploadStatus.getId() +".pdf");
 
         uploadStatus.setPdfLocation(uploadLocation.getAbsolutePath());
-        uploadStatus.setPdfName(spaceReplaced[2]); // templateName space replaced with "_"
+        uploadStatus.setPdfName(uploadStatus.getId()); // templateName space replaced with "_"
         uploadStatus.setUploadedPdfFile(uploadStatus.getPdfLocation()+File.separator+uploadStatus.getPdfName()+".pdf");
 
         try {
@@ -66,14 +65,5 @@ public class PdfFileProcessor {
             pdfToImage.convertToImage(uploadStatus);
         }
     return uploadStatus;
-    }
-
-    public String[] replaceSpace(UploadStatus uploadStatus){
-
-        String[] spaceReplacedProperties=new String[3];
-        spaceReplacedProperties[0]=uploadStatus.getMainCategory().replaceAll("\\s+","_");
-        spaceReplacedProperties[1]=uploadStatus.getSubCategory().replaceAll("\\s+","_");
-        spaceReplacedProperties[2]=uploadStatus.getTemplateName().replaceAll("\\s+","_");
-        return spaceReplacedProperties;
     }
 }
