@@ -345,6 +345,92 @@ function ViewModel(){
     }
 
 
+    /////////////////////////////
+    ///    default.jsp VM     ///
+    /////////////////////////////
+
+    var nodeModel = function(data){
+        this.id = ko.observable(data.id);
+        this.parent = ko.observable(data.parent);
+        this.text = ko.observable(data.text);
+    };
+
+    var rootNode = {'id':'#', 'parent':undefined, 'text':'root'};
+
+    self.currentSelectedTreeNode = ko.observable(new nodeModel(rootNode));
+    self.newSubCategoryName = ko.observable();
+    self.notification_createNewSubCategory = ko.observable();
+    self.newTemplateName = ko.observable();
+
+    self.createNewSubCategory = function(){
+        var data={ 'request' : "createNode",
+            'parent' : self.currentSelectedTreeNode().id(),
+            'text' : self.newSubCategoryName()
+        };
+        $.ajax({
+            type: 'POST', url: 'ManageCategoriesController',
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            data: JSON.stringify(data),
+            success: function(data, textStatus, jqXHR) {
+                var messages = JSON.parse(jqXHR.responseText);
+                self.notification_createNewSubCategory(messages.statusMessage);
+                self.newSubCategoryName('');
+                window.location.reload();
+            }
+        });
+    };
+
+    self.setRootAsCurrentSelectedTreeNode = function(){
+        self.currentSelectedTreeNode(new nodeModel(rootNode));
+        selectedNodeRow = undefined;
+        $('#treeViewDiv').jstree("deselect_all");
+    };
+
+    self.setCurrentSelectedTreeNode = function(node){
+        self.currentSelectedTreeNode(new nodeModel({'id':node.id, 'parent':node.parent, 'text':node.text}));
+    };
+
+    self.uploadNewTemplate = function(){
+        // alter when trying to create new template in invalid category
+        if(selectedNodeRow === undefined){
+            alert("Templates can be create only in leaf nodes\nPlease select a leaf node!");
+            return false;
+        }
+        else{
+            if(selectedNodeRow.children.length != 0){
+                alert("Templates can be create only in leaf nodes\nPlease select a leaf node!");
+                return false;
+            }
+        }
+
+        var file = document.getElementById("templateFile");
+        /* alert the user to input a value to the Document ID*/
+        if(self.newTemplateName()==""){
+            alert("Template Name is required");
+            return false;
+        }
+        var fileName = $("#templateFile").val();
+        /* alert the user to select a File */
+        if(fileName==""){
+            alert("Select a PDF File");
+            return false;
+        }
+
+        /* Create a FormData instance */
+        var formData = new FormData();
+        /* Add the file */
+        formData.append("parent", self.currentSelectedTreeNode().id()); // parent id
+        formData.append("text", self.newTemplateName()); // name of the template as in next
+        formData.append("templateName", self.newTemplateName());
+        formData.append("pdfFile", file.files[0]);
+
+        client.open("post", "TemplateUploadController", true);
+        client.send(formData);  /* Send to server */
+
+        /*Set the upload button to be disabled */
+        $("#btnUpload").attr("disabled", true);
+    };
 }
 
 var vm = new ViewModel();

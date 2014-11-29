@@ -334,3 +334,39 @@ function preview(img, selection) {
     $('#starting').text(selection.x1 +" "+ selection.y1);
     $('#ending').text(selection.x2 +" "+ selection.y2);
 }
+
+
+
+/////////////////////////////////////////////////////////////////////////////
+/////////////////////////    js tree functions    ///////////////////////////
+/////////////////////////////////////////////////////////////////////////////
+
+var initTrees = function(){
+    var treeObj;
+    var data={ 'request' : "getAllNodes"};
+    $.ajax({
+        type: 'POST', url: 'ManageCategoriesController',
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        data: JSON.stringify(data),
+        success: function(data, textStatus, jqXHR) {
+            treeObj = JSON.parse(jqXHR.responseText);
+            $('#treeViewDiv')
+                .jstree({
+                    'plugins': ["search", "state", "types", "wholerow"],
+                    'core' : {'data' : treeObj.nodes},
+                    "types" : {
+                        "default" : {
+                            "icon" : "glyphicon glyphicon-folder-open"
+                        }
+                    }
+                })
+                .on("changed.jstree", function (e, data) {
+                    if(data.selected.length) {
+                        selectedNodeRow = data.instance.get_node(data.selected[0]);
+                        vm.setCurrentSelectedTreeNode(selectedNodeRow);
+                    }
+                });
+        }
+    });
+};

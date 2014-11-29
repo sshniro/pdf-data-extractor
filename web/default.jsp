@@ -4,7 +4,6 @@
   Time: 10:51 AM
   ----------------------------------
   Log:
-  October 26, 2014 -    - K D K Madusanka    - Creating basic UI wireframe
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
@@ -81,6 +80,10 @@
             <div class="col-sm-3">
                 <span>- Select to create category or template -</span>
                 <br/>
+                <input class="form-control" type="text" id="treeSearch" placeholder="search tree" />
+                <br/>
+                <!-- root node -->
+                <p data-bind="click:setRootAsCurrentSelectedTreeNode" style="cursor:pointer; font-size: large"><span class="glyphicon glyphicon-tree-conifer"></span>&nbsp;&nbsp;<i>Root</i></p>
                 <!-- tree -->
                 <div id="treeViewDiv">
                 </div>
@@ -96,25 +99,25 @@
                     <!-- parent -->
                     <div class="form-group">
                         <label class="control-label col-sm-3">Parent</label>
-                        <label class="col-sm-9">root</label>
+                        <label data-bind="text:currentSelectedTreeNode().text()" class="col-sm-9">root</label>
                     </div>
                     <!-- category -->
                     <div class="form-group">
                         <label class="control-label col-sm-3">(Sub) Category Name</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" />
+                            <input data-bind="value:newSubCategoryName" type="text" class="form-control" />
                         </div>
                     </div>
                     <!-- create button -->
                     <div class="form-group">
                         <div class="col-sm-offset-3 col-sm-9">
-                            <button class="btn btn-default">Create <span class="glyphicon glyphicon-check"></span></button>
+                            <button data-bind="click:createNewSubCategory" class="btn btn-default">Create <span class="glyphicon glyphicon-check"></span></button>
                         </div>
                     </div>
                     <!-- notification -->
                     <div class="form-group">
                         <div class="col-sm-12">
-                            <label class="pull-right">Completed...</label>
+                            <label data-bind="text:notification_createNewSubCategory" class="pull-right">...</label>
                         </div>
                     </div>
                 </form>
@@ -127,34 +130,29 @@
                             New Template
                         </legend>
                     </fieldset>
-                    <!-- parent -->
-                    <div class="form-group">
-                        <label class="control-label col-sm-3">Parent</label>
-                        <label class="col-sm-9">root</label>
-                    </div>
                     <!-- category -->
                     <div class="form-group">
                         <label class="control-label col-sm-3">Category Name</label>
-                        <label class="col-sm-9">Cat_1</label>
+                        <label data-bind="text:currentSelectedTreeNode().text()" class="col-sm-9">Cat_1</label>
                     </div>
                     <!-- template name -->
                     <div class="form-group">
                         <label class="control-label col-sm-3">Template Name</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" />
+                            <input data-bind="value:newTemplateName" type="text" class="form-control" />
                         </div>
                     </div>
                     <!-- file input -->
                     <div class="form-group">
                         <label class="control-label col-sm-3">Template File</label>
                         <div class="col-sm-9">
-                            <input type="file" typeof=".pdf" />
+                            <input id="templateFile" type="file" typeof=".pdf" />
                         </div>
                     </div>
                     <!-- create button -->
                     <div class="form-group">
                         <div class="col-sm-offset-3 col-sm-9">
-                            <button class="btn btn-default">Create <span class="glyphicon glyphicon-check"></span></button>
+                            <button data-bind="click:uploadNewTemplate" id="btnUpload" class="btn btn-default">Upload&nbsp;<span class="glyphicon glyphicon-cloud-upload"></span> | Goto template edit&nbsp;<span class="glyphicon glyphicon-circle-arrow-right"></span></button>
                         </div>
                     </div>
                     <!-- progress -->
@@ -184,7 +182,7 @@
             </button>
         </div>
         <!-- content -->
-        <div class="col-sm-12 row card-content">
+        <div class="col-sm-12 row card-content" style="display: none">
             <!-- list -->
             <div class="col-sm-3">
                 <span>- Select to create category or template -</span>
@@ -217,16 +215,49 @@
 </div>
 
 
+
+
+
+
+<!-- importing libraries -->
+<script type="text/javascript" src="assets/js/knockout-3.2.0.js" ></script>
+<script type="text/javascript" src="assets/js/markUpTemplateRegionsScripts/uiFunctions.js"> </script>
+<script type="text/javascript" src="assets/js/markUpTemplateRegionsScripts/models.js"> </script>
+<script type="text/javascript" src="assets/js/markUpTemplateRegionsScripts/viewModel.js"> </script>
+<script type="text/javascript" src="assets/js/markUpTemplateRegionsScripts/messsageBroker.js"> </script>
+
 <!-- js tree script -->
 <script type="text/javascript">
-    $('#treeViewDiv').jstree({ 'core' : {
-        'data' : [
-            { "id" : "data1", "parent" : "#", "text" : "Root node 1" },
-            { "id" : "data2", "parent" : "#", "text" : "Root node 2" },
-            { "id" : "data3", "parent" : "data2", "text" : "Child 1" },
-            { "id" : "data4", "parent" : "data2", "text" : "Child 2" }
-        ]
-    } });
+
+    var client = new XMLHttpRequest();
+
+    var selectedNodeRow = undefined;
+    initTrees();
+
+    // search tree
+    var to = false;
+    $('#treeSearch').keyup(function () {
+        if(to) { clearTimeout(to); }
+        to = setTimeout(function () {
+            var v = $('#treeSearch').val();
+            $('#treeViewDiv').jstree(true).search(v);
+        }, 250);
+    });
+
+    client.onload = function() {
+        if (client.status == 200) {
+            if(client.responseText=="success") {
+                vm.newTemplateName('');
+                var successUrl = "MarkUpTemplateRegions.jsp";
+                window.location.href = successUrl;
+            }else{
+                alert(client.responseText);
+            }
+        }
+        /*Enable the upload button after receivin a extractedData from the server */
+        $("#btnUpload").attr("disabled", false);
+    }
+
 </script>
 
 </body>
