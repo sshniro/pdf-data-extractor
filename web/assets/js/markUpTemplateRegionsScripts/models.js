@@ -101,10 +101,10 @@ function SubDataElement(rectangle){
 
     //Fix for when reading from cache
     if(rectangle.uiData === undefined){
-        self.uiData = new UiData(rectangle);
+        self.uiData = new SubUiData(rectangle);
     }
     else {
-        self.uiData = new UiData(rectangle.uiData);
+        self.uiData = new SubUiData(rectangle.uiData);
     }
 
 }
@@ -121,7 +121,7 @@ function UiData(rectangle){
     self.height = rectangle.height;
 
     self.metaStartY = ko.computed(function(){
-        return self.baseUiComponentStartY() + self.startY - 97
+        return self.baseUiComponentStartY() + self.startY - 80
     });
 
     self.metaStartX = ko.computed(function(){
@@ -130,12 +130,12 @@ function UiData(rectangle){
 
 
     self.removeX = ko.computed(function(){
-        return self.baseUiComponentStartX() + self.startX + self.width - 14
+        return self.width - 14
     });
 
 
     self.removeY = ko.computed(function(){
-        return self.baseUiComponentStartY() + self.startY
+        return 0;
         //margin inside di
     });
 
@@ -164,7 +164,62 @@ function UiData(rectangle){
     });
 
 }
+function SubUiData(rectangle){
+    var self = this;
+    self.baseUiComponentStartX = ko.observable(rectangle.baseUiComponentStartX);
+    self.baseUiComponentStartY = ko.observable(rectangle.baseUiComponentStartY);
+    self.baseUiComponentHeight = ko.observable(rectangle.baseUiComponentHeight);
+    self.baseUiComponentWidth = ko.observable(rectangle.baseUiComponentWidth);
+    self.startX =  rectangle.startX;
+    self.startY =  rectangle.startY;
+    self.width = rectangle.width;
+    self.height = rectangle.height;
+    self.id = rectangle.id;
 
+    self.metaStartY = ko.computed(function(){
+        return self.startY - 97
+    });
+
+    self.metaStartX = ko.computed(function(){
+        return self.startX
+    });
+
+
+    self.removeX = ko.computed(function(){
+        return self.startX + self.width - 14
+    });
+
+
+    self.removeY = ko.computed(function(){
+        return self.startY
+        //margin inside di
+    });
+
+    self.rectY = ko.computed(function(){
+        return self.startY
+    });
+    self.rectX = ko.computed(function(){
+        return self.startX
+    });
+
+    self.extractedY = ko.computed(function(){
+        return self.startY + self.height + 2
+    });
+    self.extractedX = ko.computed(function(){
+        return self.startX
+    });
+
+    self.elementMap = ko.computed(function(){
+        var styleObject = {
+            left    : self.rectX(),
+            top     : self.rectY(),
+            width   : self.width ,
+            height  : self.height
+        }
+        return styleObject;
+    });
+
+}
 /*
 function MappingDataElement(dataElement){
     var self = this;

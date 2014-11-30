@@ -57,9 +57,11 @@ $(document).ready(function(){
     $("button#saveSelection").attr('disabled', true);        
 });
 
+//TODO: Delete this implementation below
 var initBindings =  (function(){
-        //TEXT BUTTON
-    $("button#textSelect").click(function(){
+/*        //TEXT BUTTON
+*//*    $("button#textSelect").click(function(event) {
+        event.stopPropagation()
         vm.currentSelection("text");
         selectionStarted();
         selectionInitializer("img",drawingRouter);
@@ -69,7 +71,8 @@ var initBindings =  (function(){
     });
 
     //TABLE BUTTON
-    $("button#tableSelect").click(function(){
+    $("button#tableSelect").click(function(event) {
+        event.stopPropagation()
         vm.currentSelection("table");
         selectionStarted();
         selectionInitializer("img",drawingRouter);
@@ -78,13 +81,19 @@ var initBindings =  (function(){
     });
 
     //PICTURE BUTTON
-    $("button#pictureSelect").click(function(){
+    $("button#pictureSelect").click(function(event) {
+        event.stopPropagation();
         vm.currentSelection("picture");
         selectionStarted();
         selectionInitializer("img",drawingRouter);
         $("#runningInstructions").text('Select Picure Element');
+    });
 
-
+    $('#enableEditableDivs').click(function(event) {
+        event.stopPropagation()
+        $("#runningInstructions").text('Drag or Resize Elements');
+        editStarted();
+        draggableActivator();
     });
 
     //CANCEL BUTTON
@@ -92,20 +101,23 @@ var initBindings =  (function(){
         vm.cancelSelection();
         resetEnvironment();
 
-    });
+    });*//*
 
 
-    $("button#saveSelection").click(function(){
+*//*    $("button#saveSelection").click(function(event){
+        event.stopPropagation()
         if(vm.elementBuffer !== undefined){
             $("div#"+vm.elementBuffer.id+".mainElement").unbind();
             disappearDecos(vm.elementBuffer.id)//Should be called before saveSelection because the buffer is cleared
         }
         resetEnvironment();
         vm.saveSelection();
-    });
+    });*/
 
-    $("img").bind('mousedown',function(){
+    $("img").bind('mousedown',function(event){
+        event.stopPropagation()
         alert("Select Element Type");
+
     });
 
 });
@@ -197,17 +209,89 @@ var drawingRouter = (function (baseUiComponent, selection){
 
 
 //// for div draggability and resizability
-var reDrawingRouter = (function (baseUiComponent, selection, editDiv){
+var reDrawingRouter = (function (baseUiComponent, selection){
+    currentWorkingImg = baseUiComponent;
 
-    drawingRouter(baseUiComponent, selection);
-    //vm.removeElement(editDiv);
+    $("*").css('cursor','default');
+    var rectangle = reDrawRectangle(baseUiComponent, selection);
+    rectangle.pageNumber =  vm.currentPage();
+
+    //If this is the very first selction after either of the  [text/image/table] buttons were selected
+    // then it enters into this flow
+
+    if(!vm.subElementEditingInProgress()){
+        var response = getMainExtraction(rectangle,vm.currentSelection());
+        rectangle.extractedData = response.extractedData;
+        rectangle.elementId = rectangle.id;
+        //Releases the imageAreaSelect binding on the image
+        // because the rest of the selection will be done inside the current selection element
+        // until save or cancel is pressed
+        $('#'+baseUiComponent.id).unbind();
+        switch (vm.currentSelection()) {
+            case 'text':
+                vm.addTextElement(rectangle);
+                break;
+            case 'table':
+                vm.addTableElement(rectangle);
+                break;
+            case 'picture':
+                vm.addPictureElement(rectangle);
+                break;
+        }
+
+        vm.subElementEditingInProgress(true);
+        $('div#'+rectangle.id+'.mainElement').css('cursor','crosshair');
+        // new selection is initialized to select WITHIN the currently selected element
+        editComplete();
+        selectionInitializer('div#'+rectangle.id+'.mainElement',reDrawingRouter);
+    }
+    else{
+        //This is the end of the work flow for elements other than the table
+
+        var response  = getSubExtraction(rectangle,vm.currentSelection());
+        rectangle.relevantData = response.extractedData;
+        //The table selection allows to select an infinite amount of sub elements within the main table rectangle
+        if (vm.currentSelection() === 'table') {
+            rectangle.elementId = baseUiComponent.id;
+            vm.addSubElement(rectangle)
+            $('#'+rectangle.id).css('cursor','default');
+            $('#'+baseUiComponent.id).css('cursor','crosshair');
+            selectionInitializer('#'+baseUiComponent.id+'.mainElement',reDrawingRouter);
+        }
+        else{
+            rectangle.elementId = baseUiComponent.id;
+            vm.addSubElement(rectangle)
+            $('#'+baseUiComponent.id).unbind();
+
+        }
+    }
 
 })
 
 
 
+
 //Granular function to draw rectangle on the html DOM
 var drawRectangle = (function(baseUiComponent, selection){
+    var rectangle = {}
+    rectangle.baseUiComponentStartX     = $('#'+baseUiComponent.id +'.baseUI' ).offset().left;
+    rectangle.baseUiComponentStartY     = $('#'+baseUiComponent.id+'.baseUI').offset().top;
+    rectangle.baseUiComponentHeight     =baseUiComponent.clientHeight;
+    rectangle.baseUiComponentWidth      =baseUiComponent.clientWidth;
+
+    rectangle.startX                    = selection.x1+1 ;
+    rectangle.startY                    = selection.y1+1;
+    rectangle.width                     =selection.width + 4;
+    rectangle.height                    = selection.height + 3;
+
+    rectangle.id                        = rectangle.startX +"px"+ rectangle.startY+"px"+rectangle.width+"px"+rectangle.height+"px";
+    rectangle.elementType       = vm.currentSelection();
+
+    return rectangle;
+})
+
+//Granular function to re draw rectangle on the html DOM when dragging or resizing
+var reDrawRectangle = (function(baseUiComponent, selection){
     var rectangle = {}
     rectangle.baseUiComponentStartX     = $('#'+baseUiComponent.id +'.baseUI' ).offset().left;
     rectangle.baseUiComponentStartY     = $('#'+baseUiComponent.id+'.baseUI').offset().top;
@@ -224,8 +308,6 @@ var drawRectangle = (function(baseUiComponent, selection){
 
     return rectangle;
 })
-
-
 
 
 //Mouse over on element
@@ -251,29 +333,43 @@ function disappearDecos(elementId){
 function resetEnvironment(){
     var currentElement = vm.elementBuffer;
     $("button#textSelect").attr('disabled', false);
+
     $("button#tableSelect").attr('disabled', false);
     $("button#pictureSelect").attr('disabled', false);
     $("button#textSelect").removeClass("active");
     $("button#tableSelect").removeClass("active");
     $("button#pictureSelect").removeClass("active");
+
     $("#runningInstructions").text('Select Element Type');
+
 
     $("button#cancelSelection").attr('disabled', true);
     $("button#saveSelection").attr('disabled', true);
-    $("button#persist").attr('disabled', false);
+    $("button#enableEditableDivs").attr('disabled', false);
 
+    $("button#persist").attr('disabled', false);
     $("button.removeElement").css('visibility','visible');
     $("button.removeSubElement").css('visibility','hidden');
+
+
 
 
      $("div.mainElement").css( "zIndex", 1 );
     $('*').css('cursor','default');
     $("img").unbind();
+
+    if ($('.editableDiv').data('draggable')) {
+        $('.editableDiv').draggable('disable')
+    }
+
     initBindings();
 
     vm.currentSelection = ko.observable();
     vm.selectionInProgress(false);
-    vm.subElementSelectionInProgress(false)
+    vm.subElementSelectionInProgress(false);
+
+    vm.editingInProgress(false);
+    vm.subElementEditingInProgress(false)
    
 }
 
@@ -283,7 +379,7 @@ function selectionStarted(currentElement){
     $("button#tableSelect").attr('disabled', true);
     $("button#pictureSelect").attr('disabled', true);  
     $("button#tableSelect").attr('disabled', true);
-
+    $("button#enableEditableDivs").attr('disabled', true);
 
     $("button#cancelSelection").attr('disabled', false);
     $("button#saveSelection").attr('disabled', false);
@@ -297,11 +393,103 @@ function selectionStarted(currentElement){
     
 }
 
+
+
+function editStarted(currentElement){
+
+    $("button.removeElement").css('visibility','hidden');
+    $("button#textSelect").attr('disabled', true);
+    $("button#tableSelect").attr('disabled', true);
+    $("button#pictureSelect").attr('disabled', true);
+    $("button#tableSelect").attr('disabled', true);
+    $("button#enableEditableDivs").attr('disabled', true);
+
+    $("button#cancelSelection").attr('disabled', true);
+    $("button#saveSelection").attr('disabled', false);
+    $("button#persist").attr('disabled', true);
+
+    $("#runningInstructions").text('Edit Existing Elements');
+    $(".editableDiv").css('cursor','grab');
+    $('img').unbind();
+    $("button.removeElement").css('visibility','hidden');
+    $("button.removeSubElement").css('visibility','hidden');
+
+    vm.editingInProgress(true);
+
+}
+
 function selectionComplete(currentElement){
     $("#runningInstructions").text('Click On Save Or Cancel');
     $("*").css('cursor','default');
 }
 
+function editComplete(){
+    $("#runningInstructions").text('Click On Save to Complete');
+    $('.editableDiv').each(function(item){
+        if ($(this).data('ui-draggable')) {
+            $(this).draggable('destroy')
+        }
+        if ($(this).data('ui-resizable')) {
+            $(this).resizable('destroy')
+        }
+    });
+
+    $("*").css('cursor','default');
+}
+
+function draggableActivator(){
+
+    var currentWorkingImgX = $('img#'+vm.currentPage()+'.baseUI' )[0];
+
+    $('.editableDiv').each(
+        function(){
+                $(this).draggable({
+                stop: function( event, ui ) {
+                    var dragableDiv = $(this)[0];
+                    var bounds = dragableDiv.getBoundingClientRect();
+                    var imgBounds = currentWorkingImgX.getBoundingClientRect();
+                    var selection = {
+                        height:bounds.height,
+                        width:bounds.width,
+                        x1:bounds.left - imgBounds.left,
+                        x2:imgBounds.right - bounds.right ,
+                        y1:bounds.top - imgBounds.top,
+                        y2:imgBounds.bottom - bounds.bottom
+                    };
+
+                    vm.currentSelection('text');
+                    vm.removeElementUsingDomElement(dragableDiv);
+                    reDrawingRouter(currentWorkingImgX,selection,$(this)[0]);
+                    $(this).next('button').click();
+                }
+            });
+            $(this).resizable({
+                start:function(){
+                    $(".editableDiv").css('cursor','grabbing');
+                },
+                stop: function( event, ui ) {
+                    $(".editableDiv").css('cursor','grab');
+                    var dragableDiv = $(this)[0];
+                    var bounds = dragableDiv.getBoundingClientRect();
+                    var imgBounds = currentWorkingImgX.getBoundingClientRect();
+                    var selection = {
+                        height:bounds.height,
+                        width:bounds.width,
+                        x1:bounds.left - imgBounds.left,
+                        x2:imgBounds.right - bounds.right ,
+                        y1:bounds.top - imgBounds.top,
+                        y2:imgBounds.bottom - bounds.bottom
+                    };
+
+                    vm.currentSelection('text');
+                    vm.removeElementUsingDomElement(dragableDiv);
+                    reDrawingRouter(currentWorkingImgX,selection,$(this)[0]);
+                    $(this).next('button').click();
+                }
+            });
+        }
+    );
+}
 
 //PLUGINS AND TWEEKS
 //Knockout Tweeks
@@ -334,6 +522,7 @@ function preview(img, selection) {
     $('#starting').text(selection.x1 +" "+ selection.y1);
     $('#ending').text(selection.x2 +" "+ selection.y2);
 }
+
 
 
 
