@@ -108,6 +108,7 @@
             <div class="collapse navbar-collapse" id="navbar_collapse">
                 <ul class="nav navbar-nav">
                     <li><a id="templateExtract" href="#">Extract Doc</a></li>
+                    <li><a style="cursor: pointer" onclick="$('#nav-toolbar').show('500')">Tools</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li style="margin: 15px 15px 0 0">Login as: <b>administrator</b></li>
@@ -119,6 +120,60 @@
 </header>
 
 <!-- tool bar -->
+<nav id="nav-toolbar" class="navbar navbar-default" role="navigation" style="margin-top: -20px; border-radius: 0; background-color: transparent; border: #eee solid 1px; padding-top: 3px">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="toolbar_collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" style="cursor: pointer" onclick="$('#nav-toolbar').hide('500')"><span class="glyphicon glyphicon-chevron-up"></span></a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="toolbar_collapse">
+            <ul class="nav navbar-nav" style="margin: 0 0 0 10px">
+                <li>
+                    <table><tbody>
+                        <tr><td>
+                            <div id="elementTypeSelector" class="btn-group">
+                                <button id ="textSelect"    type="button" class="btn btn-default"><span class="glyphicon glyphicon-text-width"></span>ext</button>
+                                <button id ="tableSelect"    type="button" class="btn btn-default"><span class="glyphicon glyphicon-list-alt"></span>&nbsp;Table</button>
+                                <button id ="pictureSelect"  type="button" class="btn btn-default"><span class="glyphicon glyphicon-picture"></span>&nbsp;Picture</button>
+                            </div>
+                        </td></tr>
+                        <tr><td style="text-align: center; background-color: #eee; color: gray"><small>Selection Type</small></td></tr>
+                    </tbody></table>
+                </li>
+                <li><span style="margin-left: 20vw; font-size: xx-large; color: gray">[<span id="runningInstructions">Select Element Type</span>]</span></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <table><tbody>
+                        <tr><td>
+                            <div class="btn-group">
+                                <button id ="enableEditableDivs" type="button" class="btn btn-default"><span class="glyphicon glyphicon-move"></span>&nbsp;Edit</button>
+                                <button id ="cancelSelection" type="button" class="btn btn-danger"><span class="glyphicon glyphicon-floppy-remove"></span>&nbsp;Cancel</button>
+                                <button id ="saveSelection" type="button" class="btn btn-warning"><span class="glyphicon glyphicon-floppy-disk"></span>&nbsp;Save</button>
+                            </div>
+                        </td></tr>
+                        <tr><td style="text-align: center; background-color: #eee; color: gray"><small>Selection</small></td></tr>
+                    </tbody></table>
+                </li>
+                <li>
+                    <div class="btn-group" style="margin-left: 10px">
+                        <button data-bind="click:sendJson" id ="persist" type="button" class="btn btn-success"><span class="glyphicon glyphicon-floppy-saved"></span>&nbsp;Save Template</button>
+                    </div>
+                </li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+
+
+<!-- tool bar old -->
+<%--
 <nav class="navbar navbar-default" style="position:fixed; width:100%; z-index: 2;" role="navigation">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
@@ -146,17 +201,18 @@
         <button data-bind="click:sendJson" id ="persist" style="margin: -28 10 5 5px; height: 40" type="button" class="btn btn-success btn-default"><strong>Save Template</strong></button>
     </div>
 </nav>
-<br>
-<br>
-<br>
+--%>
 
 
-<div id="Map">
+
+<div id="Map" class="well well-sm">
     Starting Coordinate <span id="starting"></span>
     <br>
     Ending Coordinate <span id="ending"></span>
     <br>
 </div>
+
+
 <div data-bind="template:{name:'rectangleTemplate', foreach:dataElements()() }"></div>
 <div data-bind="template:{name:'subRectangleTemplate', foreach:subDataElements()() }"></div>
 
