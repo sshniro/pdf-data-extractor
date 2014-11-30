@@ -361,8 +361,20 @@ function ViewModel(){
     self.newSubCategoryName = ko.observable();
     self.notification_createNewSubCategory = ko.observable();
     self.newTemplateName = ko.observable();
+    self.overlayNotification = ko.observable('Notification...');
 
     self.createNewSubCategory = function(){
+        // validation
+        var msg = 'Cannot create a sub category in selected node!\nPlease try another node which is not a template or node contain a template.';
+        if (selectedNodeRow != undefined){ // if not the root
+             if (selectedNodeRow.original.pdfFile != undefined) { alert(msg); return false; } // if is a template return
+             else { // if not a template
+                if (selectedNodeChildRow != false){ // if has children
+                    if (selectedNodeChildRow.original.pdfFile != undefined){ alert(msg); return false; } // if children is a template
+                }
+             }
+        }
+
         var data={ 'request' : "createNode",
             'parent' : self.currentSelectedTreeNode().id(),
             'text' : self.newSubCategoryName()
@@ -430,7 +442,10 @@ function ViewModel(){
 
         /*Set the upload button to be disabled */
         $("#btnUpload").attr("disabled", true);
+        self.overlayNotification('Uploading...');
+        $('#overlay').css('display', 'block');
     };
+
 }
 
 var vm = new ViewModel();
