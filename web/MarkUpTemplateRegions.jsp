@@ -86,6 +86,10 @@
             max-width: 100%;
 
         }
+        ul.knockoutIterable
+        {
+            list-style-type: none;
+        }
     </style>
 
 </head>
@@ -132,33 +136,33 @@
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="toolbar_collapse">
+        <div class="collapse navbar-collapse" id="toolbar_collapse" style="padding-top: 6px;">
             <ul class="nav navbar-nav" style="margin: 0 0 0 10px">
                 <li>
                     <table><tbody>
                         <tr><td>
                             <div id="elementTypeSelector" class="btn-group">
-                                <button id ="textSelect"    type="button" class="btn btn-default"><span class="glyphicon glyphicon-text-width"></span>ext</button>
-                                <button id ="tableSelect"    type="button" class="btn btn-default"><span class="glyphicon glyphicon-list-alt"></span>&nbsp;Table</button>
-                                <button id ="pictureSelect"  type="button" class="btn btn-default"><span class="glyphicon glyphicon-picture"></span>&nbsp;Picture</button>
+                                <button id ="textSelect"  data-bind="click:textButton"  type="button" class="btn btn-default"><span class="glyphicon glyphicon-text-width"></span>ext</button>
+                                <button id ="tableSelect"  data-bind="click:tableButton"  type="button" class="btn btn-default"><span class="glyphicon glyphicon-list-alt"></span>&nbsp;Table</button>
+                                <button id ="pictureSelect" data-bind="click:pictureButton" type="button" class="btn btn-default"><span class="glyphicon glyphicon-picture"></span>&nbsp;Picture</button>
                             </div>
                         </td></tr>
-                        <tr><td style="text-align: center; background-color: #eee; color: gray"><small>Selection Type</small></td></tr>
+
                     </tbody></table>
                 </li>
-                <li><span style="margin-left: 20vw; font-size: xx-large; color: gray">[<span id="runningInstructions">Select Element Type</span>]</span></li>
+                <li style="top: -7px;"><span style="margin-left: 20vw; font-size: xx-large; color: gray">[<span id="runningInstructions">Select Element Type</span>]</span></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li>
                     <table><tbody>
                         <tr><td>
                             <div class="btn-group">
-                                <button id ="enableEditableDivs" type="button" class="btn btn-default"><span class="glyphicon glyphicon-move"></span>&nbsp;Edit</button>
-                                <button id ="cancelSelection" type="button" class="btn btn-danger"><span class="glyphicon glyphicon-floppy-remove"></span>&nbsp;Cancel</button>
-                                <button id ="saveSelection" type="button" class="btn btn-warning"><span class="glyphicon glyphicon-floppy-disk"></span>&nbsp;Save</button>
+                                <button id ="enableEditableDivs" data-bind="click:editButton" type="button" class="btn btn-default"><span class="glyphicon glyphicon-move"></span>&nbsp;Edit</button>
+                                <button id ="cancelSelection" data-bind="click:cancelButton" type="button" class="btn btn-danger"><span class="glyphicon glyphicon-floppy-remove"></span>&nbsp;Cancel</button>
+                                <button id ="saveSelection" data-bind="click:saveButton" type="button" class="btn btn-warning"><span class="glyphicon glyphicon-floppy-disk"></span>&nbsp;Save</button>
                             </div>
                         </td></tr>
-                        <tr><td style="text-align: center; background-color: #eee; color: gray"><small>Selection</small></td></tr>
+                        
                     </tbody></table>
                 </li>
                 <li>
@@ -175,6 +179,7 @@
 <!-- tool bar old -->
 <%--
 <nav class="navbar navbar-default" style="position:fixed; width:100%; z-index: 2;" role="navigation">
+    <!-- Brand and toggle get grouped for better mobile display -->
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-1">
@@ -205,16 +210,16 @@
 
 
 
-<div id="Map" class="well well-sm">
+<%--<div id="Map" class="well well-sm">
     Starting Coordinate <span id="starting"></span>
     <br>
     Ending Coordinate <span id="ending"></span>
     <br>
-</div>
+</div>--%>
 
 
 <div data-bind="template:{name:'rectangleTemplate', foreach:dataElements()() }"></div>
-<div data-bind="template:{name:'subRectangleTemplate', foreach:subDataElements()() }"></div>
+<%--<div data-bind="template:{name:'subRectangleTemplate', foreach:subDataElements()() }"></div>--%>
 
 
 
@@ -248,16 +253,31 @@
 <!-- selected main element -->
 <script type="text/html" id="rectangleTemplate">
 
-    <div class="bs-docs-section elementDecoMeta" data-bind="id:id, style:{left:uiData.metaStartX, top:uiData.metaStartY}" style="position:absolute;min-width:220px; padding:10px z-index:2" >
-        <legend style="margin-bottom: 10px">Meta Name</legend>
+    <div class="bs-docs-section elementDecoMeta" data-bind="id:id, style:{left:uiData.metaStartX, top:uiData.metaStartY}" style="position:absolute;min-width:220px; padding:7px; z-index:2" >
+        <legend style="margin-bottom: 10px; font-size: 15px">Meta Name</legend>
         <input type="text" class="form-control" data-bind="value:metaName"/>
     </div>
 
-    <div class="mainElement baseUI editableDiv" style="position:absolute; border-style:solid; border-color:#2980b9; border-width: 3px;" data-bind="style:uiData.elementMap(), id:id"></div>
+    <div class="mainElement baseUI editableDiv" style="position:absolute; border-style:solid; border-color:#2980b9; border-width: 3px;" data-bind="style:uiData.elementMap(), id:id">
+        <ul class="knockoutIterable" style="padding: 0" data-bind="foreach:$data.subElements()">
+            <li data-bind="id:id">
+                <div class="subElement baseUI" style="position: absolute; border-style:solid; border-color:#2980b9; border-width: 3px;" data-bind="id:id, style:{width:uiData.width,height:uiData.height,left:uiData.startX, top:uiData.startY}">
+                </div>
+                <button  style="position: absolute; visibility:visible; margin-top:-11; height:24; width:25; border-radius: 50px" data-bind="id:id, click:$root.removeElement, style:{left: uiData.removeX, top:uiData.removeY}" type="button" class="btn btn-default btn-xs removeSubElement">
+                    <span class="glyphicon glyphicon-remove-circle"></span>
+                </button>
+            </li>
+        </ul>
 
-    <button  style="position:absolute; margin-top:-11; height:24; width:25; border-radius: 50px; z-index:1" data-bind="id:id, click:$parent.removeElement, style:{left: uiData.removeX, top:uiData.removeY}" type="button" class="btn btn-default btn-xs removeElement">
+        <button  style="position:absolute; margin-top:-11; height:24; width:25; border-radius: 50px; z-index:1" data-bind="id:id, click:$parent.removeElement, style:{left: uiData.removeX, top:uiData.removeY}" type="button" class="btn btn-default btn-xs removeElement">
+            <span class="glyphicon glyphicon-remove-circle"></span>
+        </button>
+
+    </div>
+
+<%--    <button  style="position:absolute; margin-top:-11; height:24; width:25; border-radius: 50px; z-index:1" data-bind="id:id, click:$parent.removeElement, style:{left: uiData.removeX, top:uiData.removeY}" type="button" class="btn btn-default btn-xs removeElement">
         <span class="glyphicon glyphicon-remove-circle"></span>
-    </button>
+    </button>--%>
 
     <div class="bs-docs-section elementDecoExtracted" style="position: absolute; min-width: 175;z-index:2" data-bind="style:{top:uiData.extractedY, left:uiData.extractedX, maxWidth:width}, id:id" >
 
@@ -289,10 +309,12 @@
 
 
 <script type="text/html" id="subRectangleTemplate">
+<%--
     <div class="subElement" style=" position:absolute; border-style:solid; border-color:#2980b9; border-width: 3px;" data-bind="style:uiData.elementMap(), id:id"></div>
     <button  style="position: absolute; visibility:visible; margin-top:-11; height:24; width:25; border-radius: 50px" data-bind="id:id, click:$parent.removeElement, style:{left: uiData.removeX, top:uiData.removeY}" type="button" class="btn btn-default btn-xs removeSubElement">
         <span class="glyphicon glyphicon-remove-circle"></span>
     </button>
+    --%>
 </script>
 
 
@@ -305,52 +327,7 @@
 
 <!-- UI behaviors -->
 <script type="text/javascript">
-    $('#enableEditableDivs').click(
-            function(){
-                $('.editableDiv').each(
-                        function(){
-                            $(this).draggable({
-                                stop: function( event, ui ) {
-                                    var dragableDiv = $(this)[0];
-                                    var bounds = dragableDiv.getBoundingClientRect();
-                                    var imgBounds = currentWorkingImg.getBoundingClientRect();
-                                    var selection = {
-                                        height:bounds.height,
-                                        width:bounds.width,
-                                        x1:bounds.left - imgBounds.left,
-                                        x2:bounds.right - imgBounds.right,
-                                        y1:bounds.top - imgBounds.top,
-                                        y2:bounds.bottom - imgBounds.bottom
-                                    };
 
-                                    vm.currentSelection('text');
-                                    reDrawingRouter(currentWorkingImg,selection,$(this)[0]);
-                                    $(this).next('button').click();
-                                }
-                            });
-                            $(this).resizable({
-                                stop: function( event, ui ) {
-                                    var dragableDiv = $(this)[0];
-                                    var bounds = dragableDiv.getBoundingClientRect();
-                                    var imgBounds = currentWorkingImg.getBoundingClientRect();
-                                    var selection = {
-                                        height:bounds.height,
-                                        width:bounds.width,
-                                        x1:bounds.left - imgBounds.left,
-                                        x2:bounds.right - imgBounds.right,
-                                        y1:bounds.top - imgBounds.top,
-                                        y2:bounds.bottom - imgBounds.bottom
-                                    };
-
-                                    vm.currentSelection('text');
-                                    reDrawingRouter(currentWorkingImg,selection,$(this)[0]);
-                                    $(this).next('button').click();
-                                }
-                            });
-                        }
-                );
-            }
-    );
 </script>
 
 </body>

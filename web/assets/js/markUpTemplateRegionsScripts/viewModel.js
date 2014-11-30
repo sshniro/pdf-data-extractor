@@ -21,11 +21,68 @@ function ViewModel(){
     ///Page
     self.selectionInProgress = ko.observable(false);
     self.subElementSelectionInProgress = ko.observable(false);
+
+
+    ///Page
+    self.editingInProgress = ko.observable(false);
+    self.subElementEditingInProgress = ko.observable(false);
+
+
     self.currentSelection = ko.observable();
     self.textElements = ko.observableArray([]);
     self.tableElements = ko.observableArray([]);
     self.pictureElements = ko.observableArray([]);
     self.elementBuffer;
+
+    //Button Functionalities moved in
+    self.textButton= function(){
+        vm.currentSelection("text");
+        selectionStarted();
+        selectionInitializer("img",drawingRouter);
+        $("#runningInstructions").text('Select Text Element');
+    }
+    self.tableButton= function(){
+        vm.currentSelection("table");
+        selectionStarted();
+        selectionInitializer("img",drawingRouter);
+        $("#runningInstructions").text('Select Table Element');
+    }
+    self.pictureButton= function(){
+        event.stopPropagation();
+        vm.currentSelection("picture");
+        selectionStarted();
+        selectionInitializer("img",drawingRouter);
+        $("#runningInstructions").text('Select Picure Element');
+    }
+    self.editButton= function(){
+        event.stopPropagation()
+        $("#runningInstructions").text('Drag or Resize Elements');
+        editStarted();
+        draggableActivator();
+    }
+    self.cancelButton= function(){
+        vm.cancelSelection();
+        resetEnvironment();
+    }
+    self.saveButton= function(){
+        event.stopPropagation()
+        if(vm.elementBuffer !== undefined){
+            $("div#"+vm.elementBuffer.id+".mainElement").unbind();
+            disappearDecos(vm.elementBuffer.id)//Should be called before saveSelection because the buffer is cleared
+        }
+        resetEnvironment();
+        vm.saveSelection();
+    }
+
+
+
+
+
+
+
+
+
+
 
 
     //Holds temporary sub elements
@@ -272,6 +329,45 @@ function ViewModel(){
         }
 
         
+    }
+
+    //Can remove elements on demand
+    self.removeElementUsingDomElement = function (DomElement){
+        var elementId = DomElement.id
+
+        self.textElements.remove(function(item) {
+            return item.elementId ===elementId;
+        });
+
+        self.tableElements.remove(function(item) {
+            return item.elementId ===elementId;
+        });
+        self.pictureElements.remove(function(item) {
+            return item.elementId ===elementId;
+        });
+
+        var relevantTextElement  = self.textElements.remove(function(item) {
+            return item.elementId ===elementId;
+        })[0];
+        if(relevantTextElement !== undefined){
+            relevantTextElement.subElements.remove(removedElement);
+        }
+
+        var relevantTableElement  = self.tableElements.remove(function(item) {
+            return item.elementId ===elementId;
+        })[0];
+        if(relevantTableElement !== undefined){
+            relevantTableElement.subElements.remove(removedElement);
+        }
+
+
+        var relevantPictureElement  = self.pictureElements.remove(function(item) {
+            return item.elementId ===elementId;
+        })[0];
+        if(relevantTextElement !==undefined){
+            relevantPictureElement.subElements.remove(removedElement);
+        }
+
     }
 
     //element is anyway saved already
