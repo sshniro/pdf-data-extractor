@@ -364,6 +364,7 @@ var initTrees = function(){
                 .on("changed.jstree", function (e, data) {
                     if(data.selected.length) {
                         selectedNodeRow = data.instance.get_node(data.selected[0]);
+                        selectedNodeChildRow = data.instance.get_node(selectedNodeRow.children[0]);
                         vm.setCurrentSelectedTreeNode(selectedNodeRow);
                     }
                 });

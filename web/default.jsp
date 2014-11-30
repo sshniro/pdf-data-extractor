@@ -155,18 +155,6 @@
                             <button data-bind="click:uploadNewTemplate" id="btnUpload" class="btn btn-default">Upload&nbsp;<span class="glyphicon glyphicon-cloud-upload"></span> | Goto template edit&nbsp;<span class="glyphicon glyphicon-circle-arrow-right"></span></button>
                         </div>
                     </div>
-                    <!-- progress -->
-                    <div class="form-group">
-                        <div class="col-sm-12">
-                            <progress style="width: 100%; height: 10px;" value="50" max="100"></progress>
-                        </div>
-                    </div>
-                    <!-- notification -->
-                    <div class="form-group">
-                        <div class="col-sm-12">
-                            <label class="pull-right">Completed...</label>
-                        </div>
-                    </div>
                 </form>
             </div>
         </div>
@@ -214,7 +202,14 @@
     </div>
 </div>
 
-
+<!-- overlay div -->
+<div id="overlay" style="position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; display: none;">
+    <div style="position: relative; margin: 40vh auto; max-width: 600px; height: 75px; text-align: center; background-color: #fff; border-radius: 10px; padding: 25px; box-shadow: 0 0 10px #303030; z-index: 110">
+        <img src="assets/img/win-loader.gif" alt="loading" />&nbsp;&nbsp;&nbsp;
+        <label><span data-bind="text:overlayNotification">Notification...</span></label>
+    </div>
+    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: #eee; opacity: 0.7; z-index: 100"></div>
+</div>
 
 
 
@@ -232,6 +227,8 @@
     var client = new XMLHttpRequest();
 
     var selectedNodeRow = undefined;
+    var selectedNodeChildRow = undefined;
+
     initTrees();
 
     // search tree
@@ -248,6 +245,7 @@
         if (client.status == 200) {
             if(client.responseText=="success") {
                 vm.newTemplateName('');
+                document.getElementById('templateFile').value= null;
                 var successUrl = "MarkUpTemplateRegions.jsp";
                 window.location.href = successUrl;
             }else{
