@@ -49,6 +49,9 @@
         }
     </script>
     <style>
+        body{
+            font-family: "calibri";
+        }
         span {
             word-wrap:break-word;
         }
@@ -84,7 +87,6 @@
             margin: 70 6 5 5;
             border: 1px solid #eee;
             max-width: 100%;
-
         }
         ul.knockoutIterable
         {
@@ -105,18 +107,18 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#">Enhan<i>z</i>er</a>
+                <a class="navbar-brand" href="/default.jsp">Enhan<i>z</i>er</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="navbar_collapse">
                 <ul class="nav navbar-nav">
-                    <li><a id="templateExtract" href="#">Extract Doc</a></li>
-                    <li><a style="cursor: pointer" onclick="$('#nav-toolbar').show('500')">Tools</a></li>
+                    <li><a id="templateExtract" href="/ExtractPdf.jsp">Extract Doc</a></li>
+                    <li><a style="cursor: pointer" onclick="$('#nav-toolbar').show('500')">Tools&nbsp;<small class="glyphicon glyphicon-chevron-down"></small></a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li style="margin: 15px 15px 0 0">Login as: <b>administrator</b></li>
-                    <li><a class="btn btn-default" style="padding: 5px; margin-top: 10px; max-width: 100px;">Logout <span class="glyphicon glyphicon-log-out"></span></a></li>
+                    <li><a data-bind="click:logout" class="btn btn-default" style="padding: 5px; margin-top: 10px; max-width: 100px;">Logout <span class="glyphicon glyphicon-log-out"></span></a></li>
                 </ul>
             </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->
@@ -175,38 +177,6 @@
     </div><!-- /.container-fluid -->
 </nav>
 
-
-<!-- tool bar old -->
-<%--
-<nav class="navbar navbar-default" style="position:fixed; width:100%; z-index: 2;" role="navigation">
-    <!-- Brand and toggle get grouped for better mobile display -->
-    <!-- Brand and toggle get grouped for better mobile display -->
-    <div class="navbar-header">
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-1">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-        </button>
-        &nbsp;
-        <div id="elementTypeSelector" class="btn-group btn-group-lg" style="padding:5 5 0 0px; margin: 0 0 5 0px">
-            <button id ="textSelect"    type="button" class="btn btn-default">Text</button>
-            <button id ="tableSelect"    type="button" class="btn btn-default">Table</button>
-            <button id ="pictureSelect"  type="button" class="btn btn-default">Picture</button>
-            <button id ="enableEditableDivs" type="button">edit areas</button>
-        </div>
-        <button id ="cancelSelection" style="width:75px; margin: 0 5 0 0px; height: 40" type="button" class="btn btn-danger  btn-default">Cancel</button>
-        <button id ="saveSelection" style=" margin: 0 5 0 0px; height: 40" type="button" class="btn btn-warning  btn-default">Save Element</button>
-    </div>
-
-
-    <!--CENTRE-->
-    <div  href="#"><span style="margin:0 0 0 250px; font-size:25px" id="runningInstructions">Select Element Type</span></div>
-    <div class="navbar-right">
-        <button data-bind="click:sendJson" id ="persist" style="margin: -28 10 5 5px; height: 40" type="button" class="btn btn-success btn-default"><strong>Save Template</strong></button>
-    </div>
-</nav>
---%>
 
 
 

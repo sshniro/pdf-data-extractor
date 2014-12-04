@@ -545,17 +545,22 @@ var initTrees = function(){
                     'plugins': ["search", "state", "types", "wholerow"],
                     'core' : {'data' : treeObj.nodes},
                     "types" : {
-                        "default" : {
-                            "icon" : "glyphicon glyphicon-folder-open"
-                        }
+                        "default" : { "icon" : "glyphicon glyphicon-folder-open" },
+                        "leaf": {"icon" : "glyphicon glyphicon-list-alt" }
                     }
                 })
                 .on("changed.jstree", function (e, data) {
                     if(data.selected.length) {
                         selectedNodeRow = data.instance.get_node(data.selected[0]);
                         selectedNodeChildRow = data.instance.get_node(selectedNodeRow.children[0]);
+                        selectedNodeParentRow = data.instance.get_node(selectedNodeRow.parent);
                         vm.setCurrentSelectedTreeNode(selectedNodeRow);
+                        vm.currentNodeParent(selectedNodeParentRow);
+                        vm.setIsSelectedTemplate();
                     }
+                })
+                .on("ready.jstree", function (e, data) {
+                    var x = data;
                 });
         }
     });
