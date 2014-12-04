@@ -85,7 +85,7 @@ function ViewModel(){
 
 
 
-    //Holds temporary sub elements
+    //Holds temporary sub elementsx
     self.tempSubs = ko.observableArray([]);
 
     //Initializes the extraction environment
@@ -514,20 +514,22 @@ function ViewModel(){
 
     self.uploadNewTemplate = function(){
         // alter when trying to create new template in invalid category
-        if(selectedNodeRow === undefined){
+        if(selectedNodeRow === undefined){  // selected is the root
             alert("Templates cannot be created in root node\nPlease select a child node!");
             return false;
         }
-        else{
-            if(selectedNodeRow.children.length != 0){
-                if(selectedNodeRow.children[0].pdfFile == undefined) {
+        else{   // selected is not the root
+            if(selectedNodeRow.children.length != 0){   // selected have children
+                if(selectedNodeChildRow.original.pdfFile === undefined) {   // first child is another folder
                     alert("Templates cannot be created in this node\nPlease select another node!");
                     return false;
                 }
             }
-            if(selectedNodeRow.original.pdfFile != undefined){
-                alert('You have selected a Template node!\nTemplate cannot create in another template node');
-                return false;
+            else {   // selected doesn't have children
+                if (selectedNodeRow.original.pdfFile != undefined) {
+                    alert('You have selected a Template node!\nTemplate cannot create in another template node');
+                    return false;
+                }
             }
         }
 
