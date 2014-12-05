@@ -540,7 +540,7 @@ var initTrees = function(){
         data: JSON.stringify(data),
         success: function(data, textStatus, jqXHR) {
             treeObj = JSON.parse(jqXHR.responseText);
-            $('#treeViewDiv')
+            $('.treeView')
                 .jstree({
                     'plugins': ["search", "state", "types", "wholerow"],
                     'core' : {'data' : treeObj.nodes},

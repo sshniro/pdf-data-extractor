@@ -65,144 +65,143 @@
 </header>
 
 <!-- container -->
-<div style="padding: 0 20px 0 20px">
+<div class="row" style="padding: 0 20px 0 20px; margin: 0">
 
-    <!-- Create New -->
-    <div class="row">
-        <!-- heading -->
-        <div class="col-sm-12 row card-heading" onclick="$(this).next('div').toggle(800)">
-            <span class="pull-left">Create New [Category / Template]</span>
-            <button type="button" class="btn btn-default pull-right ">
-                <span class="caret"></span><br/><span class="caret"></span><br/><span class="caret"></span>
-            </button>
-        </div>
-        <!-- content -->
-        <div class="col-sm-12 row card-content">
-            <!-- list -->
-            <div class="col-sm-3">
-                <span>- Select to create category or template -</span>
-                <br/>
-                <input class="form-control" type="text" id="treeSearch" placeholder="search tree" />
-                <br/>
-                <!-- root node -->
-                <p data-bind="click:setRootAsCurrentSelectedTreeNode" style="cursor:pointer; font-size: large"><span class="glyphicon glyphicon-tree-conifer"></span>&nbsp;&nbsp;<i>Root</i></p>
-                <!-- tree -->
-                <div id="treeViewDiv">
-                </div>
-            </div>
-            <!-- new category -->
-            <div class="col-sm-4">
-                <form class="form-horizontal" role="form">
-                    <fieldset>
-                        <legend>
-                            New (Sub) Category
-                        </legend>
-                    </fieldset>
-                    <!-- parent -->
-                    <div class="form-group">
-                        <label class="control-label col-sm-3">Parent</label>
-                        <label data-bind="visible:!isSelectedTemplate(), text:currentSelectedTreeNode().text()" class="col-sm-9">root</label>
-                        <label data-bind="visible:isSelectedTemplate()" style="color: red">Node you selected is a Template!</label>
-                    </div>
-                    <!-- category -->
-                    <div class="form-group">
-                        <label class="control-label col-sm-3">(Sub) Category Name</label>
-                        <div class="col-sm-9">
-                            <input data-bind="value:newSubCategoryName" type="text" class="form-control" />
-                        </div>
-                    </div>
-                    <!-- create button -->
-                    <div class="form-group">
-                        <div class="col-sm-offset-3 col-sm-9">
-                            <button data-bind="click:createNewSubCategory" class="btn btn-default">Create <span class="glyphicon glyphicon-check"></span></button>
-                        </div>
-                    </div>
-                    <!-- notification -->
-                    <div class="form-group">
-                        <div class="col-sm-12">
-                            <label data-bind="text:notification_createNewSubCategory" class="pull-right">...</label>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <!-- new template -->
-            <div class="col-sm-5">
-                <form class="form-horizontal" role="form">
-                    <fieldset>
-                        <legend>
-                            New Template
-                        </legend>
-                    </fieldset>
-                    <!-- category -->
-                    <div class="form-group">
-                        <label class="control-label col-sm-3">Category Name</label>
-                        <label data-bind="visible:!isSelectedTemplate(), text:currentSelectedTreeNode().text()" class="col-sm-9">Cat_1</label>
-                        <label data-bind="visible:isSelectedTemplate()" style="color: red">Node you selected is a Template!</label>
-                    </div>
-                    <!-- template name -->
-                    <div class="form-group">
-                        <label class="control-label col-sm-3">Template Name</label>
-                        <div class="col-sm-9">
-                            <input data-bind="value:newTemplateName" type="text" class="form-control" />
-                        </div>
-                    </div>
-                    <!-- file input -->
-                    <div class="form-group">
-                        <label class="control-label col-sm-3">Template File</label>
-                        <div class="col-sm-9">
-                            <input id="templateFile" type="file" typeof=".pdf" />
-                        </div>
-                    </div>
-                    <!-- create button -->
-                    <div class="form-group">
-                        <div class="col-sm-offset-3 col-sm-9">
-                            <button data-bind="click:uploadNewTemplate" id="btnUpload" class="btn btn-default">Upload&nbsp;<span class="glyphicon glyphicon-cloud-upload"></span> | Goto template edit&nbsp;<span class="glyphicon glyphicon-circle-arrow-right"></span></button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
+    <!-- list -->
+    <div class="col-sm-3">
+        <span>- Select to create category or template -</span>
+        <br/>
+        <input class="form-control" type="text" id="treeSearch" placeholder="search tree" />
+        <br/>
+        <!-- root node -->
+        <p data-bind="click:setRootAsCurrentSelectedTreeNode" style="cursor:pointer; font-size: large"><span class="glyphicon glyphicon-tree-conifer"></span>&nbsp;&nbsp;<i>Root</i></p>
+        <!-- tree -->
+        <div class="treeView"></div>
     </div>
 
-    <!-- Summary -->
-    <div class="row">
-        <!-- heading -->
-        <div class="col-sm-12 row card-heading" onclick="$(this).next('div').toggle(800)">
-            <span class="pull-left">Summary <small>(Remove)</small></span>
-            <button type="button" class="btn btn-default pull-right ">
-                <span class="caret"></span><br/><span class="caret"></span><br/><span class="caret"></span>
-            </button>
-        </div>
-        <!-- content -->
-        <div class="col-sm-12 row card-content" style="display: none">
-            <!-- list -->
-            <div class="col-sm-3">
-                <span>- Select to create category or template -</span>
+    <!-- content -->
+    <div class="col-sm-9" style="border-left: 3px solid #eee">
+        <!-- Create New -->
+        <div class="row">
+            <!-- heading -->
+            <div class="col-sm-12 row card-heading" onclick="$(this).next('div').toggle(800)">
+                <span class="pull-left">Create New [Category / Template]</span>
+                <button type="button" class="btn btn-default pull-right ">
+                    <span class="caret"></span><br/><span class="caret"></span><br/><span class="caret"></span>
+                </button>
             </div>
-            <!-- template view and remove functions -->
-            <div class="col-sm-9">
-                <!-- selected elements -->
-                <div class="row">
-                    <div class="col-sm-4">
-                        <b><span>Root</span></b><br/>
-                        <i><span>root_name</span></i>&nbsp;&nbsp;<span class="glyphicon glyphicon-trash" style="cursor: pointer"></span>
+            <!-- content -->
+            <div class="col-sm-12 row card-content">
+                <!-- new category -->
+                <div class="col-sm-6">
+                    <form class="form-horizontal" role="form">
+                        <fieldset>
+                            <legend>
+                                New (Sub) Category
+                            </legend>
+                        </fieldset>
+                        <!-- parent -->
+                        <div class="form-group">
+                            <label class="control-label col-sm-3">Parent</label>
+                            <label data-bind="visible:!isSelectedTemplate(), text:currentSelectedTreeNode().text()" class="col-sm-9">root</label>
+                            <label data-bind="visible:isSelectedTemplate()" style="color: red">Node you selected is a Template!</label>
+                        </div>
+                        <!-- category -->
+                        <div class="form-group">
+                            <label class="control-label col-sm-3">(Sub) Category Name</label>
+                            <div class="col-sm-9">
+                                <input data-bind="value:newSubCategoryName" type="text" class="form-control" />
+                            </div>
+                        </div>
+                        <!-- create button -->
+                        <div class="form-group">
+                            <div class="col-sm-offset-3 col-sm-9">
+                                <button data-bind="click:createNewSubCategory" class="btn btn-default">Create <span class="glyphicon glyphicon-check"></span></button>
+                            </div>
+                        </div>
+                        <!-- notification -->
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <label data-bind="text:notification_createNewSubCategory" class="pull-right">...</label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <!-- new template -->
+                <div class="col-sm-6">
+                    <form class="form-horizontal" role="form">
+                        <fieldset>
+                            <legend>
+                                New Template
+                            </legend>
+                        </fieldset>
+                        <!-- category -->
+                        <div class="form-group">
+                            <label class="control-label col-sm-3">Category Name</label>
+                            <label data-bind="visible:!isSelectedTemplate(), text:currentSelectedTreeNode().text()" class="col-sm-9">Cat_1</label>
+                            <label data-bind="visible:isSelectedTemplate()" style="color: red">Node you selected is a Template!</label>
+                        </div>
+                        <!-- template name -->
+                        <div class="form-group">
+                            <label class="control-label col-sm-3">Template Name</label>
+                            <div class="col-sm-9">
+                                <input data-bind="value:newTemplateName" type="text" class="form-control" />
+                            </div>
+                        </div>
+                        <!-- file input -->
+                        <div class="form-group">
+                            <label class="control-label col-sm-3">Template File</label>
+                            <div class="col-sm-9">
+                                <input id="templateFile" type="file" typeof=".pdf" />
+                            </div>
+                        </div>
+                        <!-- create button -->
+                        <div class="form-group">
+                            <div class="col-sm-offset-3 col-sm-9">
+                                <button data-bind="click:uploadNewTemplate" id="btnUpload" class="btn btn-default">Upload&nbsp;<span class="glyphicon glyphicon-cloud-upload"></span> | Goto template edit&nbsp;<span class="glyphicon glyphicon-circle-arrow-right"></span></button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Summary -->
+        <div class="row">
+            <!-- heading -->
+            <div class="col-sm-12 row card-heading" onclick="$(this).next('div').toggle(800)">
+                <span class="pull-left">Summary <small>(Remove)</small></span>
+                <button type="button" class="btn btn-default pull-right ">
+                    <span class="caret"></span><br/><span class="caret"></span><br/><span class="caret"></span>
+                </button>
+            </div>
+            <!-- content -->
+            <div class="col-sm-12 row card-content" style="display: none">
+                <!-- template view and remove functions -->
+                <div class="col-sm-12">
+                    <!-- selected elements -->
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <b><span>Parent</span></b><br/>
+                            <i><span>parent_name</span></i>&nbsp;&nbsp;<span class="glyphicon glyphicon-trash" style="cursor: pointer"></span>
+                        </div>
+                        <div class="col-sm-4">
+                            <b><span>Selected</span></b><br/>
+                            <i><span>selected_name</span></i>&nbsp;&nbsp;<span class="glyphicon glyphicon-trash" style="cursor: pointer"></span>
+                        </div>
+                        <div class="col-sm-4">
+                            <label data-bind="visible:isSelectedTemplate()" style="color: darksalmon">Node you selected is a Template!</label>
+                        </div>
                     </div>
-                    <div class="col-sm-4">
-                        <b><span>Category</span></b><br/>
-                        <i><span>cat_name</span></i>&nbsp;&nbsp;<span class="glyphicon glyphicon-trash" style="cursor: pointer"></span>
-                    </div>
-                    <div class="col-sm-4">
-                        <b><span>Template</span></b><br/>
-                        <i><span>temp_name</span></i>&nbsp;&nbsp;<span class="glyphicon glyphicon-trash" style="cursor: pointer"></span>
+                    <br />
+                    <!-- template preview -->
+                    <div class="row">
+                        <h4>Preview</h4>
                     </div>
                 </div>
-                <br />
-                <!-- template preview -->
-                <div class="row">
-                    <h4>Preview</h4>
-                </div>
             </div>
         </div>
+
     </div>
 </div>
 
@@ -242,7 +241,7 @@
         if(to) { clearTimeout(to); }
         to = setTimeout(function () {
             var v = $('#treeSearch').val();
-            $('#treeViewDiv').jstree(true).search(v);
+            $('.treeView').jstree(true).search(v);
         }, 250);
     });
 
