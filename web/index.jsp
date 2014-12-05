@@ -76,7 +76,7 @@
                 success: function(data, textStatus, jqXHR) {
                     var responseObj = JSON.parse(jqXHR.responseText);
                     if(responseObj.isAuthenticated===true){
-                        window.location.href = responseObj.redirectUrl;
+                        window.location.href = "default.jsp";
                     }else{
                         alert(responseObj.errorCause);
                     }

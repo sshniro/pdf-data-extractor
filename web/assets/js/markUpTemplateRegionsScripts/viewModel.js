@@ -85,7 +85,7 @@ function ViewModel(){
 
 
 
-    //Holds temporary sub elements
+    //Holds temporary sub elementsx
     self.tempSubs = ko.observableArray([]);
 
     //Initializes the extraction environment
@@ -438,12 +438,18 @@ function ViewModel(){
         var bulk = ko.toJSON(sendBulkData(data));
         self.sendingJsonFinal(bulk);
         self.loadNewPageData(currentPage);
+        window.location.href = "default.jsp";
     }
 
 
-    /////////////////////////////
-    ///    default.jsp VM     ///
-    /////////////////////////////
+    /////////////////////////////////////////////
+    ///    default.jsp / ExtractPdf.jsp VM    ///
+    /////////////////////////////////////////////
+
+    //logout
+    self.logout = function(){
+        window.location.href = "index.jsp";
+    };
 
     var nodeModel = function(data){
         this.id = ko.observable(data.id);
@@ -454,10 +460,14 @@ function ViewModel(){
     var rootNode = {'id':'#', 'parent':undefined, 'text':'root'};
 
     self.currentSelectedTreeNode = ko.observable(new nodeModel(rootNode));
+    self.currentNodeParent = ko.observable(new nodeModel(rootNode));
     self.newSubCategoryName = ko.observable();
     self.notification_createNewSubCategory = ko.observable();
     self.newTemplateName = ko.observable();
     self.overlayNotification = ko.observable('Notification...');
+
+    self.isSelectedTemplate = ko.observable(false);
+    self.selectedDocumentId = ko.observable('');
 
     self.createNewSubCategory = function(){
         // validation
@@ -491,7 +501,10 @@ function ViewModel(){
 
     self.setRootAsCurrentSelectedTreeNode = function(){
         self.currentSelectedTreeNode(new nodeModel(rootNode));
+        self.currentNodeParent(new nodeModel(rootNode));
         selectedNodeRow = undefined;
+        selectedNodeChildRow = undefined;
+        selectedNodeParentRow = undefined;
         $('#treeViewDiv').jstree("deselect_all");
     };
 
@@ -501,14 +514,22 @@ function ViewModel(){
 
     self.uploadNewTemplate = function(){
         // alter when trying to create new template in invalid category
-        if(selectedNodeRow === undefined){
-            alert("Templates can be create only in leaf nodes\nPlease select a leaf node!");
+        if(selectedNodeRow === undefined){  // selected is the root
+            alert("Templates cannot be created in root node\nPlease select a child node!");
             return false;
         }
-        else{
-            if(selectedNodeRow.children.length != 0){
-                alert("Templates can be create only in leaf nodes\nPlease select a leaf node!");
-                return false;
+        else{   // selected is not the root
+            if(selectedNodeRow.children.length != 0){   // selected have children
+                if(selectedNodeChildRow.original.pdfFile === undefined) {   // first child is another folder
+                    alert("Templates cannot be created in this node\nPlease select another node!");
+                    return false;
+                }
+            }
+            else {   // selected doesn't have children
+                if (selectedNodeRow.original.pdfFile != undefined) {
+                    alert('You have selected a Template node!\nTemplate cannot create in another template node');
+                    return false;
+                }
             }
         }
 
@@ -538,6 +559,47 @@ function ViewModel(){
 
         /*Set the upload button to be disabled */
         $("#btnUpload").attr("disabled", true);
+        self.overlayNotification('Uploading...');
+        $('#overlay').css('display', 'block');
+    };
+
+    self.setIsSelectedTemplate = function(){
+        if(selectedNodeRow.original.pdfFile != undefined){
+            self.isSelectedTemplate(true);
+        }else{
+            self.isSelectedTemplate(false);
+        }
+    };
+
+    self.uploadPdfFile =  function(){
+        var file = document.getElementById("pdfFile");
+
+        /* alert the user to input a value to the Document ID*/
+        if(self.selectedDocumentId() == ''){
+            alert("Document ID is required");
+            return false;
+        }
+
+        var fileName = $("#pdfFile").val();
+        /* alert the user to select a File */
+        if(fileName==""){
+            alert("Select a PDF File");
+            return false;
+        }
+
+        /* Create a FormData instance */
+        var formData = new FormData();
+        /* Add the file */
+        formData.append("parent", self.currentSelectedTreeNode().id()); // template id
+        formData.append("text", self.selectedDocumentId()); // document name as in next
+        formData.append("templateName", self.selectedDocumentId());
+        formData.append("pdfFile", file.files[0]);
+
+        client.open("post", "ExtractPdfController", true);
+        client.send(formData);  /* Send to server */
+
+        /*Set the upload button to be disabled */
+        $("#ajaxStart").attr("disabled", true);
         self.overlayNotification('Uploading...');
         $('#overlay').css('display', 'block');
     };

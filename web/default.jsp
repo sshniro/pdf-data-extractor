@@ -8,6 +8,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
+    <title>Home</title>
+
     <!-- jQuery -->
     <script type="text/javascript" src="assets/js/jquery-1.10.2.js"></script>
     <!-- bootstrap -->
@@ -20,7 +22,7 @@
     <!-- custom css -->
     <style type="text/css">
         body{
-            font-family: "Calibri";
+            font-family: "calibri";
         }
         .card-heading{
             background-color: #EEE;
@@ -45,17 +47,17 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#">Enhan<i>z</i>er</a>
+                <a class="navbar-brand" href="/default.jsp">Enhan<i>z</i>er</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="navbar_collapse">
                 <ul class="nav navbar-nav">
-                    <li><a id="templateExtract" href="#">Extract Doc</a></li>
+                    <li><a id="templateExtract" href="/ExtractPdf.jsp">Extract Doc</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li style="margin: 15px 15px 0 0">Login as: <b>administrator</b></li>
-                    <li><a class="btn btn-default" style="padding: 5px; margin-top: 10px; max-width: 100px;">Logout <span class="glyphicon glyphicon-log-out"></span></a></li>
+                    <li><a data-bind="click:logout" class="btn btn-default" style="padding: 5px; margin-top: 10px; max-width: 100px;">Logout <span class="glyphicon glyphicon-log-out"></span></a></li>
                 </ul>
             </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->
@@ -99,7 +101,8 @@
                     <!-- parent -->
                     <div class="form-group">
                         <label class="control-label col-sm-3">Parent</label>
-                        <label data-bind="text:currentSelectedTreeNode().text()" class="col-sm-9">root</label>
+                        <label data-bind="visible:!isSelectedTemplate(), text:currentSelectedTreeNode().text()" class="col-sm-9">root</label>
+                        <label data-bind="visible:isSelectedTemplate()" style="color: red">Node you selected is a Template!</label>
                     </div>
                     <!-- category -->
                     <div class="form-group">
@@ -133,7 +136,8 @@
                     <!-- category -->
                     <div class="form-group">
                         <label class="control-label col-sm-3">Category Name</label>
-                        <label data-bind="text:currentSelectedTreeNode().text()" class="col-sm-9">Cat_1</label>
+                        <label data-bind="visible:!isSelectedTemplate(), text:currentSelectedTreeNode().text()" class="col-sm-9">Cat_1</label>
+                        <label data-bind="visible:isSelectedTemplate()" style="color: red">Node you selected is a Template!</label>
                     </div>
                     <!-- template name -->
                     <div class="form-group">
@@ -228,6 +232,7 @@
 
     var selectedNodeRow = undefined;
     var selectedNodeChildRow = undefined;
+    var selectedNodeParentRow = undefined;
 
     initTrees();
 

@@ -1,13 +1,25 @@
+<%--
+  User: K D K Madusanka
+  Date: 12/03/2014
+  Time: 09:21 AM
+  ----------------------------------
+  Log:
+--%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
+    <title>PDF Extract</title>
 
-    <!-------------------------------- CSS Files------------------------------------>
-    <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.css">
-
-    <!-------------------------------- JS Files------------------------------------>
+    <!-- jQuery -->
     <script type="text/javascript" src="assets/js/jquery-1.10.2.js"></script>
+    <!-- bootstrap -->
     <script type="text/javascript" src="assets/js/bootstrap.js"></script>
+    <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.css">
+    <!-- jstree -->
+    <script type="text/javascript" src="assets/ex-libraries/jstree/jstree.js"></script>
+    <link rel="stylesheet" href="assets/ex-libraries/jstree/themes/default/style.css" />
+
+    <!-- custom -->
     <script type="text/javascript" src="assets/js/PageNavigator.js"></script>
     <script type="text/javascript" src="assets/js/JspFormPopulate.js"></script>
 
@@ -15,144 +27,147 @@
         var isMCValid = true;
         window.onload = getMC;
     </script>
+
+    <style>
+        body{
+            font-family: "calibri";
+        }
+    </style>
 </head>
 <body>
 
-<div class="row">
-
+<!-- nav bar -->
+<header>
     <nav class="navbar navbar-default" role="navigation">
         <div class="container-fluid">
-            <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span>
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="navbar_collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#">Enhanzer</a>
+                <a class="navbar-brand" href="/default.jsp">Enhan<i>z</i>er</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <div class="collapse navbar-collapse" id="navbar_collapse">
                 <ul class="nav navbar-nav">
-                    <li class="active"><a id="templateExtract" href="#">Extract Doc</a></li>
-                    <li><a id="templateUpload" href="#">Create Template</a></li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Manage Categories <span class="caret"></span></a>
-                        <ul class="dropdown-menu" role="menu">
-                            <li class="divider"></li>
-                            <li><a id="view" href="#">Summary</a></li>
-                            <li class="divider"></li>
-                            <li><a id="manageCategories" href="#">Create</a></li>
-                            <li class="divider"></li>
-                            <li><a id="remove" href="#">Remove</a></li>
-                        </ul>
-                    </li>
+                    <li><a id="templateExtract" href="/ExtractPdf.jsp">Extract Doc</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="#">Logout</a></li>
+                    <li style="margin: 15px 15px 0 0">Login as: <b>administrator</b></li>
+                    <li><a data-bind="click:logout" class="btn btn-default" style="padding: 5px; margin-top: 10px; max-width: 100px;">Logout <span class="glyphicon glyphicon-log-out"></span></a></li>
                 </ul>
             </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->
     </nav>
-
-<div class="col-md-12">
-<h1> Extract  PDF  Form</h1>
-
-<fieldset>
-    <legend>Upload File</legend>
-    <form >
+</header>
 
 
-        <label for="showMC">Select a Main Category</label>
-        <select id="showMC" name="showMC" onchange="getSC(this); getTemplates();">
-        </select>   </br>
+<!-- container -->
+<div class="container row" style="margin: 0 auto;">
+    <!-- tree view -->
+    <div class="col-sm-4">
+        <fieldset>
+            <legend>
+                Select a Template<br/>
+                <input class="form-control" type="text" id="treeSearch" placeholder="search tree" style="margin-top: 8px" />
+            </legend>
+        </fieldset>
 
-        <label for="showSC">Select a Sub Category</label>
-        <select id="showSC" name="showSC" onchange="getTemplates(this)">
-            <option value="" disabled selected> Select a Sub Category </option>
-        </select>   </br>
-
-        <label for="showTemplates">Select A Template</label>
-        <select id="showTemplates" name="showTemplates" >
-            <option value="" disabled selected> Select a Template </option>
-        </select>   </br>
-
-        <label for="documentId">Type the Document ID</label>
-        <input id="documentId" name="documentId" type="text" value="doc1"/> <br/>
-
-        <label for="pdfFile">Select File: </label>
-        <input id="pdfFile" type="file" name="pdfFile" size="30" required/><br/>
-
-        <input id="ajaxStart" type="button" value="Upload" onclick="upload()"/>
-    </form>
-</fieldset>
-</div>
-
-    <div class="col-md-12" id="extractedText">
-
+        <br/>
+        <!-- root node -->
+        <p data-bind="click:setRootAsCurrentSelectedTreeNode" style="cursor:pointer; font-size: large"><span class="glyphicon glyphicon-tree-conifer"></span>&nbsp;&nbsp;<i>Root</i></p>
+        <!-- tree -->
+        <div id="treeViewDiv">
+        </div>
     </div>
 
+    <!-- extract form and data -->
+    <div class="col-sm-8" style="border-left: 1px solid #ffffff">
+        <!-- form -->
+        <form class="form-horizontal" role="form">
+            <fieldset>
+                <legend>
+                    Upload a PDF and extract<br/>
+                    <h5 style="font-style: italic; color: darkgray">Selecting a Template (from the left) is required for extract a PDF file.<br/>If cannot see any template, goto <a href="/default.jsp">"Create a New Template"</a></h5>
+                </legend>
+            </fieldset>
+            <fieldset>
+                <table>
+                    <tbody>
+                    <tr>    <td>Selected Template&nbsp;&nbsp;&nbsp;&nbsp;</td>      <td>:&nbsp;<span data-bind="visible:isSelectedTemplate(), text:currentSelectedTreeNode().text()">$template_name</span><span data-bind="visible:!isSelectedTemplate()" style="color: red">Node you selected is not a Template!</span></td></tr>
+                    <tr>    <td>Parent Category&nbsp;&nbsp;&nbsp;&nbsp;</td>        <td>:&nbsp;<span data-bind="text:currentNodeParent().text">$category_name</span></td></tr>
+                    </tbody>
+                </table>
+            </fieldset>
+            <hr style="color: #eee" />
+            <!-- form fields -->
+            <div class="form-group">
+                <label class="control-label col-sm-4">Document Identification Name</label>
+                <div class="col-sm-8">
+                    <input data-bind="value:selectedDocumentId()" type="text" class="form-control" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-4">Select PDF file</label>
+                <div class="col-sm-8">
+                    <input id="pdfFile" type="file" typeof=".pdf" datatype=".pdf" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-4 col-sm-8">
+                    <button id="ajaxStart" class="btn btn-default">Upload&nbsp;<span class="glyphicon glyphicon-cloud-upload"></span> | Extract&nbsp;<span class="glyphicon glyphicon-check"></span></button>
+                </div>
+            </div>
+        </form>
+        <!-- extracted data -->
+        <div class="well well-sm row" style="margin-top: 20px">
+            <h4>- Extracted Data -</h4><br/>
+            <div class="col-sm-12" id="extractedText"></div>
+        </div>
+    </div>
 
 </div>
+
+<!-- overlay div -->
+<div id="overlay" style="position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; display: none;">
+    <div style="position: relative; margin: 40vh auto; max-width: 600px; height: 75px; text-align: center; background-color: #fff; border-radius: 10px; padding: 25px; box-shadow: 0 0 10px #303030; z-index: 110">
+        <img src="assets/img/win-loader.gif" alt="loading" />&nbsp;&nbsp;&nbsp;
+        <label><span data-bind="text:overlayNotification">Notification...</span></label>
+    </div>
+    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: #eee; opacity: 0.7; z-index: 100"></div>
+</div>
+
+
+
+
+
+<!-- importing libraries -->
+<script type="text/javascript" src="assets/js/knockout-3.2.0.js" ></script>
+<script type="text/javascript" src="assets/js/markUpTemplateRegionsScripts/uiFunctions.js"> </script>
+<script type="text/javascript" src="assets/js/markUpTemplateRegionsScripts/models.js"> </script>
+<script type="text/javascript" src="assets/js/markUpTemplateRegionsScripts/viewModel.js"> </script>
+
 <script>
+    // tree view script
+    var selectedNodeRow = undefined;
+    var selectedNodeChildRow = undefined;
+    var selectedNodeParentRow = undefined;
+
+    initTrees();
+
+    // search tree
+    var to = false;
+    $('#treeSearch').keyup(function () {
+        if(to) { clearTimeout(to); }
+        to = setTimeout(function () {
+            var v = $('#treeSearch').val();
+            $('#treeViewDiv').jstree(true).search(v);
+        }, 250);
+    });
+
     var client = new XMLHttpRequest();
-    function upload()
-    {
-        var dropDownMC = document.getElementById("showMC");
-        var mainCategory = dropDownMC.options[dropDownMC.selectedIndex].value;
-        /* alert the user to select a main category before upload  */
-        if(mainCategory==""){
-            alert("Select a Main Category");
-            return false;
-        }
-
-        var dropDownSC = document.getElementById("showSC");
-        var subCategory = dropDownSC.options[dropDownSC.selectedIndex].value;
-        /* alert the user to select a subcategory before upload */
-        if(subCategory=="" || subCategory=="null"){
-            alert("Select a Sub Category");
-            return false;
-        }
-
-        var dropDownTemp = document.getElementById("showTemplates");
-        var templateName = dropDownTemp.options[dropDownTemp.selectedIndex].value;
-        /* alert the user to select a subcategory before upload */
-        if(templateName=="" || templateName=="null"){
-            alert("Select a Template");
-            return false;
-        }
-
-        var documentId = document.getElementById("documentId").value;
-        var file = document.getElementById("pdfFile");
-
-        /* alert the user to input a value to the Document ID*/
-        if(documentId==""){
-            alert("Document ID is required");
-            return false;
-        }
-
-        var fileName = $("#pdfFile").val();
-        /* alert the user to select a File */
-        if(fileName==""){
-            alert("Select a PDF File");
-            return false;
-        }
-
-        /* Create a FormData instance */
-        var formData = new FormData();
-        /* Add the file */
-        formData.append("mainCategory", mainCategory);
-        formData.append("subCategory", subCategory);
-        formData.append("templateName", templateName);
-        formData.append("documentId", documentId);
-        formData.append("pdfFile", file.files[0]);
-
-        client.open("post", "ExtractPdfController", true);
-        client.send(formData);  /* Send to server */
-
-        /*Set the upload button to be disabled */
-        $("#ajaxStart").attr("disabled", true);
-    }
-
     client.onload = function() {
         /*Enable the upload button after receiving a extractedData from the server */
         $("#ajaxStart").attr("disabled", false);
@@ -162,8 +177,8 @@
             if(messages.status===true) {
 
                 /*  replace all occurrence of next line character to </br> tag
-                *   g => global , so replaces all occurrences of the '\n'
-                *   */
+                 *   g => global , so replaces all occurrences of the '\n'
+                 *   */
                 var str = messages.extractedData.replace( new RegExp('\n', 'g') , '</br>');
                 $('#extractedText').html(str);
             }else{
@@ -174,7 +189,6 @@
             alert("unexpected server error");
         }
     }
-
 </script>
 </body>
 </html>
