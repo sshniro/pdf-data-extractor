@@ -73,8 +73,7 @@ public class DataElementsProcessor {
 
         List<ImageDataParser> imageDataList;
         ImageDataParser imageDataParser=null;
-        imageDataList = templateInfoDAO.getImageTemplateInfo(extractStatus.getMainCategory(), extractStatus.getSubCategory() ,
-                extractStatus.getTemplateName(), "image" );
+        imageDataList = templateInfoDAO.getImageTemplateInfo(extractStatus.getId(),"image" );
 
         /* If there is no record exists for image data extraction skip this step*/
         if(imageDataList.size() != 0) {
@@ -111,8 +110,7 @@ public class DataElementsProcessor {
 
         List<TableDataParser> tableList;
         TableDataParser tableDataParser = null;
-        tableList= templateInfoDAO.getTableTemplateInfo(extractStatus.getMainCategory(), extractStatus.getSubCategory() ,
-                extractStatus.getTemplateName(), "table" );
+        tableList= templateInfoDAO.getTableTemplateInfo(extractStatus.getId() , "table" );
 
         /* If there is no record exists for table data extraction skip this step*/
         if(tableList.size() != 0) {

@@ -23,6 +23,15 @@ public class RawDataElement {
     private Double width;
     @Expose
     private Double height;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     @Expose
     private String id;
     @Expose
