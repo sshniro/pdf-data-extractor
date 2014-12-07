@@ -44,6 +44,10 @@
         <servlet-name>NavigationController</servlet-name>
         <servlet-class>com.data.extractor.controllers.NavigationController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>EditTemplateController</servlet-name>
+        <servlet-class>com.data.extractor.controllers.EditTemplateController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>TemplateUploadController</servlet-name>
         <url-pattern>/TemplateUploadController</url-pattern>
@@ -71,6 +75,10 @@
     <servlet-mapping>
         <servlet-name>NavigationController</servlet-name>
         <url-pattern>/NavigationController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EditTemplateController</servlet-name>
+        <url-pattern>/EditTemplateController</url-pattern>
     </servlet-mapping>
 
 
