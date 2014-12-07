@@ -170,24 +170,35 @@
         <div class="row">
             <!-- heading -->
             <div class="col-sm-12 row card-heading" onclick="$(this).next('div').toggle(800)">
-                <span class="pull-left">Summary <small>(Remove)</small></span>
+                <span class="pull-left">Edit & Remove</span>
                 <button type="button" class="btn btn-default pull-right ">
                     <span class="caret"></span><br/><span class="caret"></span><br/><span class="caret"></span>
                 </button>
             </div>
             <!-- content -->
-            <div class="col-sm-12 row card-content" style="display: none">
+            <div class="col-sm-12 row card-content" style="display: block">
+                <!-- tools -->
+                <div class="col-sm-12" style="text-align: right">
+                    <div class="btn-group">
+                        <button class="btn btn-default"><span class="glyphicon glyphicon-trash"></span>&nbsp;Delete Parent</button>
+                        <button class="btn btn-default"><span class="glyphicon glyphicon-trash"></span>&nbsp;Delete Selected</button>
+                    </div>
+                    <div class="btn-group" data-bind="visible:isSelectedTemplate()">
+                        <button data-bind="click:redirectToEditTemplate" class="btn btn-default"><span class="glyphicon glyphicon-edit"></span>&nbsp;Edit Template</button>
+                    </div>
+                </div>
                 <!-- template view and remove functions -->
                 <div class="col-sm-12">
+
                     <!-- selected elements -->
                     <div class="row">
                         <div class="col-sm-4">
                             <b><span>Parent</span></b><br/>
-                            <i><span>parent_name</span></i>&nbsp;&nbsp;<span class="glyphicon glyphicon-trash" style="cursor: pointer"></span>
+                            <i><span data-bind="text:currentNodeParent().text">parent_name</span></i>
                         </div>
                         <div class="col-sm-4">
                             <b><span>Selected</span></b><br/>
-                            <i><span>selected_name</span></i>&nbsp;&nbsp;<span class="glyphicon glyphicon-trash" style="cursor: pointer"></span>
+                            <i><span data-bind="text:currentSelectedTreeNode().text()">selected_name</span></i>
                         </div>
                         <div class="col-sm-4">
                             <label data-bind="visible:isSelectedTemplate()" style="color: darksalmon">Node you selected is a Template!</label>
@@ -195,8 +206,12 @@
                     </div>
                     <br />
                     <!-- template preview -->
-                    <div class="row">
+                    <div class="row" data-bind="visible:isSelectedTemplate()">
                         <h4>Preview</h4>
+                        <!-- preview of template -->
+                        <div style="width: 100%">
+                            <iframe id="pdfRenderer" style="width: 100%"></iframe>
+                        </div>
                     </div>
                 </div>
             </div>

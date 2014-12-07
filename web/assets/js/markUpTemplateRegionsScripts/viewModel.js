@@ -465,6 +465,7 @@ function ViewModel(){
     self.notification_createNewSubCategory = ko.observable();
     self.newTemplateName = ko.observable();
     self.overlayNotification = ko.observable('Notification...');
+    self.selectedPdfTemplate = ko.observable('');
 
     self.isSelectedTemplate = ko.observable(false);
     self.selectedDocumentId = ko.observable('');
@@ -566,8 +567,11 @@ function ViewModel(){
     self.setIsSelectedTemplate = function(){
         if(selectedNodeRow.original.pdfFile != undefined){
             self.isSelectedTemplate(true);
+            self.selectedPdfTemplate(selectedNodeRow.original.pdfFile);
+            document.getElementById('pdfRenderer').src = "file://" + self.selectedPdfTemplate();
         }else{
             self.isSelectedTemplate(false);
+            self.selectedPdfTemplate('');
         }
     };
 
@@ -602,6 +606,16 @@ function ViewModel(){
         $("#ajaxStart").attr("disabled", true);
         self.overlayNotification('Uploading...');
         $('#overlay').css('display', 'block');
+    };
+
+    self.redirectToEditTemplate = function(){
+        if(self.isSelectedTemplate()) {
+            localStorage.setItem('selectedTemplateId', self.currentSelectedTreeNode().id());
+            window.location.href = '/EditTemplate.jsp';
+        }
+        else{
+            alert('select a template!');
+        }
     };
 
 }
