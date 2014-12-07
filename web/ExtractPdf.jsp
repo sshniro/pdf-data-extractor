@@ -81,6 +81,12 @@
         <!-- tree -->
         <div class="treeView">
         </div>
+
+        <br/><br/>
+        <!-- preview of template -->
+        <div style="width: 100%">
+            <iframe id="pdfRenderer" style="width: 100%"></iframe>
+        </div>
     </div>
 
     <!-- extract form and data -->
@@ -106,7 +112,7 @@
             <div class="form-group">
                 <label class="control-label col-sm-4">Document Identification Name</label>
                 <div class="col-sm-8">
-                    <input data-bind="value:selectedDocumentId()" type="text" class="form-control" />
+                    <input data-bind="value:selectedDocumentId" type="text" class="form-control" />
                 </div>
             </div>
             <div class="form-group">
@@ -173,14 +179,13 @@
         $("#ajaxStart").attr("disabled", false);
         if (client.status == 200) {
             var messages = JSON.parse(client.responseText);
-
             if(messages.status===true) {
-
                 /*  replace all occurrence of next line character to </br> tag
                  *   g => global , so replaces all occurrences of the '\n'
                  *   */
                 var str = messages.extractedData.replace( new RegExp('\n', 'g') , '</br>');
                 $('#extractedText').html(str);
+                $('#overlay').css('display', 'none');
             }else{
                 alert(messages.errorCause);
             }
