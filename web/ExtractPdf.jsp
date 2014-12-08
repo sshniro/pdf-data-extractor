@@ -79,7 +79,13 @@
         <!-- root node -->
         <p data-bind="click:setRootAsCurrentSelectedTreeNode" style="cursor:pointer; font-size: large"><span class="glyphicon glyphicon-tree-conifer"></span>&nbsp;&nbsp;<i>Root</i></p>
         <!-- tree -->
-        <div id="treeViewDiv">
+        <div class="treeView">
+        </div>
+
+        <br/><br/>
+        <!-- preview of template -->
+        <div style="width: 100%">
+            <iframe id="pdfRenderer" style="width: 100%"></iframe>
         </div>
     </div>
 
@@ -106,7 +112,7 @@
             <div class="form-group">
                 <label class="control-label col-sm-4">Document Identification Name</label>
                 <div class="col-sm-8">
-                    <input data-bind="value:selectedDocumentId()" type="text" class="form-control" />
+                    <input data-bind="value:selectedDocumentId" type="text" class="form-control" />
                 </div>
             </div>
             <div class="form-group">
@@ -117,7 +123,7 @@
             </div>
             <div class="form-group">
                 <div class="col-sm-offset-4 col-sm-8">
-                    <button id="ajaxStart" class="btn btn-default">Upload&nbsp;<span class="glyphicon glyphicon-cloud-upload"></span> | Extract&nbsp;<span class="glyphicon glyphicon-check"></span></button>
+                    <button data-bind="click:uploadPdfFile" id="ajaxStart" class="btn btn-default">Upload&nbsp;<span class="glyphicon glyphicon-cloud-upload"></span> | Extract&nbsp;<span class="glyphicon glyphicon-check"></span></button>
                 </div>
             </div>
         </form>
@@ -163,7 +169,7 @@
         if(to) { clearTimeout(to); }
         to = setTimeout(function () {
             var v = $('#treeSearch').val();
-            $('#treeViewDiv').jstree(true).search(v);
+            $('.treeView').jstree(true).search(v);
         }, 250);
     });
 
@@ -173,14 +179,13 @@
         $("#ajaxStart").attr("disabled", false);
         if (client.status == 200) {
             var messages = JSON.parse(client.responseText);
-
             if(messages.status===true) {
-
                 /*  replace all occurrence of next line character to </br> tag
                  *   g => global , so replaces all occurrences of the '\n'
                  *   */
                 var str = messages.extractedData.replace( new RegExp('\n', 'g') , '</br>');
                 $('#extractedText').html(str);
+                $('#overlay').css('display', 'none');
             }else{
                 alert(messages.errorCause);
             }
