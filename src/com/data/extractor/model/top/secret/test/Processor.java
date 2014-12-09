@@ -20,9 +20,9 @@ public class Processor {
     public static void main(String args[]) throws IOException, CryptographyException {
 
         ExtractStatus extractStatus = new ExtractStatus();
-        extractStatus.setMainCategory("Sales Order");
-        extractStatus.setSubCategory("Supplier 10");
-        extractStatus.setTemplateName("template1");
+        //extractStatus.setMainCategory("Sales Order");
+        //extractStatus.setSubCategory("Supplier 10");
+        //extractStatus.setTemplateName("template1");
         extractStatus.setDocumentId("testing one");
 
         /* Get the mongo client from the servletContext */
