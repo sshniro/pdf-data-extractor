@@ -35,16 +35,17 @@ public class PdfFileProcessor {
         spaceReplaced[0]=mainCategory,spaceReplaced[1]=subCategory,spaceReplaced[2]=templateName
          */
         //String[] spaceReplaced=replaceSpace(extractStatus);
-        File uploadLocation = new File(rootPath + File.separator + "uploads"+File.separator+"temp");
+        File uploadLocation = new File(rootPath + File.separator + "uploads"+File.separator+"temp" + File.separator + extractStatus.getParent() +
+                                        File.separator + extractStatus.getId());
         if (!uploadLocation.exists()) {
             boolean status = uploadLocation.mkdirs();
         }
 
         // Concatenate TemplateName with Document Name
-        File uploadedFile = new File(uploadLocation + File.separator + extractStatus.getParent() + extractStatus.getId() +".pdf");
+        File uploadedFile = new File(uploadLocation + File.separator + extractStatus.getId() +".pdf");
 
         extractStatus.setPdfLocation(uploadLocation.getAbsolutePath());
-        extractStatus.setPdfName(extractStatus.getParent() + extractStatus.getId()); // templateName space replaced with "_"
+        extractStatus.setPdfName(extractStatus.getId()); // templateName space replaced with "_"
         extractStatus.setUploadedPdfFile(extractStatus.getPdfLocation()+File.separator+extractStatus.getPdfName()+".pdf");
 
         pdfItem.write(uploadedFile);
@@ -54,15 +55,5 @@ public class PdfFileProcessor {
         fileType.isPDF(extractStatus);
 
         return extractStatus;
-    }
-
-    public String[] replaceSpace(ExtractStatus extractStatus){
-
-        String[] spaceReplacedProperties=new String[4];
-        spaceReplacedProperties[0]=extractStatus.getTemplateName().replaceAll("\\s+","_");
-        spaceReplacedProperties[1]=extractStatus.getDocumentId().replaceAll("\\s+","_");
-        spaceReplacedProperties[2]=extractStatus.getMainCategory().replaceAll("\\s+","_");
-        spaceReplacedProperties[3]=extractStatus.getSubCategory().replaceAll("\\s+","_");
-        return spaceReplacedProperties;
     }
 }
