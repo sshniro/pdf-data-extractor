@@ -40,6 +40,17 @@ public class RawDataElement {
     @Expose
     private Double baseUiComponentStartX;
 
+    public int getPage() {
+        return page;
+    }
+
+    public void setPage(int page) {
+        this.page = page;
+    }
+
+    @Expose
+    private int page;
+
     public String getElementType() {
         return elementType;
     }

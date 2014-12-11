@@ -286,6 +286,7 @@ var drawRectangle = (function(baseUiComponent, selection){
 
     rectangle.id                        = rectangle.startX +"px"+ rectangle.startY+"px"+rectangle.width+"px"+rectangle.height+"px";
     rectangle.elementType       = vm.currentSelection();
+    rectangle.page = vm.currentPage();
 
     return rectangle;
 })
