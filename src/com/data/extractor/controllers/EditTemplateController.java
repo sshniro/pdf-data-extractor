@@ -37,9 +37,9 @@ public class EditTemplateController extends HttpServlet {
         MongoClient mongoClient = (MongoClient) request.getServletContext().getAttribute("MONGO_CLIENT");
         TemplateInfoDAO templateInfoDAO = new TemplateInfoDAO(mongoClient);
 
-        List<TextDataParser> textDataParserList = templateInfoDAO.getTextTemplateInfo(data.getId(), "text");
-        List<ImageDataParser> imageDataParserList= templateInfoDAO.getImageTemplateInfo(data.getId(), "image");
-        List<TableDataParser> tableDataParserList= templateInfoDAO.getTableTemplateInfo(data.getId(), "table");
+        List<TextDataParser> textDataParserList = templateInfoDAO.getTextTemplateInfo(data.getParent(), "text");
+        List<ImageDataParser> imageDataParserList= templateInfoDAO.getImageTemplateInfo(data.getParent(), "image");
+        List<TableDataParser> tableDataParserList= templateInfoDAO.getTableTemplateInfo(data.getParent(), "table");
 
 
         InsertDataParser insertDataParser = new InsertDataParser();
