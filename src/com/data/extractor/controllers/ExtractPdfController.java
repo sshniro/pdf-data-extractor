@@ -43,7 +43,6 @@ public class ExtractPdfController extends HttpServlet {
         }
 
         extractResponse=responseGenerator.generateResponse(extractStatus , extractedData);
-
         response.getWriter().print(gson.toJson(extractResponse));
 
     }

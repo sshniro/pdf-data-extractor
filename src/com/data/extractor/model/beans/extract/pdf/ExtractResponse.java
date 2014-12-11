@@ -5,6 +5,9 @@ public class ExtractResponse {
     private String errorCause;
     private String successMsg;
     private String extractedData;
+    private String  id;
+    private String  parent;
+    private String  documentId;
 
     public String getSuccessMsg() {
         return successMsg;
