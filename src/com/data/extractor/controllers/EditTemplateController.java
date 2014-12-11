@@ -52,6 +52,7 @@ public class EditTemplateController extends HttpServlet {
 
 
         PdfToImage pdfToImage =new PdfToImage();
+
         UploadStatus uploadStatus = new UploadStatus();
         uploadStatus.setInsertDataParser(insertDataParser);
         File uploadLocation = new File(getServletContext().getRealPath(File.separator) + File.separator + "uploads"+File.separator+"temp" + File.separator + data.getParent() +
@@ -63,6 +64,7 @@ public class EditTemplateController extends HttpServlet {
         //extractStatus.setUploadedPdfFile(extractStatus.getPdfLocation()+File.separator+extractStatus.getPdfName()+".pdf");
         uploadStatus.setPdfLocation(uploadLocation.getAbsolutePath());
         uploadStatus.setUploadedPdfFile(uploadStatus.getPdfLocation() + File.separator + data.getId() + ".pdf");
+        pdfToImage.convertToImage(uploadStatus);
 
         HttpSession session=request.getSession();
         String uploadJsonResponse = new ResponseGenerator().generateJsonResponse(uploadStatus , true);
