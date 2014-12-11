@@ -121,7 +121,7 @@ function UiData(rectangle){
     self.height = rectangle.height;
 
     self.metaStartY = ko.computed(function(){
-        return self.baseUiComponentStartY() + self.startY - 80
+        return self.baseUiComponentStartY() + self.startY - 85
     });
 
     self.metaStartX = ko.computed(function(){

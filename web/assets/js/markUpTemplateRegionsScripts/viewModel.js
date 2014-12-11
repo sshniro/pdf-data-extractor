@@ -596,7 +596,6 @@ function ViewModel(){
         /* Add the file */
         formData.append("parent", self.currentSelectedTreeNode().id()); // template id
         formData.append("text", self.selectedDocumentId()); // document name as in next
-        formData.append("templateName", self.selectedDocumentId());
         formData.append("pdfFile", file.files[0]);
 
         client.open("post", "ExtractPdfController", true);
@@ -606,6 +605,15 @@ function ViewModel(){
         $("#ajaxStart").attr("disabled", true);
         self.overlayNotification('Uploading...');
         $('#overlay').css('display', 'block');
+    };
+
+    self.editTemplate =  function(){
+        var editData = {
+          "parent"          : self.currentSelectedTreeNode().id(),
+          "text"            : self.selectedDocumentId()
+        };
+        $.post("EditTemplateController",editData);
+        $('button#editTemplate').css('display','none');
     };
 
     self.redirectToEditTemplate = function(){
