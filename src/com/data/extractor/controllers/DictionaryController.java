@@ -29,10 +29,10 @@ public class DictionaryController extends HttpServlet {
     }
 
     public void createDictionaryWord(MongoClient mongoClient , Dictionary dictionary){
+
         DictionaryDAO dictionaryDAO = new DictionaryDAO(mongoClient);
         CounterDAO counterDAO = new CounterDAO(mongoClient);
-
-
         dictionaryDAO.createDictionaryData(dictionary , counterDAO.getDictionaryId());
+
     }
 }

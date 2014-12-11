@@ -152,7 +152,7 @@
 
                     </tbody></table>
                 </li>
-                <li style="top: -7px;"><span style="margin-left: 20vw; font-size: xx-large; color: gray">[<span id="runningInstructions">Select Element Type</span>]</span></li>
+                <li style="top: -7px;"><span style="margin-left: 15vw; font-size: xx-large; color: gray">[<span id="runningInstructions">Select Element Type</span>]</span></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li>
@@ -164,7 +164,7 @@
                                 <button id ="saveSelection" data-bind="click:saveButton" type="button" class="btn btn-warning"><span class="glyphicon glyphicon-floppy-disk"></span>&nbsp;Save</button>
                             </div>
                         </td></tr>
-                        
+
                     </tbody></table>
                 </li>
                 <li>
@@ -223,9 +223,17 @@
 <!-- selected main element -->
 <script type="text/html" id="rectangleTemplate">
 
-    <div class="bs-docs-section elementDecoMeta" data-bind="id:id, style:{left:uiData.metaStartX, top:uiData.metaStartY}" style="position:absolute;min-width:220px; padding:7px; z-index:2" >
+    <div class="bs-docs-section elementDecoMeta" data-bind="id:id, style:{left:uiData.metaStartX, top:uiData.metaStartY}" style="position:absolute;min-width:110px; padding:7px; z-index:2" >
         <legend style="margin-bottom: 10px; font-size: 15px">Meta Name</legend>
-        <input type="text" class="form-control" data-bind="value:metaName"/>
+        <div style="display:flex">
+            <input type="text" class="form-control" data-bind="value:metaName" style="margin:1px"/>
+            <select id="dictionaryMapping" class="form-control" style="margin:1px">
+                <option>DummyData1</option>
+                <option>DummyData2</option>
+                <option>DummyData3</option>
+            </select>
+        </div>
+
     </div>
 
     <div class="mainElement baseUI editableDiv" style="position:absolute; border-style:solid; border-color:#2980b9; border-width: 3px;" data-bind="style:uiData.elementMap(), id:id">

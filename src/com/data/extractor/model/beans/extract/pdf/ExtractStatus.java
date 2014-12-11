@@ -7,7 +7,7 @@ public class ExtractStatus {
     private String  pdfLocation;
     private String  pdfName;
     private String  uploadedPdfFile;
-    private String  documentId;
+    private String  documentId; //Document Name
     private String  errorCause;
     private Boolean status;
     private Boolean isDocumentIdValid;
