@@ -73,7 +73,7 @@ public class DataElementsProcessor {
 
         List<ImageDataParser> imageDataList;
         ImageDataParser imageDataParser=null;
-        imageDataList = templateInfoDAO.getImageTemplateInfo(extractStatus.getId(),"image" );
+        imageDataList = templateInfoDAO.getImageTemplateInfo(extractStatus.getParent(),"image" );
 
         /* If there is no record exists for image data extraction skip this step*/
         if(imageDataList.size() != 0) {
@@ -84,8 +84,7 @@ public class DataElementsProcessor {
             PDDocument doc = PDDocument.load(extractStatus.getUploadedPdfFile());
             String imageAbsolutePath;
             /* imageWritePath = where the extracted image have to be written*/
-            String imageWritePath = getImageWritePath(extractStatus);
-
+            String imageWritePath = extractStatus.getPdfLocation()+File.separator+"images";
 
             ImageDataCoordinates imageDataCoordinates=new ImageDataCoordinates();
             imageDataCoordinates.setPdfProperties(doc,imageDataParser);
@@ -110,7 +109,7 @@ public class DataElementsProcessor {
 
         List<TableDataParser> tableList;
         TableDataParser tableDataParser = null;
-        tableList= templateInfoDAO.getTableTemplateInfo(extractStatus.getId() , "table" );
+        tableList= templateInfoDAO.getTableTemplateInfo(extractStatus.getParent() , "table" );
 
         /* If there is no record exists for table data extraction skip this step*/
         if(tableList.size() != 0) {
@@ -125,16 +124,5 @@ public class DataElementsProcessor {
         /*  to present it to the extracted HTML   */
         totalExtractedData.setTableDataParser(tableDataParser);
         return totalExtractedData;
-    }
-
-    public String getImageWritePath(ExtractStatus extractStatus){
-        String imageWritePath;
-        PdfFileProcessor pdfFileProcessor=new PdfFileProcessor();
-        String[] spaceReplaced= pdfFileProcessor.replaceSpace(extractStatus);
-        imageWritePath=extractStatus.getRootPath()+ "extracts"+File.separator+
-                        spaceReplaced[2]+File.separator+spaceReplaced[3]+File.separator+spaceReplaced[0]+
-                        File.separator+spaceReplaced[1];
-
-        return imageWritePath;
     }
 }
