@@ -1,6 +1,8 @@
 package com.data.extractor.model.beans.upload.template;
 
 
+import com.data.extractor.model.beans.template.info.insert.InsertDataParser;
+
 public class UploadStatus {
 
     private Boolean isTemplateNameValid;
@@ -19,6 +21,15 @@ public class UploadStatus {
     private String text;
     private String type;
     private String id;
+    private InsertDataParser insertDataParser;
+
+    public InsertDataParser getInsertDataParser() {
+        return insertDataParser;
+    }
+
+    public void setInsertDataParser(InsertDataParser insertDataParser) {
+        this.insertDataParser = insertDataParser;
+    }
 
     public String getId() {        return id;    }
 

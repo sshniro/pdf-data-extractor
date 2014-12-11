@@ -7,7 +7,7 @@ import org.apache.commons.codec.binary.Base64;
 
 public class ResponseGenerator {
 
-    public String generateJsonResponse(UploadStatus uploadStatus){
+    public String generateJsonResponse(UploadStatus uploadStatus,Boolean fromTemplateEdit){
 
         UploadResponse uploadResponse=new UploadResponse();
         uploadResponse.setId(uploadStatus.getId());
@@ -21,6 +21,9 @@ public class ResponseGenerator {
 
         uploadStatus.setImageRelativePaths(encodedRelativePaths);
         uploadResponse.setImageRelativePaths(uploadStatus.getImageRelativePaths());
+        if(fromTemplateEdit){
+            uploadResponse.setInsertDataParser(uploadStatus.getInsertDataParser());
+        }
         Gson gson = new Gson();
 
         // convert java object to JSON format, and returned as JSON formatted string

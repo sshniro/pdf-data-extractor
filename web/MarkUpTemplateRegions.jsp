@@ -30,7 +30,8 @@
 
 
             if(responseObj === null){
-                initDataJSON = '{"mainCategory":"Sales Order","subCategory":"Supplier 10","templateName":"template1","imageRelativePaths":["assets/img/pdfimage1.jpg","assets/img/pdfimage1.jpg"]}'
+                initDataJSON = '{"mainCategory":"Sales Order",' +
+                        '"subCategory":"Supplier 10","templateName":"template1","imageRelativePaths":["assets/img/pdfimage1.jpg","assets/img/pdfimage1.jpg"]}'
                 initData = JSON.parse(initDataJSON);
             }
             else{

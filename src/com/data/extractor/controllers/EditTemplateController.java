@@ -5,7 +5,10 @@ import com.data.extractor.model.beans.template.info.image.ImageDataParser;
 import com.data.extractor.model.beans.template.info.insert.InsertDataParser;
 import com.data.extractor.model.beans.template.info.table.TableDataParser;
 import com.data.extractor.model.beans.template.info.text.TextDataParser;
+import com.data.extractor.model.beans.upload.template.UploadStatus;
+import com.data.extractor.model.convert.PdfToImage;
 import com.data.extractor.model.data.access.layer.TemplateInfoDAO;
+import com.data.extractor.model.template.upload.ResponseGenerator;
 import com.google.gson.Gson;
 import com.mongodb.MongoClient;
 
@@ -13,6 +16,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -44,7 +49,29 @@ public class EditTemplateController extends HttpServlet {
         if(tableDataParserList.size() != 0)
             insertDataParser.setTableDataParser(tableDataParserList.get(0));
 
-        response.getWriter().print(gson.toJson(insertDataParser));
+
+
+        PdfToImage pdfToImage =new PdfToImage();
+
+        UploadStatus uploadStatus = new UploadStatus();
+        uploadStatus.setInsertDataParser(insertDataParser);
+        File uploadLocation = new File(getServletContext().getRealPath(File.separator) + File.separator + "uploads"+File.separator+"temp" + File.separator + data.getParent() +
+                File.separator + data.getId());
+
+
+        //extractStatus.setPdfLocation(uploadLocation.getAbsolutePath());
+        //extractStatus.setPdfName(extractStatus.getId()); // templateName space replaced with "_"
+        //extractStatus.setUploadedPdfFile(extractStatus.getPdfLocation()+File.separator+extractStatus.getPdfName()+".pdf");
+        uploadStatus.setPdfLocation(uploadLocation.getAbsolutePath());
+        uploadStatus.setUploadedPdfFile(uploadStatus.getPdfLocation() + File.separator + data.getId() + ".pdf");
+        pdfToImage.convertToImage(uploadStatus);
+
+        HttpSession session=request.getSession();
+        String uploadJsonResponse = new ResponseGenerator().generateJsonResponse(uploadStatus , true);
+        session.setAttribute("uploadJsonResponse", uploadJsonResponse);
+        response.getWriter().print("success");
+
+        //response.getWriter().print(gson.toJson(insertDataParser));
 
     }
 

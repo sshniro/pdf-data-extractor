@@ -466,6 +466,7 @@ function ViewModel(){
     self.newTemplateName = ko.observable();
     self.overlayNotification = ko.observable('Notification...');
     self.selectedPdfTemplate = ko.observable('');
+    self.extractedPdfId = ko.observable();
 
     self.isSelectedTemplate = ko.observable(false);
     self.selectedDocumentId = ko.observable('');
@@ -610,9 +611,13 @@ function ViewModel(){
     self.editTemplate =  function(){
         var editData = {
           "parent"          : self.currentSelectedTreeNode().id(),
-          "text"            : self.selectedDocumentId()
+          "text"            : self.selectedDocumentId(),
+          "id"              : self.extractedPdfId()
         };
-        $.post("EditTemplateController",editData);
+        $.post("EditTemplateController",editData)
+            .done(function(){
+                responseObj =undefined;
+            });
         $('button#editTemplate').css('display','none');
     };
 
