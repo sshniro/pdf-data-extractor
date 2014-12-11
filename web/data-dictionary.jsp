@@ -56,7 +56,7 @@
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li style="margin: 15px 15px 0 0">Login as: <b>administrator</b></li>
-                    <li><a data-bind="click:logout" class="btn btn-default" style="padding: 5px; margin-top: 10px; max-width: 100px;">Logout <span class="glyphicon glyphicon-log-out"></span></a></li>
+                    <li><a onclick="window.location.href = 'index.jsp'" class="btn btn-default" style="padding: 5px; margin-top: 10px; max-width: 100px;">Logout <span class="glyphicon glyphicon-log-out"></span></a></li>
                 </ul>
             </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->
@@ -79,48 +79,52 @@
                         <div class="form-group">
                             <label class="col-sm-3">Name:</label>
                             <div class="col-sm-8">
-                                <input type="text" data-bind="value:keyword().name" class="form-control"/>
+                                <input data-bind="value:newData().name" type="text" class="form-control"/>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3">Data Type:</label>
+                            <label class="col-sm-3">Type:</label>
                             <div class="col-sm-8">
-                                <select class="form-control"></select>
+                                <select data-bind="value:newData().type" class="form-control"></select>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3">Description:</label>
                             <div class="col-sm-8">
-                                <textarea class="form-control" rows="3"></textarea>
+                                <textarea data-bind="value:newData().description" class="form-control" rows="3"></textarea>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3">Data Type:</label>
                             <div class="col-sm-8">
-                                <select class="form-control"></select>
+                                <select data-bind="value:newData().dataType" class="form-control">
+                                    <option>int</option>
+                                    <option>string</option>
+                                    <option>char</option>
+                                </select>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3">Length:</label>
                             <div class="col-sm-8">
-                                <input type="number" min="0" class="form-control" />
+                                <input data-bind="value:newData().length" type="number" min="0" class="form-control" />
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3">Default Values:</label>
+                            <label class="col-sm-3">Default Value:</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" />
+                                <input data-bind="value:newData().defaultValue" type="text" class="form-control" />
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3">Allowed Values:</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" />
+                                <input data-bind="value:newData().allowedValues" type="text" class="form-control" />
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="col-sm-offset-3 col-sm-8">
-                                <input type="submit" class="btn btn-default" value=" Add " />
+                                <input data-bind="click:addNew" type="submit" class="btn btn-default" value=" Add " />
                             </div>
                         </div>
                     </form>
@@ -139,18 +143,19 @@
                     <table class="table table-responsive">
                         <thead>
                             <tr>
-                                <th>Name</th><th>Type</th><th>Description</th><th>Data Type</th><th>Length</th><th>Default Values</th><th>Allowed Values</th>
+                                <th>Name</th><th>Type</th><th>Description</th><th>Data Type</th><th>Length</th><th>Default Value</th><th>Allowed Values</th><th></th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody data-bind="foreach:currentDic">
                             <tr>
-                                <td>Customer</td>
-                                <td>int</td>
-                                <td>Test Desc.</td>
-                                <td>6</td>
-                                <td>5</td>
-                                <td>0</td>
-                                <td>x=>x<999999&x>0</td>
+                                <td data-bind="text:name">Customer</td>
+                                <td data-bind="text:type">int</td>
+                                <td data-bind="text:description">Test Desc.</td>
+                                <td data-bind="text:dataType">6</td>
+                                <td data-bind="text:length">5</td>
+                                <td data-bind="text:defaultValue">0</td>
+                                <td data-bind="text:allowedValues">x=>x<999999&x>0</td>
+                                <td><button data-bind="click:removeDicItem" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span></button></td>
                             </tr>
                         </tbody>
                     </table>
@@ -167,9 +172,7 @@
 
 <!-- importing libraries -->
 <script type="text/javascript" src="assets/js/knockout-3.2.0.js" ></script>
-<script type="text/javascript" src="assets/js/markUpTemplateRegionsScripts/uiFunctions.js"> </script>
-<script type="text/javascript" src="assets/js/markUpTemplateRegionsScripts/models.js"> </script>
-<script type="text/javascript" src="assets/js/markUpTemplateRegionsScripts/viewModel.js"> </script>
+<script type="text/javascript" src="assets/js/dataDictionaryScripts/dataDictionaryVM.js"> </script>
 
 
 </body>
