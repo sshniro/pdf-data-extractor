@@ -172,18 +172,5 @@
 <script type="text/javascript" src="assets/js/markUpTemplateRegionsScripts/viewModel.js"> </script>
 
 
-<!-- custom js -->
-<script type="text/javascript">
-    $('#dataDic_CreateNew').click(function(){
-        var Name = $('dataDic_Name').val();
-        var Type = $('dataDic_Type').selected().val();
-        var Desc = $('dataDic_Desc').val();
-        var DataType = $('dataDic_DataType').val();
-        var Length = $('dataDic_Length').val();
-        var DefaultValue = $('dataDic_DefaultValue').val();
-        var AllowedValues = $('dataDic_AllowedValues').val();
-    });
-</script>
-
 </body>
 </html>
