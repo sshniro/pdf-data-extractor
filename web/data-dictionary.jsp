@@ -79,48 +79,48 @@
                         <div class="form-group">
                             <label class="col-sm-3">Name:</label>
                             <div class="col-sm-8">
-                                <input id="dataDic_Name" type="text" class="form-control" required="required" />
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-3">Type:</label>
-                            <div class="col-sm-8">
-                                <select id="dataDic_Type" class="form-control" required="required"></select>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-3">Description:</label>
-                            <div class="col-sm-8">
-                                <textarea id="dataDic_Desc" class="form-control" rows="3"></textarea>
+                                <input type="text" data-bind="value:keyword().name" class="form-control"/>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3">Data Type:</label>
                             <div class="col-sm-8">
-                                <select id="dataDic_DataType" class="form-control"></select>
+                                <select class="form-control"></select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3">Description:</label>
+                            <div class="col-sm-8">
+                                <textarea class="form-control" rows="3"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3">Data Type:</label>
+                            <div class="col-sm-8">
+                                <select class="form-control"></select>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3">Length:</label>
                             <div class="col-sm-8">
-                                <input id="dataDic_Length" type="number" min="0" class="form-control" />
+                                <input type="number" min="0" class="form-control" />
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3">Default Value:</label>
+                            <label class="col-sm-3">Default Values:</label>
                             <div class="col-sm-8">
-                                <input id="dataDic_DefaultValue" type="text" class="form-control" />
+                                <input type="text" class="form-control" />
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3">Allowed Values:</label>
                             <div class="col-sm-8">
-                                <input id="dataDic_AllowedValues" type="text" class="form-control" />
+                                <input type="text" class="form-control" />
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="col-sm-offset-3 col-sm-8">
-                                <input id="dataDic_CreateNew" type="submit" class="btn btn-default" value=" Add " />
+                                <input type="submit" class="btn btn-default" value=" Add " />
                             </div>
                         </div>
                     </form>
