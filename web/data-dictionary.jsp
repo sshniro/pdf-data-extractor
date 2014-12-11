@@ -78,13 +78,13 @@
                         <div class="form-group">
                             <label class="col-sm-3">Name:</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" required="required" />
+                                <input type="text" data-bind="value:keyword().name" class="form-control"/>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3">Type:</label>
+                            <label class="col-sm-3">Data Type:</label>
                             <div class="col-sm-8">
-                                <select class="form-control" required="required"></select>
+                                <select class="form-control"></select>
                             </div>
                         </div>
                         <div class="form-group">
