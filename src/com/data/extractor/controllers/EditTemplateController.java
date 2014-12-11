@@ -30,6 +30,7 @@ public class EditTemplateController extends HttpServlet {
             sb.append(s);
         }
         Gson gson=new Gson();
+        s= sb.toString();
         ManageCategoriesData data = gson.fromJson(sb.toString(),ManageCategoriesData.class);
 
         /* Get the mongo client from the servletContext */
