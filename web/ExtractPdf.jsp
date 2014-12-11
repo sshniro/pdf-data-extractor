@@ -130,7 +130,7 @@
         <!-- extracted data -->
         <div class="well well-sm row" style="margin-top: 20px">
            <div>
-                <h4 style="display: inline;">- Extracted Data -</h4>
+                <h4 style="display: inline;">Extracted Data For Pdf ID <span id="extractedPdfId" data-bind="text:extractedPdfId"></span></h4>
                 <button id="editTemplate" class="form-control pull-right" data-bind="click:editTemplate" style=" width: 50px; display: none">Edit</button>
             </div>
             <div id="extractedText"></div>
@@ -189,6 +189,7 @@
                 var str = messages.extractedData.replace( new RegExp('\n', 'g') , '</br>');
                 $('#extractedText').html(str);
                 $('button#editTemplate').css('display','block');
+                vm.extractedPdfId(messages.id);
                 $('#overlay').css('display', 'none');
             }else{
                 alert(messages.errorCause);
