@@ -30,7 +30,10 @@ public class DictionaryController extends HttpServlet {
 
 
         if(dictionary.getRequest().equals("createNewDataDicItem")){
-            createDictionaryWord(mongoClient ,dictionary);
+
+            CounterDAO counterDAO=new CounterDAO(mongoClient);
+            dictionary.setId(counterDAO.getDictionaryId());
+            createDictionaryWord(mongoClient, dictionary);
 
             String jsonStr = "{\"state\": \"success\"}";
             JsonElement element = gson.fromJson (jsonStr, JsonElement.class);
