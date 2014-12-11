@@ -55,6 +55,9 @@
                 <ul class="nav navbar-nav">
                     <li><a id="templateExtract" href="/ExtractPdf.jsp">Extract Doc</a></li>
                 </ul>
+                <ul class="nav navbar-nav">
+                    <li><a href="/data-dictionary.jsp">Data Dictionary</a></li>
+                </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li style="margin: 15px 15px 0 0">Login as: <b>administrator</b></li>
                     <li><a onclick="window.location.href = 'index.jsp'" class="btn btn-default" style="padding: 5px; margin-top: 10px; max-width: 100px;">Logout <span class="glyphicon glyphicon-log-out"></span></a></li>
@@ -80,7 +83,7 @@
                         <div class="form-group">
                             <label class="col-sm-3">Name:</label>
                             <div class="col-sm-8">
-                                <input data-bind="value:newData().name" type="text" class="form-control"/>
+                                <input data-bind="value:newData().name" id="dicFormName" type="text" class="form-control" autofocus="autofocus"/>
                             </div>
                         </div>
                         <div class="form-group">
@@ -114,7 +117,7 @@
                         <div class="form-group">
                             <label class="col-sm-3">Default Value:</label>
                             <div class="col-sm-8">
-                                <input data-bind="value:newData().defaultValue" type="text" class="form-control" />
+                                <input data-bind="value:newData().defaultValues" type="text" class="form-control" />
                             </div>
                         </div>
                         <div class="form-group">
@@ -154,7 +157,7 @@
                                 <td data-bind="text:description" style="width: 15%; overflow: auto;">Test Desc.</td>
                                 <td data-bind="text:dataType">6</td>
                                 <td data-bind="text:length">5</td>
-                                <td data-bind="text:defaultValue">0</td>
+                                <td data-bind="text:defaultValues">0</td>
                                 <td data-bind="text:allowedValues">x=>x<999999&x>0</td>
                                 <td style="max-width: 40px"><button data-bind="click:$parent.removeDicItem" class="btn btn-default" style="color:red"><span class="glyphicon glyphicon-trash"></span></button></td>
                             </tr>

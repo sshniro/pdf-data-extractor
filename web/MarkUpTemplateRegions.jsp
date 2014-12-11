@@ -117,6 +117,9 @@
                     <li><a id="templateExtract" href="/ExtractPdf.jsp">Extract Doc</a></li>
                     <li><a style="cursor: pointer" onclick="$('#nav-toolbar').show('500')">Tools&nbsp;<small class="glyphicon glyphicon-chevron-down"></small></a></li>
                 </ul>
+                <ul class="nav navbar-nav">
+                    <li><a href="/data-dictionary.jsp">Data Dictionary</a></li>
+                </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li style="margin: 15px 15px 0 0">Login as: <b>administrator</b></li>
                     <li><a data-bind="click:logout" class="btn btn-default" style="padding: 5px; margin-top: 10px; max-width: 100px;">Logout <span class="glyphicon glyphicon-log-out"></span></a></li>

@@ -7,14 +7,14 @@
 // models
 
 function Keyword(data){
+    this.id = ko.observable(data.id);
     this.name = ko.observable(data.name);
     this.type = ko.observable(data.type);
     this.description = ko.observable(data.description);
     this.dataType = ko.observable(data.dataType);
     this.length = ko.observable(data.length);
-    this.defaultValue = ko.observable(data.defaultValue);
+    this.defaultValues = ko.observable(data.defaultValues);
     this.allowedValues = ko.observable(data.allowedValues);
-
 }
 
 
@@ -69,6 +69,7 @@ function ViewModel() {
                 for(item in dicObj) {
                     self.currentDic.push(new Keyword(dicObj[item]));
                 }
+                $('#dicFormName').focus();
             }
         });
     };
@@ -77,6 +78,17 @@ function ViewModel() {
     self.removeDicItem = function(data){
         self.overlayNotification('deleting...');
         $("#overlay").css("display","block");
+
+        var data={ 'request' : "removeDicItem", 'id' : data.id()};
+        $.ajax({
+            type: 'POST', url: 'DictionaryController',
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            data: JSON.stringify(data),
+            success: function(data, textStatus, jqXHR) {
+                self.refreshDictionary();
+            }
+        });
     };
 
 }
