@@ -24,9 +24,10 @@
         }
         .box{
             border: 1px solid #a0a0a0;
-            min-height: 85vh;
+            height: 85vh;
             width: 100%;
             padding: 5px;
+            overflow-y: auto;
         }
         .box header{
             font-size: 1.2em;
@@ -150,7 +151,7 @@
                             <tr>
                                 <td data-bind="text:name">Customer</td>
                                 <td data-bind="text:type">int</td>
-                                <td data-bind="text:description">Test Desc.</td>
+                                <td data-bind="text:description" style="width: 15%; overflow: auto;">Test Desc.</td>
                                 <td data-bind="text:dataType">6</td>
                                 <td data-bind="text:length">5</td>
                                 <td data-bind="text:defaultValue">0</td>

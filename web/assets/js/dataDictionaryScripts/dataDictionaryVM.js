@@ -46,7 +46,7 @@ function ViewModel() {
             data: JSON.stringify(data),
             success: function(data, textStatus, jqXHR) {
                 var messages = JSON.parse(jqXHR.responseText);
-                $('#dicForm').reset();
+                $('#dicForm')[0].reset();
                 self.refreshDictionary();
             }
         });
@@ -65,6 +65,7 @@ function ViewModel() {
             data: JSON.stringify(data),
             success: function(data, textStatus, jqXHR) {
                 dicObj = JSON.parse(jqXHR.responseText);
+                self.currentDic([]);
                 for(item in dicObj) {
                     self.currentDic.push(new Keyword(dicObj[item]));
                 }
