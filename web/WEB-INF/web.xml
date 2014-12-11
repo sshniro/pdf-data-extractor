@@ -48,6 +48,10 @@
         <servlet-name>EditTemplateController</servlet-name>
         <servlet-class>com.data.extractor.controllers.EditTemplateController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DictionaryController</servlet-name>
+        <servlet-class>com.data.extractor.controllers.DictionaryController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>TemplateUploadController</servlet-name>
         <url-pattern>/TemplateUploadController</url-pattern>
@@ -79,6 +83,10 @@
     <servlet-mapping>
         <servlet-name>EditTemplateController</servlet-name>
         <url-pattern>/EditTemplateController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DictionaryController</servlet-name>
+        <url-pattern>/DictionaryController</url-pattern>
     </servlet-mapping>
 
 
