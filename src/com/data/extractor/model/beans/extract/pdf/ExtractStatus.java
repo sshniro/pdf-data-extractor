@@ -4,17 +4,18 @@ package com.data.extractor.model.beans.extract.pdf;
 public class ExtractStatus {
 
     private String  RootPath;
-    private String  mainCategory;
-    private String  subCategory;
-    private String  templateName;
     private String  pdfLocation;
     private String  pdfName;
     private String  uploadedPdfFile;
     private String  documentId;
     private String  errorCause;
-    private Boolean  status;
+    private Boolean status;
     private Boolean isDocumentIdValid;
     private String  id;
+    private String  parent;
+    private Boolean pdfUploadStatus;
+    private String  documentIdCause;
+    private String  pdfUploadErrorCause;
 
     public String getParent() {
         return parent;
@@ -23,8 +24,6 @@ public class ExtractStatus {
     public void setParent(String parent) {
         this.parent = parent;
     }
-
-    private String  parent;
 
     public String getId() {        return id;    }
 
@@ -46,8 +45,6 @@ public class ExtractStatus {
         this.documentIdCause = documentIdCause;
     }
 
-    private String  documentIdCause;
-
     public String getPdfUploadErrorCause() {
         return pdfUploadErrorCause;
     }
@@ -55,8 +52,6 @@ public class ExtractStatus {
     public void setPdfUploadErrorCause(String pdfUploadErrorCause) {
         this.pdfUploadErrorCause = pdfUploadErrorCause;
     }
-
-    private String pdfUploadErrorCause;
 
     public Boolean getPdfUploadStatus() {
         return pdfUploadStatus;
@@ -66,38 +61,12 @@ public class ExtractStatus {
         this.pdfUploadStatus = pdfUploadStatus;
     }
 
-    private Boolean pdfUploadStatus;
-
     public String getRootPath() {
         return RootPath;
     }
 
     public void setRootPath(String rootPath) {
         RootPath = rootPath;
-    }
-
-    public String getMainCategory() {
-        return mainCategory;
-    }
-
-    public void setMainCategory(String mainCategory) {
-        this.mainCategory = mainCategory;
-    }
-
-    public String getSubCategory() {
-        return subCategory;
-    }
-
-    public void setSubCategory(String subCategory) {
-        this.subCategory = subCategory;
-    }
-
-    public String getTemplateName() {
-        return templateName;
-    }
-
-    public void setTemplateName(String templateName) {
-        this.templateName = templateName;
     }
 
     public String getPdfLocation() {
@@ -135,7 +104,5 @@ public class ExtractStatus {
     public Boolean getStatus() {        return status;    }
 
     public void setStatus(Boolean status) {        this.status = status;    }
-
-
 
 }

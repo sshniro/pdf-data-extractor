@@ -22,9 +22,9 @@ public class TableDataRetriever {
         DBCollection templateCollection = dbInitializer.getCollection(db,templatesColl);
 
         BasicDBObject basicDBObject = new BasicDBObject();
-        basicDBObject.put("mainCategory", extractStatus.getMainCategory());
-        basicDBObject.put("subCategory", extractStatus.getSubCategory());
-        basicDBObject.put("templateName", extractStatus.getTemplateName());
+        //basicDBObject.put("mainCategory", extractStatus.getMainCategory());
+        //basicDBObject.put("subCategory", extractStatus.getSubCategory());
+        //basicDBObject.put("templateName", extractStatus.getTemplateName());
         basicDBObject.put("dataType", "table");
 
         DBCursor templateCursor = templateCollection.find(basicDBObject);
