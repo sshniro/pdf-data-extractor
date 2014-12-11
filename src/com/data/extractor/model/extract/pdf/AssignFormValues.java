@@ -28,7 +28,7 @@ public class AssignFormValues {
                     extractStatus.setParent(templateProperty.getString());
                 }
                 // Assign the value for the template name
-                if(fieldName.equals("documentId")){
+                if(fieldName.equals("text")){
                     extractStatus.setDocumentId(templateProperty.getString());
                 }
             }

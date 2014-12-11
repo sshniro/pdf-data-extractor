@@ -11,6 +11,9 @@ public class ResponseGenerator {
 
         if(extractResponse.isStatus()) {
             extractResponse.setExtractedData(extractedData);
+            extractResponse.setId(extractStatus.getId());
+            extractResponse.setParent(extractStatus.getParent());
+            extractResponse.setDocumentId(extractStatus.getDocumentId());
         }else
             extractResponse.setErrorCause(extractStatus.getErrorCause());
         return extractResponse;
