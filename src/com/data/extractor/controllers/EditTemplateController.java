@@ -30,15 +30,16 @@ public class EditTemplateController extends HttpServlet {
             sb.append(s);
         }
         Gson gson=new Gson();
+        s= sb.toString();
         ManageCategoriesData data = gson.fromJson(sb.toString(),ManageCategoriesData.class);
 
         /* Get the mongo client from the servletContext */
         MongoClient mongoClient = (MongoClient) request.getServletContext().getAttribute("MONGO_CLIENT");
         TemplateInfoDAO templateInfoDAO = new TemplateInfoDAO(mongoClient);
 
-        List<TextDataParser> textDataParserList = templateInfoDAO.getTextTemplateInfo(data.getId(), "text");
-        List<ImageDataParser> imageDataParserList= templateInfoDAO.getImageTemplateInfo(data.getId(), "image");
-        List<TableDataParser> tableDataParserList= templateInfoDAO.getTableTemplateInfo(data.getId(), "table");
+        List<TextDataParser> textDataParserList = templateInfoDAO.getTextTemplateInfo(data.getParent(), "text");
+        List<ImageDataParser> imageDataParserList= templateInfoDAO.getImageTemplateInfo(data.getParent(), "image");
+        List<TableDataParser> tableDataParserList= templateInfoDAO.getTableTemplateInfo(data.getParent(), "table");
 
 
         InsertDataParser insertDataParser = new InsertDataParser();
@@ -56,7 +57,7 @@ public class EditTemplateController extends HttpServlet {
         UploadStatus uploadStatus = new UploadStatus();
         uploadStatus.setInsertDataParser(insertDataParser);
         File uploadLocation = new File(getServletContext().getRealPath(File.separator) + File.separator + "uploads"+File.separator+"temp" + File.separator + data.getParent() +
-                File.separator + data.getId());
+                                        File.separator + data.getId());
 
 
         //extractStatus.setPdfLocation(uploadLocation.getAbsolutePath());
@@ -64,6 +65,8 @@ public class EditTemplateController extends HttpServlet {
         //extractStatus.setUploadedPdfFile(extractStatus.getPdfLocation()+File.separator+extractStatus.getPdfName()+".pdf");
         uploadStatus.setPdfLocation(uploadLocation.getAbsolutePath());
         uploadStatus.setUploadedPdfFile(uploadStatus.getPdfLocation() + File.separator + data.getId() + ".pdf");
+        uploadStatus.setId(data.getId());
+        uploadStatus.setParent(data.getParent());
         pdfToImage.convertToImage(uploadStatus);
 
         HttpSession session=request.getSession();
