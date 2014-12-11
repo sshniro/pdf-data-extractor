@@ -29,7 +29,7 @@ public class TemplateUploadController extends javax.servlet.http.HttpServlet {
         if (uploadStatus.getIsTemplateNameValid()) {
             if (uploadStatus.getPdfUploadStatus()) {
                 HttpSession session=request.getSession();
-                String uploadJsonResponse = new ResponseGenerator().generateJsonResponse(uploadStatus);
+                String uploadJsonResponse = new ResponseGenerator().generateJsonResponse(uploadStatus,false);
                 session.setAttribute("uploadJsonResponse", uploadJsonResponse);
                 response.getWriter().print("success");
 
