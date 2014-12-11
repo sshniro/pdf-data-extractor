@@ -616,9 +616,9 @@ function ViewModel(){
         };
         $.post("EditTemplateController",editData)
             .done(function(){
-                responseObj =undefined;
+                responseObj = undefined;
             });
-        $('button#editTemplate').css('display','none');
+        /*$('button#editTemplate').css('display','none');*/
     };
 
     self.redirectToEditTemplate = function(){
