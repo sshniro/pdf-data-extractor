@@ -4,6 +4,8 @@ import com.data.extractor.model.beans.dictionary.Dictionary;
 import com.data.extractor.model.data.access.layer.CounterDAO;
 import com.data.extractor.model.data.access.layer.DictionaryDAO;
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.mongodb.MongoClient;
 
 import javax.servlet.ServletException;
@@ -29,7 +31,11 @@ public class DictionaryController extends HttpServlet {
 
         if(dictionary.getRequest().equals("createNewDataDicItem")){
             createDictionaryWord(mongoClient ,dictionary);
-            response.getWriter().print("success");
+
+            String jsonStr = "{\"state\": \"success\"}";
+            JsonElement element = gson.fromJson (jsonStr, JsonElement.class);
+            JsonObject jsonObj = element.getAsJsonObject();
+            response.getWriter().print(gson.toJson(jsonObj));
         }
 
 
