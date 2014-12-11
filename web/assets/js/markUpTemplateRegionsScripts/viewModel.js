@@ -614,11 +614,11 @@ function ViewModel(){
           "text"            : self.selectedDocumentId(),
           "id"              : self.extractedPdfId()
         };
-        $.post("EditTemplateController",editData)
+        $.post("EditTemplateController",JSON.stringify(editData))
             .done(function(){
                 responseObj =undefined;
             });
-        $('button#editTemplate').css('display','none');
+        //$('button#editTemplate').css('display','none');
     };
 
     self.redirectToEditTemplate = function(){
