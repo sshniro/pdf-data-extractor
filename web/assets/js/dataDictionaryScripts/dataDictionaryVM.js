@@ -26,7 +26,7 @@ function ViewModel() {
 
     self.newData = ko.observable(keyword);
     self.currentDic = ko.observableArray([]);
-
+    self.overlayNotification = ko.observable();
 
     self.addNew = function(){
         // validate form
@@ -37,6 +37,8 @@ function ViewModel() {
         // call
         var data = ko.toJS(self.newData());
         data.request = "createNewDataDicItem";
+        self.overlayNotification('sending...');
+        $("#overlay").css("display","block");
         $.ajax({
             type: 'POST', url: 'DictionaryController',
             contentType: 'application/json; charset=utf-8',
@@ -44,6 +46,7 @@ function ViewModel() {
             data: JSON.stringify(data),
             success: function(data, textStatus, jqXHR) {
                 var messages = JSON.parse(jqXHR.responseText);
+                $('#dicForm')[0].reset();
                 self.refreshDictionary();
             }
         });
@@ -53,6 +56,8 @@ function ViewModel() {
     self.refreshDictionary = function(){
         var dicObj;
         var data={ 'request' : "getAllDicItems"};
+        self.overlayNotification('loading...');
+        $("#overlay").css("display","block");
         $.ajax({
             type: 'POST', url: 'DictionaryController',
             contentType: 'application/json; charset=utf-8',
@@ -60,14 +65,18 @@ function ViewModel() {
             data: JSON.stringify(data),
             success: function(data, textStatus, jqXHR) {
                 dicObj = JSON.parse(jqXHR.responseText);
-
+                self.currentDic([]);
+                for(item in dicObj) {
+                    self.currentDic.push(new Keyword(dicObj[item]));
+                }
             }
         });
     };
 
 
     self.removeDicItem = function(data){
-
+        self.overlayNotification('deleting...');
+        $("#overlay").css("display","block");
     };
 
 }
