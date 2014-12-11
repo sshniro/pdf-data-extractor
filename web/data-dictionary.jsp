@@ -75,7 +75,7 @@
                     <hr />
                 </header>
                 <section style="padding: 10px">
-                    <form class="form-horizontal" role="form">
+                    <form id="dicForm" class="form-horizontal" role="form">
                         <div class="form-group">
                             <label class="col-sm-3">Name:</label>
                             <div class="col-sm-8">
@@ -155,7 +155,7 @@
                                 <td data-bind="text:length">5</td>
                                 <td data-bind="text:defaultValue">0</td>
                                 <td data-bind="text:allowedValues">x=>x<999999&x>0</td>
-                                <td><button data-bind="click:removeDicItem" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span></button></td>
+                                <td><button data-bind="click:$parent.removeDicItem" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span></button></td>
                             </tr>
                         </tbody>
                     </table>
@@ -167,12 +167,32 @@
 
 
 
+<!-- overlay div -->
+<div id="overlay" style="position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; display: none;">
+    <div style="position: relative; margin: 40vh auto; max-width: 600px; height: 75px; text-align: center; background-color: #fff; border-radius: 10px; padding: 25px; box-shadow: 0 0 10px #303030; z-index: 110">
+        <img src="assets/img/win-loader.gif" alt="loading" />&nbsp;&nbsp;&nbsp;
+        <label><span data-bind="text:overlayNotification">Notification...</span></label>
+    </div>
+    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: #eee; opacity: 0.7; z-index: 100"></div>
+</div>
+
 
 
 
 <!-- importing libraries -->
 <script type="text/javascript" src="assets/js/knockout-3.2.0.js" ></script>
 <script type="text/javascript" src="assets/js/dataDictionaryScripts/dataDictionaryVM.js"> </script>
+
+<!-- custom js -->
+<script type="text/javascript">
+    $(document).ajaxStart(function(){
+        $("#overlay").css("display","block");
+    });
+    $(document).ajaxComplete(function(){
+        $("#overlay").css("display","none");
+        dataDicVM.overlayNotification('');
+    });
+</script>
 
 
 </body>

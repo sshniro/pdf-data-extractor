@@ -26,7 +26,7 @@ function ViewModel() {
 
     self.newData = ko.observable(keyword);
     self.currentDic = ko.observableArray([]);
-
+    self.overlayNotification = ko.observable();
 
     self.addNew = function(){
         // validate form
@@ -37,6 +37,7 @@ function ViewModel() {
         // call
         var data = ko.toJS(self.newData());
         data.request = "createNewDataDicItem";
+        self.overlayNotification('sending...');
         $.ajax({
             type: 'POST', url: 'DictionaryController',
             contentType: 'application/json; charset=utf-8',
@@ -44,6 +45,7 @@ function ViewModel() {
             data: JSON.stringify(data),
             success: function(data, textStatus, jqXHR) {
                 var messages = JSON.parse(jqXHR.responseText);
+                $('#dicForm').reset();
                 self.refreshDictionary();
             }
         });
@@ -60,7 +62,9 @@ function ViewModel() {
             data: JSON.stringify(data),
             success: function(data, textStatus, jqXHR) {
                 dicObj = JSON.parse(jqXHR.responseText);
-
+                for(item in dicObj) {
+                    self.currentDic.push(new Keyword(dicObj[item]));
+                }
             }
         });
     };
