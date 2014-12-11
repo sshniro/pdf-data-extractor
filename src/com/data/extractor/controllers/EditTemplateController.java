@@ -65,6 +65,8 @@ public class EditTemplateController extends HttpServlet {
         //extractStatus.setUploadedPdfFile(extractStatus.getPdfLocation()+File.separator+extractStatus.getPdfName()+".pdf");
         uploadStatus.setPdfLocation(uploadLocation.getAbsolutePath());
         uploadStatus.setUploadedPdfFile(uploadStatus.getPdfLocation() + File.separator + data.getId() + ".pdf");
+        uploadStatus.setId(data.getId());
+        uploadStatus.setParent(data.getParent());
         pdfToImage.convertToImage(uploadStatus);
 
         HttpSession session=request.getSession();
