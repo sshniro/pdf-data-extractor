@@ -155,7 +155,7 @@
                                 <td data-bind="text:length">5</td>
                                 <td data-bind="text:defaultValue">0</td>
                                 <td data-bind="text:allowedValues">x=>x<999999&x>0</td>
-                                <td><button data-bind="click:$parent.removeDicItem" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span></button></td>
+                                <td style="max-width: 40px"><button data-bind="click:$parent.removeDicItem" class="btn btn-default" style="color:red"><span class="glyphicon glyphicon-trash"></span></button></td>
                             </tr>
                         </tbody>
                     </table>

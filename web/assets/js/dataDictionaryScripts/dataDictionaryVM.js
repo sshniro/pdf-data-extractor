@@ -38,6 +38,7 @@ function ViewModel() {
         var data = ko.toJS(self.newData());
         data.request = "createNewDataDicItem";
         self.overlayNotification('sending...');
+        $("#overlay").css("display","block");
         $.ajax({
             type: 'POST', url: 'DictionaryController',
             contentType: 'application/json; charset=utf-8',
@@ -55,6 +56,8 @@ function ViewModel() {
     self.refreshDictionary = function(){
         var dicObj;
         var data={ 'request' : "getAllDicItems"};
+        self.overlayNotification('loading...');
+        $("#overlay").css("display","block");
         $.ajax({
             type: 'POST', url: 'DictionaryController',
             contentType: 'application/json; charset=utf-8',
@@ -71,7 +74,8 @@ function ViewModel() {
 
 
     self.removeDicItem = function(data){
-
+        self.overlayNotification('deleting...');
+        $("#overlay").css("display","block");
     };
 
 }
