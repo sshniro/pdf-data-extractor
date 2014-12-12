@@ -1,8 +1,5 @@
 //Global Variables
 //Starting pixel coordinates of the ui component drawn upon
-var uiElementStartingX;
-var uiElementStartingY;
-
 
 
 
@@ -18,16 +15,63 @@ var currentElement = undefined;
 var imageNaturalHeight;
 var imageNaturalWidth;
 
-$( window ).load(function() {
+var effectiveController;
+
+//Initialize the page depending on the context [edit,create]
+$(window).ready(function(){
+
+    initBindings();
+    $("button#cancelSelection").attr('disabled', true);
+    $("button#saveSelection").attr('disabled', true);
+    vm = new ViewModel();
+    ko.applyBindings(vm);
+
+
+    setTimeout(resetLongPage, 400);
+/*
+    //Setting up core functionality and data
+    if(responseObj.insertDataParser === undefined){
+        effectiveController ="MarkUpTemplateRegionController";
+    }
+    else{
+        effectiveController = "EditMarkupController";
+        var textData = responseObj.insertDataParser.textDataParser;
+        var imageData = responseObj.insertDataParser.imageDataParser;
+        var tableData = responseObj.insertDataParser.tableDataParser;
+
+        for(dataParser in responseObj.insertDataParser){
+            for(dataElement in responseObj.insertDataParserp[dataParser]){
+                var currentDataElement = responseObj.insertDataParser[dataParser][dataElement]
+                if(currentDataElement.elementType === "text"){
+                    vm.addTextElement(currentDataElement.rawData);
+                    vm.addSubElement(currentDataElement.metaRawData);
+                }
+                else if(currentDataElement.elementType === "picture"){
+                    vm.addPictureElement(currentDataElement.rawData);
+                    vm.addSubElement(currentDataElement.metaRawData);
+                }
+                else if(currentDataElement.elementType === "table"){
+                    vm.addTableElement(currentDataElement.rawData);
+                    for(column in currentDataElement.columns){
+                        vm.addSubElement(column.rawData);
+                    }
+                }
+
+
+            }
+
+        }
+
+    }*/
+
 
 });
-$( window ).ready(function() {
 
+
+$( window ).ready(function() {
     setTimeout(resizeImage, 400);
 });
-$( window ).resize(function() {
-    resizeImage();
-});
+
 
 var resizeImage = function(){
     var images = $('img.templatingImage');
@@ -50,70 +94,9 @@ $('img#templatingImage').ready(function() {
     $('img').css('minHeight', imageNaturalHeight);
 });
 
-$(document).ready(function(){
-
-    initBindings();
-    $("button#cancelSelection").attr('disabled', true);
-    $("button#saveSelection").attr('disabled', true);        
-});
 
 //TODO: Delete this implementation below
 var initBindings =  (function(){
-/*        //TEXT BUTTON
-*//*    $("button#textSelect").click(function(event) {
-        event.stopPropagation()
-        vm.currentSelection("text");
-        selectionStarted();
-        selectionInitializer("img",drawingRouter);
-        $("#runningInstructions").text('Select Text Element');
-
-
-    });
-
-    //TABLE BUTTON
-    $("button#tableSelect").click(function(event) {
-        event.stopPropagation()
-        vm.currentSelection("table");
-        selectionStarted();
-        selectionInitializer("img",drawingRouter);
-        $("#runningInstructions").text('Select Table Element');
-
-    });
-
-    //PICTURE BUTTON
-    $("button#pictureSelect").click(function(event) {
-        event.stopPropagation();
-        vm.currentSelection("picture");
-        selectionStarted();
-        selectionInitializer("img",drawingRouter);
-        $("#runningInstructions").text('Select Picure Element');
-    });
-
-    $('#enableEditableDivs').click(function(event) {
-        event.stopPropagation()
-        $("#runningInstructions").text('Drag or Resize Elements');
-        editStarted();
-        draggableActivator();
-    });
-
-    //CANCEL BUTTON
-    $("button#cancelSelection").click(function(){
-        vm.cancelSelection();
-        resetEnvironment();
-
-    });*//*
-
-
-*//*    $("button#saveSelection").click(function(event){
-        event.stopPropagation()
-        if(vm.elementBuffer !== undefined){
-            $("div#"+vm.elementBuffer.id+".mainElement").unbind();
-            disappearDecos(vm.elementBuffer.id)//Should be called before saveSelection because the buffer is cleared
-        }
-        resetEnvironment();
-        vm.saveSelection();
-    });*/
-
     $("img").bind('mousedown',function(event){
         event.stopPropagation()
         alert("Select Element Type");
