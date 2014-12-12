@@ -54,4 +54,46 @@ public class PdfToImage {
         }
         return uploadStatus;
     }
+
+    public UploadStatus convertToImageFromTemplateEdit(UploadStatus uploadStatus){
+        try {
+            PDDocument doc = PDDocument.load(uploadStatus.getUploadedPdfFile());
+            //Get all pages from document and store them in a list
+            List<PDPage> pages = doc.getDocumentCatalog().getAllPages();
+            //create iterator object so it is easy to access each page from the list
+            Iterator<PDPage> i = pages.iterator();
+            int count = 1; //count variable used to separate each image file
+            System.out.println("Please wait...");
+
+            File path = new File(uploadStatus.getPdfLocation() + File.separator+ "images");
+            if (!path.exists()) {
+                path.mkdirs();
+            }
+
+            /* spaceReplaced[0]=mainCategory,spaceReplaced[1]=subCategory,spaceReplaced[2]=templateName */
+            //String[] spaceReplaced=replaceSpace(uploadStatus);
+            String[] imageRelativePaths=new String[pages.size()];
+            String imgPath=uploadStatus.getPdfLocation()+File.separator+"images"+File.separator;
+
+
+            while (i.hasNext()) {
+                PDPage page = i.next();
+                BufferedImage bi = page.convertToImage();
+                ImageIO.write(bi, "jpg", new File(imgPath + uploadStatus.getId() + count + ".jpg"));
+
+                /*imageRelativePaths=uploads/mainCategory/SubCategory/imageName */
+                imageRelativePaths[count-1]="uploads"+File.separator + "temp" + File.separator +uploadStatus.getParent()+ File.separator +
+                                            uploadStatus.getId() + File.separator +"images"+ File.separator+ uploadStatus.getId() + count+".jpg";
+                count++;
+            }
+
+            System.out.println("Conversion complete");
+            doc.close();
+            uploadStatus.setImageRelativePaths(imageRelativePaths);
+
+        } catch (IOException ie) {
+            ie.printStackTrace();
+        }
+        return uploadStatus;
+    }
 }

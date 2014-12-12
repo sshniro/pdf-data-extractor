@@ -47,6 +47,67 @@
                 initData.imageRelativePaths = newImageRelativePaths;
             }
             vm.initExtractionPages();
+
+            //Setting up core functionality and data
+            if(responseObj.insertDataParser === undefined){
+                effectiveController ="MarkUpTemplateRegionController";
+            }
+            else{
+                effectiveController = "EditMarkupController";
+                //Load existing data to page
+                //load text data
+                if(responseObj.insertDataParser.textDataParser !== undefined) {
+                    var textElements = responseObj.insertDataParser.textDataParser.textDataElements;
+                    for (textElement in textElements) {
+                        var currentDataElement = textElements[textElement];
+                        data = {};
+                        data.pageNumber = ko.observable(currentDataElement.pageNumber);
+                        vm.changePage(data);
+                        vm.addTextElement(currentDataElement.rawData);
+                        if (currentDataElement.metaRawData !== undefined) {
+                            vm.addSubElement(currentDataElement.metaRawData);
+
+                        }
+                    }
+                }
+
+                if(responseObj.insertDataParser.imageDataParser !== undefined) {
+                    var imageElements = responseObj.insertDataParser.imageDataParser.imageDataElements;
+                    for (imageElement in imageElements) {
+                        var currentDataElement = imageElements[imageElement]
+                        data = {};
+                        data.pageNumber = ko.observable(currentDataElement.pageNumber);
+                        vm.changePage(data);
+                        vm.addPictureElement(currentDataElement.rawData);
+                        if (currentDataElement.metaRawData !== undefined) {
+                            vm.addSubElement(currentDataElement.metaRawData);
+                        }
+
+                    }
+                }
+
+                if(responseObj.insertDataParser.tableDataParser !== undefined) {
+                    var tableElements = responseObj.insertDataParser.tableDataParser.tableDataElements;
+                    for (tableElement in tableElements) {
+                        var currentDataElement = tableElements[tableElement];
+                        data = {};
+                        data.pageNumber = ko.observable(currentDataElement.pageNumber);
+                        vm.changePage(data);
+                        vm.addTableElement(currentDataElement.rawData);
+                        for (column in currentDataElement.columns) {
+                            if (column.rawData !== undefined) { //TODO:Delete this if condition after implementing raw data
+                                vm.addSubElement(column.rawData);
+                            }
+                        }
+                    }
+                }
+
+                data ={};
+                data.pageNumber = ko.observable(1);
+                vm.changePage(data);
+
+            }
+
         }
     </script>
     <style>
@@ -302,10 +363,13 @@
 
 <!-- importing libraries -->
 <script type="text/javascript" src="assets/js/knockout-3.2.0.js" ></script>
-<script type="text/javascript" src="assets/js/markUpTemplateRegionsScripts/uiFunctions.js"> </script>
+
+<script type="text/javascript" src="assets/js/markUpTemplateRegionsScripts/messsageBroker.js"> </script>
 <script type="text/javascript" src="assets/js/markUpTemplateRegionsScripts/models.js"> </script>
 <script type="text/javascript" src="assets/js/markUpTemplateRegionsScripts/viewModel.js"> </script>
-<script type="text/javascript" src="assets/js/markUpTemplateRegionsScripts/messsageBroker.js"> </script>
+<script type="text/javascript" src="assets/js/markUpTemplateRegionsScripts/uiFunctions.js"> </script>
+
+
 
 <!-- UI behaviors -->
 <script type="text/javascript">
