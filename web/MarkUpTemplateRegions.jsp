@@ -302,10 +302,13 @@
 
 <!-- importing libraries -->
 <script type="text/javascript" src="assets/js/knockout-3.2.0.js" ></script>
-<script type="text/javascript" src="assets/js/markUpTemplateRegionsScripts/uiFunctions.js"> </script>
+
+<script type="text/javascript" src="assets/js/markUpTemplateRegionsScripts/messsageBroker.js"> </script>
 <script type="text/javascript" src="assets/js/markUpTemplateRegionsScripts/models.js"> </script>
 <script type="text/javascript" src="assets/js/markUpTemplateRegionsScripts/viewModel.js"> </script>
-<script type="text/javascript" src="assets/js/markUpTemplateRegionsScripts/messsageBroker.js"> </script>
+<script type="text/javascript" src="assets/js/markUpTemplateRegionsScripts/uiFunctions.js"> </script>
+
+
 
 <!-- UI behaviors -->
 <script type="text/javascript">

@@ -223,12 +223,14 @@ function ViewModel(){
         self.textElements.push(element);
         self.elementBuffer = ko.toJS(element);
     }
+
     self.addPictureElement = function (data){
         var element = new DataElement(data);
         self.pictureElements.push(element);
         self.elementBuffer = ko.toJS(element);
 
     }
+
     self.addTableElement = function (data){
         var element = new DataElement(data);
         self.tableElements.push(element);
@@ -331,7 +333,8 @@ function ViewModel(){
         
     }
 
-    //Can remove elements on demand
+    //Can remove elements on demand with the use of the relevant dom element
+    //Use @ editing feature to remove a dom element on click!
     self.removeElementUsingDomElement = function (DomElement){
         var elementId = DomElement.id
 
@@ -618,7 +621,6 @@ function ViewModel(){
             .done(function(){
                 responseObj = undefined;
             });
-        /*$('button#editTemplate').css('display','none');*/
         //$('button#editTemplate').css('display','none');
     };
 
@@ -635,15 +637,6 @@ function ViewModel(){
 }
 
 var vm = new ViewModel();
-
-$(window).ready(function(){
-
-    vm = new ViewModel();
-    ko.applyBindings(vm);
-
-    setTimeout(resetLongPage, 400);
-
-})
 
 var resetLongPage = function(){
     $('a#PageAn2').click();
