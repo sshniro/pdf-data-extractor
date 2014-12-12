@@ -170,7 +170,7 @@ function TextDataElementDTO(dataElement, metaElement){
     this.metaY1 =-1;
     this.metaWidth =-1;
     this.metaHeight =-1;
-    this.metaRawData = -1;
+    this.metaRawData = new RawDataSkeleton();
     this.metaAvailable;
     var self = this;
     if(metaElement !== undefined){
@@ -205,7 +205,7 @@ function ImageDataElementDTO(dataElement, metaElement){
     this.metaY1 =-1;
     this.metaWidth =-1;
     this.metaHeight =-1;
-    this.metaRawData = -1;
+    this.metaRawData = new RawDataSkeleton();
     if(metaElement !== undefined){
         this.metaRawData    =   metaElement.rectangle;
         this.metaX1         =   this.totalX1 + ko.utils.unwrapObservable(metaElement.startX);
@@ -252,6 +252,7 @@ function TableDataColumnDTO(dataElement, metaElement){
     this.metaY1         =   dataElement.startY + (metaElement.startY);
     this.metaWidth      =   this.metaX1 + (metaElement.width);
     this.metaHeight     =   this.metaY1 + (metaElement.height);
+    //
 
 }
 

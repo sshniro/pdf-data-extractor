@@ -11,6 +11,22 @@ var selectedImgAreInstance = undefined;
 //Bufers
 var currentElement = undefined;
 
+function RawDataSkeleton() {
+    this.baseUiComponentStartX     =-1;
+    this.baseUiComponentStartY     =-1;
+    this.baseUiComponentHeight     =-1;
+    this.baseUiComponentWidth      =-1;
+
+    this.startX                    =-1;
+    this.startY                    =-1;
+    this.width                     =-1;
+    this.height                    =-1;
+
+    this.id                        = -1;
+    this.elementType               = -1;
+    this.page                      = -1;
+}
+
 function Page(data) {
     this.pageNumber         = ko.observable(data.pageNumber);
     this.imagePath          = ko.observable(data.imagePath);
