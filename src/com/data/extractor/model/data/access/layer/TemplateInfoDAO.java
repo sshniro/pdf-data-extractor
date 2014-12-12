@@ -284,10 +284,27 @@ public class TemplateInfoDAO {
         List<Column> columns=tableDataElement.getColumns();
         ArrayList columnData = new ArrayList();
 
+        BasicDBObject columnRawDataObj;
+
         for(Column c:columns){
+
+            RawDataElement columnRawDataElement = c.getRawData();
+            columnRawDataObj = new BasicDBObject();
+
+            columnRawDataObj.put("id", columnRawDataElement.getId());
+            columnRawDataObj.put("elementType", columnRawDataElement.getElementType());
+            columnRawDataObj.put("startX",columnRawDataElement.getStartX());
+            columnRawDataObj.put("startY", columnRawDataElement.getStartY());
+            columnRawDataObj.put("width",  columnRawDataElement.getWidth());
+            columnRawDataObj.put("height", columnRawDataElement.getWidth());
+            columnRawDataObj.put("baseUiComponentStartX", columnRawDataElement.getBaseUiComponentStartX());
+            columnRawDataObj.put("baseUiComponentStartY", columnRawDataElement.getBaseUiComponentStartY());
+            columnRawDataObj.put("baseUiComponentWidth",  columnRawDataElement.getBaseUiComponentWidth());
+            columnRawDataObj.put("baseUiComponentHeight", columnRawDataElement.getBaseUiComponentHeight());
+
             columnData.add(new BasicDBObject("metaId",c.getMetaId()).append("metaX1",c.getMetaX1())
                     .append("metaY1",c.getMetaY1()).append("metaWidth",c.getMetaWidth())
-                    .append("metaHeight",c.getMetaHeight()));
+                    .append("metaHeight",c.getMetaHeight()).append("rawData" , columnRawDataObj));
         }
 
         tableElementObject.put("columns",columnData);
@@ -421,11 +438,28 @@ public class TemplateInfoDAO {
 
         List<Column> columns=tableDataElement.getColumns();
         ArrayList columnData = new ArrayList();
+        BasicDBObject columnRawDataObj;
 
         for(Column c:columns){
+
+            RawDataElement columnRawDataElement = c.getRawData();
+            columnRawDataObj = new BasicDBObject();
+
+            columnRawDataObj.put("id", columnRawDataElement.getId());
+            columnRawDataObj.put("elementType", columnRawDataElement.getElementType());
+            columnRawDataObj.put("startX",columnRawDataElement.getStartX());
+            columnRawDataObj.put("startY", columnRawDataElement.getStartY());
+            columnRawDataObj.put("width",  columnRawDataElement.getWidth());
+            columnRawDataObj.put("height", columnRawDataElement.getWidth());
+            columnRawDataObj.put("baseUiComponentStartX", columnRawDataElement.getBaseUiComponentStartX());
+            columnRawDataObj.put("baseUiComponentStartY", columnRawDataElement.getBaseUiComponentStartY());
+            columnRawDataObj.put("baseUiComponentWidth",  columnRawDataElement.getBaseUiComponentWidth());
+            columnRawDataObj.put("baseUiComponentHeight", columnRawDataElement.getBaseUiComponentHeight());
+
+
             columnData.add(new BasicDBObject("metaId",c.getMetaId()).append("metaX1",c.getMetaX1())
                     .append("metaY1",c.getMetaY1()).append("metaWidth",c.getMetaWidth())
-                    .append("metaHeight",c.getMetaHeight()));
+                    .append("metaHeight",c.getMetaHeight()).append("rawData",columnRawDataObj));
         }
         tableElementObject.put("columns",columnData);
 

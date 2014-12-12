@@ -8,19 +8,17 @@ public class UploadStatus {
     private Boolean isTemplateNameValid;
     private Boolean pdfUploadStatus;
     private String  templateNameErrorCause;
-    private String pdfUploadErrorCause;
+    private String  pdfUploadErrorCause;
     private String  RootPath;
-    private String  mainCategory;
-    private String  subCategory;
     private String  templateName;
     private String  pdfLocation;
     private String  pdfName;
     private String  uploadedPdfFile;
     private String[] imageRelativePaths;
-    private String parent;
-    private String text;
-    private String type;
-    private String id;
+    private String  parent;
+    private String  text;
+    private String  type;
+    private String  id;
     private InsertDataParser insertDataParser;
 
     public InsertDataParser getInsertDataParser() {
@@ -93,22 +91,6 @@ public class UploadStatus {
 
     public void setTemplateName(String templateName) {
         this.templateName = templateName;
-    }
-
-    public String getSubCategory() {
-        return subCategory;
-    }
-
-    public void setSubCategory(String subCategory) {
-        this.subCategory = subCategory;
-    }
-
-    public String getMainCategory() {
-        return mainCategory;
-    }
-
-    public void setMainCategory(String mainCategory) {
-        this.mainCategory = mainCategory;
     }
 
     public String getRootPath() {

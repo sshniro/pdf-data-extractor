@@ -4,6 +4,8 @@ import com.data.extractor.model.beans.manage.categories.Node;
 import com.data.extractor.model.beans.markup.template.MarkUpResponse;
 import com.data.extractor.model.beans.template.info.text.TextDataElement;
 import com.data.extractor.model.beans.template.info.text.TextDataParser;
+import com.data.extractor.model.beans.upload.template.UploadStatus;
+import com.data.extractor.model.data.access.layer.ExtractedFilesDAO;
 import com.data.extractor.model.data.access.layer.TemplatesDAO;
 import com.data.extractor.model.extractors.text.FullSelectionTextExtractor;
 import com.data.extractor.model.extractors.text.MetaSelectionTextExtractor;
@@ -12,6 +14,7 @@ import com.google.gson.Gson;
 import com.mongodb.MongoClient;
 import org.apache.pdfbox.pdmodel.PDDocument;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -22,7 +25,7 @@ public class TextDataExtractor {
 
         String extractedText;
         MarkUpResponse markUpResponse=new MarkUpResponse();
-        TemplatesDAO templatesDAO =  new TemplatesDAO(mongoClient);
+        ExtractedFilesDAO xFilesDAO = new ExtractedFilesDAO(mongoClient);
 
         /* Assign the input from the user to the textDataParser */
         Gson gson=new Gson();
@@ -30,9 +33,9 @@ public class TextDataExtractor {
         textDataParser=gson.fromJson(jsonRequest, TextDataParser.class);
 
         List<TextDataElement> textDataElements=textDataParser.getTextDataElements();
+        List<UploadStatus> uploadStatusList = xFilesDAO.getRecord(textDataParser.getId());
 
-        Node node = templatesDAO.getNode(textDataParser.getId());
-        textDataParser.setPdfFile(node.getPdfFile());
+        textDataParser.setPdfFile(uploadStatusList.get(0).getUploadedPdfFile());
         PDDocument doc =PDDocument.load(textDataParser.getPdfFile());
 
         /* Get the first textDataElement because only  textDataElement to extract*/
