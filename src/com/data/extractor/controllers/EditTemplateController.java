@@ -31,15 +31,15 @@ public class EditTemplateController extends HttpServlet {
             sb.append(s);
         }
         Gson gson=new Gson();
-        ManageCategoriesData data = gson.fromJson(sb.toString(),ManageCategoriesData.class);
+
+        UploadStatus uploadStatus = gson.fromJson(sb.toString(),UploadStatus.class);
 
         /* Get the mongo client from the servletContext */
         MongoClient mongoClient = (MongoClient) request.getServletContext().getAttribute("MONGO_CLIENT");
-        UploadStatus uploadStatus = new UploadStatus();
         uploadStatus.setRootPath(getServletContext().getRealPath(File.separator));
 
         PdfToImageConverter converter =new PdfToImageConverter();
-        uploadStatus = converter.convertToImage(uploadStatus,data,mongoClient);
+        uploadStatus = converter.convertToImage(uploadStatus,mongoClient);
 
         HttpSession session=request.getSession();
         String uploadJsonResponse = new ResponseGenerator().generateJsonResponse(uploadStatus , true);

@@ -15,33 +15,33 @@ import java.util.List;
 
 public class PdfToImageConverter {
 
-public UploadStatus convertToImage(UploadStatus uploadStatus , ManageCategoriesData data , MongoClient mongoClient){
-    TemplateInfoDAO templateInfoDAO = new TemplateInfoDAO(mongoClient);
+    public UploadStatus convertToImage(UploadStatus uploadStatus ,MongoClient mongoClient){
 
-    List<TextDataParser> textDataParserList = templateInfoDAO.getTextTemplateInfo(data.getParent(), "text");
-    List<ImageDataParser> imageDataParserList= templateInfoDAO.getImageTemplateInfo(data.getParent(), "image");
-    List<TableDataParser> tableDataParserList= templateInfoDAO.getTableTemplateInfo(data.getParent(), "table");
+        TemplateInfoDAO templateInfoDAO = new TemplateInfoDAO(mongoClient);
+
+        List<TextDataParser> textDataParserList = templateInfoDAO.getTextTemplateInfo(uploadStatus.getParent(), "text");
+        List<ImageDataParser> imageDataParserList= templateInfoDAO.getImageTemplateInfo(uploadStatus.getParent(), "image");
+        List<TableDataParser> tableDataParserList= templateInfoDAO.getTableTemplateInfo(uploadStatus.getParent(), "table");
 
 
-    InsertDataParser insertDataParser = new InsertDataParser();
-    if(textDataParserList.size() != 0)
-        insertDataParser.setTextDataParser(textDataParserList.get(0));
-    if(imageDataParserList.size() != 0)
-        insertDataParser.setImageDataParser(imageDataParserList.get(0));
-    if(tableDataParserList.size() != 0)
-        insertDataParser.setTableDataParser(tableDataParserList.get(0));
+        InsertDataParser insertDataParser = new InsertDataParser();
+        if(textDataParserList.size() != 0)
+            insertDataParser.setTextDataParser(textDataParserList.get(0));
+        if(imageDataParserList.size() != 0)
+            insertDataParser.setImageDataParser(imageDataParserList.get(0));
+        if(tableDataParserList.size() != 0)
+            insertDataParser.setTableDataParser(tableDataParserList.get(0));
 
-    PdfToImage pdfToImage =new PdfToImage();
-    uploadStatus.setInsertDataParser(insertDataParser);
-    File uploadLocation = new File(uploadStatus.getRootPath()+ File.separator + "uploads"+File.separator+"temp" + File.separator + data.getParent() +
-            File.separator + data.getId());
+        PdfToImage pdfToImage =new PdfToImage();
+        uploadStatus.setInsertDataParser(insertDataParser);
+        File uploadLocation = new File(uploadStatus.getRootPath()+ File.separator + "uploads"+File.separator+"temp" + File.separator + uploadStatus.getParent() +
+                                File.separator + uploadStatus.getId());
 
-    uploadStatus.setPdfLocation(uploadLocation.getAbsolutePath());
-    uploadStatus.setUploadedPdfFile(uploadStatus.getPdfLocation() + File.separator + data.getId() + ".pdf");
-    uploadStatus.setId(data.getId());
-    uploadStatus.setParent(data.getParent());
-    pdfToImage.convertToImageFromTemplateEdit(uploadStatus);
-    return uploadStatus;
-}
+        uploadStatus.setPdfLocation(uploadLocation.getAbsolutePath());
+        uploadStatus.setUploadedPdfFile(uploadStatus.getPdfLocation() + File.separator + uploadStatus.getId() + ".pdf");
+        pdfToImage.convertToImageFromTemplateEdit(uploadStatus);
+
+        return uploadStatus;
+    }
 
 }
