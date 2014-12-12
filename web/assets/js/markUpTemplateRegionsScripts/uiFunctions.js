@@ -18,7 +18,7 @@ var imageNaturalWidth;
 var effectiveController;
 
 //Initialize the page depending on the context [edit,create]
-$(document).ready(function(){
+$(window).ready(function(){
 
     initBindings();
     $("button#cancelSelection").attr('disabled', true);
@@ -27,6 +27,8 @@ $(document).ready(function(){
     ko.applyBindings(vm);
 
 
+    setTimeout(resetLongPage, 400);
+/*
     //Setting up core functionality and data
     if(responseObj.insertDataParser === undefined){
         effectiveController ="MarkUpTemplateRegionController";
@@ -60,9 +62,8 @@ $(document).ready(function(){
 
         }
 
-    }
+    }*/
 
-    setTimeout(resetLongPage, 400);
 
 });
 
