@@ -619,7 +619,7 @@ function ViewModel(){
         };
         $.post("EditTemplateController",JSON.stringify(editData))
             .done(function(){
-                responseObj = undefined;
+                window.location = '/MarkUpTemplateRegions.jsp'
             });
         //$('button#editTemplate').css('display','none');
     };

@@ -194,7 +194,6 @@
                 $('button#editTemplate').css('display','block');
                 vm.extractedPdfId(messages.id);
                 $('#overlay').css('display', 'none');
-                window.location = '/MarkUpTemplateRegions.jsp'
             }else{
                 alert(messages.errorCause);
             }
