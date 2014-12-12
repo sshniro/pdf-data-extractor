@@ -53,12 +53,12 @@ public class ImageDataExtractor {
         imageWritePath=imageDataCoordinates.getPdfWritePath(imageDataParser);
         /*
             set the image write path to
-            RootPath/uploads/mainCategory/subCategory/templateName/images/extracts
+            RootPath/uploads/temp/parentId/id/images/extracts
         */
         imageWritePath[0]=imageWritePath[0]+File.separator + "images" + File.separator + "extracts";
 
         FullSelectionImageExtractor imageExtractor=new FullSelectionImageExtractor();
-        imageFile=imageExtractor.extractImage(imageWritePath[0],doc,imageDataElement);
+        imageFile = imageExtractor.extractImage(imageWritePath[0],doc,imageDataElement);
 
         /* imageRelativePath = uploads/mainCategory/subCategory/templateName/images/extracts/img.jpg */
         imageRelativePath=getImageRelativePath(imageFile);

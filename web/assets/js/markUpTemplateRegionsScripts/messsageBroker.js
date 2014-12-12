@@ -170,7 +170,7 @@ function TextDataElementDTO(dataElement, metaElement){
     this.metaY1 =-1;
     this.metaWidth =-1;
     this.metaHeight =-1;
-    self.metaRawData = -1;
+    this.metaRawData = -1;
     this.metaAvailable;
     var self = this;
     if(metaElement !== undefined){
