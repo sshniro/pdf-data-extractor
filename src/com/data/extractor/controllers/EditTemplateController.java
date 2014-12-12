@@ -8,6 +8,7 @@ import com.data.extractor.model.beans.template.info.text.TextDataParser;
 import com.data.extractor.model.beans.upload.template.UploadStatus;
 import com.data.extractor.model.convert.PdfToImage;
 import com.data.extractor.model.data.access.layer.TemplateInfoDAO;
+import com.data.extractor.model.template.edit.PdfToImageConverter;
 import com.data.extractor.model.template.upload.ResponseGenerator;
 import com.google.gson.Gson;
 import com.mongodb.MongoClient;
@@ -30,52 +31,19 @@ public class EditTemplateController extends HttpServlet {
             sb.append(s);
         }
         Gson gson=new Gson();
-        s= sb.toString();
-        ManageCategoriesData data = gson.fromJson(sb.toString(),ManageCategoriesData.class);
+
+        UploadStatus uploadStatus = gson.fromJson(sb.toString(),UploadStatus.class);
 
         /* Get the mongo client from the servletContext */
         MongoClient mongoClient = (MongoClient) request.getServletContext().getAttribute("MONGO_CLIENT");
-        TemplateInfoDAO templateInfoDAO = new TemplateInfoDAO(mongoClient);
+        uploadStatus.setRootPath(getServletContext().getRealPath(File.separator));
 
-        List<TextDataParser> textDataParserList = templateInfoDAO.getTextTemplateInfo(data.getParent(), "text");
-        List<ImageDataParser> imageDataParserList= templateInfoDAO.getImageTemplateInfo(data.getParent(), "image");
-        List<TableDataParser> tableDataParserList= templateInfoDAO.getTableTemplateInfo(data.getParent(), "table");
-
-
-        InsertDataParser insertDataParser = new InsertDataParser();
-        if(textDataParserList.size() != 0)
-            insertDataParser.setTextDataParser(textDataParserList.get(0));
-        if(imageDataParserList.size() != 0)
-            insertDataParser.setImageDataParser(imageDataParserList.get(0));
-        if(tableDataParserList.size() != 0)
-            insertDataParser.setTableDataParser(tableDataParserList.get(0));
-
-
-
-        PdfToImage pdfToImage =new PdfToImage();
-
-        UploadStatus uploadStatus = new UploadStatus();
-        uploadStatus.setInsertDataParser(insertDataParser);
-        File uploadLocation = new File(getServletContext().getRealPath(File.separator) + File.separator + "uploads"+File.separator+"temp" + File.separator + data.getParent() +
-                                        File.separator + data.getId());
-
-
-        //extractStatus.setPdfLocation(uploadLocation.getAbsolutePath());
-        //extractStatus.setPdfName(extractStatus.getId()); // templateName space replaced with "_"
-        //extractStatus.setUploadedPdfFile(extractStatus.getPdfLocation()+File.separator+extractStatus.getPdfName()+".pdf");
-        uploadStatus.setPdfLocation(uploadLocation.getAbsolutePath());
-        uploadStatus.setUploadedPdfFile(uploadStatus.getPdfLocation() + File.separator + data.getId() + ".pdf");
-        uploadStatus.setId(data.getId());
-        uploadStatus.setParent(data.getParent());
-        pdfToImage.convertToImage(uploadStatus);
+        PdfToImageConverter converter =new PdfToImageConverter();
+        uploadStatus = converter.convertToImage(uploadStatus,mongoClient);
 
         HttpSession session=request.getSession();
         String uploadJsonResponse = new ResponseGenerator().generateJsonResponse(uploadStatus , true);
         session.setAttribute("uploadJsonResponse", uploadJsonResponse);
         response.getWriter().print("success");
-
-        //response.getWriter().print(gson.toJson(insertDataParser));
-
     }
-
 }
