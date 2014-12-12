@@ -28,7 +28,7 @@ public class ExtractedFilesDAO {
 
         insertObject.put("id", id);
         insertObject.put("parent", parent);
-        insertObject.put("pdfFile", pdfFile);
+        insertObject.put("uploadedPdfFile", pdfFile);
 
         collection.insert(insertObject);
     }

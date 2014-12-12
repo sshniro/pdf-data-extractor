@@ -8,8 +8,8 @@ import javax.annotation.Generated;
 @Generated("org.jsonschema2pojo")
 public class TextDataElement {
 
-
-
+    @Expose
+    private RawDataElement metaRawData;
     @Expose
     private RawDataElement rawData;
     @Expose
@@ -157,6 +157,14 @@ public class TextDataElement {
 
     public void setRawData(RawDataElement rawData) {
         this.rawData = rawData;
+    }
+
+    public RawDataElement getMetaRawData() {
+        return metaRawData;
+    }
+
+    public void setMetaRawData(RawDataElement metaRawData) {
+        this.metaRawData = metaRawData;
     }
 
 }
