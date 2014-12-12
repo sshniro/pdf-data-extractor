@@ -43,7 +43,7 @@ public class ExtractRequestProcessor {
                     Integer extractId = counterDAO.getNextExtractId();
                     extractStatus.setId(extractId.toString());
                     PdfFileProcessor fileProcessor = new PdfFileProcessor();
-                    extractStatus = fileProcessor.processFile(items, extractStatus);
+                    extractStatus = fileProcessor.processFile(items, extractStatus , mongoClient);
 
                     DataElementsProcessor dataElementsProcessor = new DataElementsProcessor(mongoClient);
                     /* Check to ensure the uploaded file is a PDF. Status set in the isPDF Function*/

@@ -9,6 +9,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.io.IOException;
 
 public class EditMarkupController extends HttpServlet {
@@ -22,8 +23,9 @@ public class EditMarkupController extends HttpServlet {
         }
         /* Get the mongo client from the servletContext */
         MongoClient mongoClient = (MongoClient) request.getServletContext().getAttribute("MONGO_CLIENT");
+        String rootPath = getServletContext().getRealPath(File.separator);
 
-        MarkUpResponse markUpResponse=requestProcessor.processRequest(sb.toString(),mongoClient);
+        MarkUpResponse markUpResponse=requestProcessor.processRequest(sb.toString(),mongoClient,rootPath);
 
         Gson gson = new Gson();
         response.getWriter().print(gson.toJson(markUpResponse));

@@ -3,6 +3,8 @@ package com.data.extractor.model.extract.pdf;
 
 
 import com.data.extractor.model.beans.extract.pdf.ExtractStatus;
+import com.data.extractor.model.data.access.layer.ExtractedFilesDAO;
+import com.mongodb.MongoClient;
 import org.apache.commons.fileupload.FileItem;
 
 import java.io.File;
@@ -11,7 +13,7 @@ import java.util.List;
 
 public class PdfFileProcessor {
 
-    public ExtractStatus processFile(List items,ExtractStatus extractStatus) throws Exception {
+    public ExtractStatus processFile(List items,ExtractStatus extractStatus , MongoClient mongoClient) throws Exception {
 
         // Parse the request
         Iterator pdfIterator = items.iterator();
@@ -21,13 +23,13 @@ public class PdfFileProcessor {
             //check whether the Form Field is a File
             if (!pdfItem.isFormField()) {
                 if (pdfItem.getFieldName().equals("pdfFile"))
-                    uploadPdf(extractStatus, pdfItem);
+                    uploadPdf(extractStatus, pdfItem , mongoClient);
             }
         }
         return extractStatus;
     }
 
-    public ExtractStatus uploadPdf(ExtractStatus extractStatus, FileItem pdfItem ) throws Exception {
+    public ExtractStatus uploadPdf(ExtractStatus extractStatus, FileItem pdfItem , MongoClient mongoClient) throws Exception {
 
         String rootPath = extractStatus.getRootPath();
 
@@ -49,6 +51,9 @@ public class PdfFileProcessor {
         extractStatus.setUploadedPdfFile(extractStatus.getPdfLocation()+File.separator+extractStatus.getPdfName()+".pdf");
 
         pdfItem.write(uploadedFile);
+
+        ExtractedFilesDAO extractedFilesDAO = new ExtractedFilesDAO(mongoClient);
+        extractedFilesDAO.createRecord(extractStatus.getId(),extractStatus.getParent(),extractStatus.getUploadedPdfFile());
 
         /*  Checks if the uploaded file is PDF if Not remove the file and set the Error Message */
         UploadedFileType fileType=new UploadedFileType();

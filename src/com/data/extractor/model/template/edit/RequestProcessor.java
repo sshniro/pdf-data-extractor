@@ -8,7 +8,7 @@ import com.mongodb.MongoClient;
 import java.io.IOException;
 
 public class RequestProcessor {
-    public MarkUpResponse processRequest(String jsonRequest,MongoClient mongoClient) throws IOException {
+    public MarkUpResponse processRequest(String jsonRequest,MongoClient mongoClient ,String rootPath) throws IOException {
         MarkUpResponse markUpResponse=new MarkUpResponse();
 
         Gson gson=new Gson();
