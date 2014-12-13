@@ -7,6 +7,8 @@ import com.data.extractor.model.beans.template.info.table.Cell;
 import com.data.extractor.model.beans.template.info.table.Column;
 import com.data.extractor.model.beans.template.info.table.TableDataElement;
 import com.data.extractor.model.beans.template.info.table.TableDataParser;
+import com.data.extractor.model.beans.upload.template.UploadStatus;
+import com.data.extractor.model.data.access.layer.ExtractedFilesDAO;
 import com.data.extractor.model.data.access.layer.TemplatesDAO;
 import com.data.extractor.model.extract.pdf.table.DataProcessor;
 import com.data.extractor.model.template.edit.coordinates.TableDataCoordinates;
@@ -32,12 +34,14 @@ public class TableDataExtractor {
         Gson gson=new Gson();
         TableDataParser tableDataParser;
         tableDataParser=gson.fromJson(jsonRequest, TableDataParser.class);
-        TemplatesDAO templatesDAO = new TemplatesDAO(mongoClient);
+        ExtractedFilesDAO xFilesDAO = new ExtractedFilesDAO(mongoClient);
+
 
         List<TableDataElement> tableDataElements=tableDataParser.getTableDataElements();
         try {
-            Node node = templatesDAO.getNode(tableDataParser.getId());
-            tableDataParser.setPdfFile(node.getPdfFile());
+
+            List<UploadStatus> uploadStatusList = xFilesDAO.getRecord(tableDataParser.getId());
+            tableDataParser.setPdfFile(uploadStatusList.get(0).getUploadedPdfFile());
             PDDocument doc =PDDocument.load(tableDataParser.getPdfFile());
 
             TableDataCoordinates tableDataCoordinates=new TableDataCoordinates();

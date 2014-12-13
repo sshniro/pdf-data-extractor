@@ -48,7 +48,15 @@ public class DictionaryController extends HttpServlet {
         }
 
 
+        if(dictionary.getRequest().equals("removeDicItem")){
+            removeDictionaryRecord(mongoClient , dictionary.getId());
 
+            String jsonStr = "{\"state\": \"success\"}";
+            JsonElement element = gson.fromJson (jsonStr, JsonElement.class);
+            JsonObject jsonObj = element.getAsJsonObject();
+
+            response.getWriter().print(gson.toJson(jsonObj));
+        }
     }
 
     public static void createDictionaryWord(MongoClient mongoClient , Dictionary dictionary){
@@ -62,5 +70,10 @@ public class DictionaryController extends HttpServlet {
     public static List<Dictionary> getAllDictionaryRecords(MongoClient mongoClient){
         DictionaryDAO dictionaryDAO = new DictionaryDAO(mongoClient);
         return dictionaryDAO.getAllRecords();
+    }
+
+    public static void removeDictionaryRecord(MongoClient mongoClient,int id){
+        DictionaryDAO dictionaryDAO = new DictionaryDAO(mongoClient);
+        dictionaryDAO.removeDictionaryRecord(id);
     }
 }

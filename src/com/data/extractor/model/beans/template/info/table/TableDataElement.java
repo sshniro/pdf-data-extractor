@@ -10,13 +10,12 @@ import java.util.List;
 @Generated("org.jsonschema2pojo")
 public class TableDataElement {
 
-
-
     @Expose
     private RawDataElement rawData;
-
     @Expose
-    private String metaId;
+    private String metaId; // Unique filed generated from the front end for the field
+    @Expose
+    private String elementId; // Name given by the user for the field
     @Expose
     private String metaName;
     @Expose
@@ -46,6 +45,7 @@ public class TableDataElement {
     @Expose
     private List<Column> columns = new ArrayList<Column>();
 
+
     public String getMetaId() {
         return metaId;
     }
@@ -61,6 +61,10 @@ public class TableDataElement {
     public void setMetaName(String metaName) {
         this.metaName = metaName;
     }
+
+    public String getElementId() {        return elementId;    }
+
+    public void setElementId(String elementId) {        this.elementId = elementId;    }
 
     public int getPageNumber() {
         return pageNumber;
