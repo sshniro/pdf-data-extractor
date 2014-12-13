@@ -37,10 +37,6 @@ public class RequestProcessor {
 
         }
 
-        if(status.equals("editTemplate")){
-
-        }
-
         if(status.equals("insert")){
             InsertRequestProcessor requestProcessor=new InsertRequestProcessor();
             requestProcessor.processRequest(jsonRequest,mongoClient);
