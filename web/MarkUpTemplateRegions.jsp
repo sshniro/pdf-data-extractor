@@ -273,7 +273,7 @@
 <!-- template for "template holding area" -->
 <script type="text/html" id="pageTemplate">
     <div data-bind="attr:{id:pageId}"   class="tab-pane fade in active imageContainer">
-        <img class='baseUI templatingImage' style="margin-top:10px"  data-bind="attr:{id:pageNumber,src: imagePath}"/>
+        <img class='baseUI templatingImage' style="margin-top:10px; max-width:100%; height:auto"  data-bind="attr:{id:pageNumber,src: imagePath}"/>
     </div>
 </script>
 
