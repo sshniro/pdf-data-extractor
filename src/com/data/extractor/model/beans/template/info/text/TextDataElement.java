@@ -8,12 +8,15 @@ import javax.annotation.Generated;
 @Generated("org.jsonschema2pojo")
 public class TextDataElement {
 
+
     @Expose
     private RawDataElement metaRawData;
     @Expose
     private RawDataElement rawData;
     @Expose
     private String metaId;
+    @Expose
+    private String elementId;
     @Expose
     private String metaName;
     @Expose
@@ -167,4 +170,7 @@ public class TextDataElement {
         this.metaRawData = metaRawData;
     }
 
+    public String getElementId() {        return elementId;    }
+
+    public void setElementId(String elementId) {        this.elementId = elementId;    }
 }

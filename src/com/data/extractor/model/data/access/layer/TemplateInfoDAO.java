@@ -169,6 +169,7 @@ public class TemplateInfoDAO {
         BasicDBObject textElementObject = new BasicDBObject();
 
         textElementObject.put("metaId", textDataElement.getMetaId());
+        textElementObject.put("elementId", textDataElement.getElementId());
         textElementObject.put("pageNumber", textDataElement.getPageNumber());
         textElementObject.put("pageRotation", textDataElement.getPageRotation());
 
