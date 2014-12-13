@@ -264,7 +264,7 @@ var drawRectangle = (function(baseUiComponent, selection){
 
     rectangle.startX                    = selection.x1+1 ;
     rectangle.startY                    = selection.y1+1;
-    rectangle.width                     =selection.width + 4;
+    rectangle.width                     = selection.width + 4;
     rectangle.height                    = selection.height + 3;
 
     rectangle.id                        = rectangle.startX +"px"+ rectangle.startY+"px"+rectangle.width+"px"+rectangle.height+"px";
