@@ -17,7 +17,6 @@ import com.data.extractor.model.extractors.image.FullSelectionImageExtractor;
 import com.data.extractor.model.extractors.text.FullSelectionTextExtractor;
 import com.data.extractor.model.extractors.text.MetaSelectionTextExtractor;
 import com.data.extractor.model.template.markup.calculate.coordinates.ImageDataCoordinates;
-import com.data.extractor.model.template.markup.pdf.retreiver.ImagePDDocument;
 import com.mongodb.MongoClient;
 import org.apache.pdfbox.exceptions.CryptographyException;
 import org.apache.pdfbox.pdmodel.PDDocument;

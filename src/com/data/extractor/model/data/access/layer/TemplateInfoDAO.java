@@ -67,21 +67,7 @@ public class TemplateInfoDAO {
     * Used preliminary before creating a new record to check whether if there already a record exists
     * */
 
-    public int getTemplateInfoSize(String mainCat , String subCat,String tempName,String dataType){
-
-        BasicDBObject searchQuery = new BasicDBObject();
-
-        searchQuery.put("mainCategory", mainCat);
-        searchQuery.put("subCategory", subCat);
-        searchQuery.put("templateName", tempName);
-        searchQuery.put("dataType", dataType);
-
-        DBCursor templateCursor = infoColl.find(searchQuery);
-
-        return templateCursor.size();
-    }
-
-    // TODO override this method from templates
+     // TODO override this method from templates
     public int getTemplateInfoSize(String nodeId, String dataType){
         BasicDBObject searchQuery = new BasicDBObject();
         searchQuery.put("id" , nodeId);
@@ -233,6 +219,7 @@ public class TemplateInfoDAO {
         BasicDBObject imageElementObject=new BasicDBObject();
 
         imageElementObject.put("metaId",imageDataElement.getMetaId());
+        imageElementObject.put("elementId",imageDataElement.getElementId());
         imageElementObject.put("pageNumber",imageDataElement.getPageNumber());
         imageElementObject.put("pageRotation",imageDataElement.getPageRotation());
 
@@ -278,6 +265,7 @@ public class TemplateInfoDAO {
         BasicDBObject tableElementObject=new BasicDBObject();
 
         tableElementObject.put("metaId",tableDataElement.getMetaId());
+        tableElementObject.put("elementId",tableDataElement.getElementId());
         tableElementObject.put("pageNumber",tableDataElement.getPageNumber());
         tableElementObject.put("pageRotation",tableDataElement.getPageRotation());
 
@@ -349,6 +337,7 @@ public class TemplateInfoDAO {
         BasicDBObject textElementObject = new BasicDBObject();
 
         textElementObject.put("metaId", textDataElement.getMetaId());
+        textElementObject.put("elementId", textDataElement.getElementId());
         textElementObject.put("pageNumber", textDataElement.getPageNumber());
         textElementObject.put("pageRotation", textDataElement.getPageRotation());
 
@@ -410,6 +399,7 @@ public class TemplateInfoDAO {
         BasicDBObject imageElementObject = new BasicDBObject();
 
         imageElementObject.put("metaId",imageDataElement.getMetaId());
+        imageElementObject.put("elementId",imageDataElement.getElementId());
         imageElementObject.put("pageNumber",imageDataElement.getPageNumber());
         imageElementObject.put("pageRotation",imageDataElement.getPageRotation());
 
@@ -454,6 +444,7 @@ public class TemplateInfoDAO {
         BasicDBObject tableElementObject = new BasicDBObject();
 
         tableElementObject.put("metaId",tableDataElement.getMetaId());
+        tableElementObject.put("elementId",tableDataElement.getElementId());
         tableElementObject.put("pageNumber",tableDataElement.getPageNumber());
         tableElementObject.put("pageRotation",tableDataElement.getPageRotation());
 

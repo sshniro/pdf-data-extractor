@@ -10,15 +10,10 @@ import java.util.List;
 @Generated("org.jsonschema2pojo")
 public class TextDataParser {
 
-    //@SerializedName("_id")
-    //@Expose
-    //private Id id;
     @Expose
     private String id;
     @Expose
-    private String mainCategory;
-    @Expose
-    private String subCategory;
+    private String parent;
     @Expose
     private String templateName;
     @Expose
@@ -28,34 +23,13 @@ public class TextDataParser {
     @Expose
     private List<TextDataElement> textDataElements = new ArrayList<TextDataElement>();
 
-//    public Id getId() {
-//        return id;
-//    }
-//
-//    public void setId(Id id) {
-//        this.id = id;
-//    }
-
-
     public String getId() {        return id;    }
 
     public void setId(String id) {        this.id = id;    }
 
-    public String getMainCategory() {
-        return mainCategory;
-    }
+    public String getParent() {        return parent;    }
 
-    public void setMainCategory(String mainCategory) {
-        this.mainCategory = mainCategory;
-    }
-
-    public String getSubCategory() {
-        return subCategory;
-    }
-
-    public void setSubCategory(String subCategory) {
-        this.subCategory = subCategory;
-    }
+    public void setParent(String parent) {        this.parent = parent;    }
 
     public String getTemplateName() {
         return templateName;
