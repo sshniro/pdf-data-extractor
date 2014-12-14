@@ -13,8 +13,6 @@ public class TextDataParser {
     @Expose
     private String id;
     @Expose
-    private String parent;
-    @Expose
     private String templateName;
     @Expose
     private String dataType;
@@ -26,10 +24,6 @@ public class TextDataParser {
     public String getId() {        return id;    }
 
     public void setId(String id) {        this.id = id;    }
-
-    public String getParent() {        return parent;    }
-
-    public void setParent(String parent) {        this.parent = parent;    }
 
     public String getTemplateName() {
         return templateName;

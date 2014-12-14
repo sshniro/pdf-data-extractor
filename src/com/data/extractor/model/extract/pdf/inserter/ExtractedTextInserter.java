@@ -15,40 +15,10 @@ import java.util.List;
 
 public class ExtractedTextInserter {
 
-    private static final String dbName="staging";
-    private static final String templatesColl="extractedData";
-
     public void insert(TextDataParser textDataParser,ExtractStatus extractStatus,MongoClient mongoClient){
-
-        dbInitializer dbInitializer = new dbInitializer();
-        DB db=dbInitializer.getDB(mongoClient,dbName);
-        DBCollection templateCollection = dbInitializer.getCollection(db, templatesColl);
-
-        BasicDBObject searchQuery = new BasicDBObject();
-        //searchQuery.put("mainCategory", textDataParser.getMainCategory());
-        //searchQuery.put("subCategory", textDataParser.getSubCategory());
-        searchQuery.put("templateName", textDataParser.getTemplateName());
-        searchQuery.put("documentId", extractStatus.getDocumentId());
-        searchQuery.put("dataType", textDataParser.getDataType());
-
-//        List<TextDataElement> textDataElements = textDataParser.getTextDataElements();
-//
-//        for(TextDataElement t:textDataElements){
-//            DBCursor templateCursor = templateCollection.find(searchQuery);
-//
-//            if (templateCursor.hasNext()) {
-//                // If record exists update the record
-//                updateRecord(t,templateCollection, searchQuery);
-//            } else { // If there is no record exists create record and input
-//                createNewRecord(textDataParser, t,templateCollection,extractStatus.getDocumentId());
-//            }
-//        }
-
-
 
         List<TextDataElement> textDataElements = textDataParser.getTextDataElements();
         ExtractedDataDAO extractedDataDAO = new ExtractedDataDAO(mongoClient);
-        TemplateInfoDAO templateInfoDAO=new TemplateInfoDAO(mongoClient);
         TextDataElement textDataElement;
         int recordsSize=0;
 
@@ -64,52 +34,13 @@ public class ExtractedTextInserter {
 
             if (recordsSize == 0) {
                 /* If there is no record exists create a new record and insert */
-                extractedDataDAO.createTemplateInfo(textDataParser.getId() , textDataParser.getId(),textDataParser.getDataType(),textDataElement);
+                extractedDataDAO.createTemplateInfo(textDataParser.getId() , extractStatus.getParent() , textDataParser.getDataType(),textDataElement);
                 recordsSize = 1;
 
             } else {
                 /* If record exists update the record */
                 extractedDataDAO.updateTemplateInfo(textDataParser,textDataElement);
             }
-
         }
-    }
-
-    public void createNewRecord(TextDataParser textDataParser, TextDataElement textDataElement,
-                                DBCollection templateCollection,String documentId ) {
-
-        BasicDBObject insertObject = new BasicDBObject();
-        //insertObject.put("mainCategory", textDataParser.getMainCategory());
-        //insertObject.put("subCategory", textDataParser.getSubCategory());
-        insertObject.put("templateName", textDataParser.getTemplateName());
-        insertObject.put("documentId", documentId);
-        insertObject.put("dataType", textDataParser.getDataType());
-
-        List<BasicDBObject> textDataElementsInsert = new ArrayList<BasicDBObject>();
-
-        BasicDBObject textElementObject = new BasicDBObject();
-
-        textElementObject.put("metaId", textDataElement.getMetaId());
-        textElementObject.put("extractedText", textDataElement.getExtractedText());
-        textDataElementsInsert.add(textElementObject);
-
-        insertObject.put("textDataElements", textDataElementsInsert);
-
-        templateCollection.insert(insertObject);
-
-    }
-
-    public void updateRecord(TextDataElement textDataElement,
-                             DBCollection templateCollection , BasicDBObject searchQuery ){
-
-        BasicDBObject textElementObject = new BasicDBObject();
-
-        textElementObject.put("metaId", textDataElement.getMetaId());
-        textElementObject.put("extractedText", textDataElement.getExtractedText());
-
-        BasicDBObject updateObject = new BasicDBObject();
-        updateObject.put("$push", new BasicDBObject("textDataElements", textElementObject));
-        templateCollection.update(searchQuery, updateObject);
-
     }
 }
