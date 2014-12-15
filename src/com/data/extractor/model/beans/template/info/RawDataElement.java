@@ -10,6 +10,10 @@ import javax.annotation.Generated;
 public class RawDataElement {
 
     @Expose
+    private String id;
+    @Expose
+    private String elementId;
+    @Expose
     private Double baseUiComponentStartY;
     @Expose
     private Double baseUiComponentHeight;
@@ -23,20 +27,10 @@ public class RawDataElement {
     private Double width;
     @Expose
     private Double height;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
     @Expose
-    private String id;
+    private int page;
     @Expose
     private String elementType;
-
     @Expose
     private Double baseUiComponentStartX;
 
@@ -48,8 +42,17 @@ public class RawDataElement {
         this.page = page;
     }
 
-    @Expose
-    private int page;
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getElementId() {        return elementId;    }
+
+    public void setElementId(String elementId) {        this.elementId = elementId;    }
 
     public String getElementType() {
         return elementType;
@@ -122,7 +125,5 @@ public class RawDataElement {
     public void setHeight(Double height) {
         this.height = height;
     }
-
-
 
 }

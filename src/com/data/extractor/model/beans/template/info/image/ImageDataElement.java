@@ -21,6 +21,8 @@ public class ImageDataElement {
     @Expose
     private String metaId;
     @Expose
+    private String elementId; // Name given by the user
+    @Expose
     private String metaName;
     @Expose
     private int pageNumber;
@@ -57,6 +59,10 @@ public class ImageDataElement {
     public void setMetaName(String metaName) {
         this.metaName = metaName;
     }
+
+    public String getElementId() {        return elementId;    }
+
+    public void setElementId(String elementId) {        this.elementId = elementId;    }
 
     public int getPageNumber() {
         return pageNumber;

@@ -169,6 +169,7 @@ public class TemplateInfoDAO {
         BasicDBObject textElementObject = new BasicDBObject();
 
         textElementObject.put("metaId", textDataElement.getMetaId());
+        textElementObject.put("elementId", textDataElement.getElementId());
         textElementObject.put("pageNumber", textDataElement.getPageNumber());
         textElementObject.put("pageRotation", textDataElement.getPageRotation());
 
@@ -185,11 +186,12 @@ public class TemplateInfoDAO {
         BasicDBObject rawDataElement = new BasicDBObject();
         RawDataElement rawData= textDataElement.getRawData();
         rawDataElement.put("id", rawData.getId());
+        rawDataElement.put("elementId", rawData.getElementId());
         rawDataElement.put("elementType", rawData.getElementType());
         rawDataElement.put("startX",rawData.getStartX());
         rawDataElement.put("startY", rawData.getStartY());
         rawDataElement.put("width", rawData.getWidth());
-        rawDataElement.put("height", rawData.getWidth());
+        rawDataElement.put("height", rawData.getHeight());
         rawDataElement.put("baseUiComponentStartX", rawData.getBaseUiComponentStartX());
         rawDataElement.put("baseUiComponentStartY", rawData.getBaseUiComponentStartY());
         rawDataElement.put("baseUiComponentWidth", rawData.getBaseUiComponentWidth());
@@ -199,11 +201,12 @@ public class TemplateInfoDAO {
         BasicDBObject metaRawDataElement = new BasicDBObject();
 
         metaRawDataElement.put("id", metaRawData.getId());
+        metaRawDataElement.put("elementId", metaRawData.getElementId());
         metaRawDataElement.put("elementType", metaRawData.getElementType());
         metaRawDataElement.put("startX",metaRawData.getStartX());
         metaRawDataElement.put("startY", metaRawData.getStartY());
         metaRawDataElement.put("width", metaRawData.getWidth());
-        metaRawDataElement.put("height", metaRawData.getWidth());
+        metaRawDataElement.put("height", metaRawData.getHeight());
         metaRawDataElement.put("baseUiComponentStartX", metaRawData.getBaseUiComponentStartX());
         metaRawDataElement.put("baseUiComponentStartY", metaRawData.getBaseUiComponentStartY());
         metaRawDataElement.put("baseUiComponentWidth", metaRawData.getBaseUiComponentWidth());
@@ -240,12 +243,14 @@ public class TemplateInfoDAO {
 
        BasicDBObject rawDataElement = new BasicDBObject();
        RawDataElement rawData= imageDataElement.getRawData();
+
        rawDataElement.put("id", rawData.getId());
+       rawDataElement.put("elementId", rawData.getElementId());
        rawDataElement.put("elementType", rawData.getElementType());
        rawDataElement.put("startX",rawData.getStartX());
        rawDataElement.put("startY", rawData.getStartY());
        rawDataElement.put("width", rawData.getWidth());
-       rawDataElement.put("height", rawData.getWidth());
+       rawDataElement.put("height", rawData.getHeight());
        rawDataElement.put("baseUiComponentStartX", rawData.getBaseUiComponentStartX());
        rawDataElement.put("baseUiComponentStartY", rawData.getBaseUiComponentStartY());
        rawDataElement.put("baseUiComponentWidth", rawData.getBaseUiComponentWidth());
@@ -282,13 +287,15 @@ public class TemplateInfoDAO {
         tableElementObject.put("totalHeight",tableDataElement.getTotalHeight());
 
         BasicDBObject rawDataElement = new BasicDBObject();
+
         RawDataElement rawData= tableDataElement.getRawData();
         rawDataElement.put("id", rawData.getId());
+        rawDataElement.put("elementId", rawData.getElementId());
         rawDataElement.put("elementType", rawData.getElementType());
         rawDataElement.put("startX",rawData.getStartX());
         rawDataElement.put("startY", rawData.getStartY());
         rawDataElement.put("width", rawData.getWidth());
-        rawDataElement.put("height", rawData.getWidth());
+        rawDataElement.put("height", rawData.getHeight());
         rawDataElement.put("baseUiComponentStartX", rawData.getBaseUiComponentStartX());
         rawDataElement.put("baseUiComponentStartY", rawData.getBaseUiComponentStartY());
         rawDataElement.put("baseUiComponentWidth", rawData.getBaseUiComponentWidth());
@@ -307,11 +314,12 @@ public class TemplateInfoDAO {
             columnRawDataObj = new BasicDBObject();
 
             columnRawDataObj.put("id", columnRawDataElement.getId());
+            columnRawDataObj.put("elementId", columnRawDataElement.getElementId());
             columnRawDataObj.put("elementType", columnRawDataElement.getElementType());
             columnRawDataObj.put("startX",columnRawDataElement.getStartX());
             columnRawDataObj.put("startY", columnRawDataElement.getStartY());
             columnRawDataObj.put("width",  columnRawDataElement.getWidth());
-            columnRawDataObj.put("height", columnRawDataElement.getWidth());
+            columnRawDataObj.put("height", columnRawDataElement.getHeight());
             columnRawDataObj.put("baseUiComponentStartX", columnRawDataElement.getBaseUiComponentStartX());
             columnRawDataObj.put("baseUiComponentStartY", columnRawDataElement.getBaseUiComponentStartY());
             columnRawDataObj.put("baseUiComponentWidth",  columnRawDataElement.getBaseUiComponentWidth());
@@ -357,11 +365,12 @@ public class TemplateInfoDAO {
         BasicDBObject rawDataElement = new BasicDBObject();
         RawDataElement rawData= textDataElement.getRawData();
         rawDataElement.put("id", rawData.getId());
+        rawDataElement.put("elementId", rawData.getElementId());
         rawDataElement.put("elementType", rawData.getElementType());
         rawDataElement.put("startX",rawData.getStartX());
         rawDataElement.put("startY", rawData.getStartY());
         rawDataElement.put("width", rawData.getWidth());
-        rawDataElement.put("height", rawData.getWidth());
+        rawDataElement.put("height", rawData.getHeight());
         rawDataElement.put("baseUiComponentStartX", rawData.getBaseUiComponentStartX());
         rawDataElement.put("baseUiComponentStartY", rawData.getBaseUiComponentStartY());
         rawDataElement.put("baseUiComponentWidth", rawData.getBaseUiComponentWidth());
@@ -371,11 +380,12 @@ public class TemplateInfoDAO {
         BasicDBObject metaRawDataElement = new BasicDBObject();
 
         metaRawDataElement.put("id", metaRawData.getId());
+        metaRawDataElement.put("elementId", metaRawData.getElementId());
         metaRawDataElement.put("elementType", metaRawData.getElementType());
         metaRawDataElement.put("startX",metaRawData.getStartX());
         metaRawDataElement.put("startY", metaRawData.getStartY());
         metaRawDataElement.put("width", metaRawData.getWidth());
-        metaRawDataElement.put("height", metaRawData.getWidth());
+        metaRawDataElement.put("height", metaRawData.getHeight());
         metaRawDataElement.put("baseUiComponentStartX", metaRawData.getBaseUiComponentStartX());
         metaRawDataElement.put("baseUiComponentStartY", metaRawData.getBaseUiComponentStartY());
         metaRawDataElement.put("baseUiComponentWidth", metaRawData.getBaseUiComponentWidth());
@@ -411,11 +421,12 @@ public class TemplateInfoDAO {
         BasicDBObject rawDataElement = new BasicDBObject();
         RawDataElement rawData= imageDataElement.getRawData();
         rawDataElement.put("id", rawData.getId());
+        rawDataElement.put("elementId", rawData.getElementId());
         rawDataElement.put("elementType", rawData.getElementType());
         rawDataElement.put("startX",rawData.getStartX());
         rawDataElement.put("startY", rawData.getStartY());
         rawDataElement.put("width", rawData.getWidth());
-        rawDataElement.put("height", rawData.getWidth());
+        rawDataElement.put("height", rawData.getHeight());
         rawDataElement.put("baseUiComponentStartX", rawData.getBaseUiComponentStartX());
         rawDataElement.put("baseUiComponentStartY", rawData.getBaseUiComponentStartY());
         rawDataElement.put("baseUiComponentWidth", rawData.getBaseUiComponentWidth());
@@ -453,12 +464,14 @@ public class TemplateInfoDAO {
 
         BasicDBObject rawDataElement = new BasicDBObject();
         RawDataElement rawData= tableDataElement.getRawData();
+
         rawDataElement.put("id", rawData.getId());
+        rawDataElement.put("elementId", rawData.getElementId());
         rawDataElement.put("elementType", rawData.getElementType());
         rawDataElement.put("startX",rawData.getStartX());
         rawDataElement.put("startY", rawData.getStartY());
         rawDataElement.put("width", rawData.getWidth());
-        rawDataElement.put("height", rawData.getWidth());
+        rawDataElement.put("height", rawData.getHeight());
         rawDataElement.put("baseUiComponentStartX", rawData.getBaseUiComponentStartX());
         rawDataElement.put("baseUiComponentStartY", rawData.getBaseUiComponentStartY());
         rawDataElement.put("baseUiComponentWidth", rawData.getBaseUiComponentWidth());
@@ -476,11 +489,12 @@ public class TemplateInfoDAO {
             columnRawDataObj = new BasicDBObject();
 
             columnRawDataObj.put("id", columnRawDataElement.getId());
+            columnRawDataObj.put("elementId", columnRawDataElement.getElementId());
             columnRawDataObj.put("elementType", columnRawDataElement.getElementType());
             columnRawDataObj.put("startX",columnRawDataElement.getStartX());
             columnRawDataObj.put("startY", columnRawDataElement.getStartY());
             columnRawDataObj.put("width",  columnRawDataElement.getWidth());
-            columnRawDataObj.put("height", columnRawDataElement.getWidth());
+            columnRawDataObj.put("height", columnRawDataElement.getHeight());
             columnRawDataObj.put("baseUiComponentStartX", columnRawDataElement.getBaseUiComponentStartX());
             columnRawDataObj.put("baseUiComponentStartY", columnRawDataElement.getBaseUiComponentStartY());
             columnRawDataObj.put("baseUiComponentWidth",  columnRawDataElement.getBaseUiComponentWidth());
