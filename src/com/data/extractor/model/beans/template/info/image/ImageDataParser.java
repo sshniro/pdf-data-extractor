@@ -10,17 +10,7 @@ import java.util.List;
 @Generated("org.jsonschema2pojo")
 public class ImageDataParser {
 
-
-
-//    @SerializedName("_id")
-//    @Expose
-//    private Id id;
-    @Expose
     private String id;
-    @Expose
-    private String mainCategory;
-    @Expose
-    private String subCategory;
     @Expose
     private String templateName;
     @Expose
@@ -30,33 +20,9 @@ public class ImageDataParser {
     @Expose
     private List<ImageDataElement> imageDataElements = new ArrayList<ImageDataElement>();
 
-//    public Id getId() {
-//        return id;
-//    }
-//
-//    public void setId(Id id) {
-//        this.id = id;
-//    }
-
     public String getId() {        return id;    }
 
     public void setId(String id) {        this.id = id;    }
-
-    public String getMainCategory() {
-        return mainCategory;
-    }
-
-    public void setMainCategory(String mainCategory) {
-        this.mainCategory = mainCategory;
-    }
-
-    public String getSubCategory() {
-        return subCategory;
-    }
-
-    public void setSubCategory(String subCategory) {
-        this.subCategory = subCategory;
-    }
 
     public String getTemplateName() {
         return templateName;

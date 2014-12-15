@@ -77,97 +77,97 @@ public class ExtractedTableInserter {
             }
         }
     }
-
-    public void createNewRecord(TableDataParser tableDataParser, TableDataElement tableDataElement,
-                                DBCollection templateCollection,String documentId ) {
-
-        BasicDBObject insertObject = new BasicDBObject();
-        insertObject.put("mainCategory", tableDataParser.getMainCategory());
-        insertObject.put("subCategory", tableDataParser.getSubCategory());
-        insertObject.put("templateName", tableDataParser.getTemplateName());
-        insertObject.put("documentId", documentId);
-        insertObject.put("dataType", tableDataParser.getDataType());
-
-        List<BasicDBObject> tableDataElementsInsert=new ArrayList<BasicDBObject>();
-
-        BasicDBObject tableElementObject=new BasicDBObject();
-
-        tableElementObject.put("metaId",tableDataElement.getMetaId());
-        tableElementObject.put("pageNumber",tableDataElement.getPageNumber());
-        tableElementObject.put("pageRotation", tableDataElement.getPageRotation());
-
-        tableElementObject.put("totalX1",tableDataElement.getTotalX1());
-        tableElementObject.put("totalY1", tableDataElement.getTotalY1());
-        tableElementObject.put("totalWidth",tableDataElement.getTotalWidth());
-        tableElementObject.put("totalHeight",tableDataElement.getTotalHeight());
-
-        List<Column> columns=tableDataElement.getColumns();
-        ArrayList columnData = new ArrayList();
-        //String extractedValues;
-
-
-        for(Column c:columns){
-
-            //extractedValues=c.getExtractedValues();
-            //String[] splitData=processExtractedTable(extractedValues);
-            List<Cell> cellList=c.getCellList();
-            List<BasicDBObject> row=new ArrayList<BasicDBObject>();
-            for(Cell cell:cellList){
-                row.add(new BasicDBObject("row",cell.getValue().toString()));
-            }
-            columnData.add(new BasicDBObject("metaId",c.getMetaId()).append("rowValues",row));
-
-        }
-
-        tableElementObject.put("columns",columnData);
-        tableDataElementsInsert.add(tableElementObject);
-        insertObject.put("tableDataElements",tableDataElementsInsert);
-        templateCollection.insert(insertObject);
-
-    }
-
-    public String[] processExtractedTable(String extractedValues){
-        String[] splitData=extractedValues.split("\\r?\\n");
-        return splitData;
-    }
-
-    public void updateRecord(TableDataElement tableDataElement,
-                             DBCollection templateCollection , BasicDBObject searchQuery ){
-
-        BasicDBObject tableElementObject=new BasicDBObject();
-
-        tableElementObject.put("metaId",tableDataElement.getMetaId());
-        tableElementObject.put("pageNumber",tableDataElement.getPageNumber());
-        tableElementObject.put("pageRotation", tableDataElement.getPageRotation());
-
-        tableElementObject.put("totalX1",tableDataElement.getTotalX1());
-        tableElementObject.put("totalY1", tableDataElement.getTotalY1());
-        tableElementObject.put("totalWidth",tableDataElement.getTotalWidth());
-        tableElementObject.put("totalHeight",tableDataElement.getTotalHeight());
-
-        List<Column> columns=tableDataElement.getColumns();
-        ArrayList columnData = new ArrayList();
-        //String extractedValues;
-
-
-        for(Column c:columns){
-
-            //extractedValues=c.getExtractedValues();
-            //String[] splitData=processExtractedTable(extractedValues);
-            List<Cell> cellList=c.getCellList();
-            List<BasicDBObject> row=new ArrayList<BasicDBObject>();
-            for(Cell cell:cellList){
-                row.add(new BasicDBObject("row",cell.getValue().toString()));
-            }
-            columnData.add(new BasicDBObject("metaId",c.getMetaId()).append("rowValues",row));
-
-        }
-
-        tableElementObject.put("columns",columnData);
-
-        BasicDBObject updateObject = new BasicDBObject();
-        updateObject.put("$push", new BasicDBObject("tableDataElements", tableElementObject));
-        templateCollection.update(searchQuery, updateObject);
-
-    }
+//
+//    public void createNewRecord(TableDataParser tableDataParser, TableDataElement tableDataElement,
+//                                DBCollection templateCollection,String documentId ) {
+//
+//        BasicDBObject insertObject = new BasicDBObject();
+//        insertObject.put("mainCategory", tableDataParser.getMainCategory());
+//        insertObject.put("subCategory", tableDataParser.getSubCategory());
+//        insertObject.put("templateName", tableDataParser.getTemplateName());
+//        insertObject.put("documentId", documentId);
+//        insertObject.put("dataType", tableDataParser.getDataType());
+//
+//        List<BasicDBObject> tableDataElementsInsert=new ArrayList<BasicDBObject>();
+//
+//        BasicDBObject tableElementObject=new BasicDBObject();
+//
+//        tableElementObject.put("metaId",tableDataElement.getMetaId());
+//        tableElementObject.put("pageNumber",tableDataElement.getPageNumber());
+//        tableElementObject.put("pageRotation", tableDataElement.getPageRotation());
+//
+//        tableElementObject.put("totalX1",tableDataElement.getTotalX1());
+//        tableElementObject.put("totalY1", tableDataElement.getTotalY1());
+//        tableElementObject.put("totalWidth",tableDataElement.getTotalWidth());
+//        tableElementObject.put("totalHeight",tableDataElement.getTotalHeight());
+//
+//        List<Column> columns=tableDataElement.getColumns();
+//        ArrayList columnData = new ArrayList();
+//        //String extractedValues;
+//
+//
+//        for(Column c:columns){
+//
+//            //extractedValues=c.getExtractedValues();
+//            //String[] splitData=processExtractedTable(extractedValues);
+//            List<Cell> cellList=c.getCellList();
+//            List<BasicDBObject> row=new ArrayList<BasicDBObject>();
+//            for(Cell cell:cellList){
+//                row.add(new BasicDBObject("row",cell.getValue().toString()));
+//            }
+//            columnData.add(new BasicDBObject("metaId",c.getMetaId()).append("rowValues",row));
+//
+//        }
+//
+//        tableElementObject.put("columns",columnData);
+//        tableDataElementsInsert.add(tableElementObject);
+//        insertObject.put("tableDataElements",tableDataElementsInsert);
+//        templateCollection.insert(insertObject);
+//
+//    }
+//
+//    public String[] processExtractedTable(String extractedValues){
+//        String[] splitData=extractedValues.split("\\r?\\n");
+//        return splitData;
+//    }
+//
+//    public void updateRecord(TableDataElement tableDataElement,
+//                             DBCollection templateCollection , BasicDBObject searchQuery ){
+//
+//        BasicDBObject tableElementObject=new BasicDBObject();
+//
+//        tableElementObject.put("metaId",tableDataElement.getMetaId());
+//        tableElementObject.put("pageNumber",tableDataElement.getPageNumber());
+//        tableElementObject.put("pageRotation", tableDataElement.getPageRotation());
+//
+//        tableElementObject.put("totalX1",tableDataElement.getTotalX1());
+//        tableElementObject.put("totalY1", tableDataElement.getTotalY1());
+//        tableElementObject.put("totalWidth",tableDataElement.getTotalWidth());
+//        tableElementObject.put("totalHeight",tableDataElement.getTotalHeight());
+//
+//        List<Column> columns=tableDataElement.getColumns();
+//        ArrayList columnData = new ArrayList();
+//        //String extractedValues;
+//
+//
+//        for(Column c:columns){
+//
+//            //extractedValues=c.getExtractedValues();
+//            //String[] splitData=processExtractedTable(extractedValues);
+//            List<Cell> cellList=c.getCellList();
+//            List<BasicDBObject> row=new ArrayList<BasicDBObject>();
+//            for(Cell cell:cellList){
+//                row.add(new BasicDBObject("row",cell.getValue().toString()));
+//            }
+//            columnData.add(new BasicDBObject("metaId",c.getMetaId()).append("rowValues",row));
+//
+//        }
+//
+//        tableElementObject.put("columns",columnData);
+//
+//        BasicDBObject updateObject = new BasicDBObject();
+//        updateObject.put("$push", new BasicDBObject("tableDataElements", tableElementObject));
+//        templateCollection.update(searchQuery, updateObject);
+//
+//    }
 }

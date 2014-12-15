@@ -28,8 +28,8 @@ public class ExtractedTableInserter {
         DBCollection templateCollection = dbInitializer.getCollection(db, templatesColl);
 
         BasicDBObject searchQuery = new BasicDBObject();
-        searchQuery.put("mainCategory", tableDataParser.getMainCategory());
-        searchQuery.put("subCategory", tableDataParser.getSubCategory());
+//        searchQuery.put("mainCategory", tableDataParser.getMainCategory());
+//        searchQuery.put("subCategory", tableDataParser.getSubCategory());
         searchQuery.put("templateName", tableDataParser.getTemplateName());
         searchQuery.put("documentId", extractStatus.getDocumentId());
         searchQuery.put("dataType", tableDataParser.getDataType());
@@ -52,8 +52,8 @@ public class ExtractedTableInserter {
                                 DBCollection templateCollection,String documentId ) {
 
         BasicDBObject insertObject = new BasicDBObject();
-        insertObject.put("mainCategory", tableDataParser.getMainCategory());
-        insertObject.put("subCategory", tableDataParser.getSubCategory());
+//        insertObject.put("mainCategory", tableDataParser.getMainCategory());
+//        insertObject.put("subCategory", tableDataParser.getSubCategory());
         insertObject.put("templateName", tableDataParser.getTemplateName());
         insertObject.put("documentId", documentId);
         insertObject.put("dataType", tableDataParser.getDataType());
