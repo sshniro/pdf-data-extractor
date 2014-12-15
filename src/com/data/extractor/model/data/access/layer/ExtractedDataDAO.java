@@ -2,6 +2,11 @@ package com.data.extractor.model.data.access.layer;
 
 
 import com.data.extractor.model.beans.template.info.RawDataElement;
+import com.data.extractor.model.beans.template.info.image.ImageDataElement;
+import com.data.extractor.model.beans.template.info.image.ImageDataParser;
+import com.data.extractor.model.beans.template.info.table.Column;
+import com.data.extractor.model.beans.template.info.table.TableDataElement;
+import com.data.extractor.model.beans.template.info.table.TableDataParser;
 import com.data.extractor.model.beans.template.info.text.TextDataElement;
 import com.data.extractor.model.beans.template.info.text.TextDataParser;
 import com.data.extractor.model.db.connect.dbInitializer;
@@ -33,6 +38,7 @@ public class ExtractedDataDAO {
         DBCursor templateCursor = collection.find(searchQuery);
         return templateCursor.size();
     }
+
     public void createTemplateInfo(String nodeId, String parentId ,String dataType,TextDataElement textDataElement){
 
         BasicDBObject insertObject = new BasicDBObject();
@@ -99,6 +105,126 @@ public class ExtractedDataDAO {
 
     }
 
+    public void createTemplateInfo(String nodeId, String parentId ,String dataType,
+                                   ImageDataElement imageDataElement){
+
+        BasicDBObject insertObject = new BasicDBObject();
+        insertObject.put("id", nodeId);
+        insertObject.put("parent", parentId);
+        insertObject.put("dataType", dataType);
+
+        List<BasicDBObject> imageDataElementsInsert=new ArrayList<BasicDBObject>();
+
+        BasicDBObject imageElementObject=new BasicDBObject();
+
+        imageElementObject.put("metaId",imageDataElement.getMetaId());
+        imageElementObject.put("elementId",imageDataElement.getElementId());
+        imageElementObject.put("pageNumber",imageDataElement.getPageNumber());
+        imageElementObject.put("pageRotation",imageDataElement.getPageRotation());
+
+        imageElementObject.put("totalX1",imageDataElement.getTotalX1());
+        imageElementObject.put("totalY1",imageDataElement.getTotalY1());
+        imageElementObject.put("totalWidth",imageDataElement.getTotalWidth());
+        imageElementObject.put("totalHeight",imageDataElement.getTotalHeight());
+
+        BasicDBObject rawDataElement = new BasicDBObject();
+        RawDataElement rawData= imageDataElement.getRawData();
+
+        rawDataElement.put("id", rawData.getId());
+        rawDataElement.put("elementId", rawData.getElementId());
+        rawDataElement.put("elementType", rawData.getElementType());
+        rawDataElement.put("startX",rawData.getStartX());
+        rawDataElement.put("startY", rawData.getStartY());
+        rawDataElement.put("width", rawData.getWidth());
+        rawDataElement.put("height", rawData.getHeight());
+        rawDataElement.put("baseUiComponentStartX", rawData.getBaseUiComponentStartX());
+        rawDataElement.put("baseUiComponentStartY", rawData.getBaseUiComponentStartY());
+        rawDataElement.put("baseUiComponentWidth", rawData.getBaseUiComponentWidth());
+        rawDataElement.put("baseUiComponentHeight", rawData.getBaseUiComponentHeight());
+
+        imageElementObject.put("rawData" , rawDataElement);
+
+        imageDataElementsInsert.add(imageElementObject);
+
+        insertObject.put("imageDataElements", imageDataElementsInsert);
+
+        collection.insert(insertObject);
+    }
+
+    public void createTemplateInfo(String nodeId, String parent,String dataType,
+                                   TableDataElement tableDataElement){
+
+        BasicDBObject insertObject=new BasicDBObject();
+        insertObject.put("id",nodeId);
+        insertObject.put("parent",parent);
+        insertObject.put("dataType",dataType);
+
+        List<BasicDBObject> tableDataElementsInsert=new ArrayList<BasicDBObject>();
+
+        BasicDBObject tableElementObject=new BasicDBObject();
+
+        tableElementObject.put("metaId",tableDataElement.getMetaId());
+        tableElementObject.put("elementId",tableDataElement.getElementId());
+        tableElementObject.put("pageNumber",tableDataElement.getPageNumber());
+        tableElementObject.put("pageRotation",tableDataElement.getPageRotation());
+
+        tableElementObject.put("totalX1",tableDataElement.getTotalX1());
+        tableElementObject.put("totalY1",tableDataElement.getTotalY1());
+        tableElementObject.put("totalWidth",tableDataElement.getTotalWidth());
+        tableElementObject.put("totalHeight",tableDataElement.getTotalHeight());
+
+        BasicDBObject rawDataElement = new BasicDBObject();
+
+        RawDataElement rawData= tableDataElement.getRawData();
+        rawDataElement.put("id", rawData.getId());
+        rawDataElement.put("elementId", rawData.getElementId());
+        rawDataElement.put("elementType", rawData.getElementType());
+        rawDataElement.put("startX",rawData.getStartX());
+        rawDataElement.put("startY", rawData.getStartY());
+        rawDataElement.put("width", rawData.getWidth());
+        rawDataElement.put("height", rawData.getHeight());
+        rawDataElement.put("baseUiComponentStartX", rawData.getBaseUiComponentStartX());
+        rawDataElement.put("baseUiComponentStartY", rawData.getBaseUiComponentStartY());
+        rawDataElement.put("baseUiComponentWidth", rawData.getBaseUiComponentWidth());
+        rawDataElement.put("baseUiComponentHeight", rawData.getBaseUiComponentHeight());
+
+        tableElementObject.put("rawData" , rawDataElement);
+
+        List<Column> columns=tableDataElement.getColumns();
+        ArrayList columnData = new ArrayList();
+
+        BasicDBObject columnRawDataObj;
+
+        for(Column c:columns){
+
+            RawDataElement columnRawDataElement = c.getRawData();
+            columnRawDataObj = new BasicDBObject();
+
+            columnRawDataObj.put("id", columnRawDataElement.getId());
+            columnRawDataObj.put("elementId", columnRawDataElement.getElementId());
+            columnRawDataObj.put("elementType", columnRawDataElement.getElementType());
+            columnRawDataObj.put("startX",columnRawDataElement.getStartX());
+            columnRawDataObj.put("startY", columnRawDataElement.getStartY());
+            columnRawDataObj.put("width",  columnRawDataElement.getWidth());
+            columnRawDataObj.put("height", columnRawDataElement.getHeight());
+            columnRawDataObj.put("baseUiComponentStartX", columnRawDataElement.getBaseUiComponentStartX());
+            columnRawDataObj.put("baseUiComponentStartY", columnRawDataElement.getBaseUiComponentStartY());
+            columnRawDataObj.put("baseUiComponentWidth",  columnRawDataElement.getBaseUiComponentWidth());
+            columnRawDataObj.put("baseUiComponentHeight", columnRawDataElement.getBaseUiComponentHeight());
+
+            columnData.add(new BasicDBObject("metaId",c.getMetaId()).append("metaX1",c.getMetaX1())
+                    .append("metaY1",c.getMetaY1()).append("metaWidth",c.getMetaWidth())
+                    .append("metaHeight",c.getMetaHeight()).append("rawData" , columnRawDataObj));
+        }
+
+        tableElementObject.put("columns",columnData);
+        tableDataElementsInsert.add(tableElementObject);
+        insertObject.put("tableDataElements",tableDataElementsInsert);
+        collection.insert(insertObject);
+
+    }
+
+
     public void updateTemplateInfo(TextDataParser textDataParser,TextDataElement textDataElement){
 
         BasicDBObject searchQuery = new BasicDBObject();
@@ -161,6 +287,118 @@ public class ExtractedDataDAO {
         collection.update(searchQuery, updateObject);
 
     }
+
+    public void updateTemplateInfo(ImageDataParser imageDataParser,ImageDataElement imageDataElement){
+
+        BasicDBObject searchQuery = new BasicDBObject();
+        searchQuery.put("id", imageDataParser.getId());
+        searchQuery.put("dataType", imageDataParser.getDataType());
+
+        BasicDBObject imageElementObject = new BasicDBObject();
+
+        imageElementObject.put("metaId",imageDataElement.getMetaId());
+        imageElementObject.put("elementId",imageDataElement.getElementId());
+        imageElementObject.put("pageNumber",imageDataElement.getPageNumber());
+        imageElementObject.put("pageRotation",imageDataElement.getPageRotation());
+
+        imageElementObject.put("totalX1",imageDataElement.getTotalX1());
+        imageElementObject.put("totalY1",imageDataElement.getTotalY1());
+        imageElementObject.put("totalWidth",imageDataElement.getTotalWidth());
+        imageElementObject.put("totalHeight",imageDataElement.getTotalHeight());
+
+        BasicDBObject rawDataElement = new BasicDBObject();
+        RawDataElement rawData= imageDataElement.getRawData();
+        rawDataElement.put("id", rawData.getId());
+        rawDataElement.put("elementId", rawData.getElementId());
+        rawDataElement.put("elementType", rawData.getElementType());
+        rawDataElement.put("startX",rawData.getStartX());
+        rawDataElement.put("startY", rawData.getStartY());
+        rawDataElement.put("width", rawData.getWidth());
+        rawDataElement.put("height", rawData.getHeight());
+        rawDataElement.put("baseUiComponentStartX", rawData.getBaseUiComponentStartX());
+        rawDataElement.put("baseUiComponentStartY", rawData.getBaseUiComponentStartY());
+        rawDataElement.put("baseUiComponentWidth", rawData.getBaseUiComponentWidth());
+        rawDataElement.put("baseUiComponentHeight", rawData.getBaseUiComponentHeight());
+
+        imageElementObject.put("rawData" , rawDataElement);
+
+        BasicDBObject updateObject=new BasicDBObject();
+        updateObject.put("$push",new BasicDBObject("imageDataElements", imageElementObject));
+        collection.update(searchQuery, updateObject);
+
+
+    }
+
+    public void updateTemplateInfo(TableDataParser tableDataParser,TableDataElement tableDataElement){
+
+        BasicDBObject searchQuery = new BasicDBObject();
+
+        searchQuery.put("id", tableDataParser.getId());
+        searchQuery.put("dataType", tableDataParser.getDataType());
+
+        BasicDBObject tableElementObject = new BasicDBObject();
+
+        tableElementObject.put("metaId",tableDataElement.getMetaId());
+        tableElementObject.put("elementId",tableDataElement.getElementId());
+        tableElementObject.put("pageNumber",tableDataElement.getPageNumber());
+        tableElementObject.put("pageRotation",tableDataElement.getPageRotation());
+
+        tableElementObject.put("totalX1",tableDataElement.getTotalX1());
+        tableElementObject.put("totalY1",tableDataElement.getTotalY1());
+        tableElementObject.put("totalWidth",tableDataElement.getTotalWidth());
+        tableElementObject.put("totalHeight",tableDataElement.getTotalHeight());
+
+        BasicDBObject rawDataElement = new BasicDBObject();
+        RawDataElement rawData= tableDataElement.getRawData();
+
+        rawDataElement.put("id", rawData.getId());
+        rawDataElement.put("elementId", rawData.getElementId());
+        rawDataElement.put("elementType", rawData.getElementType());
+        rawDataElement.put("startX",rawData.getStartX());
+        rawDataElement.put("startY", rawData.getStartY());
+        rawDataElement.put("width", rawData.getWidth());
+        rawDataElement.put("height", rawData.getHeight());
+        rawDataElement.put("baseUiComponentStartX", rawData.getBaseUiComponentStartX());
+        rawDataElement.put("baseUiComponentStartY", rawData.getBaseUiComponentStartY());
+        rawDataElement.put("baseUiComponentWidth", rawData.getBaseUiComponentWidth());
+        rawDataElement.put("baseUiComponentHeight", rawData.getBaseUiComponentHeight());
+
+        tableElementObject.put("rawData" , rawDataElement);
+
+        List<Column> columns=tableDataElement.getColumns();
+        ArrayList columnData = new ArrayList();
+        BasicDBObject columnRawDataObj;
+
+        for(Column c:columns){
+
+            RawDataElement columnRawDataElement = c.getRawData();
+            columnRawDataObj = new BasicDBObject();
+
+            columnRawDataObj.put("id", columnRawDataElement.getId());
+            columnRawDataObj.put("elementId", columnRawDataElement.getElementId());
+            columnRawDataObj.put("elementType", columnRawDataElement.getElementType());
+            columnRawDataObj.put("startX",columnRawDataElement.getStartX());
+            columnRawDataObj.put("startY", columnRawDataElement.getStartY());
+            columnRawDataObj.put("width",  columnRawDataElement.getWidth());
+            columnRawDataObj.put("height", columnRawDataElement.getHeight());
+            columnRawDataObj.put("baseUiComponentStartX", columnRawDataElement.getBaseUiComponentStartX());
+            columnRawDataObj.put("baseUiComponentStartY", columnRawDataElement.getBaseUiComponentStartY());
+            columnRawDataObj.put("baseUiComponentWidth",  columnRawDataElement.getBaseUiComponentWidth());
+            columnRawDataObj.put("baseUiComponentHeight", columnRawDataElement.getBaseUiComponentHeight());
+
+
+            columnData.add(new BasicDBObject("metaId",c.getMetaId()).append("metaX1",c.getMetaX1())
+                    .append("metaY1",c.getMetaY1()).append("metaWidth",c.getMetaWidth())
+                    .append("metaHeight",c.getMetaHeight()).append("rawData",columnRawDataObj));
+        }
+        tableElementObject.put("columns",columnData);
+
+        BasicDBObject updateObject=new BasicDBObject();
+        updateObject.put("$push",new BasicDBObject("tableDataElements", tableElementObject));
+        collection.update(searchQuery, updateObject);
+
+    }
+
 
 
 

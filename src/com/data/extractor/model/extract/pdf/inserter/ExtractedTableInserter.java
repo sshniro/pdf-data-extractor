@@ -5,6 +5,8 @@ import com.data.extractor.model.beans.template.info.table.Cell;
 import com.data.extractor.model.beans.template.info.table.Column;
 import com.data.extractor.model.beans.template.info.table.TableDataElement;
 import com.data.extractor.model.beans.template.info.table.TableDataParser;
+import com.data.extractor.model.beans.template.info.text.TextDataElement;
+import com.data.extractor.model.data.access.layer.ExtractedDataDAO;
 import com.data.extractor.model.db.connect.dbInitializer;
 import com.mongodb.*;
 
@@ -23,28 +25,55 @@ public class ExtractedTableInserter {
 
     public void insert(TableDataParser tableDataParser,ExtractStatus extractStatus , MongoClient mongoClient){
 
-        dbInitializer dbInitializer = new dbInitializer();
-        DB db=dbInitializer.getDB(mongoClient,dbName);
-        DBCollection templateCollection = dbInitializer.getCollection(db, templatesColl);
+//        dbInitializer dbInitializer = new dbInitializer();
+//        DB db=dbInitializer.getDB(mongoClient,dbName);
+//        DBCollection templateCollection = dbInitializer.getCollection(db, templatesColl);
+//
+//        BasicDBObject searchQuery = new BasicDBObject();
+//        searchQuery.put("mainCategory", tableDataParser.getMainCategory());
+//        searchQuery.put("subCategory", tableDataParser.getSubCategory());
+//        searchQuery.put("templateName", tableDataParser.getTemplateName());
+//        searchQuery.put("documentId", extractStatus.getDocumentId());
+//        searchQuery.put("dataType", tableDataParser.getDataType());
+//
+//        List<TableDataElement> tableDataElements = tableDataParser.getTableDataElements();
+//
+//        for(TableDataElement ta:tableDataElements){
+//            DBCursor templateCursor = templateCollection.find(searchQuery);
+//
+//            if (templateCursor.hasNext()) {
+//                /* If record exists update the record   */
+//                updateRecord(ta,templateCollection, searchQuery);
+//            } else {
+//                /* If there is no record exists create record and input */
+//                createNewRecord(tableDataParser, ta,templateCollection,extractStatus.getDocumentId());
+//            }
+//        }
 
-        BasicDBObject searchQuery = new BasicDBObject();
-        searchQuery.put("mainCategory", tableDataParser.getMainCategory());
-        searchQuery.put("subCategory", tableDataParser.getSubCategory());
-        searchQuery.put("templateName", tableDataParser.getTemplateName());
-        searchQuery.put("documentId", extractStatus.getDocumentId());
-        searchQuery.put("dataType", tableDataParser.getDataType());
 
-        List<TableDataElement> tableDataElements = tableDataParser.getTableDataElements();
+        List<TableDataElement> tableDataElements= tableDataParser.getTableDataElements();
+        ExtractedDataDAO extractedDataDAO = new ExtractedDataDAO(mongoClient);
+        TableDataElement tableDataElement;
+        int recordsSize=0;
 
-        for(TableDataElement ta:tableDataElements){
-            DBCursor templateCursor = templateCollection.find(searchQuery);
+        for(int i=0;i<tableDataElements.size();i++){
 
-            if (templateCursor.hasNext()) {
-                /* If record exists update the record   */
-                updateRecord(ta,templateCollection, searchQuery);
+            tableDataElement=tableDataElements.get(i);
+
+            /* Only check once from the DB when the loop starts */
+            if(i==0){
+
+                recordsSize = extractedDataDAO.getRecordsSizeOfId(tableDataParser.getId(),tableDataParser.getDataType());
+            }
+
+            if (recordsSize == 0) {
+                /* If there is no record exists create a new record and insert */
+                extractedDataDAO.createTemplateInfo(tableDataParser.getId() , extractStatus.getParent() , tableDataParser.getDataType(),tableDataElement);
+                recordsSize = 1;
+
             } else {
-                /* If there is no record exists create record and input */
-                createNewRecord(tableDataParser, ta,templateCollection,extractStatus.getDocumentId());
+                /* If record exists update the record */
+                extractedDataDAO.updateTemplateInfo(tableDataParser,tableDataElement);
             }
         }
     }
