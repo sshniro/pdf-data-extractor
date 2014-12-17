@@ -156,6 +156,8 @@ public class TemplateInfoDAO {
 
         textElementObject.put("metaId", textDataElement.getMetaId());
         textElementObject.put("elementId", textDataElement.getElementId());
+        textElementObject.put("dictionaryId", textDataElement.getDictionaryId());
+        textElementObject.put("dictionaryName", textDataElement.getDictionaryName());
         textElementObject.put("pageNumber", textDataElement.getPageNumber());
         textElementObject.put("pageRotation", textDataElement.getPageRotation());
 
@@ -220,6 +222,8 @@ public class TemplateInfoDAO {
 
         imageElementObject.put("metaId",imageDataElement.getMetaId());
         imageElementObject.put("elementId",imageDataElement.getElementId());
+       imageElementObject.put("dictionaryId", imageDataElement.getDictionaryId());
+       imageElementObject.put("dictionaryName", imageDataElement.getDictionaryName());
         imageElementObject.put("pageNumber",imageDataElement.getPageNumber());
         imageElementObject.put("pageRotation",imageDataElement.getPageRotation());
 
@@ -338,6 +342,8 @@ public class TemplateInfoDAO {
 
         textElementObject.put("metaId", textDataElement.getMetaId());
         textElementObject.put("elementId", textDataElement.getElementId());
+        textElementObject.put("dictionaryId", textDataElement.getDictionaryId());
+        textElementObject.put("dictionaryName", textDataElement.getDictionaryName());
         textElementObject.put("pageNumber", textDataElement.getPageNumber());
         textElementObject.put("pageRotation", textDataElement.getPageRotation());
 
@@ -400,6 +406,8 @@ public class TemplateInfoDAO {
 
         imageElementObject.put("metaId",imageDataElement.getMetaId());
         imageElementObject.put("elementId",imageDataElement.getElementId());
+        imageElementObject.put("dictionaryId", imageDataElement.getDictionaryId());
+        imageElementObject.put("dictionaryName", imageDataElement.getDictionaryName());
         imageElementObject.put("pageNumber",imageDataElement.getPageNumber());
         imageElementObject.put("pageRotation",imageDataElement.getPageRotation());
 
@@ -445,6 +453,8 @@ public class TemplateInfoDAO {
 
         tableElementObject.put("metaId",tableDataElement.getMetaId());
         tableElementObject.put("elementId",tableDataElement.getElementId());
+        tableElementObject.put("dictionaryId", tableDataElement.getDictionaryId());
+        tableElementObject.put("dictionaryName", tableDataElement.getDictionaryName());
         tableElementObject.put("pageNumber",tableDataElement.getPageNumber());
         tableElementObject.put("pageRotation",tableDataElement.getPageRotation());
 
