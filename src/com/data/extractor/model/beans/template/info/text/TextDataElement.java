@@ -20,6 +20,10 @@ public class TextDataElement {
     @Expose
     private String metaName;
     @Expose
+    private String dictionaryId;
+    @Expose
+    private String dictionaryName;
+    @Expose
     private int pageNumber;
     @Expose
     private int pageRotation;
@@ -173,4 +177,13 @@ public class TextDataElement {
     public String getElementId() {        return elementId;    }
 
     public void setElementId(String elementId) {        this.elementId = elementId;    }
+
+    public String getDictionaryId() {        return dictionaryId;    }
+
+    public void setDictionaryId(String dictionaryId) {        this.dictionaryId = dictionaryId;    }
+
+    public String getDictionaryName() {        return dictionaryName;    }
+
+    public void setDictionaryName(String dictionaryName) {        this.dictionaryName = dictionaryName;    }
+
 }

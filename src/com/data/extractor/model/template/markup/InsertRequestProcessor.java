@@ -13,9 +13,6 @@ import com.data.extractor.model.template.markup.calculate.coordinates.TextDataCo
 import com.data.extractor.model.template.markup.insert.coordinate.ImageDataInserter;
 import com.data.extractor.model.template.markup.insert.coordinate.TableDataInserter;
 import com.data.extractor.model.template.markup.insert.coordinate.TextDataInserter;
-import com.data.extractor.model.template.markup.pdf.retreiver.ImagePDDocument;
-import com.data.extractor.model.template.markup.pdf.retreiver.TablePDDocument;
-import com.data.extractor.model.template.markup.pdf.retreiver.TextPDDocument;
 import com.google.gson.Gson;
 import com.mongodb.MongoClient;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -38,8 +35,6 @@ public class InsertRequestProcessor {
 
             TextDataInserter textDataInserter=new TextDataInserter();
 
-            TextPDDocument textPDDocument=new TextPDDocument();
-
             /* Load the Template PDF in to pdf BOX and return the PDDoc to set pdf Properties*/
             Node node = templatesDAO.getNode(textDataParser.getId());
             textDataParser.setPdfFile(node.getPdfFile());
@@ -60,7 +55,6 @@ public class InsertRequestProcessor {
 
             ImageDataInserter imageDataInserter = new ImageDataInserter();
 
-            ImagePDDocument textPDDocument=new ImagePDDocument();
             /* Load the Template PDF in to pdf BOX and return the PDDoc to set pdf Properties*/
             Node node = templatesDAO.getNode(imageDataParser.getId());
             imageDataParser.setPdfFile(node.getPdfFile());
@@ -81,7 +75,6 @@ public class InsertRequestProcessor {
 
             TableDataInserter tableDataInserter = new TableDataInserter();
 
-            TablePDDocument tablePDDocument=new TablePDDocument();
             /* Load the Template PDF in to pdf BOX and return the PDDoc to set pdf Properties*/
             Node node = templatesDAO.getNode(tableDataParser.getId());
             tableDataParser.setPdfFile(node.getPdfFile());
