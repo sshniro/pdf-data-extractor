@@ -22,23 +22,22 @@
         var initDataJSON;
         var initData;
 
-        window.onload = assignSessionAttributes;
+        document.ready = assignSessionAttributes;
         function assignSessionAttributes() {
             <% String uploadResponse=(String) session.getAttribute("uploadJsonResponse");%>
-            var jsonObj='<% out.print(uploadResponse);%>';
+            var jsonObj = '<% out.print(uploadResponse);%>';
             responseObj = JSON.parse(jsonObj);
 
-
-            if(responseObj === null){
+            if (responseObj === null) {
                 initDataJSON = '{"mainCategory":"Sales Order",' +
                         '"subCategory":"Supplier 10","templateName":"template1","imageRelativePaths":["assets/img/pdfimage1.jpg","assets/img/pdfimage1.jpg"]}'
                 initData = JSON.parse(initDataJSON);
             }
-            else{
+            else {
                 initData = responseObj;
                 var imageRelativePaths = initData.imageRelativePaths;
                 var newImageRelativePaths = [];
-                for(var key in imageRelativePaths){
+                for (var key in imageRelativePaths) {
                     var imageRelativePath = imageRelativePaths[key];
                     imageRelativePath = atob(imageRelativePath);
                     imageRelativePath = imageRelativePath.split("\\").join("/");
@@ -49,14 +48,14 @@
             vm.initExtractionPages();
 
             //Setting up core functionality and data
-            if(responseObj.insertDataParser === undefined){
-                effectiveController ="MarkUpTemplateRegionController";
+            if (responseObj.insertDataParser === undefined) {
+                effectiveController = "MarkUpTemplateRegionController";
             }
-            else{
+            else {
                 effectiveController = "EditMarkupController";
                 //Load existing data to page
                 //load text data
-                if(responseObj.insertDataParser.textDataParser !== undefined) {
+                if (responseObj.insertDataParser.textDataParser !== undefined) {
                     var textElements = responseObj.insertDataParser.textDataParser.textDataElements;
                     for (textElement in textElements) {
                         var currentDataElement = textElements[textElement];
@@ -71,7 +70,7 @@
                     }
                 }
 
-                if(responseObj.insertDataParser.imageDataParser !== undefined) {
+                if (responseObj.insertDataParser.imageDataParser !== undefined) {
                     var imageElements = responseObj.insertDataParser.imageDataParser.imageDataElements;
                     for (imageElement in imageElements) {
                         var currentDataElement = imageElements[imageElement]
@@ -86,7 +85,7 @@
                     }
                 }
 
-                if(responseObj.insertDataParser.tableDataParser !== undefined) {
+                if (responseObj.insertDataParser.tableDataParser !== undefined) {
                     var tableElements = responseObj.insertDataParser.tableDataParser.tableDataElements;
                     for (tableElement in tableElements) {
                         var currentDataElement = tableElements[tableElement];
@@ -102,7 +101,7 @@
                     }
                 }
 
-                data ={};
+                data = {};
                 data.pageNumber = ko.observable(1);
                 vm.changePage(data);
 
@@ -110,6 +109,7 @@
 
         }
     </script>
+
     <style>
         body{
             font-family: "calibri";
@@ -242,9 +242,6 @@
     </div><!-- /.container-fluid -->
 </nav>
 
-
-
-
 <%--<div id="Map" class="well well-sm">
     Starting Coordinate <span id="starting"></span>
     <br>
@@ -252,11 +249,8 @@
     <br>
 </div>--%>
 
-
 <div data-bind="template:{name:'rectangleTemplate', foreach:dataElements()() }"></div>
 <%--<div data-bind="template:{name:'subRectangleTemplate', foreach:subDataElements()() }"></div>--%>
-
-
 
 <!-- template previewing area -->
 <div class="bs-example">
@@ -292,11 +286,7 @@
         <legend style="margin-bottom: 10px; font-size: 15px">Meta Name</legend>
         <div style="display:flex">
             <input type="text" class="form-control" data-bind="value:metaName" style="margin:1px"/>
-            <select id="dictionaryMapping" class="form-control" style="margin:1px">
-                <option>DummyData1</option>
-                <option>DummyData2</option>
-                <option>DummyData3</option>
-            </select>
+            <select data-bind="options:$parent.currentDic, optionsText:'name', value:$parent.selectedMetaDic, optionsCaption:'choose...'" id="dictionaryMapping" class="form-control" style="margin:1px"></select>
         </div>
 
     </div>
@@ -361,6 +351,7 @@
 </script>
 
 
+
 <!-- importing libraries -->
 <script type="text/javascript" src="assets/js/knockout-3.2.0.js" ></script>
 
@@ -368,8 +359,6 @@
 <script type="text/javascript" src="assets/js/markUpTemplateRegionsScripts/models.js"> </script>
 <script type="text/javascript" src="assets/js/markUpTemplateRegionsScripts/viewModel.js"> </script>
 <script type="text/javascript" src="assets/js/markUpTemplateRegionsScripts/uiFunctions.js"> </script>
-
-
 
 <!-- UI behaviors -->
 <script type="text/javascript">
