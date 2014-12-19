@@ -5,9 +5,9 @@ import com.data.extractor.model.beans.template.info.insert.InsertDataParser;
 
 public class UploadResponse {
 
+    private String  templateEditStatus;
     private String  id;
-    private String  mainCategory;
-    private String  subCategory;
+    private String  parent;
     private String  templateName;
     private String[] imageRelativePaths;
     private InsertDataParser insertDataParser;
@@ -24,21 +24,9 @@ public class UploadResponse {
 
     public void setId(String id) {        this.id = id;    }
 
-    public String getMainCategory() {
-        return mainCategory;
-    }
+    public String getParent() {        return parent;    }
 
-    public void setMainCategory(String mainCategory) {
-        this.mainCategory = mainCategory;
-    }
-
-    public String getSubCategory() {
-        return subCategory;
-    }
-
-    public void setSubCategory(String subCategory) {
-        this.subCategory = subCategory;
-    }
+    public void setParent(String parent) {        this.parent = parent;    }
 
     public String getTemplateName() {
         return templateName;
@@ -55,5 +43,9 @@ public class UploadResponse {
     public void setImageRelativePaths(String[] imageRelativePaths) {
         this.imageRelativePaths = imageRelativePaths;
     }
+
+    public String getTemplateEditStatus() {        return templateEditStatus;    }
+
+    public void setTemplateEditStatus(String templateEditStatus) {        this.templateEditStatus = templateEditStatus;    }
 
 }

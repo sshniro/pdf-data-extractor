@@ -4,12 +4,15 @@ package com.data.extractor.model.data.access.layer;
 import com.data.extractor.model.beans.template.info.RawDataElement;
 import com.data.extractor.model.beans.template.info.image.ImageDataElement;
 import com.data.extractor.model.beans.template.info.image.ImageDataParser;
+import com.data.extractor.model.beans.template.info.table.Cell;
 import com.data.extractor.model.beans.template.info.table.Column;
 import com.data.extractor.model.beans.template.info.table.TableDataElement;
 import com.data.extractor.model.beans.template.info.table.TableDataParser;
 import com.data.extractor.model.beans.template.info.text.TextDataElement;
 import com.data.extractor.model.beans.template.info.text.TextDataParser;
+import com.data.extractor.model.beans.templates.TemplatesParser;
 import com.data.extractor.model.db.connect.dbInitializer;
+import com.google.gson.Gson;
 import com.mongodb.*;
 
 import java.util.ArrayList;
@@ -18,7 +21,7 @@ import java.util.List;
 public class ExtractedDataDAO {
 
     private static final String dbName="staging";
-    private static final String collectionName="dictionary";
+    private static final String collectionName="extractedData";
 
     private DBCollection collection;
 
@@ -38,6 +41,69 @@ public class ExtractedDataDAO {
         DBCursor templateCursor = collection.find(searchQuery);
         return templateCursor.size();
     }
+
+    public void removeRecord(String nodeId , String parentId ,String dataType){
+        BasicDBObject searchQuery = new BasicDBObject();
+
+        searchQuery.put("id",nodeId);
+        searchQuery.put("parent",parentId);
+        searchQuery.put("dataType",dataType);
+
+        collection.remove(searchQuery);
+    }
+
+    public List<TextDataParser> getTextRecord(String nodeId){
+
+        BasicDBObject searchQuery = new BasicDBObject();
+        searchQuery.put("id",nodeId);
+        searchQuery.put("dataType","text");
+
+        DBCursor cursor = collection.find(searchQuery);
+        Gson gson = new Gson();
+        List<TextDataParser> textDataParserList = new ArrayList<TextDataParser>();
+        while (cursor.hasNext()){
+            TextDataParser textDataParser = gson.fromJson(cursor.next().toString(), TextDataParser.class);
+            textDataParserList.add(textDataParser);
+        }
+
+        return textDataParserList;
+    }
+
+    public List<ImageDataParser> getImageRecord(String nodeId){
+
+        BasicDBObject searchQuery = new BasicDBObject();
+        searchQuery.put("id",nodeId);
+        searchQuery.put("dataType","text");
+
+        DBCursor cursor = collection.find(searchQuery);
+        Gson gson = new Gson();
+        List<ImageDataParser> imageDataParserList = new ArrayList<ImageDataParser>();
+        while (cursor.hasNext()){
+            ImageDataParser imageDataParser= gson.fromJson(cursor.next().toString(), ImageDataParser.class);
+            imageDataParserList.add(imageDataParser);
+        }
+
+        return imageDataParserList;
+    }
+
+    public List<TableDataParser> getTableRecord(String nodeId){
+
+        BasicDBObject searchQuery = new BasicDBObject();
+        searchQuery.put("id",nodeId);
+        searchQuery.put("dataType","text");
+
+        DBCursor cursor = collection.find(searchQuery);
+        Gson gson = new Gson();
+        List<TableDataParser> tableDataParserList = new ArrayList<TableDataParser>();
+        while (cursor.hasNext()){
+            TableDataParser tableDataParser= gson.fromJson(cursor.next().toString(), TableDataParser.class);
+            tableDataParserList.add(tableDataParser);
+        }
+
+        return tableDataParserList;
+    }
+
+
 
     public void createTemplateInfo(String nodeId, String parentId ,String dataType,TextDataElement textDataElement){
 
@@ -119,6 +185,7 @@ public class ExtractedDataDAO {
 
         imageElementObject.put("metaId",imageDataElement.getMetaId());
         imageElementObject.put("elementId",imageDataElement.getElementId());
+        imageElementObject.put("extractedImage",imageDataElement.getExtractedImage());
         imageElementObject.put("pageNumber",imageDataElement.getPageNumber());
         imageElementObject.put("pageRotation",imageDataElement.getPageRotation());
 
@@ -194,16 +261,26 @@ public class ExtractedDataDAO {
         ArrayList columnData = new ArrayList();
 
         BasicDBObject columnRawDataObj;
+        List<Cell> cellList = null;
+        List<String> cellValues= null;
+        BasicDBObject cellListObj = null;
 
         for(Column c:columns){
 
             RawDataElement columnRawDataElement = c.getRawData();
             columnRawDataObj = new BasicDBObject();
 
+            cellList= c.getCellList();
+            cellValues = new ArrayList<String>();
+
+            for (Cell ce : cellList){
+                cellValues.add(ce.getValue());
+            }
+
             columnRawDataObj.put("id", columnRawDataElement.getId());
             columnRawDataObj.put("elementId", columnRawDataElement.getElementId());
             columnRawDataObj.put("elementType", columnRawDataElement.getElementType());
-            columnRawDataObj.put("startX",columnRawDataElement.getStartX());
+            columnRawDataObj.put("startX", columnRawDataElement.getStartX());
             columnRawDataObj.put("startY", columnRawDataElement.getStartY());
             columnRawDataObj.put("width",  columnRawDataElement.getWidth());
             columnRawDataObj.put("height", columnRawDataElement.getHeight());
@@ -213,8 +290,8 @@ public class ExtractedDataDAO {
             columnRawDataObj.put("baseUiComponentHeight", columnRawDataElement.getBaseUiComponentHeight());
 
             columnData.add(new BasicDBObject("metaId",c.getMetaId()).append("metaX1",c.getMetaX1())
-                    .append("metaY1",c.getMetaY1()).append("metaWidth",c.getMetaWidth())
-                    .append("metaHeight",c.getMetaHeight()).append("rawData" , columnRawDataObj));
+                            .append("metaY1", c.getMetaY1()).append("metaWidth",c.getMetaWidth())
+                            .append("metaHeight", c.getMetaHeight()).append("rawData" , columnRawDataObj).append("cellValues",cellValues));
         }
 
         tableElementObject.put("columns",columnData);
@@ -369,10 +446,21 @@ public class ExtractedDataDAO {
         ArrayList columnData = new ArrayList();
         BasicDBObject columnRawDataObj;
 
+        List<Cell> cellList = null;
+        List<String> cellValues = null;
+        BasicDBObject cellListObj = null;
+
         for(Column c:columns){
 
             RawDataElement columnRawDataElement = c.getRawData();
             columnRawDataObj = new BasicDBObject();
+
+            cellList= c.getCellList();
+            cellValues = new ArrayList<String>();
+
+            for (Cell ce : cellList){
+                cellValues.add(ce.getValue());
+            }
 
             columnRawDataObj.put("id", columnRawDataElement.getId());
             columnRawDataObj.put("elementId", columnRawDataElement.getElementId());
@@ -388,8 +476,9 @@ public class ExtractedDataDAO {
 
 
             columnData.add(new BasicDBObject("metaId",c.getMetaId()).append("metaX1",c.getMetaX1())
-                    .append("metaY1",c.getMetaY1()).append("metaWidth",c.getMetaWidth())
-                    .append("metaHeight",c.getMetaHeight()).append("rawData",columnRawDataObj));
+                            .append("metaY1",c.getMetaY1()).append("metaWidth",c.getMetaWidth())
+                            .append("metaHeight",c.getMetaHeight()).append("rawData",columnRawDataObj)
+                            .append("cellValues",cellValues));
         }
         tableElementObject.put("columns",columnData);
 

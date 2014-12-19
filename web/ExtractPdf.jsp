@@ -24,8 +24,24 @@
     <script type="text/javascript" src="assets/js/JspFormPopulate.js"></script>
 
     <script>
-        var isMCValid = true;
-        window.onload = getMC;
+        //var isMCValid = true;
+        //window.onload = getMC;
+
+        var responseObj = null;
+        var initDataJSON;
+        var initData;
+
+        document.ready = assignSessionAttributes;
+        function assignSessionAttributes() {
+            <% String editResponse=(String) session.getAttribute("editJsonResponse");%>
+            var jsonObj = '<% out.print(editResponse);%>';
+            responseObj = JSON.parse(jsonObj);
+
+            if(responseObj.templateEditStatus == "true"){
+                // TO DO call the extraction for the particular data. (ExtractEditTempController)
+            }
+        }
+
     </script>
 
     <style>
