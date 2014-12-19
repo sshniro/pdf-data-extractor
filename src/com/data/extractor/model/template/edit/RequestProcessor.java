@@ -38,6 +38,7 @@ public class RequestProcessor {
         }
 
         if(status.equals("insert")){
+            // Insert the Extracted Data and the new Dimensions of the template if editing available
             InsertRequestProcessor requestProcessor=new InsertRequestProcessor();
             requestProcessor.processRequest(jsonRequest,mongoClient);
         }

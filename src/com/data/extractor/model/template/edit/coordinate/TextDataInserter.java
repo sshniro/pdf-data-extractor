@@ -1,7 +1,10 @@
 package com.data.extractor.model.template.edit.coordinate;
 
+import com.data.extractor.model.beans.extract.pdf.ExtractStatus;
 import com.data.extractor.model.beans.template.info.text.TextDataElement;
 import com.data.extractor.model.beans.template.info.text.TextDataParser;
+import com.data.extractor.model.beans.upload.template.UploadStatus;
+import com.data.extractor.model.data.access.layer.ExtractedDataDAO;
 import com.data.extractor.model.data.access.layer.TemplateInfoDAO;
 import com.mongodb.MongoClient;
 
@@ -10,12 +13,20 @@ import java.util.List;
 
 public class TextDataInserter {
 
-    public void insert(TextDataParser textDataParser, MongoClient mongoClient) throws UnknownHostException {
+    public void insert(TextDataParser textDataParser, String parentId,MongoClient mongoClient) throws UnknownHostException {
 
         List<TextDataElement> textDataElements = textDataParser.getTextDataElements();
-        TemplateInfoDAO templateInfoDAO=new TemplateInfoDAO(mongoClient);
+        ExtractedDataDAO extractedDataDAO=new ExtractedDataDAO(mongoClient);
         TextDataElement textDataElement;
         int templateInfoSize=0;
+
+        /* If any data has existed previously remove it */
+        templateInfoSize=extractedDataDAO.getRecordsSizeOfId(textDataParser.getId(), textDataParser.getDataType());
+
+        if (templateInfoSize != 0) {
+            /* If there is no record exists create a new record and insert */
+            extractedDataDAO.removeRecord(textDataParser.getId(), parentId, textDataParser.getDataType());
+        }
 
         for(int i=0;i<textDataElements.size();i++){
 
@@ -23,17 +34,17 @@ public class TextDataInserter {
 
             /* Only check once from the DB when the loop starts */
             if(i==0){
-                templateInfoSize=templateInfoDAO.getTemplateInfoSize(textDataParser.getId(),textDataParser.getDataType());
+                templateInfoSize=extractedDataDAO.getRecordsSizeOfId(textDataParser.getId(),textDataParser.getDataType());
             }
 
             if (templateInfoSize == 0) {
                 /* If there is no record exists create a new record and insert */
-                templateInfoDAO.createTemplateInfo(textDataParser.getId() ,textDataParser.getDataType(),textDataElement);
+                extractedDataDAO.createTemplateInfo(textDataParser.getId(), parentId, textDataParser.getDataType(), textDataElement);
                 templateInfoSize=1;
 
             } else {
                 /* If record exists update the record */
-                templateInfoDAO.updateTemplateInfo(textDataParser,textDataElement);
+                extractedDataDAO.updateTemplateInfo(textDataParser, textDataElement);
             }
 
         }
