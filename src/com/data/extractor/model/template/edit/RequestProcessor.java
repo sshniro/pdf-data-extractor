@@ -51,10 +51,11 @@ public class RequestProcessor {
             UploadStatus uploadStatus= uploadStatusList.get(0);
 
             HttpSession session=request.getSession();
-            UploadResponse editRsponse = new UploadResponse();
-            editRsponse.setId(uploadStatus.getId());
-            editRsponse.setParent(uploadStatus.getParent());
-            session.setAttribute("editJsonResponse", gson.toJson(editRsponse));
+            UploadResponse editResponse = new UploadResponse();
+            editResponse.setTemplateEditStatus("true");
+            editResponse.setId(uploadStatus.getId());
+            editResponse.setParent(uploadStatus.getParent());
+            session.setAttribute("editJsonResponse", gson.toJson(editResponse));
         }
 
         return markUpResponse;

@@ -36,6 +36,10 @@
             <% String editResponse=(String) session.getAttribute("editJsonResponse");%>
             var jsonObj = '<% out.print(editResponse);%>';
             responseObj = JSON.parse(jsonObj);
+
+            if(responseObj.templateEditStatus == "true"){
+                // TO DO call the extraction for the particular data. (ExtractEditTempController)
+            }
         }
 
     </script>
