@@ -10,7 +10,9 @@ import com.data.extractor.model.beans.template.info.table.TableDataElement;
 import com.data.extractor.model.beans.template.info.table.TableDataParser;
 import com.data.extractor.model.beans.template.info.text.TextDataElement;
 import com.data.extractor.model.beans.template.info.text.TextDataParser;
+import com.data.extractor.model.beans.templates.TemplatesParser;
 import com.data.extractor.model.db.connect.dbInitializer;
+import com.google.gson.Gson;
 import com.mongodb.*;
 
 import java.util.ArrayList;
@@ -49,6 +51,59 @@ public class ExtractedDataDAO {
 
         collection.remove(searchQuery);
     }
+
+    public List<TextDataParser> getTextRecord(String nodeId){
+
+        BasicDBObject searchQuery = new BasicDBObject();
+        searchQuery.put("id",nodeId);
+        searchQuery.put("dataType","text");
+
+        DBCursor cursor = collection.find(searchQuery);
+        Gson gson = new Gson();
+        List<TextDataParser> textDataParserList = new ArrayList<TextDataParser>();
+        while (cursor.hasNext()){
+            TextDataParser textDataParser = gson.fromJson(cursor.next().toString(), TextDataParser.class);
+            textDataParserList.add(textDataParser);
+        }
+
+        return textDataParserList;
+    }
+
+    public List<ImageDataParser> getImageRecord(String nodeId){
+
+        BasicDBObject searchQuery = new BasicDBObject();
+        searchQuery.put("id",nodeId);
+        searchQuery.put("dataType","text");
+
+        DBCursor cursor = collection.find(searchQuery);
+        Gson gson = new Gson();
+        List<ImageDataParser> imageDataParserList = new ArrayList<ImageDataParser>();
+        while (cursor.hasNext()){
+            ImageDataParser imageDataParser= gson.fromJson(cursor.next().toString(), ImageDataParser.class);
+            imageDataParserList.add(imageDataParser);
+        }
+
+        return imageDataParserList;
+    }
+
+    public List<TableDataParser> getTableRecord(String nodeId){
+
+        BasicDBObject searchQuery = new BasicDBObject();
+        searchQuery.put("id",nodeId);
+        searchQuery.put("dataType","text");
+
+        DBCursor cursor = collection.find(searchQuery);
+        Gson gson = new Gson();
+        List<TableDataParser> tableDataParserList = new ArrayList<TableDataParser>();
+        while (cursor.hasNext()){
+            TableDataParser tableDataParser= gson.fromJson(cursor.next().toString(), TableDataParser.class);
+            tableDataParserList.add(tableDataParser);
+        }
+
+        return tableDataParserList;
+    }
+
+
 
     public void createTemplateInfo(String nodeId, String parentId ,String dataType,TextDataElement textDataElement){
 
