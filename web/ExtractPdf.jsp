@@ -24,8 +24,20 @@
     <script type="text/javascript" src="assets/js/JspFormPopulate.js"></script>
 
     <script>
-        var isMCValid = true;
-        window.onload = getMC;
+        //var isMCValid = true;
+        //window.onload = getMC;
+
+        var responseObj = null;
+        var initDataJSON;
+        var initData;
+
+        document.ready = assignSessionAttributes;
+        function assignSessionAttributes() {
+            <% String editResponse=(String) session.getAttribute("editJsonResponse");%>
+            var jsonObj = '<% out.print(editResponse);%>';
+            responseObj = JSON.parse(jsonObj);
+        }
+
     </script>
 
     <style>

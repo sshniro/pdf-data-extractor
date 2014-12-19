@@ -2,13 +2,19 @@ package com.data.extractor.model.template.edit;
 
 import com.data.extractor.model.beans.markup.template.MarkUpRequest;
 import com.data.extractor.model.beans.markup.template.MarkUpResponse;
+import com.data.extractor.model.beans.upload.template.UploadResponse;
+import com.data.extractor.model.beans.upload.template.UploadStatus;
+import com.data.extractor.model.template.upload.ResponseGenerator;
 import com.google.gson.Gson;
 import com.mongodb.MongoClient;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.List;
 
 public class RequestProcessor {
-    public MarkUpResponse processRequest(String jsonRequest,MongoClient mongoClient ,String rootPath) throws IOException {
+    public MarkUpResponse processRequest(String jsonRequest,MongoClient mongoClient ,HttpServletRequest request) throws IOException {
         MarkUpResponse markUpResponse=new MarkUpResponse();
 
         Gson gson=new Gson();
@@ -40,7 +46,15 @@ public class RequestProcessor {
         if(status.equals("insert")){
             // Insert the Extracted Data and the new Dimensions of the template if editing available
             InsertRequestProcessor requestProcessor=new InsertRequestProcessor();
-            requestProcessor.processRequest(jsonRequest,mongoClient);
+            List<UploadStatus> uploadStatusList = requestProcessor.processRequest(jsonRequest, mongoClient);
+
+            UploadStatus uploadStatus= uploadStatusList.get(0);
+
+            HttpSession session=request.getSession();
+            UploadResponse editRsponse = new UploadResponse();
+            editRsponse.setId(uploadStatus.getId());
+            editRsponse.setParent(uploadStatus.getParent());
+            session.setAttribute("editJsonResponse", gson.toJson(editRsponse));
         }
 
         return markUpResponse;

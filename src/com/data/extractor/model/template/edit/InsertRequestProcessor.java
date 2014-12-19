@@ -25,7 +25,7 @@ import java.util.List;
 
 public class InsertRequestProcessor {
 
-    public void processRequest(String jsonRequest,MongoClient mongoClient) throws IOException {
+    public List<UploadStatus> processRequest(String jsonRequest,MongoClient mongoClient) throws IOException {
 
         Gson gson=new Gson();
         ExtractedFilesDAO xFilesDAO = new ExtractedFilesDAO(mongoClient);
@@ -34,12 +34,14 @@ public class InsertRequestProcessor {
         ImageDataParser imageDataParser=insertDataParser.getImageDataParser();
         TableDataParser tableDataParser=insertDataParser.getTableDataParser();
 
+        List<UploadStatus> uploadStatusList =null;
+
         /* If there is a textDataParser is sent from the user and has atleast 1 textDataElement process it*/
         if(textDataParser!=null && textDataParser.getTextDataElements().size() != 0) {
 
             TextDataInserter textDataInserter=new TextDataInserter();
 
-            List<UploadStatus> uploadStatusList = xFilesDAO.getRecord(textDataParser.getId());
+           uploadStatusList = xFilesDAO.getRecord(textDataParser.getId());
 
             /* Load the Template PDF in to pdf BOX and return the PDDoc to set pdf Properties*/
             textDataParser.setPdfFile(uploadStatusList.get(0).getUploadedPdfFile());
@@ -61,7 +63,7 @@ public class InsertRequestProcessor {
             ImageDataInserter imageDataInserter = new ImageDataInserter();
 
             /* Load the Template PDF in to pdf BOX and return the PDDoc to set pdf Properties*/
-            List<UploadStatus> uploadStatusList = xFilesDAO.getRecord(imageDataParser.getId());
+            uploadStatusList = xFilesDAO.getRecord(imageDataParser.getId());
 
             imageDataParser.setPdfFile(uploadStatusList.get(0).getUploadedPdfFile());
             PDDocument doc =PDDocument.load(imageDataParser.getPdfFile());
@@ -82,7 +84,7 @@ public class InsertRequestProcessor {
             TableDataInserter tableDataInserter = new TableDataInserter();
 
             /* Load the Template PDF in to pdf BOX and return the PDDoc to set pdf Properties*/
-            List<UploadStatus> uploadStatusList = xFilesDAO.getRecord(tableDataParser.getId());
+            uploadStatusList = xFilesDAO.getRecord(tableDataParser.getId());
 
             tableDataParser.setPdfFile(uploadStatusList.get(0).getUploadedPdfFile());
             PDDocument doc =PDDocument.load(tableDataParser.getPdfFile());
@@ -97,5 +99,6 @@ public class InsertRequestProcessor {
 
         }
 
+        return uploadStatusList;
     }
 }
