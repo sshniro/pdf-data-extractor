@@ -302,11 +302,11 @@ public class ExtractedDataDAO {
     }
 
 
-    public void updateTemplateInfo(TextDataParser textDataParser,TextDataElement textDataElement){
+    public void updateTemplateInfo(String nodeId , TextDataParser textDataParser,TextDataElement textDataElement){
 
         BasicDBObject searchQuery = new BasicDBObject();
 
-        searchQuery.put("id", textDataParser.getId());
+        searchQuery.put("id", nodeId);
         searchQuery.put("dataType", textDataParser.getDataType());
 
         BasicDBObject textElementObject = new BasicDBObject();
@@ -365,10 +365,10 @@ public class ExtractedDataDAO {
 
     }
 
-    public void updateTemplateInfo(ImageDataParser imageDataParser,ImageDataElement imageDataElement){
+    public void updateTemplateInfo(String nodeId , ImageDataParser imageDataParser,ImageDataElement imageDataElement){
 
         BasicDBObject searchQuery = new BasicDBObject();
-        searchQuery.put("id", imageDataParser.getId());
+        searchQuery.put("id", nodeId );
         searchQuery.put("dataType", imageDataParser.getDataType());
 
         BasicDBObject imageElementObject = new BasicDBObject();
@@ -406,11 +406,11 @@ public class ExtractedDataDAO {
 
     }
 
-    public void updateTemplateInfo(TableDataParser tableDataParser,TableDataElement tableDataElement){
+    public void updateTemplateInfo(String nodeId,TableDataParser tableDataParser,TableDataElement tableDataElement){
 
         BasicDBObject searchQuery = new BasicDBObject();
 
-        searchQuery.put("id", tableDataParser.getId());
+        searchQuery.put("id", nodeId);
         searchQuery.put("dataType", tableDataParser.getDataType());
 
         BasicDBObject tableElementObject = new BasicDBObject();

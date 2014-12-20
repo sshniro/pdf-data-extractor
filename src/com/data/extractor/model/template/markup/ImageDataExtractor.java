@@ -7,7 +7,6 @@ import com.data.extractor.model.beans.template.info.image.ImageDataParser;
 import com.data.extractor.model.data.access.layer.TemplatesDAO;
 import com.data.extractor.model.extractors.image.FullSelectionImageExtractor;
 import com.data.extractor.model.template.markup.calculate.coordinates.ImageDataCoordinates;
-import com.data.extractor.model.template.markup.pdf.retreiver.ImagePDDocument;
 import com.google.gson.Gson;
 import com.mongodb.MongoClient;
 import org.apache.pdfbox.pdmodel.PDDocument;
