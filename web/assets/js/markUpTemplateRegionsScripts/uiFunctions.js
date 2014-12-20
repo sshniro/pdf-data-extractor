@@ -443,7 +443,6 @@ function draggableActivator(){
                         y2:imgBounds.bottom - bounds.bottom
                     };
 
-                    vm.currentSelection('text');
                     vm.removeElementUsingDomElement(dragableDiv);
                     reDrawingRouter(currentWorkingImgX,selection,$(this)[0]);
                     $(this).next('button').click();
@@ -467,7 +466,6 @@ function draggableActivator(){
                         y2:imgBounds.bottom - bounds.bottom
                     };
 
-                    vm.currentSelection('text');
                     vm.removeElementUsingDomElement(dragableDiv);
                     reDrawingRouter(currentWorkingImgX,selection,$(this)[0]);
                     $(this).next('button').click();

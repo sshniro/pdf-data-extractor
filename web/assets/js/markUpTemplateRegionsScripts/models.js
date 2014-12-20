@@ -11,6 +11,17 @@ var selectedImgAreInstance = undefined;
 //Bufers
 var currentElement = undefined;
 
+function Keyword(data){
+    this.id = ko.observable(data.id);
+    this.name = ko.observable(data.name);
+    this.type = ko.observable(data.type);
+    this.description = ko.observable(data.description);
+    this.dataType = ko.observable(data.dataType);
+    this.length = ko.observable(data.length);
+    this.defaultValues = ko.observable(data.defaultValues);
+    this.allowedValues = ko.observable(data.allowedValues);
+}
+
 function RawDataSkeleton() {
     this.baseUiComponentStartX     =-1;
     this.baseUiComponentStartY     =-1;

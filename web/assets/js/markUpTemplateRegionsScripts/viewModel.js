@@ -32,7 +32,27 @@ function ViewModel(){
     self.textElements = ko.observableArray([]);
     self.tableElements = ko.observableArray([]);
     self.pictureElements = ko.observableArray([]);
+    self.currentDic = ko.observableArray([]);
     self.elementBuffer;
+
+    self.getDictionaryData = function(){
+        var data={ 'request' : "getAllDicItems"};
+        $.ajax({
+            type: 'POST', url: 'DictionaryController',
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            data: JSON.stringify(data),
+            success: function(data, textStatus, jqXHR) {
+                dicObj = JSON.parse(jqXHR.responseText);
+                self.currentDic([]);
+                for(item in dicObj) {
+                    self.currentDic.push(new Keyword(dicObj[item]));
+                }
+            }
+        });
+    }
+    var dicObj;
+
 
     //Button Functionalities moved in
     self.textButton= function(){

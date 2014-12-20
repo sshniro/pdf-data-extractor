@@ -21,6 +21,7 @@
         var responseObj = null;
         var initDataJSON;
         var initData;
+        var dicObj;
 
         window.onload = assignSessionAttributes;
         function assignSessionAttributes() {
@@ -106,7 +107,28 @@
                 data.pageNumber = ko.observable(1);
                 vm.changePage(data);
 
+
             }
+
+
+
+            var data={ 'request' : "getAllDicItems"};
+            self.overlayNotification('loading...');
+            $("#overlay").css("display","block");
+            $.ajax({
+                type: 'POST', url: 'DictionaryController',
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                data: JSON.stringify(data),
+                success: function(data, textStatus, jqXHR) {
+                    dicObj = JSON.parse(jqXHR.responseText);
+                    self.currentDic([]);
+                    for(item in dicObj) {
+                        self.currentDic.push(new Keyword(dicObj[item]));
+                    }
+                    $('#dicFormName').focus();
+                }
+            });
 
         }
     </script>
@@ -301,7 +323,7 @@
 
     </div>
 
-    <div class="mainElement baseUI editableDiv" style="position:absolute; border-style:solid; border-color:#2980b9; border-width: 3px;" data-bind="style:uiData.elementMap(), id:id">
+    <div class="mainElement baseUI editableDiv" style="position:absolute; border-style:solid; border-color:#2980b9; border-width: 3px;" data-bind="style:uiData.elementMap(), id:id, click:$root.selectRectangle">
         <ul class="knockoutIterable" style="padding: 0" data-bind="foreach:$data.subElements()">
             <li data-bind="id:id">
                 <div class="subElement baseUI" style="position: absolute; border-style:solid; border-color:#2980b9; border-width: 3px;" data-bind="id:id, style:{width:uiData.width,height:uiData.height,left:uiData.startX, top:uiData.startY}">
