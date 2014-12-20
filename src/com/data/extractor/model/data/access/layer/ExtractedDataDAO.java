@@ -375,6 +375,7 @@ public class ExtractedDataDAO {
 
         imageElementObject.put("metaId",imageDataElement.getMetaId());
         imageElementObject.put("elementId",imageDataElement.getElementId());
+        imageElementObject.put("extractedImage",imageDataElement.getExtractedImage());
         imageElementObject.put("pageNumber",imageDataElement.getPageNumber());
         imageElementObject.put("pageRotation",imageDataElement.getPageRotation());
 
