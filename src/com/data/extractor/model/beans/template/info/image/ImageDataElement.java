@@ -25,6 +25,10 @@ public class ImageDataElement {
     @Expose
     private String metaName;
     @Expose
+    private String dictionaryId;
+    @Expose
+    private String dictionaryName;
+    @Expose
     private int pageNumber;
     @Expose
     private int pageRotation;
@@ -126,4 +130,11 @@ public class ImageDataElement {
 
     public void setExtractedImage(String extractedImage) {        this.extractedImage = extractedImage;    }
 
+    public String getDictionaryId() {        return dictionaryId;    }
+
+    public void setDictionaryId(String dictionaryId) {        this.dictionaryId = dictionaryId;    }
+
+    public String getDictionaryName() {            return dictionaryName;    }
+
+    public void setDictionaryName(String dictionaryName) {        this.dictionaryName = dictionaryName;    }
 }

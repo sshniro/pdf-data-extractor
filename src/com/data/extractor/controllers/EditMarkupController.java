@@ -25,7 +25,7 @@ public class EditMarkupController extends HttpServlet {
         MongoClient mongoClient = (MongoClient) request.getServletContext().getAttribute("MONGO_CLIENT");
         String rootPath = getServletContext().getRealPath(File.separator);
 
-        MarkUpResponse markUpResponse=requestProcessor.processRequest(sb.toString(),mongoClient,rootPath);
+        MarkUpResponse markUpResponse=requestProcessor.processRequest(sb.toString(),mongoClient,request);
 
         Gson gson = new Gson();
         response.getWriter().print(gson.toJson(markUpResponse));

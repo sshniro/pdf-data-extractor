@@ -654,6 +654,47 @@ function ViewModel(){
         }
     };
 
+
+    ///////////////////////////////////////
+    // meta select items from dictionary //
+    ///////////////////////////////////////
+
+    // keyword model
+    function Keyword(data){
+        this.id = ko.observable(data.id);
+        this.name = ko.observable(data.name);
+        this.type = ko.observable(data.type);
+        this.description = ko.observable(data.description);
+        this.dataType = ko.observable(data.dataType);
+        this.length = ko.observable(data.length);
+        this.defaultValues = ko.observable(data.defaultValues);
+        this.allowedValues = ko.observable(data.allowedValues);
+    }
+
+    self.currentDic = ko.observableArray([]);
+    self.selectedMetaDic = ko.observable();
+
+    $(document).ready(
+        function(){
+            var data={ 'request' : "getAllDicItems"};
+            vm.overlayNotification('loading...');
+            $("#overlay").css("display","block");
+            $.ajax({
+                type: 'POST', url: 'DictionaryController',
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                data: JSON.stringify(data),
+                success: function(data, textStatus, jqXHR) {
+                    var dicObj = JSON.parse(jqXHR.responseText);
+                    vm.currentDic([]);
+                    for(item in dicObj) {
+                        vm.currentDic.push(new Keyword(dicObj[item]));
+                    }
+                    $("#overlay").css("display","none");
+                }
+            });
+        }
+    );
 }
 
 var vm = new ViewModel();

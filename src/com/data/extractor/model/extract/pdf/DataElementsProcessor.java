@@ -9,6 +9,7 @@ import com.data.extractor.model.beans.template.info.table.TableDataParser;
 import com.data.extractor.model.beans.template.info.text.TextDataElement;
 import com.data.extractor.model.beans.template.info.text.TextDataParser;
 import com.data.extractor.model.data.access.layer.TemplateInfoDAO;
+import com.data.extractor.model.extract.pdf.inserter.ExtractedDataInserter;
 import com.data.extractor.model.extract.pdf.inserter.ExtractedImageInserter;
 import com.data.extractor.model.extract.pdf.inserter.ExtractedTableInserter;
 import com.data.extractor.model.extract.pdf.inserter.ExtractedTextInserter;
@@ -17,7 +18,6 @@ import com.data.extractor.model.extractors.image.FullSelectionImageExtractor;
 import com.data.extractor.model.extractors.text.FullSelectionTextExtractor;
 import com.data.extractor.model.extractors.text.MetaSelectionTextExtractor;
 import com.data.extractor.model.template.markup.calculate.coordinates.ImageDataCoordinates;
-import com.data.extractor.model.template.markup.pdf.retreiver.ImagePDDocument;
 import com.mongodb.MongoClient;
 import org.apache.pdfbox.exceptions.CryptographyException;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -29,9 +29,11 @@ import java.util.List;
 public class DataElementsProcessor {
 
     private TemplateInfoDAO templateInfoDAO;
+    private ExtractedDataInserter dataInserter;
 
     public DataElementsProcessor(MongoClient mongoClient){
         this.templateInfoDAO= new TemplateInfoDAO(mongoClient);
+        this.dataInserter = new ExtractedDataInserter();
     }
 
     public InsertDataParser processTextDataElements(InsertDataParser totalExtractedData , ExtractStatus extractStatus,MongoClient mongoClient) throws IOException {
@@ -59,10 +61,7 @@ public class DataElementsProcessor {
                 }
                 t.setExtractedText(extractedText);
             }
-
-            ExtractedTextInserter textInserter = new ExtractedTextInserter();
-            textInserter.insert(textDataParser, extractStatus ,mongoClient);
-
+            dataInserter.insert(textDataParser, extractStatus ,mongoClient);
         }
         /*  to present it to the extracted HTML   */
         totalExtractedData.setTextDataParser(textDataParser);
@@ -95,9 +94,7 @@ public class DataElementsProcessor {
                 imageAbsolutePath = imageExtractor.extractImage(imageWritePath, doc, imageElement);
                 imageElement.setExtractedImage(imageAbsolutePath);
             }
-
-            ExtractedImageInserter imageInserter = new ExtractedImageInserter();
-            imageInserter.insert(imageDataParser, extractStatus , mongoClient);
+            dataInserter.insert(imageDataParser, extractStatus , mongoClient);
         }
 
         /*  to present it to the extracted HTML   */
@@ -105,7 +102,7 @@ public class DataElementsProcessor {
         return totalExtractedData;
     }
 
-    public InsertDataParser processTableDataElements(InsertDataParser totalExtractedData , ExtractStatus extractStatus,MongoClient mongoClient) throws IOException, CryptographyException {
+    public InsertDataParser processTableDataElements(InsertDataParser insertDataParser , ExtractStatus extractStatus,MongoClient mongoClient) throws IOException, CryptographyException {
 
         List<TableDataParser> tableList;
         TableDataParser tableDataParser = null;
@@ -118,11 +115,10 @@ public class DataElementsProcessor {
             DataProcessor processor = new DataProcessor();
             tableDataParser = processor.processTable(tableDataParser, extractStatus);
 
-            ExtractedTableInserter inserter = new ExtractedTableInserter();
-            inserter.insert(tableDataParser, extractStatus , mongoClient);
+            dataInserter.insert(tableDataParser, extractStatus , mongoClient);
         }
         /*  to present it to the extracted HTML   */
-        totalExtractedData.setTableDataParser(tableDataParser);
-        return totalExtractedData;
+        insertDataParser.setTableDataParser(tableDataParser);
+        return insertDataParser;
     }
 }
