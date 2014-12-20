@@ -41,7 +41,7 @@ public class TextDataInserter {
 
             } else {
                 /* If record exists update the record */
-                extractedDataDAO.updateTemplateInfo(textDataParser, textDataElement);
+                extractedDataDAO.updateTemplateInfo(textDataParser.getId() , textDataParser , textDataElement);
             }
 
         }

@@ -37,7 +37,7 @@ public class ExtractedDataInserter {
 
             } else {
                 /* If record exists update the record */
-                extractedDataDAO.updateTemplateInfo(extractStatus.getId() , textDataParser,textDataElement);
+                extractedDataDAO.updateTemplateInfo(extractStatus.getId(),textDataParser,textDataElement);
             }
         }
     }

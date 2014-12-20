@@ -102,9 +102,18 @@ public class InsertRequestProcessor {
             List<ImageDataElement> imageDataElements = imageDataParser.getImageDataElements();
 
             /* imageWritePath = where the extracted image have to be written*/
-            String imageWritePath = null;
-            // TODO get the pdf location
-            //String imageWritePath = extractStatus.getPdfLocation()+ File.separator+"images";
+            String uploadedPdfFile = uploadStatusList.get(0).getUploadedPdfFile();
+            String pdfLocation = null;
+            if (null != uploadedPdfFile && uploadedPdfFile.length() > 0 )
+            {
+                int endIndex = uploadedPdfFile.lastIndexOf(File.separator);
+                if (endIndex != -1)
+                {
+                    pdfLocation = uploadedPdfFile.substring(0, endIndex); // not forgot to put check if(endIndex != -1)
+                }
+            }
+
+            String imageWritePath = pdfLocation + File.separator + "images";
 
             for (ImageDataElement imageElement : imageDataElements) {
 
