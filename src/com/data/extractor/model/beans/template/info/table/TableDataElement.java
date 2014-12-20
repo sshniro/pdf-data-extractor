@@ -19,6 +19,10 @@ public class TableDataElement {
     @Expose
     private String metaName;
     @Expose
+    private String dictionaryId;
+    @Expose
+    private String dictionaryName;
+    @Expose
     private int pageNumber;
     @Expose
     private int pageRotation;
@@ -165,5 +169,13 @@ public class TableDataElement {
     public void setRawData(RawDataElement rawData) {
         this.rawData = rawData;
     }
+
+    public String getDictionaryId() {        return dictionaryId;    }
+
+    public void setDictionaryId(String dictionaryId) {        this.dictionaryId = dictionaryId;    }
+
+    public String getDictionaryName() {        return dictionaryName;    }
+
+    public void setDictionaryName(String dictionaryName) {        this.dictionaryName = dictionaryName;    }
 
 }

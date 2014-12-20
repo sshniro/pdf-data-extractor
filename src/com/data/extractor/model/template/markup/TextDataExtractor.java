@@ -8,7 +8,6 @@ import com.data.extractor.model.data.access.layer.TemplatesDAO;
 import com.data.extractor.model.extractors.text.FullSelectionTextExtractor;
 import com.data.extractor.model.extractors.text.MetaSelectionTextExtractor;
 import com.data.extractor.model.template.markup.calculate.coordinates.TextDataCoordinates;
-import com.data.extractor.model.template.markup.pdf.retreiver.TextPDDocument;
 import com.google.gson.Gson;
 import com.mongodb.MongoClient;
 import org.apache.pdfbox.pdmodel.PDDocument;

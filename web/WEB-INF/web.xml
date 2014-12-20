@@ -56,6 +56,10 @@
         <servlet-name>EditMarkupController</servlet-name>
         <servlet-class>com.data.extractor.controllers.EditMarkupController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ExtractEditTempController</servlet-name>
+        <servlet-class>com.data.extractor.controllers.ExtractEditTempController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>TemplateUploadController</servlet-name>
         <url-pattern>/TemplateUploadController</url-pattern>
@@ -95,6 +99,10 @@
     <servlet-mapping>
         <servlet-name>EditMarkupController</servlet-name>
         <url-pattern>/EditMarkupController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ExtractEditTempController</servlet-name>
+        <url-pattern>/ExtractEditTempController</url-pattern>
     </servlet-mapping>
 
 

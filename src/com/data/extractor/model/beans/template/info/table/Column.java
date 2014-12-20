@@ -25,8 +25,10 @@ public class Column {
     private Double metaHeight;
     @Expose
     private String extractedValues;
-
-    private List<Cell> cellList;
+    @Expose
+    private List<Cell> cellList;   // TODO remove this and refactor the code to support the cellValues array list
+    @Expose
+    private List<String> cellValues;
 
     public String getExtractedValues() {
         return extractedValues;
@@ -71,4 +73,9 @@ public class Column {
     public void setRawData(RawDataElement rawData) {
         this.rawData = rawData;
     }
+
+    public List<String> getCellValues() {        return cellValues;    }
+
+    public void setCellValues(List<String> cellValues) {        this.cellValues = cellValues;    }
+
 }
