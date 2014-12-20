@@ -54,6 +54,10 @@ function ViewModel(){
     var dicObj;
 
 
+    self.selectRectangle = function(data){
+        console.log(data);
+    }
+
     //Button Functionalities moved in
     self.textButton= function(){
         vm.currentSelection("text");
@@ -357,39 +361,36 @@ function ViewModel(){
     //Use @ editing feature to remove a dom element on click!
     self.removeElementUsingDomElement = function (DomElement){
         var elementId = DomElement.id
-
-        self.textElements.remove(function(item) {
-            return item.elementId ===elementId;
-        });
-
-        self.tableElements.remove(function(item) {
-            return item.elementId ===elementId;
-        });
-        self.pictureElements.remove(function(item) {
-            return item.elementId ===elementId;
-        });
-
-        var relevantTextElement  = self.textElements.remove(function(item) {
+        var removedElement;
+        var removedTextElement = self.textElements.remove(function(item) {
             return item.elementId ===elementId;
         })[0];
-        if(relevantTextElement !== undefined){
-            relevantTextElement.subElements.remove(removedElement);
-        }
 
-        var relevantTableElement  = self.tableElements.remove(function(item) {
+        var removedTableElement = self.tableElements.remove(function(item) {
             return item.elementId ===elementId;
         })[0];
-        if(relevantTableElement !== undefined){
-            relevantTableElement.subElements.remove(removedElement);
-        }
 
-
-        var relevantPictureElement  = self.pictureElements.remove(function(item) {
+        var removedPictureElement  = self.pictureElements.remove(function(item) {
             return item.elementId ===elementId;
         })[0];
-        if(relevantTextElement !==undefined){
-            relevantPictureElement.subElements.remove(removedElement);
+
+        if(removedTextElement !== undefined){
+            removedElement = removedTextElement
         }
+        else if(removedPictureElement !== undefined){
+            removedElement = removedPictureElement
+        }
+        else if(removedTableElement !== undefined){
+            removedElement = removedTableElement;
+        }
+        else{
+            console.log("Unknown Error when removing prior element");
+            return false;
+        }
+
+        self.currentSelection(removedElement.elementType());
+
+
 
     }
 

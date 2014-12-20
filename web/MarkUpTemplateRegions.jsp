@@ -351,7 +351,7 @@
         <!--Appears only for image elements-->
         <div class="bs-callout" style="padding-right: 10;" data-bind="visible:(elementType() == 'picture')" >
             <h4>Extracted Data: </h4>
-            <img class='extractedImage' style="margin-top: 20;" data-bind="attr:{src: extractedData}"/>
+            <img class='extractedImage' style="margin-top: 20;" data-bind="visible:(elementType() == 'picture'),attr:{src: extractedData}"/>
         </div>
     </div>
 
