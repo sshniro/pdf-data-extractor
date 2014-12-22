@@ -39,6 +39,7 @@
 
             if(responseObj.templateEditStatus == "true"){
                 // TO DO call the extraction for the particular data. (ExtractEditTempController)
+                // send the id and parent
             }
         }
 

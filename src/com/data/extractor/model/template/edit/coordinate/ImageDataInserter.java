@@ -42,10 +42,9 @@ public class ImageDataInserter {
 
             } else {
                 /* If record exists update the record */
-                extractedDataDAO.updateTemplateInfo(imageDataParser, imageDataElement);
+                extractedDataDAO.updateTemplateInfo(imageDataParser.getId() , imageDataParser, imageDataElement);
             }
 
         }
     }
-
 }

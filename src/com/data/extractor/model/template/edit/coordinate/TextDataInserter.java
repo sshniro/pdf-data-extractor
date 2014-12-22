@@ -1,11 +1,8 @@
 package com.data.extractor.model.template.edit.coordinate;
 
-import com.data.extractor.model.beans.extract.pdf.ExtractStatus;
 import com.data.extractor.model.beans.template.info.text.TextDataElement;
 import com.data.extractor.model.beans.template.info.text.TextDataParser;
-import com.data.extractor.model.beans.upload.template.UploadStatus;
 import com.data.extractor.model.data.access.layer.ExtractedDataDAO;
-import com.data.extractor.model.data.access.layer.TemplateInfoDAO;
 import com.mongodb.MongoClient;
 
 import java.net.UnknownHostException;
@@ -44,7 +41,7 @@ public class TextDataInserter {
 
             } else {
                 /* If record exists update the record */
-                extractedDataDAO.updateTemplateInfo(textDataParser, textDataElement);
+                extractedDataDAO.updateTemplateInfo(textDataParser.getId() , textDataParser , textDataElement);
             }
 
         }

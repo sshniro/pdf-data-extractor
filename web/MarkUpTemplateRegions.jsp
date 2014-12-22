@@ -21,6 +21,7 @@
         var responseObj = null;
         var initDataJSON;
         var initData;
+        var dicObj;
 
         document.ready = assignSessionAttributes;
         function assignSessionAttributes() {
@@ -105,7 +106,28 @@
                 data.pageNumber = ko.observable(1);
                 vm.changePage(data);
 
+
             }
+
+
+
+            var data={ 'request' : "getAllDicItems"};
+            self.overlayNotification('loading...');
+            $("#overlay").css("display","block");
+            $.ajax({
+                type: 'POST', url: 'DictionaryController',
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                data: JSON.stringify(data),
+                success: function(data, textStatus, jqXHR) {
+                    dicObj = JSON.parse(jqXHR.responseText);
+                    self.currentDic([]);
+                    for(item in dicObj) {
+                        self.currentDic.push(new Keyword(dicObj[item]));
+                    }
+                    $('#dicFormName').focus();
+                }
+            });
 
         }
     </script>
@@ -282,16 +304,29 @@
 <!-- selected main element -->
 <script type="text/html" id="rectangleTemplate">
 
-    <div class="bs-docs-section elementDecoMeta" data-bind="id:id, style:{left:uiData.metaStartX, top:uiData.metaStartY}" style="position:absolute;min-width:110px; padding:7px; z-index:2" >
-        <legend style="margin-bottom: 10px; font-size: 15px">Meta Name</legend>
-        <div style="display:flex">
-            <input type="text" class="form-control" data-bind="value:metaName" style="margin:1px"/>
-            <select data-bind="options:$parent.currentDic, optionsText:'name', value:$parent.selectedMetaDic, optionsCaption:'choose...'" id="dictionaryMapping" class="form-control" style="margin:1px"></select>
+    <div  data-bind="id:id, style:{left:uiData.metaStartX, top:uiData.metaStartY}" style="position:absolute;min-width:110px; padding:7px; z-index:1" >
+        <!--Meta/Dig elements-->
+        <div class="bs-docs-section elementDecoMeta" style="position: relative; padding: 7px; float:left">
+            <legend style="margin-bottom: 10px; font-size: 15px">Meta</legend>
+            <div style="display:flex">
+                <input type="text" class="form-control" data-bind="value:metaName" style="margin:1px"/>
+                <select data-bind="options:$parent.currentDic, optionsText:'name', value:dictionaryObject, optionsCaption:'choose...'" id="dictionaryMapping" class="form-control" style="margin:1px"></select>
+            </div>
+        </div>
+
+        <!--Meta Tag Appears only for Table elements-->
+        <div class="bs-docs-section elementDecoMeta subElementDecoMeta" data-bind="visible:(elementType() == 'table' && id() !== undefined)" style="position:relative; float:left;min-width:110px; padding:7px;" >
+            <legend style="margin-bottom: 10px; font-size: 15px">Sub-Meta <span data-bind="text:currentSubElement().index">1</span></legend>
+            <div style="display:flex">
+                <input type="text" class="form-control" data-bind="value:currentSubElement().metaName" style="margin:1px"/>
+                <select data-bind="options:$root.currentDic, optionsText:'name', value: currentSubElement().dictionaryObject, optionsCaption:'choose...'" id="dictionaryMapping" class="form-control" style="margin:1px"></select>
+            </div>
         </div>
 
     </div>
 
-    <div class="mainElement baseUI editableDiv" style="position:absolute; border-style:solid; border-color:#2980b9; border-width: 3px;" data-bind="style:uiData.elementMap(), id:id">
+    <!--Main Rectangle element and inner subelement-->
+    <div class="mainElement baseUI editableDiv" style="position:absolute; border-style:solid; border-color:#2980b9; border-width: 3px;" data-bind="style:uiData.elementMap(), id:id, click:$root.selectRectangle">
         <ul class="knockoutIterable" style="padding: 0" data-bind="foreach:$data.subElements()">
             <li data-bind="id:id">
                 <div class="subElement baseUI" style="position: absolute; border-style:solid; border-color:#2980b9; border-width: 3px;" data-bind="id:id, style:{width:uiData.width,height:uiData.height,left:uiData.startX, top:uiData.startY}">
@@ -299,9 +334,16 @@
                 <button  style="position: absolute; visibility:visible; margin-top:-11; height:24; width:25; border-radius: 50px" data-bind="id:id, click:$root.removeElement, style:{left: uiData.removeX, top:uiData.removeY}" type="button" class="btn btn-default btn-xs removeSubElement">
                     <span class="glyphicon glyphicon-remove-circle"></span>
                 </button>
+                <button  style="position: absolute; visibility:visible; margin-top:-11; height:24; width:25; border-radius: 50px" data-bind="visible:(elementType() == 'table'),id:id, click:$parent.setCurrentSubElement, style:{left: uiData.removeX, top:(uiData.removeY() + uiData.height) }" type="button" class="btn btn-default btn-xs selectSubElement">
+                    <span data-bind="text:$index">1</span>
+                </button>
+
+
+
             </li>
         </ul>
 
+        <!--Main element remove button-->
         <button  style="position:absolute; margin-top:-11; height:24; width:25; border-radius: 50px; z-index:1" data-bind="id:id, click:$parent.removeElement, style:{left: uiData.removeX, top:uiData.removeY}" type="button" class="btn btn-default btn-xs removeElement">
             <span class="glyphicon glyphicon-remove-circle"></span>
         </button>
@@ -329,11 +371,11 @@
         <!--Appears only for image elements-->
         <div class="bs-callout" style="padding-right: 10;" data-bind="visible:(elementType() == 'picture')" >
             <h4>Extracted Data: </h4>
-            <img class='extractedImage' style="margin-top: 20;" data-bind="attr:{src: extractedData}"/>
+            <img class='extractedImage' style="margin-top: 20;" data-bind="visible:(elementType() == 'picture'),attr:{src: extractedData}"/>
         </div>
     </div>
 
-    <div class="elementDecoTableExtract" style="position: absolute;" data-bind="style:{top:(uiData.extractedY() - 40), left:(uiData.removeX() - 98)}, visible:(elementType() == 'table'), id:id" >
+    <div class="elementDecoTableExtract" style="position: absolute;" data-bind="style:{top:(uiData.extractedY() - 40), left:uiData.removeX()}, visible:(elementType() == 'table'), id:id" >
         <button id ="extractTable pull-right"  data-bind="click:$parent.extractTable" type="button" class="btn btn-default">Extract Table</button>
     </div>
 

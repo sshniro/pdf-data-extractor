@@ -40,7 +40,7 @@ public class TableDataInserter {
                 templateInfoSize=1;
             } else {
                 /* If record exists update the record */
-                extractedDataDAO.updateTemplateInfo(tableDataParser, tableDataElement);
+                extractedDataDAO.updateTemplateInfo(tableDataParser.getId(),tableDataParser, tableDataElement);
             }
         }
     }

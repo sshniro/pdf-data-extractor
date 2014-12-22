@@ -27,18 +27,17 @@ public class ExtractedDataInserter {
 
             /* Only check once from the DB when the loop starts */
             if(i==0){
-
-                recordsSize = extractedDataDAO.getRecordsSizeOfId(textDataParser.getId(),textDataParser.getDataType());
+                recordsSize = extractedDataDAO.getRecordsSizeOfId(extractStatus.getId(),textDataParser.getDataType());
             }
 
             if (recordsSize == 0) {
                 /* If there is no record exists create a new record and insert */
-                extractedDataDAO.createTemplateInfo(textDataParser.getId() , extractStatus.getParent() , textDataParser.getDataType(),textDataElement);
+                extractedDataDAO.createTemplateInfo(extractStatus.getId() , extractStatus.getParent() , textDataParser.getDataType(),textDataElement);
                 recordsSize = 1;
 
             } else {
                 /* If record exists update the record */
-                extractedDataDAO.updateTemplateInfo(textDataParser,textDataElement);
+                extractedDataDAO.updateTemplateInfo(extractStatus.getId(),textDataParser,textDataElement);
             }
         }
     }
@@ -56,18 +55,17 @@ public class ExtractedDataInserter {
 
             /* Only check once from the DB when the loop starts */
             if (i == 0) {
-
-                recordsSize = extractedDataDAO.getRecordsSizeOfId(imageDataParser.getId(), imageDataParser.getDataType());
+                recordsSize = extractedDataDAO.getRecordsSizeOfId(extractStatus.getId(), imageDataParser.getDataType());
             }
 
             if (recordsSize == 0) {
                 /* If there is no record exists create a new record and insert */
-                extractedDataDAO.createTemplateInfo(imageDataParser.getId(), extractStatus.getParent(), imageDataParser.getDataType(), imageDataElement);
+                extractedDataDAO.createTemplateInfo(extractStatus.getId(), extractStatus.getParent(), imageDataParser.getDataType(), imageDataElement);
                 recordsSize = 1;
 
             } else {
                 /* If record exists update the record */
-                extractedDataDAO.updateTemplateInfo(imageDataParser, imageDataElement);
+                extractedDataDAO.updateTemplateInfo(extractStatus.getId(),imageDataParser, imageDataElement);
             }
         }
     }
@@ -86,17 +84,17 @@ public class ExtractedDataInserter {
             /* Only check once from the DB when the loop starts */
             if(i==0){
 
-                recordsSize = extractedDataDAO.getRecordsSizeOfId(tableDataParser.getId(),tableDataParser.getDataType());
+                recordsSize = extractedDataDAO.getRecordsSizeOfId(extractStatus.getId(),tableDataParser.getDataType());
             }
 
             if (recordsSize == 0) {
                 /* If there is no record exists create a new record and insert */
-                extractedDataDAO.createTemplateInfo(tableDataParser.getId() , extractStatus.getParent() , tableDataParser.getDataType(),tableDataElement);
+                extractedDataDAO.createTemplateInfo(extractStatus.getId() , extractStatus.getParent() , tableDataParser.getDataType(),tableDataElement);
                 recordsSize = 1;
 
             } else {
                 /* If record exists update the record */
-                extractedDataDAO.updateTemplateInfo(tableDataParser,tableDataElement);
+                extractedDataDAO.updateTemplateInfo(extractStatus.getId(),tableDataParser,tableDataElement);
             }
         }
     }

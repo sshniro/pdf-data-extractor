@@ -102,7 +102,7 @@ public class DataElementsProcessor {
         return totalExtractedData;
     }
 
-    public InsertDataParser processTableDataElements(InsertDataParser totalExtractedData , ExtractStatus extractStatus,MongoClient mongoClient) throws IOException, CryptographyException {
+    public InsertDataParser processTableDataElements(InsertDataParser insertDataParser , ExtractStatus extractStatus,MongoClient mongoClient) throws IOException, CryptographyException {
 
         List<TableDataParser> tableList;
         TableDataParser tableDataParser = null;
@@ -118,7 +118,7 @@ public class DataElementsProcessor {
             dataInserter.insert(tableDataParser, extractStatus , mongoClient);
         }
         /*  to present it to the extracted HTML   */
-        totalExtractedData.setTableDataParser(tableDataParser);
-        return totalExtractedData;
+        insertDataParser.setTableDataParser(tableDataParser);
+        return insertDataParser;
     }
 }
