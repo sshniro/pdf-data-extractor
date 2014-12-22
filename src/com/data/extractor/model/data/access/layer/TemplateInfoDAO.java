@@ -155,6 +155,7 @@ public class TemplateInfoDAO {
         BasicDBObject textElementObject = new BasicDBObject();
 
         textElementObject.put("metaId", textDataElement.getMetaId());
+        textElementObject.put("metaName", textDataElement.getMetaName());
         textElementObject.put("elementId", textDataElement.getElementId());
         textElementObject.put("dictionaryId", textDataElement.getDictionaryId());
         textElementObject.put("dictionaryName", textDataElement.getDictionaryName());
@@ -221,6 +222,7 @@ public class TemplateInfoDAO {
         BasicDBObject imageElementObject=new BasicDBObject();
 
         imageElementObject.put("metaId",imageDataElement.getMetaId());
+        imageElementObject.put("metaName",imageDataElement.getMetaName());
         imageElementObject.put("elementId",imageDataElement.getElementId());
        imageElementObject.put("dictionaryId", imageDataElement.getDictionaryId());
        imageElementObject.put("dictionaryName", imageDataElement.getDictionaryName());
@@ -269,6 +271,7 @@ public class TemplateInfoDAO {
         BasicDBObject tableElementObject=new BasicDBObject();
 
         tableElementObject.put("metaId",tableDataElement.getMetaId());
+        tableElementObject.put("metaName",tableDataElement.getMetaName());
         tableElementObject.put("elementId",tableDataElement.getElementId());
         tableElementObject.put("pageNumber",tableDataElement.getPageNumber());
         tableElementObject.put("pageRotation",tableDataElement.getPageRotation());
@@ -317,7 +320,7 @@ public class TemplateInfoDAO {
             columnRawDataObj.put("baseUiComponentWidth",  columnRawDataElement.getBaseUiComponentWidth());
             columnRawDataObj.put("baseUiComponentHeight", columnRawDataElement.getBaseUiComponentHeight());
 
-            columnData.add(new BasicDBObject("metaId",c.getMetaId()).append("metaX1",c.getMetaX1())
+            columnData.add(new BasicDBObject("metaId",c.getMetaId()).append("metaName",c.getMetaName()).append("metaX1",c.getMetaX1())
                     .append("metaY1",c.getMetaY1()).append("metaWidth",c.getMetaWidth())
                     .append("metaHeight",c.getMetaHeight()).append("rawData" , columnRawDataObj));
         }
@@ -341,6 +344,7 @@ public class TemplateInfoDAO {
         BasicDBObject textElementObject = new BasicDBObject();
 
         textElementObject.put("metaId", textDataElement.getMetaId());
+        textElementObject.put("metaName", textDataElement.getMetaName());
         textElementObject.put("elementId", textDataElement.getElementId());
         textElementObject.put("dictionaryId", textDataElement.getDictionaryId());
         textElementObject.put("dictionaryName", textDataElement.getDictionaryName());
@@ -405,6 +409,7 @@ public class TemplateInfoDAO {
         BasicDBObject imageElementObject = new BasicDBObject();
 
         imageElementObject.put("metaId",imageDataElement.getMetaId());
+        imageElementObject.put("metaName",imageDataElement.getMetaName());
         imageElementObject.put("elementId",imageDataElement.getElementId());
         imageElementObject.put("dictionaryId", imageDataElement.getDictionaryId());
         imageElementObject.put("dictionaryName", imageDataElement.getDictionaryName());
@@ -452,6 +457,7 @@ public class TemplateInfoDAO {
         BasicDBObject tableElementObject = new BasicDBObject();
 
         tableElementObject.put("metaId",tableDataElement.getMetaId());
+        tableElementObject.put("metaName",tableDataElement.getMetaName());
         tableElementObject.put("elementId",tableDataElement.getElementId());
         tableElementObject.put("dictionaryId", tableDataElement.getDictionaryId());
         tableElementObject.put("dictionaryName", tableDataElement.getDictionaryName());
@@ -502,7 +508,7 @@ public class TemplateInfoDAO {
             columnRawDataObj.put("baseUiComponentHeight", columnRawDataElement.getBaseUiComponentHeight());
 
 
-            columnData.add(new BasicDBObject("metaId",c.getMetaId()).append("metaX1",c.getMetaX1())
+            columnData.add(new BasicDBObject("metaId",c.getMetaId()).append("metaName",c.getMetaName()).append("metaX1",c.getMetaX1())
                     .append("metaY1",c.getMetaY1()).append("metaWidth",c.getMetaWidth())
                     .append("metaHeight",c.getMetaHeight()).append("rawData",columnRawDataObj));
         }

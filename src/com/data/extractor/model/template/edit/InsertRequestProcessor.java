@@ -49,9 +49,9 @@ public class InsertRequestProcessor {
         TableDataParser tableDataParser=insertDataParser.getTableDataParser();
 
         String nodeId = "-1"; // Id of the current pdf getting extracted
-        int textRecordSize=0; // Size of text data in the extracted
-        int imageRecordSize=0; //
-        int tableRecordSize=0;
+        int textRecordSize=0; // Size of text data in the extractedData collection
+        int imageRecordSize=0; // Size of image data in the extractedData collection
+        int tableRecordSize=0; // Size of table data in the extractedData collection
 
         List<UploadStatus> uploadStatusList =null;
 
@@ -140,10 +140,11 @@ public class InsertRequestProcessor {
             String pdfLocation = null;
             if (null != uploadedPdfFile && uploadedPdfFile.length() > 0 )
             {
+                /*  Break the string in the last File separator  */
                 int endIndex = uploadedPdfFile.lastIndexOf(File.separator);
                 if (endIndex != -1)
                 {
-                    pdfLocation = uploadedPdfFile.substring(0, endIndex); // not forgot to put check if(endIndex != -1)
+                    pdfLocation = uploadedPdfFile.substring(0, endIndex);
                 }
             }
 
