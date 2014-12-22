@@ -35,6 +35,8 @@ function ViewModel(){
     self.currentDic = ko.observableArray([]);
     self.elementBuffer;
 
+
+
     self.getDictionaryData = function(){
         var data={ 'request' : "getAllDicItems"};
         $.ajax({
@@ -54,9 +56,6 @@ function ViewModel(){
     var dicObj;
 
 
-    self.selectRectangle = function(data){
-        console.log(data);
-    }
 
     //Button Functionalities moved in
     self.textButton= function(){
@@ -268,7 +267,7 @@ function ViewModel(){
         self.elementBuffer.subElements.push(ko.toJS(subElement));
 
         if (data.elementType === 'text') {
-            var relevantTextElement  = self.textElements.remove(function(item) { 
+            var relevantTextElement  = self.textElements.remove(function(item) {
                 return item.elementId === data.elementId;
             })[0];
             relevantTextElement.relevantData(subElement.relevantData());
@@ -280,7 +279,16 @@ function ViewModel(){
                 return item.elementId === data.elementId;
             })[0];
             relevantTableElement.relevantData(subElement.relevantData());
+
             relevantTableElement.subElements.push(subElement);
+
+            //Used in workflow for meta generations for column headers
+            relevantTableElement.setCurrentSubElement(subElement);
+            relevantTableElement.saveCurrentSubElement();
+
+            indexInSubElements =  relevantTableElement.subElements.indexOf(subElement);
+            relevantTableElement.currentSubElement(relevantTableElement.subElements()[indexInSubElements]);
+
             self.tableElements.push(relevantTableElement);
         }
         else if (data.elementType === 'picture') {
@@ -333,8 +341,6 @@ function ViewModel(){
                 relevantTextElement.relevantData("Select Label Element");
                 self.textElements.push(relevantTextElement);
                 vm.subElementSelectionInProgress(true);
-                $('div#'+removedElement.elementId()+'.mainElement').css('cursor','crosshair');
-                selectionInitializer('div#'+removedElement.elementId()+'.mainElement',drawingRouter);
             }
             else if (removedElement.elementType()=== 'table') {
                 var relevantTableElement  = self.tableElements.remove(function(item) { 
@@ -351,7 +357,11 @@ function ViewModel(){
 
                 relevantPictureElement.subElements.remove(removedElement);
                 self.pictureElements.push(relevantPictureElement);
+
             }
+            vm.subElementSelectionInProgress(true);
+            $('div#'+removedElement.elementId()+'.mainElement').css('cursor','crosshair');
+            selectionInitializer('div#'+removedElement.elementId()+'.mainElement',drawingRouter);
         }
 
         
@@ -673,7 +683,7 @@ function ViewModel(){
     }
 
     self.currentDic = ko.observableArray([]);
-    self.selectedMetaDic = ko.observable();
+
 
     $(document).ready(
         function(){

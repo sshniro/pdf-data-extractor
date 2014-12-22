@@ -77,12 +77,11 @@ function DataElement(rectangle){
     self.height = ko.observable(rectangle.height);
     self.pageNumber = ko.observable(rectangle.pageNumber);
 
-
-
     self.extractedData = ko.observable(rectangle.extractedData);
     self.labelExtractedData = ko.observable(rectangle.labelExtractedData);
     //Change at message broker to meta id
     self.metaName = ko.observable(rectangle.metaName);
+    self.dictionaryObject = ko.observable();
     self.elementClass = ko.observable('main');
 
     self.relevantData = ko.observable(rectangle.relevantData);
@@ -102,6 +101,46 @@ function DataElement(rectangle){
 
     }
 
+    if(self.subElements.length === 0){
+        var dummy = {};
+        self.currentSubElement = ko.observable(new SubDataElement(dummy));
+    }
+    else{
+        self.currentSubElement = ko.observable(subElements()[0]);
+    }
+
+
+    self.setCurrentSubElement = function(data,event){
+        //Save current sub element
+        //event.stopPropagation();
+        self.saveCurrentSubElement();
+        var indexOfCurrentSubElement = self.subElements.indexOf(data);
+        data.index = indexOfCurrentSubElement;
+        self.currentSubElement(data);
+    }
+
+
+    self.saveCurrentSubElement = function(){
+        var currentSubElement = self.currentSubElement();
+        if(currentSubElement !== undefined){
+            var relevantSubElementIndex = $.map(
+                self.subElements(),
+                function(element) {return element.id();
+            }).indexOf(currentSubElement.id());
+
+            if(relevantSubElementIndex !== -1){
+                self.subElements.remove(function(item) {
+                    return item.id() === currentSubElement.id();
+                })[0];
+                self.subElements.splice(relevantSubElementIndex, 0, currentSubElement);
+
+            }
+
+        }
+        self.subElements.sort();
+
+    }
+
     self.uiData = new UiData(rectangle);
     
 }
@@ -115,6 +154,7 @@ function SubDataElement(rectangle){
     self.id = ko.observable(rectangle.id);
     self.elementType = ko.observable(rectangle.elementType);
     self.metaName = ko.observable();
+    this.dictionaryObject   = ko.observable();
 
     self.startX = ko.observable(rectangle.startX);
     self.startY= ko.observable(rectangle.startY);
@@ -148,11 +188,11 @@ function UiData(rectangle){
     self.height = rectangle.height;
 
     self.metaStartY = ko.computed(function(){
-        return self.baseUiComponentStartY() + self.startY - 85
+        return self.baseUiComponentStartY() + self.startY - 90
     });
 
     self.metaStartX = ko.computed(function(){
-        return self.baseUiComponentStartX() + self.startX
+        return self.baseUiComponentStartX() + self.startX - 5
     });
 
 
@@ -204,7 +244,7 @@ function SubUiData(rectangle){
     self.id = rectangle.id;
 
     self.metaStartY = ko.computed(function(){
-        return self.startY - 97
+        return self.startY + self.height + 1
     });
 
     self.metaStartX = ko.computed(function(){
