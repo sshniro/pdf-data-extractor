@@ -108,12 +108,12 @@ var initBindings =  (function(){
 
 
 // This activates the imgAreaSelect on a given element and is the main plugin which drives the element selection
-var selectionInitializer = (function (element,onSelectEndCb){
+var selectionInitializer = (function (element,onSelectEndCb, previousElementId){
 
     selectedImgAreInstance = $(element).imgAreaSelect({
         onSelectChange: preview,
         onSelectEnd: onSelectEndCb,
-        onSelectStart: selectionStartedCallBack,
+        onSelectStart: selectionStartedCallBack(previousElementId),
         instance:true,
         autoHide: true   
     })
@@ -136,7 +136,7 @@ var drawingRouter = (function (baseUiComponent, selection){
 
     currentWorkingImg = baseUiComponent;
 
-    $("*").css('cursor','default');
+    $(baseUiComponent).css('cursor','default');
     var rectangle = drawRectangle(baseUiComponent, selection);
     rectangle.pageNumber =  vm.currentPage();
 
@@ -175,10 +175,12 @@ var drawingRouter = (function (baseUiComponent, selection){
         //The table selection allows to select an infinite amount of sub elements within the main table rectangle
         if (vm.currentSelection() === 'table') {
             rectangle.elementId = baseUiComponent.id;
+            //Hide earlier meta for deco
+            $(".subElementDecoMeta").hide();
             vm.addSubElement(rectangle)
             $('#'+rectangle.id).css('cursor','default');
             $('#'+baseUiComponent.id).css('cursor','crosshair');
-            selectionInitializer('#'+baseUiComponent.id+'.mainElement',drawingRouter);
+            selectionInitializer('#'+baseUiComponent.id+'.mainElement',drawingRouter,rectangle.id);
         }
         else{
             rectangle.elementId = baseUiComponent.id;
@@ -239,7 +241,7 @@ var reDrawingRouter = (function (baseUiComponent, selection){
             vm.addSubElement(rectangle)
             $('#'+rectangle.id).css('cursor','default');
             $('#'+baseUiComponent.id).css('cursor','crosshair');
-            selectionInitializer('#'+baseUiComponent.id+'.mainElement',reDrawingRouter);
+            selectionInitializer('#'+baseUiComponent.id+'.mainElement', reDrawingRouter, rectangle.id);
         }
         else{
             rectangle.elementId = baseUiComponent.id;
@@ -303,6 +305,40 @@ function disappearDecos(elementId){
     var relevantElement = $("div#"+elementId+".mainElement");
     elementDecoMeta.hide();
     elementDecoExtracted.hide();
+    relevantElement
+        .click(function() {
+            elementDecoExtracted.toggle();
+            elementDecoMeta.toggle();
+
+        })
+        .mouseout(function() {
+            elementDecoExtracted.hide();
+            elementDecoMeta.hide();
+        });
+}
+
+
+function disappearSubDecos(previousElementId){
+
+    var elementDecoMeta = $("div#"+previousElementId+".subElementDecoMeta");
+    var relevantElement = $("div#"+previousElementId+".subElement");
+    //elementDecoMeta.hide();
+    relevantElement
+        .click(function() {
+            elementDecoMeta.toggle();
+
+        })
+        .mouseout(function() {
+            elementDecoMeta.hide();
+        });
+
+
+}
+
+function bindSubElementAppearing(elementId){
+    var elementDecoExtracted =  $("div#"+elementId+".elementDecoExtracted");
+    var elementDecoMeta = $("div#"+elementId+".elementDecoMeta");
+    var relevantElement = $("div#"+elementId+".mainElement");
     relevantElement
         .click(function() {
             elementDecoExtracted.toggle();
@@ -443,7 +479,6 @@ function draggableActivator(){
                         y2:imgBounds.bottom - bounds.bottom
                     };
 
-                    vm.currentSelection('text');
                     vm.removeElementUsingDomElement(dragableDiv);
                     reDrawingRouter(currentWorkingImgX,selection,$(this)[0]);
                     $(this).next('button').click();
@@ -467,7 +502,6 @@ function draggableActivator(){
                         y2:imgBounds.bottom - bounds.bottom
                     };
 
-                    vm.currentSelection('text');
                     vm.removeElementUsingDomElement(dragableDiv);
                     reDrawingRouter(currentWorkingImgX,selection,$(this)[0]);
                     $(this).next('button').click();
@@ -498,8 +532,11 @@ $(".btn-group > .btn").click(function(){
     $(this).addClass("active");
 });
 
-var selectionStartedCallBack = function (){
-    $("*").css('cursor','crosshair');
+var selectionStartedCallBack = function (previousElementId){
+    $('#'+previousElementId).css('cursor','crosshair');
+    if(vm.subElementSelectionInProgress() === true && previousElementId !== undefined){
+        disappearSubDecos(previousElementId);
+    }
 }
 
 function preview(img, selection) {
@@ -509,6 +546,13 @@ function preview(img, selection) {
     $('#ending').text(selection.x2 +" "+ selection.y2);
 }
 
+$("button.selectSubElement").click(function (event ) {
+    event.stopPropagation();
+});
+
+$("button.removeSubElement").click(function (event ) {
+    event.stopPropagation();
+});
 
 
 
