@@ -195,6 +195,12 @@ var drawingRouter = (function (baseUiComponent, selection){
 
 //// for div draggability and resizability
 var reDrawingRouter = (function (baseUiComponent, selection){
+
+    if (selection.width<10 || selection.height<10){
+        return;
+    }
+
+
     currentWorkingImg = baseUiComponent;
 
     $("*").css('cursor','default');
@@ -372,6 +378,7 @@ function resetEnvironment(){
     $("button#persist").attr('disabled', false);
     $("button.removeElement").css('visibility','visible');
     $("button.removeSubElement").css('visibility','hidden');
+    $("button.selectSubElement").css('visibility','hidden');
 
 
 
