@@ -114,9 +114,8 @@ function DataElement(rectangle){
         //Save current sub element
         //event.stopPropagation();
         self.saveCurrentSubElement();
-        var indexOfCurrentSubElement = self.subElements.indexOf(data);
-        data.index = indexOfCurrentSubElement;
-        self.currentSubElement(data);
+        self.showNewSubElement(data)
+
     }
 
 
@@ -139,7 +138,13 @@ function DataElement(rectangle){
         }
         self.subElements.sort();
 
-    }
+    };
+
+    self.showNewSubElement = function(data){
+        var indexOfCurrentSubElement = self.subElements.indexOf(data);
+        data.index = indexOfCurrentSubElement;
+        self.currentSubElement(data);
+    };
 
     self.uiData = new UiData(rectangle);
     
