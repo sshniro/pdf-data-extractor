@@ -580,6 +580,12 @@ function ViewModel(){
     };
 
     self.uploadPdfFile =  function(){
+
+        if(!self.isSelectedTemplate()){
+            alert("Can't upload file.\nPlease select a template.");
+            return false;
+        }
+
         var file = document.getElementById("pdfFile");
 
         /* alert the user to input a value to the Document ID*/
@@ -626,8 +632,7 @@ function ViewModel(){
 
     self.redirectToEditTemplate = function(){
         if(self.isSelectedTemplate()) {
-            localStorage.setItem('selectedTemplateId', self.currentSelectedTreeNode().id());
-            window.location.href = '/EditTemplate.jsp';
+            self.editTemplate();
         }
         else{
             alert('select a template!');
