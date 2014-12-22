@@ -102,11 +102,11 @@
         <div class="treeView">
         </div>
 
-        <br/><br/>
+        <%-- <br/><br/>
         <!-- preview of template -->
         <div style="width: 100%">
             <iframe id="pdfRenderer" style="width: 100%"></iframe>
-        </div>
+        </div> --%>
     </div>
 
     <!-- extract form and data -->
