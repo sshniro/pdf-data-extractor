@@ -159,7 +159,15 @@ function TextDataDTO(pageData){
 function TextDataElementDTO(dataElement, metaElement){
     this.rawData = dataElement.rectangle;
     this.metaId         = ko.utils.unwrapObservable(dataElement.id);    //////Switched meta with id
-    this.elementId      = ko.utils.unwrapObservable(dataElement.metaName);//// Switch due to data layer requirement
+    this.metaName      = ko.utils.unwrapObservable(dataElement.metaName);//// Switch due to data layer requirement
+    if(dataElement.dictionaryObject){
+        this.dictionaryId   = ko.utils.unwrapObservable(dataElement.dictionaryObject.id);
+        this.dictionaryName   = ko.utils.unwrapObservable(dataElement.dictionaryObject.dictionaryName);
+    }
+    else{
+        this.dictionaryId   = -1;
+        this.dictionaryName   =  -1;
+    }
     this.totalX1        =ko.utils.unwrapObservable(dataElement.startX);
     this.totalY1        =ko.utils.unwrapObservable(dataElement.startY);
     this.totalWidth     = this.totalX1 + ko.utils.unwrapObservable(dataElement.width);
@@ -196,6 +204,15 @@ function ImageDataDTO(pageData){
 function ImageDataElementDTO(dataElement, metaElement){
     this.rawData = dataElement.rectangle;
     this.metaId = ko.utils.unwrapObservable(dataElement.id);
+    this.metaName      = ko.utils.unwrapObservable(dataElement.metaName);//// Switch due to data layer requirement
+    if(dataElement.dictionaryObject){
+        this.dictionaryId   = ko.utils.unwrapObservable(dataElement.dictionaryObject.id);
+        this.dictionaryName   = ko.utils.unwrapObservable(dataElement.dictionaryObject.dictionaryName);
+    }
+    else{
+        this.dictionaryId   = -1;
+        this.dictionaryName   =  -1;
+    }
     this.totalX1 =ko.utils.unwrapObservable(dataElement.startX);
     this.totalY1 =ko.utils.unwrapObservable(dataElement.startY);
     this.totalWidth = this.totalX1 + ko.utils.unwrapObservable(dataElement.width);
@@ -228,7 +245,15 @@ function TableDataDTO(pageData){
 function TableDataElementDTO(dataElement, metaElements){
     this.rawData = dataElement.rectangle;
     this.metaId         = ko.utils.unwrapObservable(dataElement.id);    //////Switched meta with id
-    this.elementId      = ko.utils.unwrapObservable(dataElement.metaName);//// Switch due to data layer requirement
+    this.metaName      = ko.utils.unwrapObservable(dataElement.metaName);//// Switch due to data layer requirement
+    if(dataElement.dictionaryObject){
+        this.dictionaryId   = ko.utils.unwrapObservable(dataElement.dictionaryObject.id);
+        this.dictionaryName   = ko.utils.unwrapObservable(dataElement.dictionaryObject.dictionaryName);
+    }
+    else{
+        this.dictionaryId   = -1;
+        this.dictionaryName   =  -1;
+    }
     this.totalX1        =ko.utils.unwrapObservable(dataElement.startX);
     this.totalY1        =ko.utils.unwrapObservable(dataElement.startY);
     this.totalWidth     = this.totalX1 + ko.utils.unwrapObservable(dataElement.width);
@@ -248,6 +273,15 @@ function TableDataElementDTO(dataElement, metaElements){
 function TableDataColumnDTO(dataElement, metaElement){
     this.rawData        =   metaElement.rectangle;
     this.metaId         =   metaElement.id;    //////Switched meta with id
+    this.metaName      = ko.utils.unwrapObservable(dataElement.metaName);//// Switch due to data layer requirement
+    if(dataElement.dictionaryObject){
+        this.dictionaryId   = ko.utils.unwrapObservable(metaElement.dictionaryObject.id);
+        this.dictionaryName   = ko.utils.unwrapObservable(metaElement.dictionaryObject.dictionaryName);
+    }
+    else{
+        this.dictionaryId   = -1;
+        this.dictionaryName   =  -1;
+    }
     this.metaX1         =   dataElement.startX + (metaElement.startX);
     this.metaY1         =   dataElement.startY + (metaElement.startY);
     this.metaWidth      =   this.metaX1 + (metaElement.width);

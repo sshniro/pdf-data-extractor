@@ -32,7 +32,30 @@ function ViewModel(){
     self.textElements = ko.observableArray([]);
     self.tableElements = ko.observableArray([]);
     self.pictureElements = ko.observableArray([]);
+    self.currentDic = ko.observableArray([]);
     self.elementBuffer;
+
+
+
+    self.getDictionaryData = function(){
+        var data={ 'request' : "getAllDicItems"};
+        $.ajax({
+            type: 'POST', url: 'DictionaryController',
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            data: JSON.stringify(data),
+            success: function(data, textStatus, jqXHR) {
+                dicObj = JSON.parse(jqXHR.responseText);
+                self.currentDic([]);
+                for(item in dicObj) {
+                    self.currentDic.push(new Keyword(dicObj[item]));
+                }
+            }
+        });
+    }
+    var dicObj;
+
+
 
     //Button Functionalities moved in
     self.textButton= function(){
@@ -244,7 +267,7 @@ function ViewModel(){
         self.elementBuffer.subElements.push(ko.toJS(subElement));
 
         if (data.elementType === 'text') {
-            var relevantTextElement  = self.textElements.remove(function(item) { 
+            var relevantTextElement  = self.textElements.remove(function(item) {
                 return item.elementId === data.elementId;
             })[0];
             relevantTextElement.relevantData(subElement.relevantData());
@@ -256,7 +279,16 @@ function ViewModel(){
                 return item.elementId === data.elementId;
             })[0];
             relevantTableElement.relevantData(subElement.relevantData());
+
             relevantTableElement.subElements.push(subElement);
+
+            //Used in workflow for meta generations for column headers
+            relevantTableElement.setCurrentSubElement(subElement);
+            relevantTableElement.saveCurrentSubElement();
+
+            indexInSubElements =  relevantTableElement.subElements.indexOf(subElement);
+            relevantTableElement.currentSubElement(relevantTableElement.subElements()[indexInSubElements]);
+
             self.tableElements.push(relevantTableElement);
         }
         else if (data.elementType === 'picture') {
@@ -309,8 +341,6 @@ function ViewModel(){
                 relevantTextElement.relevantData("Select Label Element");
                 self.textElements.push(relevantTextElement);
                 vm.subElementSelectionInProgress(true);
-                $('div#'+removedElement.elementId()+'.mainElement').css('cursor','crosshair');
-                selectionInitializer('div#'+removedElement.elementId()+'.mainElement',drawingRouter);
             }
             else if (removedElement.elementType()=== 'table') {
                 var relevantTableElement  = self.tableElements.remove(function(item) { 
@@ -327,7 +357,11 @@ function ViewModel(){
 
                 relevantPictureElement.subElements.remove(removedElement);
                 self.pictureElements.push(relevantPictureElement);
+
             }
+            vm.subElementSelectionInProgress(true);
+            $('div#'+removedElement.elementId()+'.mainElement').css('cursor','crosshair');
+            selectionInitializer('div#'+removedElement.elementId()+'.mainElement',drawingRouter);
         }
 
         
@@ -337,39 +371,36 @@ function ViewModel(){
     //Use @ editing feature to remove a dom element on click!
     self.removeElementUsingDomElement = function (DomElement){
         var elementId = DomElement.id
-
-        self.textElements.remove(function(item) {
-            return item.elementId ===elementId;
-        });
-
-        self.tableElements.remove(function(item) {
-            return item.elementId ===elementId;
-        });
-        self.pictureElements.remove(function(item) {
-            return item.elementId ===elementId;
-        });
-
-        var relevantTextElement  = self.textElements.remove(function(item) {
+        var removedElement;
+        var removedTextElement = self.textElements.remove(function(item) {
             return item.elementId ===elementId;
         })[0];
-        if(relevantTextElement !== undefined){
-            relevantTextElement.subElements.remove(removedElement);
-        }
 
-        var relevantTableElement  = self.tableElements.remove(function(item) {
+        var removedTableElement = self.tableElements.remove(function(item) {
             return item.elementId ===elementId;
         })[0];
-        if(relevantTableElement !== undefined){
-            relevantTableElement.subElements.remove(removedElement);
-        }
 
-
-        var relevantPictureElement  = self.pictureElements.remove(function(item) {
+        var removedPictureElement  = self.pictureElements.remove(function(item) {
             return item.elementId ===elementId;
         })[0];
-        if(relevantTextElement !==undefined){
-            relevantPictureElement.subElements.remove(removedElement);
+
+        if(removedTextElement !== undefined){
+            removedElement = removedTextElement
         }
+        else if(removedPictureElement !== undefined){
+            removedElement = removedPictureElement
+        }
+        else if(removedTableElement !== undefined){
+            removedElement = removedTableElement;
+        }
+        else{
+            console.log("Unknown Error when removing prior element");
+            return false;
+        }
+
+        self.currentSelection(removedElement.elementType());
+
+
 
     }
 
@@ -652,7 +683,7 @@ function ViewModel(){
     }
 
     self.currentDic = ko.observableArray([]);
-    self.selectedMetaDic = ko.observable();
+
 
     $(document).ready(
         function(){
