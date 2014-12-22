@@ -305,7 +305,7 @@
 <script type="text/html" id="rectangleTemplate">
 
     <div  data-bind="id:id, style:{left:uiData.metaStartX, top:uiData.metaStartY}" style="position:absolute;min-width:110px; padding:7px; z-index:1" >
-        <!--Meta/Dig elements-->
+        <!-- Meta/Dig elements-->
         <div class="bs-docs-section elementDecoMeta" style="position: relative; padding: 7px; float:left">
             <legend style="margin-bottom: 10px; font-size: 15px">Meta</legend>
             <div style="display:flex">
