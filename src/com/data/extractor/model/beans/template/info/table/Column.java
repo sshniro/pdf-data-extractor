@@ -16,6 +16,10 @@ public class Column {
     @Expose
     private String metaName;
     @Expose
+    private String dictionaryId;
+    @Expose
+    private String dictionaryName;
+    @Expose
     private Double metaX1;
     @Expose
     private Double metaY1;
@@ -77,5 +81,14 @@ public class Column {
     public List<String> getCellValues() {        return cellValues;    }
 
     public void setCellValues(List<String> cellValues) {        this.cellValues = cellValues;    }
+
+    public String getDictionaryId() {        return dictionaryId;    }
+
+    public void setDictionaryId(String dictionaryId) {        this.dictionaryId = dictionaryId;    }
+
+    public String getDictionaryName() {        return dictionaryName;    }
+
+    public void setDictionaryName(String dictionaryName) {        this.dictionaryName = dictionaryName;    }
+
 
 }
