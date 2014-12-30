@@ -173,9 +173,9 @@ function ViewModel(){
         var elementPos = self.pagesDataCache.map(function(pageCache) {return pageCache.pageNumber; }).indexOf(newPageNumber);
         var newPageTemp = self.pagesDataCache[elementPos];
         var newPage = {};
-        newPage.textElements = $.map( newPageTemp.textElements, function(element) { return new DataElement(element.rectangle) });
-        newPage.tableElements = $.map( newPageTemp.tableElements, function(element) { return new DataElement(element.rectangle) });
-        newPage.pictureElements = $.map( newPageTemp.pictureElements, function(element) { return new DataElement(element.rectangle) });
+        newPage.textElements = $.map( newPageTemp.textElements, function(element) { return new DataElement(element.rectangle,element.subElements) });
+        newPage.tableElements = $.map( newPageTemp.tableElements, function(element) { return new DataElement(element.rectangle,element.subElements) });
+        newPage.pictureElements = $.map( newPageTemp.pictureElements, function(element) { return new DataElement(element.rectangle,element.subElements) });
 
         self.selectionInProgress(newPageTemp.selectionInProgress);
         self.subElementSelectionInProgress(newPageTemp.subElementSelectionInProgress);
@@ -192,8 +192,10 @@ function ViewModel(){
             if(newPage.pictureElements[key] !== undefined ){   self.pictureElements.push(newPage.pictureElements[key]) };
         }
 
+        resetEnvironment();
         for(var key in  self.dataElements()()){
             disappearDecos(self.dataElements()()[key].elementId);
+            disappearSubDecos(self.dataElements()()[key].elementId)
         }
 
 
@@ -290,6 +292,8 @@ function ViewModel(){
             relevantTableElement.currentSubElement(relevantTableElement.subElements()[indexInSubElements]);
 
             self.tableElements.push(relevantTableElement);
+            var subElement = $("div#"+subElement.id()+".subElement");
+            subElement.css('background-color','rgba(46, 204, 113,0.3)');
         }
         else if (data.elementType === 'picture') {
             var relevantPictureElement  = self.pictureElements.remove(function(item) { 
