@@ -62,7 +62,7 @@ function PageCache(pageNumber) {
 }
 
 // Models
-function DataElement(rectangle){
+function DataElement(rectangle, subElements){
     var self = this;
     self.rectangle = rectangle;
     self.id = ko.observable(rectangle.id);
@@ -92,13 +92,19 @@ function DataElement(rectangle){
 
     self.subElements = ko.observableArray([rectangle.subElements]);
 
-    if(rectangle.subElements === undefined ) {
-        self.subElements = ko.observableArray([]);
+    if(subElements !== undefined){
+        self.tempSubElements = $.map( subElements, function(subElement) { return new SubDataElement(subElement.rectangle) });
+        self.subElements = ko.observableArray(self.tempSubElements);
+
     }
-    else{
+    else if(rectangle.subElements !== undefined ) {
+
         self.tempSubElements = $.map( rectangle.subElements, function(subElement) { return new SubDataElement(subElement) });
         self.subElements = ko.observableArray(self.tempSubElements);
 
+    }
+    else {
+        self.subElements = ko.observableArray([]);
     }
 
     if(self.subElements.length === 0){
@@ -144,6 +150,9 @@ function DataElement(rectangle){
         var indexOfCurrentSubElement = self.subElements.indexOf(data);
         data.index = indexOfCurrentSubElement;
         self.currentSubElement(data);
+        $("div.subElement").css('background-color','rgba(0, 0, 0,0)');
+        var subElement = $("div#"+data.id()+".subElement");
+        subElement.css('background-color','rgba(46, 204, 113,0.3)');
     };
 
     self.uiData = new UiData(rectangle);

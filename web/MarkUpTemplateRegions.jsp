@@ -304,7 +304,7 @@
 <!-- selected main element -->
 <script type="text/html" id="rectangleTemplate">
 
-    <div  class="elementDecoMeta" data-bind="id:id, style:{left:uiData.metaStartX, top:uiData.metaStartY}" style="position:absolute;min-width:110px; padding:7px; z-index:1" >
+    <div data-bind="id:id, style:{left:uiData.metaStartX, top:uiData.metaStartY}" style="position:absolute;min-width:110px; padding:7px; z-index:1" >
         <!-- Meta/Dig elements-->
         <div class="bs-docs-section elementDecoMeta" data-bind="id:id" style="position: relative; padding: 7px; float:left">
             <legend style="margin-bottom: 10px; font-size: 15px">Meta</legend>
@@ -315,7 +315,7 @@
         </div>
 
         <!--Meta Tag Appears only for Table elements-->
-        <div class="bs-docs-section elementDecoMeta subElementDecoMeta" data-bind="id:id, visible:(elementType() == 'table' && id() !== undefined)" style="position:relative; float:left;min-width:110px; padding:7px;" >
+        <div class="bs-docs-section subElementDecoMeta" data-bind="id:id, visible:(elementType() == 'table' && id() !== undefined)" style="position:relative; float:left;min-width:110px; padding:7px;" >
             <legend style="margin-bottom: 10px; font-size: 15px">Sub-Meta <span data-bind="text:currentSubElement().index">1</span></legend>
             <div style="display:flex">
                 <input type="text" class="form-control" data-bind="value:currentSubElement().metaName" style="margin:1px"/>
