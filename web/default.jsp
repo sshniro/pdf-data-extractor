@@ -209,13 +209,13 @@
                     </div>
                     <br />
                     <!-- template preview -->
-                    <%-- <div class="row" data-bind="visible:isSelectedTemplate()">
+                    <div class="row" data-bind="visible:isSelectedTemplate()">
                         <h4>Preview</h4>
                         <!-- preview of template -->
                         <div style="width: 100%">
                             <iframe id="pdfRenderer" style="width: 100%"></iframe>
                         </div>
-                    </div> --%>
+                    </div>
                 </div>
             </div>
         </div>

@@ -195,6 +195,12 @@ var drawingRouter = (function (baseUiComponent, selection){
 
 //// for div draggability and resizability
 var reDrawingRouter = (function (baseUiComponent, selection){
+
+    if (selection.width<10 || selection.height<10){
+        return;
+    }
+
+
     currentWorkingImg = baseUiComponent;
 
     $("*").css('cursor','default');
@@ -303,34 +309,61 @@ function disappearDecos(elementId){
     var elementDecoExtracted =  $("div#"+elementId+".elementDecoExtracted");
     var elementDecoMeta = $("div#"+elementId+".elementDecoMeta");
     var relevantElement = $("div#"+elementId+".mainElement");
-    elementDecoMeta.hide();
-    elementDecoExtracted.hide();
-    relevantElement
-        .click(function() {
-            elementDecoExtracted.toggle();
-            elementDecoMeta.toggle();
+    var subElementDecoMeta = $("div#"+elementId+".subElementDecoMeta");
+    var subElement = $("div#"+elementId+".subElement");
 
-        })
-        .mouseout(function() {
-            elementDecoExtracted.hide();
-            elementDecoMeta.hide();
-        });
+    elementDecoMeta.hide();
+    subElementDecoMeta.hide();
+    elementDecoExtracted.hide();
+    if(vm.currentSelection() === 'table') {
+        relevantElement
+            .click(function () {
+                elementDecoExtracted.toggle();
+                elementDecoMeta.toggle();
+                subElementDecoMeta.toggle();
+            })
+            .mouseout(function () {
+                elementDecoExtracted.hide();
+                elementDecoMeta.hide();
+                subElementDecoMeta.hide();
+                $("div.subElement").css('background-color','rgba(0, 0, 0,0)');
+            });
+    }
+    else{
+        relevantElement
+            .click(function () {
+                elementDecoExtracted.toggle();
+                elementDecoMeta.toggle();
+
+
+            })
+            .mouseout(function () {
+                elementDecoExtracted.hide();
+                elementDecoMeta.hide();
+            });
+    }
 }
 
 
 function disappearSubDecos(previousElementId){
-
-    var elementDecoMeta = $("div#"+previousElementId+".subElementDecoMeta");
+    var elementDecoMeta = $("div#"+previousElementId+".elementDecoMeta");
+    var subElementDecoMeta = $("div#"+previousElementId+".subElementDecoMeta");
     var relevantElement = $("div#"+previousElementId+".subElement");
-    //elementDecoMeta.hide();
-    relevantElement
-        .click(function() {
-            elementDecoMeta.toggle();
 
-        })
-        .mouseout(function() {
-            elementDecoMeta.hide();
-        });
+    if(vm.currentSelection() === 'table'){
+        relevantElement
+            .click(function() {
+                elementDecoMeta.toggle();
+                subElementDecoMeta.toggle();
+
+            })
+            .mouseout(function() {
+                elementDecoMeta.hide();
+                subElementDecoMeta.hide();
+            });
+    }
+
+
 
 
 }
@@ -363,6 +396,7 @@ function resetEnvironment(){
     $("button#pictureSelect").removeClass("active");
 
     $("#runningInstructions").text('Select Element Type');
+    $("div.subElement").css('background-color','rgba(0, 0, 0,0)');
 
 
     $("button#cancelSelection").attr('disabled', true);
@@ -372,6 +406,7 @@ function resetEnvironment(){
     $("button#persist").attr('disabled', false);
     $("button.removeElement").css('visibility','visible');
     $("button.removeSubElement").css('visibility','hidden');
+    $("button.selectSubElement").css('visibility','hidden');
 
 
 

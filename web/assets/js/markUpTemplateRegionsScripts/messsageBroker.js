@@ -162,7 +162,7 @@ function TextDataElementDTO(dataElement, metaElement){
     this.metaName      = ko.utils.unwrapObservable(dataElement.metaName);//// Switch due to data layer requirement
     if(dataElement.dictionaryObject){
         this.dictionaryId   = ko.utils.unwrapObservable(dataElement.dictionaryObject.id);
-        this.dictionaryName   = ko.utils.unwrapObservable(dataElement.dictionaryObject.dictionaryName);
+        this.dictionaryName   = ko.utils.unwrapObservable(dataElement.dictionaryObject.name);
     }
     else{
         this.dictionaryId   = -1;
@@ -207,7 +207,7 @@ function ImageDataElementDTO(dataElement, metaElement){
     this.metaName      = ko.utils.unwrapObservable(dataElement.metaName);//// Switch due to data layer requirement
     if(dataElement.dictionaryObject){
         this.dictionaryId   = ko.utils.unwrapObservable(dataElement.dictionaryObject.id);
-        this.dictionaryName   = ko.utils.unwrapObservable(dataElement.dictionaryObject.dictionaryName);
+        this.dictionaryName   = ko.utils.unwrapObservable(dataElement.dictionaryObject.name);
     }
     else{
         this.dictionaryId   = -1;
@@ -248,7 +248,7 @@ function TableDataElementDTO(dataElement, metaElements){
     this.metaName      = ko.utils.unwrapObservable(dataElement.metaName);//// Switch due to data layer requirement
     if(dataElement.dictionaryObject){
         this.dictionaryId   = ko.utils.unwrapObservable(dataElement.dictionaryObject.id);
-        this.dictionaryName   = ko.utils.unwrapObservable(dataElement.dictionaryObject.dictionaryName);
+        this.dictionaryName   = ko.utils.unwrapObservable(dataElement.dictionaryObject.name);
     }
     else{
         this.dictionaryId   = -1;
@@ -276,7 +276,7 @@ function TableDataColumnDTO(dataElement, metaElement){
     this.metaName      = ko.utils.unwrapObservable(dataElement.metaName);//// Switch due to data layer requirement
     if(dataElement.dictionaryObject){
         this.dictionaryId   = ko.utils.unwrapObservable(metaElement.dictionaryObject.id);
-        this.dictionaryName   = ko.utils.unwrapObservable(metaElement.dictionaryObject.dictionaryName);
+        this.dictionaryName   = ko.utils.unwrapObservable(metaElement.dictionaryObject.name);
     }
     else{
         this.dictionaryId   = -1;
