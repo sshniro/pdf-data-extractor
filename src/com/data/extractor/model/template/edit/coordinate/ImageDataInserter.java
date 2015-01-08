@@ -18,14 +18,6 @@ public class ImageDataInserter {
         ImageDataElement imageDataElement;
         int templateInfoSize=0;
 
-        /* If any data has existed previously remove it */
-        templateInfoSize=extractedDataDAO.getRecordsSizeOfId(imageDataParser.getId(), imageDataParser.getDataType());
-
-        if (templateInfoSize != 0) {
-            /* If there is no record exists create a new record and insert */
-            extractedDataDAO.removeRecord(imageDataParser.getId(), parentId, imageDataParser.getDataType());
-        }
-
         for(int i=0;i<imageDataElements.size();i++){
 
             imageDataElement=imageDataElements.get(i);

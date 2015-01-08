@@ -10,6 +10,7 @@ import com.data.extractor.model.beans.template.info.table.TableDataParser;
 import com.data.extractor.model.beans.template.info.text.TextDataElement;
 import com.data.extractor.model.beans.template.info.text.TextDataParser;
 import com.data.extractor.model.beans.upload.template.UploadStatus;
+import com.data.extractor.model.data.access.layer.ExtractedDataDAO;
 import com.data.extractor.model.data.access.layer.ExtractedFilesDAO;
 import com.data.extractor.model.data.access.layer.TemplatesDAO;
 import com.data.extractor.model.extract.pdf.table.DataProcessor;
@@ -37,20 +38,56 @@ public class InsertRequestProcessor {
 
         Gson gson=new Gson();
         String extractedText= null ;
+
         ExtractedFilesDAO xFilesDAO = new ExtractedFilesDAO(mongoClient);
+        ExtractedDataDAO extractedDataDAO=new ExtractedDataDAO(mongoClient);
+
         InsertDataParser insertDataParser = gson.fromJson(jsonRequest,InsertDataParser.class);
+
         TextDataParser textDataParser=insertDataParser.getTextDataParser();
         ImageDataParser imageDataParser=insertDataParser.getImageDataParser();
         TableDataParser tableDataParser=insertDataParser.getTableDataParser();
 
+        String nodeId = "-1"; // Id of the current pdf getting extracted
+        int textRecordSize=0; // Size of text data in the extractedData collection
+        int imageRecordSize=0; // Size of image data in the extractedData collection
+        int tableRecordSize=0; // Size of table data in the extractedData collection
+
         List<UploadStatus> uploadStatusList =null;
+
+        /* Get the previously uploaded pdf file */
+        if(textDataParser!=null && textDataParser.getTextDataElements().size() != 0) {
+            nodeId = textDataParser.getId();
+            uploadStatusList = xFilesDAO.getRecord(textDataParser.getId());
+
+        }else if(imageDataParser!=null && imageDataParser.getImageDataElements().size() != 0){
+            nodeId = imageDataParser.getId();
+            uploadStatusList = xFilesDAO.getRecord(imageDataParser.getId());
+
+        }else if(tableDataParser!=null && tableDataParser.getTableDataElements().size() != 0){
+            nodeId = tableDataParser.getId();
+            uploadStatusList = xFilesDAO.getRecord(tableDataParser.getId());
+
+        }
+
+        textRecordSize=extractedDataDAO.getRecordsSizeOfId(nodeId, "text");
+        imageRecordSize=extractedDataDAO.getRecordsSizeOfId(nodeId, "image");
+        tableRecordSize=extractedDataDAO.getRecordsSizeOfId(nodeId, "table");
+
+        if (textRecordSize != 0) {
+            extractedDataDAO.removeRecord(nodeId, uploadStatusList.get(0).getParent(), textDataParser.getDataType());
+        }
+        if (imageRecordSize != 0) {
+            extractedDataDAO.removeRecord(nodeId, uploadStatusList.get(0).getParent(), imageDataParser.getDataType());
+        }
+        if (tableRecordSize != 0) {
+            extractedDataDAO.removeRecord(nodeId, uploadStatusList.get(0).getParent(), tableDataParser.getDataType());
+        }
 
         /* If there is a textDataParser is sent from the user and has atleast 1 textDataElement process it*/
         if(textDataParser!=null && textDataParser.getTextDataElements().size() != 0) {
 
             TextDataInserter textDataInserter=new TextDataInserter();
-            /* Get the uploaded pdf file location fron the DB [ExtractedFiles collection]*/
-            uploadStatusList = xFilesDAO.getRecord(textDataParser.getId());
 
             /* Load the Template PDF in to pdf BOX and return the PDDoc to set pdf Properties*/
             textDataParser.setPdfFile(uploadStatusList.get(0).getUploadedPdfFile());
@@ -86,9 +123,6 @@ public class InsertRequestProcessor {
             ImageDataInserter imageDataInserter = new ImageDataInserter();
             String imageAbsolutePath;
 
-            /* Load the Template PDF in to pdf BOX and return the PDDoc to set pdf Properties*/
-            uploadStatusList = xFilesDAO.getRecord(imageDataParser.getId());
-
             imageDataParser.setPdfFile(uploadStatusList.get(0).getUploadedPdfFile());
             PDDocument doc =PDDocument.load(imageDataParser.getPdfFile());
 
@@ -106,10 +140,11 @@ public class InsertRequestProcessor {
             String pdfLocation = null;
             if (null != uploadedPdfFile && uploadedPdfFile.length() > 0 )
             {
+                /*  Break the string in the last File separator  */
                 int endIndex = uploadedPdfFile.lastIndexOf(File.separator);
                 if (endIndex != -1)
                 {
-                    pdfLocation = uploadedPdfFile.substring(0, endIndex); // not forgot to put check if(endIndex != -1)
+                    pdfLocation = uploadedPdfFile.substring(0, endIndex);
                 }
             }
 
@@ -132,9 +167,6 @@ public class InsertRequestProcessor {
 
             try {
                 TableDataInserter tableDataInserter = new TableDataInserter();
-
-                /* Load the Template PDF in to pdf BOX and return the PDDoc to set pdf Properties*/
-                uploadStatusList = xFilesDAO.getRecord(tableDataParser.getId());
 
                 tableDataParser.setPdfFile(uploadStatusList.get(0).getUploadedPdfFile());
                 PDDocument doc =PDDocument.load(tableDataParser.getPdfFile());
