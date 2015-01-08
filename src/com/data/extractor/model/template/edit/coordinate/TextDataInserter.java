@@ -17,14 +17,6 @@ public class TextDataInserter {
         TextDataElement textDataElement;
         int templateInfoSize=0;
 
-        /* If any data has existed previously remove it */
-        templateInfoSize=extractedDataDAO.getRecordsSizeOfId(textDataParser.getId(), textDataParser.getDataType());
-
-        if (templateInfoSize != 0) {
-            /* If there is no record exists create a new record and insert */
-            extractedDataDAO.removeRecord(textDataParser.getId(), parentId, textDataParser.getDataType());
-        }
-
         for(int i=0;i<textDataElements.size();i++){
 
             textDataElement=textDataElements.get(i);

@@ -40,6 +40,21 @@
             if(responseObj.templateEditStatus == "true"){
                 // TO DO call the extraction for the particular data. (ExtractEditTempController)
                 // send the id and parent
+                alert("in the method");
+
+                var data ={id:responseObj.id,parent : responseObj.parent}
+
+                $.ajax({
+                    type: 'POST', url: 'ExtractEditTempController',
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+                    data: JSON.stringify(data),
+                    success: function(data, textStatus, jqXHR) {
+                        var result = JSON.parse(jqXHR.responseText);
+                        /* If the status is success refresh the Main Categories Select Options  */
+                        alert(JSON.stringify(result));
+                    }
+                });
             }
         }
 
