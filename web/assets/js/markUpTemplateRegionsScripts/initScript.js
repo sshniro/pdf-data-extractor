@@ -23,8 +23,9 @@
         initData.imageRelativePaths = newImageRelativePaths;
     }
     vm.initExtractionPages();
+    vm.getDictionaryData();
 
-//Setting up core functionality and data
+    //Setting up core functionality and data
     if (responseObj.insertDataParser === undefined) {
         effectiveController = "MarkUpTemplateRegionController";
     }
@@ -37,7 +38,6 @@
          var relevantTableElement  = self.tableElements.remove(function(item) {
          return item.elementId === data.elementId;
          })[0];*/
-        vm.getDictionaryData();
         if (responseObj.insertDataParser.textDataParser !== undefined) {
             var textElements = responseObj.insertDataParser.textDataParser.textDataElements;
             for (textElement in textElements) {
