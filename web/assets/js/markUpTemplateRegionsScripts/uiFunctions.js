@@ -1,68 +1,12 @@
-//Global Variables
-//Starting pixel coordinates of the ui component drawn upon
 
 
-
-//current imgareSelection instance
-var selectedImgAreInstance = undefined;
-
-
-//Bufers
-var currentElement = undefined;
-
-//Jquery Event handlers
-//Radio Buttons behaviour enhanced
-var imageNaturalHeight;
-var imageNaturalWidth;
 
 var effectiveController;
 
 //Initialize the page depending on the context [edit,create]
 $(window).ready(function(){
 
-    initBindings();
-    $("button#cancelSelection").attr('disabled', true);
-    $("button#saveSelection").attr('disabled', true);
-    vm = new ViewModel();
-    ko.applyBindings(vm);
 
-
-    setTimeout(resetLongPage, 400);
-/*
-    //Setting up core functionality and data
-    if(responseObj.insertDataParser === undefined){
-        effectiveController ="MarkUpTemplateRegionController";
-    }
-    else{
-        effectiveController = "EditMarkupController";
-        var textData = responseObj.insertDataParser.textDataParser;
-        var imageData = responseObj.insertDataParser.imageDataParser;
-        var tableData = responseObj.insertDataParser.tableDataParser;
-
-        for(dataParser in responseObj.insertDataParser){
-            for(dataElement in responseObj.insertDataParserp[dataParser]){
-                var currentDataElement = responseObj.insertDataParser[dataParser][dataElement]
-                if(currentDataElement.elementType === "text"){
-                    vm.addTextElement(currentDataElement.rawData);
-                    vm.addSubElement(currentDataElement.metaRawData);
-                }
-                else if(currentDataElement.elementType === "picture"){
-                    vm.addPictureElement(currentDataElement.rawData);
-                    vm.addSubElement(currentDataElement.metaRawData);
-                }
-                else if(currentDataElement.elementType === "table"){
-                    vm.addTableElement(currentDataElement.rawData);
-                    for(column in currentDataElement.columns){
-                        vm.addSubElement(column.rawData);
-                    }
-                }
-
-
-            }
-
-        }
-
-    }*/
 
 
 });
@@ -82,17 +26,7 @@ var resizeImage = function(){
     }
 }
 
-$('img#templatingImage').load(function() {
-    imageNaturalHeight = $('img#templatingImage')[0].naturalHeight;
-    imageNaturalWidth = $('img#templatingImage')[0].naturalWidth;
-    $('img').css('minWidth' ,imageNaturalWidth);
-    $('img').css('minHeight', imageNaturalHeight);
-});
 
-$('img#templatingImage').ready(function() {
-    $('img').css('minWidth' ,imageNaturalWidth);
-    $('img').css('minHeight', imageNaturalHeight);
-});
 
 
 //TODO: Delete this implementation below
@@ -304,7 +238,7 @@ var reDrawRectangle = (function(baseUiComponent, selection){
 })
 
 
-//Mouse over on element
+//Governs event hanler for disappearing elements
 function disappearDecos(elementId){
     var elementDecoExtracted =  $("div#"+elementId+".elementDecoExtracted");
     var elementDecoMeta = $("div#"+elementId+".elementDecoMeta");
@@ -631,3 +565,8 @@ var initTrees = function(){
     });
 };
 
+//Clicks two pages so that images are properly intialized
+var resetLongPage = function(){
+    $('a#PageAn2').click();
+    $('a#PageAn1').click();
+}
