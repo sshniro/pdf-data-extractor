@@ -176,7 +176,7 @@ function SubDataElement(rectangle){
     self.metaName = ko.observable();
 
     self.elementViseCurrentDic = ko.observable(ko.utils.unwrapObservable(vm.currentDic));
-    self.selectedDictionaryItem = ko.observable(new Keyword(data));
+    self.selectedDictionaryItem = ko.observable();
     if(rectangle.selectedDictionaryItem !== undefined){
         self.selectedDictionaryItem = ko.observable(rectangle.selectedDictionaryItem);
     }
