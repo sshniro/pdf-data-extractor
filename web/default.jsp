@@ -245,6 +245,10 @@
 <!-- js tree script -->
 <script type="text/javascript">
 
+    // tree view script
+    //init viewmodel
+    vm = new ViewModel();
+    ko.applyBindings(vm);
     var client = new XMLHttpRequest();
 
     var selectedNodeRow = undefined;
