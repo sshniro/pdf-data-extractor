@@ -68,6 +68,7 @@ function DataElement(rectangle, subElements){
     self.id = ko.observable(rectangle.id);
     self.name = ko.observable();
     self.elementId  = self.id();
+    self.elementClass = ko.observable('main');
 
     self.elementType = ko.observable(rectangle.elementType);
 
@@ -81,8 +82,13 @@ function DataElement(rectangle, subElements){
     self.labelExtractedData = ko.observable(rectangle.labelExtractedData);
     //Change at message broker to meta id
     self.metaName = ko.observable(rectangle.metaName);
-    self.dictionaryObject = ko.observable();
-    self.elementClass = ko.observable('main');
+
+    self.elementViseCurrentDic = ko.observable(ko.utils.unwrapObservable(vm.currentDic));
+    self.selectedDictionaryItem = ko.observable();
+    if(rectangle.selectedDictionaryItem !== undefined){
+        self.selectedDictionaryItem = ko.observable(rectangle.selectedDictionaryItem);
+    }
+
 
     self.relevantData = ko.observable(rectangle.relevantData);
     if(rectangle.relevantData === undefined ) {
@@ -90,7 +96,7 @@ function DataElement(rectangle, subElements){
     }
 
 
-    self.subElements = ko.observableArray([rectangle.subElements]);
+    self.subElements = ko.observableArray([]);
 
     if(subElements !== undefined){
         self.tempSubElements = $.map( subElements, function(subElement) { return new SubDataElement(subElement.rectangle) });
@@ -131,7 +137,7 @@ function DataElement(rectangle, subElements){
             var relevantSubElementIndex = $.map(
                 self.subElements(),
                 function(element) {return element.id();
-            }).indexOf(currentSubElement.id());
+                }).indexOf(currentSubElement.id());
 
             if(relevantSubElementIndex !== -1){
                 self.subElements.remove(function(item) {
@@ -156,7 +162,7 @@ function DataElement(rectangle, subElements){
     };
 
     self.uiData = new UiData(rectangle);
-    
+
 }
 
 
@@ -168,7 +174,12 @@ function SubDataElement(rectangle){
     self.id = ko.observable(rectangle.id);
     self.elementType = ko.observable(rectangle.elementType);
     self.metaName = ko.observable();
-    this.dictionaryObject   = ko.observable();
+
+    self.elementViseCurrentDic = ko.observable(ko.utils.unwrapObservable(vm.currentDic));
+    self.selectedDictionaryItem = ko.observable();
+    if(rectangle.selectedDictionaryItem !== undefined){
+        self.selectedDictionaryItem = ko.observable(rectangle.selectedDictionaryItem);
+    }
 
     self.startX = ko.observable(rectangle.startX);
     self.startY= ko.observable(rectangle.startY);
@@ -302,56 +313,56 @@ function SubUiData(rectangle){
 
 }
 /*
-function MappingDataElement(dataElement){
-    var self = this;
-    self.rectangle = rectangle;
-    self.id = ko.observable(dataElement.id);
-    self.name = ko.observable();
-    self.elementId  = self.id();
-    self.pageNumber = ko.observable(dataElement.pageNumber);
+ function MappingDataElement(dataElement){
+ var self = this;
+ self.rectangle = rectangle;
+ self.id = ko.observable(dataElement.id);
+ self.name = ko.observable();
+ self.elementId  = self.id();
+ self.pageNumber = ko.observable(dataElement.pageNumber);
 
-    self.elementType = ko.observable(dataElement.elementType);
+ self.elementType = ko.observable(dataElement.elementType);
 
-    self.startX = ko.observable(dataElement.startX);
-    self.startY= ko.observable(dataElement.startY);
-    self.width = ko.observable(dataElement.width);
-    self.height = ko.observable(dataElement.height);
+ self.startX = ko.observable(dataElement.startX);
+ self.startY= ko.observable(dataElement.startY);
+ self.width = ko.observable(dataElement.width);
+ self.height = ko.observable(dataElement.height);
 
 
 
-    self.extractedData = ko.observable(dataElement.extractedData);
-    self.labelExtractedData = ko.observable(dataElement.labelExtractedData);
-    //Change at message broker to meta id
-    self.metaName = ko.observable(dataElement.metaName);
-    self.elementClass = ko.observable('main');
+ self.extractedData = ko.observable(dataElement.extractedData);
+ self.labelExtractedData = ko.observable(dataElement.labelExtractedData);
+ //Change at message broker to meta id
+ self.metaName = ko.observable(dataElement.metaName);
+ self.elementClass = ko.observable('main');
 
-    self.relevantData = ko.observable(dataElement.relevantData);
-    if(dataElement.relevantData === undefined ) {
-        self.relevantData = ko.observable("Select Label Element");
-    }
+ self.relevantData = ko.observable(dataElement.relevantData);
+ if(dataElement.relevantData === undefined ) {
+ self.relevantData = ko.observable("Select Label Element");
+ }
 
-    self.tempSubElements = $.map( dataElement.subElements, function(subElement) { return new SubDataElement(subElement) });
-    self.subElements = ko.observableArray(self.tempSubElements);
+ self.tempSubElements = $.map( dataElement.subElements, function(subElement) { return new SubDataElement(subElement) });
+ self.subElements = ko.observableArray(self.tempSubElements);
 
-    if(dataElement.subElements === undefined ) {
-        self.subElements = ko.observableArray([]);
-    }
+ if(dataElement.subElements === undefined ) {
+ self.subElements = ko.observableArray([]);
+ }
 
-    self.uiData = new UiData(dataElement.uiData);
+ self.uiData = new UiData(dataElement.uiData);
 
-}
-*/
+ }
+ */
 
 
 
 /*
-function Page(data,textElements, tableElements, pictureElements, elementBuffer) {
+ function Page(data,textElements, tableElements, pictureElements, elementBuffer) {
 
-    self.pageNumber = data.pageNumber;
-    self.pictureSource = data.pictureSource;
+ self.pageNumber = data.pageNumber;
+ self.pictureSource = data.pictureSource;
 
-    self.textElements = textElements;
-    self.tableElements = tableElements;
-    self.pictureElements = pictureElements;
-    self.elementBuffer = elementBuffer;
-}*/
+ self.textElements = textElements;
+ self.tableElements = tableElements;
+ self.pictureElements = pictureElements;
+ self.elementBuffer = elementBuffer;
+ }*/

@@ -1,182 +1,100 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Mark Up Regions</title>
+<title>Mark Up Regions</title>
 
-    <!-- jQuery -->
-    <script type="text/javascript" src="assets/js/jquery.min.js"></script>
-    <!-- bootstrap -->
-    <script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
-    <link href="assets/css/bootstrap.min.css" rel="stylesheet">
-    <!-- image select -->
-    <link rel="stylesheet" type="text/css" href="assets/css/imgareaselect-default.css" />
-    <script type="text/javascript" src="assets/js/jquery.imgareaselect.pack.js"></script>
-    <!-- jQuery UI -->
-    <script type="text/javascript" src="assets/ex-libraries/jquery-ui-1.11.2/jquery-ui.js"></script>
-    <link type="text/css" rel="stylesheet" href="assets/ex-libraries/jquery-ui-1.11.2/jquery-ui.css" />
-    <link type="text/css" rel="stylesheet" href="assets/ex-libraries/jquery-ui-1.11.2/jquery-ui.structure.css" />
-    <link type="text/css" rel="stylesheet" href="assets/ex-libraries/jquery-ui-1.11.2/jquery-ui.theme.css" />
+<!-- jQuery -->
+<script type="text/javascript" src="assets/js/jquery.min.js"></script>
+<!-- bootstrap -->
+<script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
+<link href="assets/css/bootstrap.min.css" rel="stylesheet">
+<!-- image select -->
+<link rel="stylesheet" type="text/css" href="assets/css/imgareaselect-default.css" />
+<script type="text/javascript" src="assets/js/jquery.imgareaselect.pack.js"></script>
+<!-- jQuery UI -->
+<script type="text/javascript" src="assets/ex-libraries/jquery-ui-1.11.2/jquery-ui.js"></script>
+<link type="text/css" rel="stylesheet" href="assets/ex-libraries/jquery-ui-1.11.2/jquery-ui.css" />
+<link type="text/css" rel="stylesheet" href="assets/ex-libraries/jquery-ui-1.11.2/jquery-ui.structure.css" />
+<link type="text/css" rel="stylesheet" href="assets/ex-libraries/jquery-ui-1.11.2/jquery-ui.theme.css" />
 
-    <script>
-        var responseObj = null;
-        var initDataJSON;
-        var initData;
-        var dicObj;
+<script>
+    var responseObj = null;
+    var initDataJSON;
+    var initData;
+    var dicObj;
 
-        document.ready = assignSessionAttributes;
-        function assignSessionAttributes() {
-            <% String uploadResponse=(String) session.getAttribute("uploadJsonResponse");%>
-            var jsonObj = '<% out.print(uploadResponse);%>';
-            responseObj = JSON.parse(jsonObj);
+    <% String uploadResponse=(String) session.getAttribute("uploadJsonResponse");%>
+    var jsonObj = '<% out.print(uploadResponse);%>';
+    responseObj = JSON.parse(jsonObj);
 
-            if (responseObj === null) {
-                initDataJSON = '{"mainCategory":"Sales Order",' +
-                        '"subCategory":"Supplier 10","templateName":"template1","imageRelativePaths":["assets/img/pdfimage1.jpg","assets/img/pdfimage1.jpg"]}'
-                initData = JSON.parse(initDataJSON);
+/*
+        var data={ 'request' : "getAllDicItems"};
+        self.overlayNotification('loading...');
+        $("#overlay").css("display","block");
+        $.ajax({
+            type: 'POST', url: 'DictionaryController',
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            data: JSON.stringify(data),
+            success: function(data, textStatus, jqXHR) {
+                dicObj = JSON.parse(jqXHR.responseText);
+                self.currentDic([]);
+                for(item in dicObj) {
+                    self.currentDic.push(new Keyword(dicObj[item]));
+                }
+                $('#dicFormName').focus();
             }
-            else {
-                initData = responseObj;
-                var imageRelativePaths = initData.imageRelativePaths;
-                var newImageRelativePaths = [];
-                for (var key in imageRelativePaths) {
-                    var imageRelativePath = imageRelativePaths[key];
-                    imageRelativePath = atob(imageRelativePath);
-                    imageRelativePath = imageRelativePath.split("\\").join("/");
-                    newImageRelativePaths.push(imageRelativePath);
-                }
-                initData.imageRelativePaths = newImageRelativePaths;
-            }
-            vm.initExtractionPages();
-
-            //Setting up core functionality and data
-            if (responseObj.insertDataParser === undefined) {
-                effectiveController = "MarkUpTemplateRegionController";
-            }
-            else {
-                effectiveController = "EditMarkupController";
-                //Load existing data to page
-                //load text data
-                if (responseObj.insertDataParser.textDataParser !== undefined) {
-                    var textElements = responseObj.insertDataParser.textDataParser.textDataElements;
-                    for (textElement in textElements) {
-                        var currentDataElement = textElements[textElement];
-                        data = {};
-                        data.pageNumber = ko.observable(currentDataElement.pageNumber);
-                        vm.changePage(data);
-                        vm.addTextElement(currentDataElement.rawData);
-                        if (currentDataElement.metaRawData !== undefined) {
-                            vm.addSubElement(currentDataElement.metaRawData);
-
-                        }
-                    }
-                }
-
-                if (responseObj.insertDataParser.imageDataParser !== undefined) {
-                    var imageElements = responseObj.insertDataParser.imageDataParser.imageDataElements;
-                    for (imageElement in imageElements) {
-                        var currentDataElement = imageElements[imageElement]
-                        data = {};
-                        data.pageNumber = ko.observable(currentDataElement.pageNumber);
-                        vm.changePage(data);
-                        vm.addPictureElement(currentDataElement.rawData);
-                        if (currentDataElement.metaRawData !== undefined) {
-                            vm.addSubElement(currentDataElement.metaRawData);
-                        }
-
-                    }
-                }
-
-                if (responseObj.insertDataParser.tableDataParser !== undefined) {
-                    var tableElements = responseObj.insertDataParser.tableDataParser.tableDataElements;
-                    for (tableElement in tableElements) {
-                        var currentDataElement = tableElements[tableElement];
-                        data = {};
-                        data.pageNumber = ko.observable(currentDataElement.pageNumber);
-                        vm.changePage(data);
-                        vm.addTableElement(currentDataElement.rawData);
-                        for (column in currentDataElement.columns) {
-                            if (column.rawData !== undefined) { //TODO:Delete this if condition after implementing raw data
-                                vm.addSubElement(column.rawData);
-                            }
-                        }
-                    }
-                }
-
-                data = {};
-                data.pageNumber = ko.observable(1);
-                vm.changePage(data);
+        });
+*/
 
 
-            }
+</script>
 
+<style>
+    body{
+        font-family: "calibri";
+    }
+    span {
+        word-wrap:break-word;
+    }
+    .bs-callout {
+        padding: 5px;
+        margin: 12px;
+        border: 1px solid #eee;
+        border-left-width: 5px;
+        border-radius: 3px;
+        border-left-color: #5bc0de;
+        margin-top: -5px;
+        background-color: #fff;
+    }
+    .bs-callout h4 {
+        margin: 5 5 0 5px;
 
-
-            var data={ 'request' : "getAllDicItems"};
-            self.overlayNotification('loading...');
-            $("#overlay").css("display","block");
-            $.ajax({
-                type: 'POST', url: 'DictionaryController',
-                contentType: 'application/json; charset=utf-8',
-                dataType: 'json',
-                data: JSON.stringify(data),
-                success: function(data, textStatus, jqXHR) {
-                    dicObj = JSON.parse(jqXHR.responseText);
-                    self.currentDic([]);
-                    for(item in dicObj) {
-                        self.currentDic.push(new Keyword(dicObj[item]));
-                    }
-                    $('#dicFormName').focus();
-                }
-            });
-
-        }
-    </script>
-
-    <style>
-        body{
-            font-family: "calibri";
-        }
-        span {
-            word-wrap:break-word;
-        }
-        .bs-callout {
-            padding: 5px;
-            margin: 12px;
-            border: 1px solid #eee;
-            border-left-width: 5px;
-            border-radius: 3px;
-            border-left-color: #5bc0de;
-            margin-top: -5px;
-            background-color: #fff;
-        }
-        .bs-callout h4 {
-            margin: 5 5 0 5px;
-
-            color: #5bc0de;
-        }
-        .bs-callout p{
-            margin: 5 5 5px;
-        }
-        .bs-callout p:last-child {
-            margin-bottom: 0;
-        }
-        .bs-docs-section{
-            position:absolute;
-            background-color:#fff ;
-            border:1px solid #eee;
-            padding-top:20px;
-            border-radius: 10px;
-        }
-        img{
-            margin: 70 6 5 5;
-            border: 1px solid #eee;
-            max-width: 100%;
-        }
-        ul.knockoutIterable
-        {
-            list-style-type: none;
-        }
-    </style>
+        color: #5bc0de;
+    }
+    .bs-callout p{
+        margin: 5 5 5px;
+    }
+    .bs-callout p:last-child {
+        margin-bottom: 0;
+    }
+    .bs-docs-section{
+        position:absolute;
+        background-color:#fff ;
+        border:1px solid #eee;
+        padding-top:20px;
+        border-radius: 10px;
+    }
+    img{
+        margin: 70 6 5 5;
+        border: 1px solid #eee;
+        max-width: 100%;
+    }
+    ul.knockoutIterable
+    {
+        list-style-type: none;
+    }
+</style>
 
 </head>
 <body>
@@ -229,13 +147,13 @@
             <ul class="nav navbar-nav" style="margin: 0 0 0 10px">
                 <li>
                     <table><tbody>
-                        <tr><td>
-                            <div id="elementTypeSelector" class="btn-group">
-                                <button id ="textSelect"  data-bind="click:textButton"  type="button" class="btn btn-default"><span class="glyphicon glyphicon-text-width"></span>ext</button>
-                                <button id ="tableSelect"  data-bind="click:tableButton"  type="button" class="btn btn-default"><span class="glyphicon glyphicon-list-alt"></span>&nbsp;Table</button>
-                                <button id ="pictureSelect" data-bind="click:pictureButton" type="button" class="btn btn-default"><span class="glyphicon glyphicon-picture"></span>&nbsp;Picture</button>
-                            </div>
-                        </td></tr>
+                    <tr><td>
+                        <div id="elementTypeSelector" class="btn-group">
+                            <button id ="textSelect"  data-bind="click:textButton"  type="button" class="btn btn-default"><span class="glyphicon glyphicon-text-width"></span>ext</button>
+                            <button id ="tableSelect"  data-bind="click:tableButton"  type="button" class="btn btn-default"><span class="glyphicon glyphicon-list-alt"></span>&nbsp;Table</button>
+                            <button id ="pictureSelect" data-bind="click:pictureButton" type="button" class="btn btn-default"><span class="glyphicon glyphicon-picture"></span>&nbsp;Picture</button>
+                        </div>
+                    </td></tr>
 
                     </tbody></table>
                 </li>
@@ -244,13 +162,13 @@
             <ul class="nav navbar-nav navbar-right">
                 <li>
                     <table><tbody>
-                        <tr><td>
-                            <div class="btn-group">
-                                <button id ="enableEditableDivs" data-bind="click:editButton" type="button" class="btn btn-default"><span class="glyphicon glyphicon-move"></span>&nbsp;Edit</button>
-                                <button id ="cancelSelection" data-bind="click:cancelButton" type="button" class="btn btn-danger"><span class="glyphicon glyphicon-floppy-remove"></span>&nbsp;Cancel</button>
-                                <button id ="saveSelection" data-bind="click:saveButton" type="button" class="btn btn-warning"><span class="glyphicon glyphicon-floppy-disk"></span>&nbsp;Save</button>
-                            </div>
-                        </td></tr>
+                    <tr><td>
+                        <div class="btn-group">
+                            <button id ="enableEditableDivs" data-bind="click:editButton" type="button" class="btn btn-default"><span class="glyphicon glyphicon-move"></span>&nbsp;Edit</button>
+                            <button id ="cancelSelection" data-bind="click:cancelButton" type="button" class="btn btn-danger"><span class="glyphicon glyphicon-floppy-remove"></span>&nbsp;Cancel</button>
+                            <button id ="saveSelection" data-bind="click:saveButton" type="button" class="btn btn-warning"><span class="glyphicon glyphicon-floppy-disk"></span>&nbsp;Save</button>
+                        </div>
+                    </td></tr>
 
                     </tbody></table>
                 </li>
@@ -305,12 +223,13 @@
 <script type="text/html" id="rectangleTemplate">
 
     <div data-bind="id:id, style:{left:uiData.metaStartX, top:uiData.metaStartY}" style="position:absolute;min-width:110px; padding:7px; z-index:1" >
-        <!-- Meta/Dig elements-->
+        <!-- Meta/Dic elements-->
+
         <div class="bs-docs-section elementDecoMeta" data-bind="id:id" style="position: relative; padding: 7px; float:left">
             <legend style="margin-bottom: 10px; font-size: 15px">Meta</legend>
             <div style="display:flex">
                 <input type="text" class="form-control" data-bind="value:metaName" style="margin:1px"/>
-                <select data-bind="options:$parent.currentDic, optionsText:'name', value:dictionaryObject, optionsCaption:'choose...'" id="dictionaryMapping" class="form-control" style="margin:1px"></select>
+                <select data-bind="options:elementViseCurrentDic, optionsText:'name', value:selectedDictionaryItem" id="dictionaryMapping" class="form-control" style="margin:1px"></select>
             </div>
         </div>
 
@@ -319,14 +238,14 @@
             <legend style="margin-bottom: 10px; font-size: 15px">Sub-Meta <span data-bind="text:currentSubElement().index">1</span></legend>
             <div style="display:flex">
                 <input type="text" class="form-control" data-bind="value:currentSubElement().metaName" style="margin:1px"/>
-                <select data-bind="options:$root.currentDic, optionsText:'name', value: currentSubElement().dictionaryObject, optionsCaption:'choose...'" id="dictionaryMapping" class="form-control" style="margin:1px"></select>
+                <select data-bind="options:currentSubElement().elementViseCurrentDic, optionsText:'name', value: currentSubElement().selectedDictionaryItem" id="dictionaryMapping" class="form-control" style="margin:1px"></select>
             </div>
         </div>
 
     </div>
 
     <!--Main Rectangle element and inner subelement-->
-    <div class="mainElement baseUI editableDiv" style="position:absolute; border-style:solid; border-color:#2980b9; border-width: 3px;" data-bind="style:uiData.elementMap(), id:id, click:$root.selectRectangle">
+    <div class="mainElement baseUI editableDiv" style="position:absolute; border-style:solid; border-color:#2980b9; border-width: 3px;" data-bind="id:id, style:uiData.elementMap(),  click:$root.selectRectangle">
         <ul class="knockoutIterable" style="padding: 0" data-bind="foreach:$data.subElements()">
             <li data-bind="id:id">
                 <div class="subElement baseUI" style="position: absolute; border-style:solid; border-color:#2980b9; border-width: 3px;" data-bind="click:$parent.showNewSubElement,id:id, style:{width:uiData.width,height:uiData.height,left:uiData.startX, top:uiData.startY}">
@@ -350,9 +269,9 @@
 
     </div>
 
-<%--    <button  style="position:absolute; margin-top:-11; height:24; width:25; border-radius: 50px; z-index:1" data-bind="id:id, click:$parent.removeElement, style:{left: uiData.removeX, top:uiData.removeY}" type="button" class="btn btn-default btn-xs removeElement">
-        <span class="glyphicon glyphicon-remove-circle"></span>
-    </button>--%>
+    <%--    <button  style="position:absolute; margin-top:-11; height:24; width:25; border-radius: 50px; z-index:1" data-bind="id:id, click:$parent.removeElement, style:{left: uiData.removeX, top:uiData.removeY}" type="button" class="btn btn-default btn-xs removeElement">
+            <span class="glyphicon glyphicon-remove-circle"></span>
+        </button>--%>
 
     <div class="bs-docs-section elementDecoExtracted" style="position: absolute; min-width: 175;z-index:2" data-bind="style:{top:uiData.extractedY, left:uiData.extractedX, maxWidth:width}, id:id" >
 
@@ -384,12 +303,12 @@
 
 
 <script type="text/html" id="subRectangleTemplate">
-<%--
-    <div class="subElement" style=" position:absolute; border-style:solid; border-color:#2980b9; border-width: 3px;" data-bind="style:uiData.elementMap(), id:id"></div>
-    <button  style="position: absolute; visibility:visible; margin-top:-11; height:24; width:25; border-radius: 50px" data-bind="id:id, click:$parent.removeElement, style:{left: uiData.removeX, top:uiData.removeY}" type="button" class="btn btn-default btn-xs removeSubElement">
-        <span class="glyphicon glyphicon-remove-circle"></span>
-    </button>
-    --%>
+    <%--
+        <div class="subElement" style=" position:absolute; border-style:solid; border-color:#2980b9; border-width: 3px;" data-bind="style:uiData.elementMap(), id:id"></div>
+        <button  style="position: absolute; visibility:visible; margin-top:-11; height:24; width:25; border-radius: 50px" data-bind="id:id, click:$parent.removeElement, style:{left: uiData.removeX, top:uiData.removeY}" type="button" class="btn btn-default btn-xs removeSubElement">
+            <span class="glyphicon glyphicon-remove-circle"></span>
+        </button>
+        --%>
 </script>
 
 
@@ -401,6 +320,7 @@
 <script type="text/javascript" src="assets/js/markUpTemplateRegionsScripts/models.js"> </script>
 <script type="text/javascript" src="assets/js/markUpTemplateRegionsScripts/viewModel.js"> </script>
 <script type="text/javascript" src="assets/js/markUpTemplateRegionsScripts/uiFunctions.js"> </script>
+<script type="text/javascript" src="assets/js/markUpTemplateRegionsScripts/initScript.js"> </script>
 
 <!-- UI behaviors -->
 <script type="text/javascript">

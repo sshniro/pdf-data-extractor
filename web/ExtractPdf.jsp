@@ -58,6 +58,7 @@
             }
         }
 
+
     </script>
 
     <style>
@@ -195,6 +196,10 @@
 
 <script>
     // tree view script
+    //init viewmodel
+    vm = new ViewModel();
+    ko.applyBindings(vm);
+
     var selectedNodeRow = undefined;
     var selectedNodeChildRow = undefined;
     var selectedNodeParentRow = undefined;
