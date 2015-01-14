@@ -209,13 +209,13 @@
                     </div>
                     <br />
                     <!-- template preview -->
-                    <%-- <div class="row" data-bind="visible:isSelectedTemplate()">
+                    <div class="row" data-bind="visible:isSelectedTemplate()">
                         <h4>Preview</h4>
                         <!-- preview of template -->
                         <div style="width: 100%">
                             <iframe id="pdfRenderer" style="width: 100%"></iframe>
                         </div>
-                    </div> --%>
+: absolute; top: 0; left: 0; width: 100%; height: 100%; background-col                    </div>
                 </div>
             </div>
         </div>
@@ -229,7 +229,7 @@
         <img src="assets/img/win-loader.gif" alt="loading" />&nbsp;&nbsp;&nbsp;
         <label><span data-bind="text:overlayNotification">Notification...</span></label>
     </div>
-    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: #eee; opacity: 0.7; z-index: 100"></div>
+    <div style="positionor: #eee; opacity: 0.7; z-index: 100"></div>
 </div>
 
 
@@ -245,6 +245,10 @@
 <!-- js tree script -->
 <script type="text/javascript">
 
+    // tree view script
+    //init viewmodel
+    vm = new ViewModel();
+    ko.applyBindings(vm);
     var client = new XMLHttpRequest();
 
     var selectedNodeRow = undefined;

@@ -1,68 +1,12 @@
-//Global Variables
-//Starting pixel coordinates of the ui component drawn upon
 
 
-
-//current imgareSelection instance
-var selectedImgAreInstance = undefined;
-
-
-//Bufers
-var currentElement = undefined;
-
-//Jquery Event handlers
-//Radio Buttons behaviour enhanced
-var imageNaturalHeight;
-var imageNaturalWidth;
 
 var effectiveController;
 
 //Initialize the page depending on the context [edit,create]
 $(window).ready(function(){
 
-    initBindings();
-    $("button#cancelSelection").attr('disabled', true);
-    $("button#saveSelection").attr('disabled', true);
-    vm = new ViewModel();
-    ko.applyBindings(vm);
 
-
-    setTimeout(resetLongPage, 400);
-/*
-    //Setting up core functionality and data
-    if(responseObj.insertDataParser === undefined){
-        effectiveController ="MarkUpTemplateRegionController";
-    }
-    else{
-        effectiveController = "EditMarkupController";
-        var textData = responseObj.insertDataParser.textDataParser;
-        var imageData = responseObj.insertDataParser.imageDataParser;
-        var tableData = responseObj.insertDataParser.tableDataParser;
-
-        for(dataParser in responseObj.insertDataParser){
-            for(dataElement in responseObj.insertDataParserp[dataParser]){
-                var currentDataElement = responseObj.insertDataParser[dataParser][dataElement]
-                if(currentDataElement.elementType === "text"){
-                    vm.addTextElement(currentDataElement.rawData);
-                    vm.addSubElement(currentDataElement.metaRawData);
-                }
-                else if(currentDataElement.elementType === "picture"){
-                    vm.addPictureElement(currentDataElement.rawData);
-                    vm.addSubElement(currentDataElement.metaRawData);
-                }
-                else if(currentDataElement.elementType === "table"){
-                    vm.addTableElement(currentDataElement.rawData);
-                    for(column in currentDataElement.columns){
-                        vm.addSubElement(column.rawData);
-                    }
-                }
-
-
-            }
-
-        }
-
-    }*/
 
 
 });
@@ -82,17 +26,7 @@ var resizeImage = function(){
     }
 }
 
-$('img#templatingImage').load(function() {
-    imageNaturalHeight = $('img#templatingImage')[0].naturalHeight;
-    imageNaturalWidth = $('img#templatingImage')[0].naturalWidth;
-    $('img').css('minWidth' ,imageNaturalWidth);
-    $('img').css('minHeight', imageNaturalHeight);
-});
 
-$('img#templatingImage').ready(function() {
-    $('img').css('minWidth' ,imageNaturalWidth);
-    $('img').css('minHeight', imageNaturalHeight);
-});
 
 
 //TODO: Delete this implementation below
@@ -195,6 +129,12 @@ var drawingRouter = (function (baseUiComponent, selection){
 
 //// for div draggability and resizability
 var reDrawingRouter = (function (baseUiComponent, selection){
+
+    if (selection.width<10 || selection.height<10){
+        return;
+    }
+
+
     currentWorkingImg = baseUiComponent;
 
     $("*").css('cursor','default');
@@ -298,39 +238,66 @@ var reDrawRectangle = (function(baseUiComponent, selection){
 })
 
 
-//Mouse over on element
+//Governs event hanler for disappearing elements
 function disappearDecos(elementId){
     var elementDecoExtracted =  $("div#"+elementId+".elementDecoExtracted");
     var elementDecoMeta = $("div#"+elementId+".elementDecoMeta");
     var relevantElement = $("div#"+elementId+".mainElement");
-    elementDecoMeta.hide();
-    elementDecoExtracted.hide();
-    relevantElement
-        .click(function() {
-            elementDecoExtracted.toggle();
-            elementDecoMeta.toggle();
+    var subElementDecoMeta = $("div#"+elementId+".subElementDecoMeta");
+    var subElement = $("div#"+elementId+".subElement");
 
-        })
-        .mouseout(function() {
-            elementDecoExtracted.hide();
-            elementDecoMeta.hide();
-        });
+    elementDecoMeta.hide();
+    subElementDecoMeta.hide();
+    elementDecoExtracted.hide();
+    if(vm.currentSelection() === 'table') {
+        relevantElement
+            .click(function () {
+                elementDecoExtracted.toggle();
+                elementDecoMeta.toggle();
+                subElementDecoMeta.toggle();
+            })
+            .mouseout(function () {
+                elementDecoExtracted.hide();
+                elementDecoMeta.hide();
+                subElementDecoMeta.hide();
+                $("div.subElement").css('background-color','rgba(0, 0, 0,0)');
+            });
+    }
+    else{
+        relevantElement
+            .click(function () {
+                elementDecoExtracted.toggle();
+                elementDecoMeta.toggle();
+
+
+            })
+            .mouseout(function () {
+                elementDecoExtracted.hide();
+                elementDecoMeta.hide();
+            });
+    }
 }
 
 
 function disappearSubDecos(previousElementId){
-
-    var elementDecoMeta = $("div#"+previousElementId+".subElementDecoMeta");
+    var elementDecoMeta = $("div#"+previousElementId+".elementDecoMeta");
+    var subElementDecoMeta = $("div#"+previousElementId+".subElementDecoMeta");
     var relevantElement = $("div#"+previousElementId+".subElement");
-    //elementDecoMeta.hide();
-    relevantElement
-        .click(function() {
-            elementDecoMeta.toggle();
 
-        })
-        .mouseout(function() {
-            elementDecoMeta.hide();
-        });
+    if(vm.currentSelection() === 'table'){
+        relevantElement
+            .click(function() {
+                elementDecoMeta.toggle();
+                subElementDecoMeta.toggle();
+
+            })
+            .mouseout(function() {
+                elementDecoMeta.hide();
+                subElementDecoMeta.hide();
+            });
+    }
+
+
 
 
 }
@@ -363,6 +330,7 @@ function resetEnvironment(){
     $("button#pictureSelect").removeClass("active");
 
     $("#runningInstructions").text('Select Element Type');
+    $("div.subElement").css('background-color','rgba(0, 0, 0,0)');
 
 
     $("button#cancelSelection").attr('disabled', true);
@@ -372,6 +340,7 @@ function resetEnvironment(){
     $("button#persist").attr('disabled', false);
     $("button.removeElement").css('visibility','visible');
     $("button.removeSubElement").css('visibility','hidden');
+    $("button.selectSubElement").css('visibility','hidden');
 
 
 
@@ -596,3 +565,8 @@ var initTrees = function(){
     });
 };
 
+//Clicks two pages so that images are properly intialized
+var resetLongPage = function(){
+    $('a#PageAn2').click();
+    $('a#PageAn1').click();
+}

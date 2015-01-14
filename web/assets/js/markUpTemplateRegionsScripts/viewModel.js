@@ -1,17 +1,17 @@
 
 /*
-function Page(data) {
-    this.pageNumber         = ko.observable(data.pageNumber);
-    this.imagePath          = ko.observable(data.imagePath);
-    this.pageId             = ko.observable('Page'+this.pageNumber().toString());
-    this.pageIdLi            = ko.observable('PageLi'+this.pageNumber().toString());
-    this.pageIdAn           = ko.observable('PageAn'+this.pageNumber().toString());
-    this.pageNumberHref     = ko.observable('#Page' + this.pageNumber().toString());
-    this.pageNumberName     = ko.observable('Page '+this.pageNumber().toString());
-    this.activeStatus       = ko.observable(data.activeStatus);
-}*/
+ function Page(data) {
+ this.pageNumber         = ko.observable(data.pageNumber);
+ this.imagePath          = ko.observable(data.imagePath);
+ this.pageId             = ko.observable('Page'+this.pageNumber().toString());
+ this.pageIdLi            = ko.observable('PageLi'+this.pageNumber().toString());
+ this.pageIdAn           = ko.observable('PageAn'+this.pageNumber().toString());
+ this.pageNumberHref     = ko.observable('#Page' + this.pageNumber().toString());
+ this.pageNumberName     = ko.observable('Page '+this.pageNumber().toString());
+ this.activeStatus       = ko.observable(data.activeStatus);
+ }*/
 function ViewModel(){
-    
+
     var self = this;
 
     self.pagesData      = ko.observableArray([]);
@@ -44,16 +44,16 @@ function ViewModel(){
             contentType: 'application/json; charset=utf-8',
             dataType: 'json',
             data: JSON.stringify(data),
+            async:false,
             success: function(data, textStatus, jqXHR) {
-                dicObj = JSON.parse(jqXHR.responseText);
-                self.currentDic([]);
+                var dicObj = JSON.parse(jqXHR.responseText);
                 for(item in dicObj) {
                     self.currentDic.push(new Keyword(dicObj[item]));
                 }
             }
         });
     }
-    var dicObj;
+
 
 
 
@@ -96,16 +96,6 @@ function ViewModel(){
         resetEnvironment();
         vm.saveSelection();
     }
-
-
-
-
-
-
-
-
-
-
 
 
     //Holds temporary sub elementsx
@@ -173,9 +163,9 @@ function ViewModel(){
         var elementPos = self.pagesDataCache.map(function(pageCache) {return pageCache.pageNumber; }).indexOf(newPageNumber);
         var newPageTemp = self.pagesDataCache[elementPos];
         var newPage = {};
-        newPage.textElements = $.map( newPageTemp.textElements, function(element) { return new DataElement(element.rectangle) });
-        newPage.tableElements = $.map( newPageTemp.tableElements, function(element) { return new DataElement(element.rectangle) });
-        newPage.pictureElements = $.map( newPageTemp.pictureElements, function(element) { return new DataElement(element.rectangle) });
+        newPage.textElements = $.map( newPageTemp.textElements, function(element) { return new DataElement(element.rectangle,element.subElements) });
+        newPage.tableElements = $.map( newPageTemp.tableElements, function(element) { return new DataElement(element.rectangle,element.subElements) });
+        newPage.pictureElements = $.map( newPageTemp.pictureElements, function(element) { return new DataElement(element.rectangle,element.subElements) });
 
         self.selectionInProgress(newPageTemp.selectionInProgress);
         self.subElementSelectionInProgress(newPageTemp.subElementSelectionInProgress);
@@ -192,8 +182,10 @@ function ViewModel(){
             if(newPage.pictureElements[key] !== undefined ){   self.pictureElements.push(newPage.pictureElements[key]) };
         }
 
+        resetEnvironment();
         for(var key in  self.dataElements()()){
             disappearDecos(self.dataElements()()[key].elementId);
+            disappearSubDecos(self.dataElements()()[key].elementId)
         }
 
 
@@ -275,7 +267,7 @@ function ViewModel(){
             self.textElements.push(relevantTextElement);
         }
         else if (data.elementType === 'table') {
-            var relevantTableElement  = self.tableElements.remove(function(item) { 
+            var relevantTableElement  = self.tableElements.remove(function(item) {
                 return item.elementId === data.elementId;
             })[0];
             relevantTableElement.relevantData(subElement.relevantData());
@@ -290,9 +282,11 @@ function ViewModel(){
             relevantTableElement.currentSubElement(relevantTableElement.subElements()[indexInSubElements]);
 
             self.tableElements.push(relevantTableElement);
+            var subElement = $("div#"+subElement.id()+".subElement");
+            subElement.css('background-color','rgba(46, 204, 113,0.3)');
         }
         else if (data.elementType === 'picture') {
-            var relevantPictureElement  = self.pictureElements.remove(function(item) { 
+            var relevantPictureElement  = self.pictureElements.remove(function(item) {
                 return item.elementId === data.elementId;
             })[0];
             relevantPictureElement.relevantData(subElement.relevantData());
@@ -300,8 +294,8 @@ function ViewModel(){
             self.pictureElements.push(relevantPictureElement);
         }
         self.tempSubs.push(subElement);
-            ////////////////
-            ////////////////
+        ////////////////
+        ////////////////
     }
 
     //Can remove elements on demand
@@ -333,7 +327,7 @@ function ViewModel(){
 
             if (removedElement.elementType() === 'text') {
                 //Remove element
-                var relevantTextElement  = self.textElements.remove(function(item) { 
+                var relevantTextElement  = self.textElements.remove(function(item) {
                     return item.elementId === removedElement.elementId();
                 })[0];
 
@@ -343,7 +337,7 @@ function ViewModel(){
                 vm.subElementSelectionInProgress(true);
             }
             else if (removedElement.elementType()=== 'table') {
-                var relevantTableElement  = self.tableElements.remove(function(item) { 
+                var relevantTableElement  = self.tableElements.remove(function(item) {
                     return item.elementId === removedElement.elementId();
                 })[0];
 
@@ -351,7 +345,7 @@ function ViewModel(){
                 self.tableElements.push(relevantTableElement);
             }
             else if (removedElement.elementType() === 'picture') {
-                var relevantPictureElement  = self.pictureElements.remove(function(item) { 
+                var relevantPictureElement  = self.pictureElements.remove(function(item) {
                     return item.elementId === removedElement.elementId();
                 })[0];
 
@@ -364,7 +358,7 @@ function ViewModel(){
             selectionInitializer('div#'+removedElement.elementId()+'.mainElement',drawingRouter);
         }
 
-        
+
     }
 
     //Can remove elements on demand with the use of the relevant dom element
@@ -509,12 +503,12 @@ function ViewModel(){
         // validation
         var msg = 'Cannot create a sub category in selected node!\nPlease try another node which is not a template or node contain a template.';
         if (selectedNodeRow != undefined){ // if not the root
-             if (selectedNodeRow.original.pdfFile != undefined) { alert(msg); return false; } // if is a template return
-             else { // if not a template
+            if (selectedNodeRow.original.pdfFile != undefined) { alert(msg); return false; } // if is a template return
+            else { // if not a template
                 if (selectedNodeChildRow != false){ // if has children
                     if (selectedNodeChildRow.original.pdfFile != undefined){ alert(msg); return false; } // if children is a template
                 }
-             }
+            }
         }
 
         var data={ 'request' : "createNode",
@@ -650,9 +644,9 @@ function ViewModel(){
 
     self.editTemplate =  function(){
         var editData = {
-          "parent"          : self.currentSelectedTreeNode().id(),
-          "text"            : self.selectedDocumentId(),
-          "id"              : self.extractedPdfId()
+            "parent"          : self.currentSelectedTreeNode().id(),
+            "text"            : self.selectedDocumentId(),
+            "id"              : self.extractedPdfId()
         };
         $.post("EditTemplateController",JSON.stringify(editData))
             .done(function(){
@@ -671,51 +665,11 @@ function ViewModel(){
     };
 
 
-    ///////////////////////////////////////
-    // meta select items from dictionary //
-    ///////////////////////////////////////
-
-    // keyword model
-    function Keyword(data){
-        this.id = ko.observable(data.id);
-        this.name = ko.observable(data.name);
-        this.type = ko.observable(data.type);
-        this.description = ko.observable(data.description);
-        this.dataType = ko.observable(data.dataType);
-        this.length = ko.observable(data.length);
-        this.defaultValues = ko.observable(data.defaultValues);
-        this.allowedValues = ko.observable(data.allowedValues);
-    }
-
     self.currentDic = ko.observableArray([]);
 
+    self.dictionaryObject= ko.observableArray()
 
-    $(document).ready(
-        function(){
-            var data={ 'request' : "getAllDicItems"};
-            vm.overlayNotification('loading...');
-            $("#overlay").css("display","block");
-            $.ajax({
-                type: 'POST', url: 'DictionaryController',
-                contentType: 'application/json; charset=utf-8',
-                dataType: 'json',
-                data: JSON.stringify(data),
-                success: function(data, textStatus, jqXHR) {
-                    var dicObj = JSON.parse(jqXHR.responseText);
-                    vm.currentDic([]);
-                    for(item in dicObj) {
-                        vm.currentDic.push(new Keyword(dicObj[item]));
-                    }
-                    $("#overlay").css("display","none");
-                }
-            });
-        }
-    );
 }
 
 var vm = new ViewModel();
 
-var resetLongPage = function(){
-    $('a#PageAn2').click();
-    $('a#PageAn1').click();
-}
