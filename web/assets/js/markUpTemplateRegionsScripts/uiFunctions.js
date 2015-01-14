@@ -128,7 +128,7 @@ var drawingRouter = (function (baseUiComponent, selection){
 
 
 //// for div draggability and resizability
-var reDrawingRouter = (function (baseUiComponent, selection){
+var reDrawingRouter = (function (baseUiComponent, selection,removedElement){
 
     if (selection.width<10 || selection.height<10){
         return;
@@ -148,6 +148,9 @@ var reDrawingRouter = (function (baseUiComponent, selection){
         var response = getMainExtraction(rectangle,vm.currentSelection());
         rectangle.extractedData = response.extractedData;
         rectangle.elementId = rectangle.id;
+        rectangle.metaName = removedElement.metaName();
+        rectangle.selectedDictionaryItem = removedElement.selectedDictionaryItem();
+
         //Releases the imageAreaSelect binding on the image
         // because the rest of the selection will be done inside the current selection element
         // until save or cancel is pressed
@@ -448,8 +451,8 @@ function draggableActivator(){
                         y2:imgBounds.bottom - bounds.bottom
                     };
 
-                    vm.removeElementUsingDomElement(dragableDiv);
-                    reDrawingRouter(currentWorkingImgX,selection,$(this)[0]);
+                    var removedElement = vm.removeElementUsingDomElement(dragableDiv);
+                    reDrawingRouter(currentWorkingImgX,selection,removedElement);
                     $(this).next('button').click();
                 }
             });
