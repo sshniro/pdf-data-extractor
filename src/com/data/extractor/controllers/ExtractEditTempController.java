@@ -37,6 +37,7 @@ public class ExtractEditTempController extends HttpServlet {
         Gson gson=new Gson();
 
         ExtractStatus extractStatus= gson.fromJson(sb.toString(),ExtractStatus.class);
+        extractStatus.setStatus(true);
         InsertDataParser insertDataParser = new InsertDataParser();
 
         /* Get the mongo client from the servletContext */
