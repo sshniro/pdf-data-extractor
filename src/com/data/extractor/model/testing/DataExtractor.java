@@ -63,7 +63,7 @@ public class DataExtractor {
                 else
                     tableName = table.getMetaName();
 
-                sb.append("Table " ).append(i+1).append(" -name (").append(tableName).append(")").append("\n");
+                sb.append("Table " ).append(i+1).append(" -(").append(tableName).append(")").append("\n");
                 List<Column> columnList=table.getColumns();
 
                 for (int j=0 ; j < columnList.size() ; j++){
@@ -76,7 +76,7 @@ public class DataExtractor {
                     else
                         columnName = column.getMetaName();
 
-                    sb.append("Column ").append(j+1).append(" - ").append(columnName).append(") : ");
+                    sb.append("Column ").append(j+1).append(" -(").append(columnName).append(") : ");
                     List<Cell> cellList = column.getCellList();
 
                     for(int c=0 ; c < cellList.size() ; c++ ){
