@@ -10,6 +10,7 @@ import com.data.extractor.model.beans.template.info.table.TableDataParser;
 import com.data.extractor.model.beans.template.info.text.TextDataElement;
 import com.data.extractor.model.beans.template.info.text.TextDataParser;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DataExtractor {
@@ -93,6 +94,44 @@ public class DataExtractor {
             sb.deleteCharAt(0);
             return replaceNextLineChar(sb.toString());
         }
+    }
+
+
+    public static List<List<String>> findSimilarities(TableDataParser tableDataParser){
+        List<TableDataElement> tableDataElements= tableDataParser.getTableDataElements();
+        List<String> metaNamesList = new ArrayList<String>();
+
+        List<String> matchedNames = new ArrayList<String>();
+
+
+        for (TableDataElement ta : tableDataElements){
+            metaNamesList.add(new String(ta.getMetaName()));
+        }
+
+        for (String metaName : metaNamesList){
+            if (metaNamesList.contains(metaName)){
+                if(!matchedNames.contains(metaName)){
+                    matchedNames.add(metaName);
+                }
+            }
+        }
+
+        List<List<String>> complex = new ArrayList<List<String>>();
+        List<String> lessComplex;
+        for (String name : matchedNames){
+            lessComplex=new ArrayList<String>();
+            for(TableDataElement ta : tableDataElements){
+                if(ta.getMetaName().equals(name)){
+                    lessComplex.add(ta.getMetaId());
+                }
+            }
+
+            if(lessComplex.size() != 0){
+                complex.add(lessComplex);
+            }
+        }
+
+        return complex;
     }
 
 }

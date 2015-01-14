@@ -10,7 +10,6 @@ import com.data.extractor.model.beans.template.info.table.TableDataParser;
 import com.data.extractor.model.data.access.layer.TemplatesDAO;
 import com.data.extractor.model.extract.pdf.table.DataProcessor;
 import com.data.extractor.model.template.markup.calculate.coordinates.TableDataCoordinates;
-import com.data.extractor.model.template.markup.pdf.retreiver.TablePDDocument;
 import com.google.gson.Gson;
 import com.mongodb.MongoClient;
 import org.apache.pdfbox.exceptions.CryptographyException;
@@ -56,15 +55,16 @@ public class TableDataExtractor {
             Boolean firstColumn=true;
             StringBuilder sb=new StringBuilder();
             String eol = System.getProperty("line.separator");
+            int columnNumber;
             for(TableDataElement ta:tableDataElements){
                 List<Column> columns=ta.getColumns();
-
+                columnNumber = 1;
                 for(Column coll:columns){
 
                     List<Cell> cells=coll.getCellList();
                     if(!firstColumn)
-                    sb.append(eol+coll.getMetaId()+ " : ");
-                    else sb.append(coll.getMetaId()+ " : ");
+                    sb.append(eol+ "Column " + columnNumber + " : ");
+                    else sb.append("Column " + columnNumber+ " : ");
 
                     if(firstColumn){
                         firstColumn=false;
@@ -74,6 +74,8 @@ public class TableDataExtractor {
                         sb.append(ce.getValue() + " , ");
 
                     }
+
+                    columnNumber++;
                 }
             }
             markUpResponse.setDataType(tableDataParser.getDataType());

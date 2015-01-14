@@ -643,6 +643,8 @@ function ViewModel(){
     };
 
     self.editTemplate =  function(){
+        self.overlayNotification('Loading...');
+        $('#overlay').css('display','block');
         var editData = {
             "parent"          : self.currentSelectedTreeNode().id(),
             "text"            : self.selectedDocumentId(),
@@ -650,6 +652,7 @@ function ViewModel(){
         };
         $.post("EditTemplateController",JSON.stringify(editData))
             .done(function(){
+                $('#overlay').css('display','none');
                 window.location = '/MarkUpTemplateRegions.jsp'
             });
         //$('button#editTemplate').css('display','none');

@@ -22,6 +22,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+/*
+This controller sets the Insert Data Parser to the session for editing Markup
+ */
+
 public class EditTemplateController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
