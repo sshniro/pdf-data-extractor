@@ -40,7 +40,7 @@
             if(responseObj.templateEditStatus == "true"){
                 // TO DO call the extraction for the particular data. (ExtractEditTempController)
                 // send the id and parent
-                alert("in the method");
+                //alert("in the method");
 
                 var data ={id:responseObj.id,parent : responseObj.parent}
 
