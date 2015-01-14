@@ -25,6 +25,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+    This controller is used to get the data of the edited document [Template]
+ */
 public class ExtractEditTempController extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -37,6 +40,7 @@ public class ExtractEditTempController extends HttpServlet {
         Gson gson=new Gson();
 
         ExtractStatus extractStatus= gson.fromJson(sb.toString(),ExtractStatus.class);
+        extractStatus.setStatus(true);
         InsertDataParser insertDataParser = new InsertDataParser();
 
         /* Get the mongo client from the servletContext */

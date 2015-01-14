@@ -301,7 +301,6 @@
 </script>
 
 
-
 <script type="text/html" id="subRectangleTemplate">
     <%--
         <div class="subElement" style=" position:absolute; border-style:solid; border-color:#2980b9; border-width: 3px;" data-bind="style:uiData.elementMap(), id:id"></div>
@@ -310,6 +309,17 @@
         </button>
         --%>
 </script>
+
+
+<!-- overlay div -->
+<div id="overlay" style="position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; display: none;">
+    <div style="position: relative; margin: 40vh auto; max-width: 600px; height: 75px; text-align: center; background-color: #fff; border-radius: 10px; padding: 25px; box-shadow: 0 0 10px #303030; z-index: 110">
+        <img src="assets/img/win-loader.gif" alt="loading" />&nbsp;&nbsp;&nbsp;
+        <label><span>Loading...</span></label>
+    </div>
+    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: #eee; opacity: 0.7; z-index: 100"></div>
+</div>
+
 
 
 
