@@ -41,6 +41,9 @@
 
                 var data ={id:responseObj.id,parent : responseObj.parent}
                 var result = null;
+                var extractedData = null;
+                var parent = null; // The extracted Template's ID
+                var id = null; // The extracted current document's ID
                 $.ajax({
                     type: 'POST', url: 'ExtractEditTempController',
                     contentType: 'application/json; charset=utf-8',
@@ -49,10 +52,10 @@
                     success: function(data, textStatus, jqXHR) {
                         result = JSON.parse(jqXHR.responseText);
                         /* If the status is success refresh the Main Categories Select Options  */
-                        alert(JSON.stringify(result));
-                        alert(result.extractedData);
-                        alert(result.parent);
-                        alert(result.id);
+                        extractedData = result.extractedData;
+                        parent = result.parent;
+                        id = result.id;
+                        alert(extractedData);
                     }
                 });
             }
