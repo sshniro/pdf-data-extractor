@@ -51,17 +51,32 @@ public class DataExtractor {
         if(tableDataParser != null){
             sb.append("\nExtracted Table : \n" );
             List<TableDataElement> tableList= tableDataParser.getTableDataElements();
+            String tableName;
+            String columnName;
 
             for (int i=0 ; i < tableList.size() ; i++) {
 
                 TableDataElement table=tableList.get(i);
-                sb.append("Table " ).append(i+1).append(" -name (").append(table.getMetaId()).append(")").append("\n");
+                // set the tableName for east identification in the front end
+                if(table.getMetaName() == null)
+                    tableName = table.getMetaId();
+                else
+                    tableName = table.getMetaName();
+
+                sb.append("Table " ).append(i+1).append(" -(").append(tableName).append(")").append("\n");
                 List<Column> columnList=table.getColumns();
 
                 for (int j=0 ; j < columnList.size() ; j++){
 
                     Column column=columnList.get(j);
-                    sb.append("Column ").append(j+1).append(" -name (").append(column.getMetaId()).append(") : ");
+
+                    // set the columnName for east identification in the front end
+                    if(table.getMetaName() == null)
+                        columnName = column.getMetaId();
+                    else
+                        columnName = column.getMetaName();
+
+                    sb.append("Column ").append(j+1).append(" -(").append(columnName).append(") : ");
                     List<Cell> cellList = column.getCellList();
 
                     for(int c=0 ; c < cellList.size() ; c++ ){
