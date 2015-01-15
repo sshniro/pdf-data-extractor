@@ -20,6 +20,7 @@
 
 <script>
     var headerTag=0;
+    var index = 1;
 </script>
 
 <body>
@@ -32,15 +33,23 @@
         <legend>Upload File</legend>
         <form >
 
+            <button onclick="addNewFormField()" value="test">Add Header</button>
+
+            <div id="headerDetails">
+
+            </div>
+
+
+
             <label for="headerName1">Add a header Name</label>
-            <input id="headerName1" name="headerName1" type="text" value="Vendor Name:"/> <br/>
+            <input id="headerName1" name="headerName1" type="text" value="Vendor Name:"/>
 
             <label for="headerStart1">Add Starting Tag</label>
-            <input id="headerStart1" name="headerStart1" type="text" value="Vendor Name:"/> <br/>
+            <input id="headerStart1" name="headerStart1" type="text" value="Vendor Name:"/>
 
             <label for="headerEnd1">Add Ending Tag</label>
             <input id="headerEnd1" name="headerEnd1" type="text" value="Address:"/> <br/>
-
+<!--
             <label for="headerName2">Add a header Name</label>
             <input id="headerName2" name="headerName2" type="text" value="Address:"/> <br/>
 
@@ -49,7 +58,7 @@
 
             <label for="headerEnd2">Add Ending Tag</label>
             <input id="headerEnd2" name="headerEnd2" type="text" value="Ship To:"/> <br/>
-
+-->
             <label for="pdfFile">Select File: </label>
             <input id="pdfFile" type="file" name="pdfFile" size="30" required/><br/>
 
@@ -64,7 +73,17 @@
 </div>
 
 <script>
+
+    function addNewFormField(){
+        index++;
+        $("#headerDetails").append('<label for="headerName1">Add a header Name</label><input id="headerName'+index+'" name="headerName'+index+'" type="text" value="Vendor Name:"/>' +
+        '<label for="headerStart'+index+'">Add Starting Tag</label><input id="headerStart1" name="headerStart'+index+'" type="text" value="Vendor Name:"/>'+
+        '<label for="headerEnd'+index+'">Add Ending Tag</label><input id="headerEnd1" name="headerEnd'+index+'" type="text" value="Address:"/> <br/>');
+    }
+
     var client = new XMLHttpRequest();
+
+
     function upload()
     {
         var file = document.getElementById("pdfFile");
