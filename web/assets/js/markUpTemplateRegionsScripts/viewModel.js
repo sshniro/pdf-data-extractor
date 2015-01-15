@@ -481,7 +481,7 @@ function ViewModel(){
         var bulk = ko.toJSON(sendBulkData(data));
         self.sendingJsonFinal(bulk);
         self.loadNewPageData(currentPage);
-        window.location.href = "default.jsp";
+        window.location.href = "ExtractPdf.jsp";
     }
 
 

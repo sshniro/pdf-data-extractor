@@ -14,8 +14,9 @@ public class ResponseGenerator {
             extractResponse.setId(extractStatus.getId());
             extractResponse.setParent(extractStatus.getParent());
             extractResponse.setDocumentId(extractStatus.getDocumentId());
-        }else
+        }else{
             extractResponse.setErrorCause(extractStatus.getErrorCause());
+        }
         return extractResponse;
 
     }
