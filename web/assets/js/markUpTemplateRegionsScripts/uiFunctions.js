@@ -133,10 +133,7 @@ var reDrawingRouter = (function (baseUiComponent, selection,removedElement){
     if (selection.width<10 || selection.height<10){
         return;
     }
-
-
     currentWorkingImg = baseUiComponent;
-
     $("*").css('cursor','default');
     var rectangle = reDrawRectangle(baseUiComponent, selection);
     rectangle.pageNumber =  vm.currentPage();
@@ -190,7 +187,6 @@ var reDrawingRouter = (function (baseUiComponent, selection,removedElement){
             rectangle.elementId = baseUiComponent.id;
             vm.addSubElement(rectangle)
             $('#'+baseUiComponent.id).unbind();
-
         }
     }
 
@@ -474,8 +470,8 @@ function draggableActivator(){
                         y2:imgBounds.bottom - bounds.bottom
                     };
 
-                    vm.removeElementUsingDomElement(dragableDiv);
-                    reDrawingRouter(currentWorkingImgX,selection,$(this)[0]);
+                    var removedElement = vm.removeElementUsingDomElement(dragableDiv);
+                    reDrawingRouter(currentWorkingImgX,selection,removedElement);
                     $(this).next('button').click();
                 }
             });
