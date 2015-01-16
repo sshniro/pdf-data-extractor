@@ -39,8 +39,6 @@
 
             </div>
 
-
-
             <label for="headerName1">Add a header Name</label>
             <input id="headerName1" name="headerName1" type="text" value="Vendor Name:"/>
 
@@ -82,7 +80,6 @@
     }
 
     var client = new XMLHttpRequest();
-
 
     function upload()
     {
