@@ -59,7 +59,7 @@
                 return false;
             }
 
-            var pass= document.getElementById("userName").value;
+            var pass= document.getElementById("pass").value;
             if(pass==""){
                 alert("PassWord is Required");
                 return false;
