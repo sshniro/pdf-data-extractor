@@ -32,6 +32,8 @@ function ViewModel(){
     self.textElements = ko.observableArray([]);
     self.tableElements = ko.observableArray([]);
     self.pictureElements = ko.observableArray([]);
+    self.regexElements = ko.observableArray([]);
+    self.patternElements = ko.observableArray([]);
     self.currentDic = ko.observableArray([]);
     self.elementBuffer;
 
@@ -57,7 +59,7 @@ function ViewModel(){
 
 
 
-    //Button Functionalities moved in
+    //Button Functionalities
     self.textButton= function(){
         vm.currentSelection("text");
         selectionStarted();
@@ -77,6 +79,23 @@ function ViewModel(){
         selectionInitializer("img",drawingRouter);
         $("#runningInstructions").text('Select Picure Element');
     }
+
+    self.regexButton= function(){
+        event.stopPropagation();
+        vm.currentSelection("regex");
+        selectionStarted();
+        selectionInitializer("img",drawingRouter);
+        $("#runningInstructions").text('Select Starting Tag');
+    }
+
+    self.patternButton= function(){
+        event.stopPropagation();
+        vm.currentSelection("pattern");
+        selectionStarted();
+        selectionInitializer("img",drawingRouter);
+        $("#runningInstructions").text('Select Starting Tag');
+    }
+
     self.editButton= function(){
         event.stopPropagation()
         $("#runningInstructions").text('Drag or Resize Elements');
@@ -142,6 +161,10 @@ function ViewModel(){
         pageToSave.textElements                     =  ko.toJS(self.textElements());
         pageToSave.tableElements                    =  ko.toJS(self.tableElements());
         pageToSave.pictureElements                  =  ko.toJS(self.pictureElements());
+
+        pageToSave.regexElements                    =  ko.toJS(self.regexElements());
+        pageToSave.patternElements                  =  ko.toJS(self.patternElements());
+
         self.pagesDataCache.push(pageToSave);
 
         // Clear all data
@@ -154,6 +177,12 @@ function ViewModel(){
         }
         if(self.pictureElements() !== undefined){
             self.pictureElements.removeAll();
+        }
+        if(self.regexElements() !== undefined){
+            self.regexElements.removeAll();
+        }
+        if(self.patternElements !== undefined){
+            self.patternElements.removeAll();
         }
     }
 
@@ -219,6 +248,12 @@ function ViewModel(){
         for(var key in self.pictureElements()){
             elements.push(self.pictureElements()[key]);
         }
+        for(var key in self.regexElements()){
+            elements.push(self.regexElements()[key]);
+        }
+        for(var key in self.patternElements()){
+            elements.push(self.patternElements()[key]);
+        }
         return elements;
     });
 
@@ -267,6 +302,20 @@ function ViewModel(){
 
     }
 
+    self.addRegexElement = function (data){
+        var element = new DataElement(data);
+        self.regexElements.push(element);
+        self.elementBuffer = ko.toJS(element);
+
+    }
+    self.addPatternElement = function (data){
+        var element = new DataElement(data);
+        self.patternElements.push(element);
+        self.elementBuffer = ko.toJS(element);
+
+    }
+
+
     //Adding sub element
     self.addSubElement = function (data){
         var subElement = new SubDataElement(data);
@@ -307,6 +356,46 @@ function ViewModel(){
             relevantPictureElement.subElements.push(subElement);
             self.pictureElements.push(relevantPictureElement);
         }
+        else if (data.elementType === 'regex') {
+            var relevantRegexElement  = self.regexElements.remove(function(item) {
+                return item.elementId === data.elementId;
+            })[0];
+            relevantRegexElement.relevantData(subElement.relevantData());
+
+            relevantRegexElement.subElements.push(subElement);
+
+            //Used in workflow for meta generations for column headers
+            relevantRegexElement.setCurrentSubElement(subElement);
+            relevantRegexElement.saveCurrentSubElement();
+
+            indexInSubElements =  relevantRegexElement.subElements.indexOf(subElement);
+            //Setting the current sub element within the regex object object
+            relevantRegexElement.currentSubElement(relevantRegexElement.subElements()[indexInSubElements]);
+
+            self.regexElements.push(relevantRegexElement);
+            var subElement = $("div#"+subElement.id()+".subElement");
+            subElement.css('background-color','rgba(46, 204, 113,0.3)');
+        }
+        else if (data.elementType === 'pattern') {
+            var relevantPatternElement  = self.patternElements.remove(function(item) {
+                return item.elementId === data.elementId;
+            })[0];
+            relevantPatternElement.relevantData(subElement.relevantData());
+
+            relevantPatternElement.subElements.push(subElement);
+
+            //Used in workflow for meta generations for column headers
+            relevantPatternElement.setCurrentSubElement(subElement);
+            relevantPatternElement.saveCurrentSubElement();
+
+            indexInSubElements =  relevantPatternElement.subElements.indexOf(subElement);
+            //Setting the current sub element within the pattern object object
+            relevantPatternElement.currentSubElement(relevantPatternElement.subElements()[indexInSubElements]);
+
+            self.patternElements.push(relevantPatternElement);
+            var subElement = $("div#"+subElement.id()+".subElement");
+            subElement.css('background-color','rgba(46, 204, 113,0.3)');
+        }        
         self.tempSubs.push(subElement);
         ////////////////
         ////////////////
@@ -325,6 +414,12 @@ function ViewModel(){
             }
             else if (removedElement.elementType() === 'picture') {
                 self.pictureElements.remove(removedElement);
+            }
+            else if (removedElement.elementType() === 'regex') {
+                self.regexElements.remove(removedElement);
+            }
+            else if (removedElement.elementType() === 'pattern') {
+                self.patternElements.remove(removedElement);
             }
             resetEnvironment();
         }
@@ -366,6 +461,22 @@ function ViewModel(){
                 relevantPictureElement.subElements.remove(removedElement);
                 self.pictureElements.push(relevantPictureElement);
 
+            }
+            else if (removedElement.elementType()=== 'regex') {
+                var relevantRegexElement  = self.regexElements.remove(function(item) {
+                    return item.elementId === removedElement.elementId();
+                })[0];
+
+                relevantRegexElement.subElements.remove(removedElement);
+                self.regexElements.push(relevantRegexElement);
+            }
+            else if (removedElement.elementType()=== 'pattern') {
+                var relevantPatternElement  = self.patternElements.remove(function(item) {
+                    return item.elementId === removedElement.elementId();
+                })[0];
+
+                relevantPatternElement.subElements.remove(removedElement);
+                self.patternElements.push(relevantPatternElement);
             }
             vm.subElementSelectionInProgress(true);
             $('div#'+removedElement.elementId()+'.mainElement').css('cursor','crosshair');
