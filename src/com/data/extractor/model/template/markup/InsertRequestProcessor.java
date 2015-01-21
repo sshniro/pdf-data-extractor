@@ -96,7 +96,7 @@ public class InsertRequestProcessor {
 
         }
 
-        if(patternDataParser != null && regexDataParser.getRegexDataParserList().size() != 0){
+        if(patternDataParser != null && regexDataParser.getRegexDataElementList().size() != 0){
             PatternDataInserter patternDataInserter = new PatternDataInserter();
 
             /* Load the Template PDF in to pdf BOX and return the PDDoc to set pdf Properties*/
