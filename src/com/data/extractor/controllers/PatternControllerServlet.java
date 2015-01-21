@@ -2,17 +2,12 @@ package com.data.extractor.controllers;
 
 import com.data.extractor.model.beans.extract.pdf.ExtractResponse;
 import com.data.extractor.model.beans.extract.pdf.ExtractStatus;
-import com.data.extractor.model.beans.manage.categories.Node;
-import com.data.extractor.model.beans.template.info.pattern.PatternDataElement;
+import com.data.extractor.model.beans.template.info.pattern.HeaderDataBean;
+import com.data.extractor.model.beans.template.info.pattern.PatternDataParser;
 import com.data.extractor.model.beans.upload.template.UploadStatus;
 import com.data.extractor.model.data.access.layer.CounterDAO;
-import com.data.extractor.model.extract.pdf.DataElementsProcessor;
-import com.data.extractor.model.extract.pdf.DocumentIdAuthenticator;
-import com.data.extractor.model.template.upload.AssignFormValues;
-import com.data.extractor.model.template.upload.PdfFileProcessor;
 import com.google.gson.Gson;
 import com.mongodb.MongoClient;
-import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileItemFactory;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
@@ -29,7 +24,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.List;
 
 public class PatternControllerServlet extends HttpServlet {
@@ -83,7 +77,7 @@ public class PatternControllerServlet extends HttpServlet {
                 sbRequest.append(s);
             }
 
-            PatternDataElement patternDataElement = gson.fromJson(sbRequest.toString(),PatternDataElement.class);
+            PatternDataParser patternDataElement = gson.fromJson(sbRequest.toString(),PatternDataParser.class);
             UploadStatus uploadStatus=new UploadStatus();
             uploadStatus.setId("12");
 
@@ -93,20 +87,20 @@ public class PatternControllerServlet extends HttpServlet {
             String processing = null;
             String[] splits = null;
 
-            for (HeaderDataBean h : patternDataElement.getHeaderDataBeanList()){
-                try {
-                    splits = unprocessed.split(h.getStartTag(), 2);
-                    processing =splits[1];
-                    splits = processing.split(h.getEndTag(),2);
-                    h.setValue(splits[0]);
-                    extractedData.append("Text").append(" -(").append(h.getHeaderName()).append(") : ");
-                    extractedData.append(replaceNextLineChar(h.getValue()));
-                    extractedData.append("\n");
-                    //System.out.println(h.getValue());
-                }catch (ArrayIndexOutOfBoundsException e){
-                    e.printStackTrace();
-                }
-            }
+//            for (HeaderDataBean h : patternDataElement.getHeaderDataBeanList()){
+//                try {
+//                    splits = unprocessed.split(h.getStartTag(), 2);
+//                    processing =splits[1];
+//                    splits = processing.split(h.getEndTag(),2);
+//                    h.setValue(splits[0]);
+//                    extractedData.append("Text").append(" -(").append(h.getHeaderName()).append(") : ");
+//                    extractedData.append(replaceNextLineChar(h.getValue()));
+//                    extractedData.append("\n");
+//                    //System.out.println(h.getValue());
+//                }catch (ArrayIndexOutOfBoundsException e){
+//                    e.printStackTrace();
+//                }
+//            }
 
             ExtractResponse extractResponse = new ExtractResponse();
             extractResponse.setExtractedData(extractedData.toString());

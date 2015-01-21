@@ -1,14 +1,10 @@
-package com.data.extractor.controllers;
+package com.data.extractor.model.beans.template.info.regex;
 
 import com.google.gson.annotations.Expose;
 
-/**
- * Created by niro273 on 1/15/15.
- */
-public class HeaderDataBean {
-
+public class RegexDataElement {
     @Expose
-    String headerName;
+    String regexName;
     @Expose
     String startTag;
     @Expose
@@ -16,12 +12,12 @@ public class HeaderDataBean {
     @Expose
     String value;
 
-    public String getHeaderName() {
-        return headerName;
+    public String getRegexName() {
+        return regexName;
     }
 
-    public void setHeaderName(String headerName) {
-        this.headerName = headerName;
+    public void setRegexName(String regexName) {
+        this.regexName = regexName;
     }
 
     public String getStartTag() {
