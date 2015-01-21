@@ -5,6 +5,7 @@ import com.data.extractor.model.beans.manage.categories.Node;
 import com.data.extractor.model.beans.template.info.image.ImageDataParser;
 import com.data.extractor.model.beans.template.info.insert.InsertDataParser;
 import com.data.extractor.model.beans.template.info.pattern.PatternDataParser;
+import com.data.extractor.model.beans.template.info.regex.RegexDataParser;
 import com.data.extractor.model.beans.template.info.table.TableDataParser;
 import com.data.extractor.model.beans.template.info.text.TextDataParser;
 import com.data.extractor.model.data.access.layer.TemplatesDAO;
@@ -32,6 +33,7 @@ public class InsertRequestProcessor {
         ImageDataParser imageDataParser=insertDataParser.getImageDataParser();
         TableDataParser tableDataParser=insertDataParser.getTableDataParser();
         PatternDataParser patternDataParser = insertDataParser.getPatternDataParser();
+        RegexDataParser regexDataParser = insertDataParser.getRegexDataParser();
 
         /* If there is a textDataParser is sent from the user and has atleast 1 textDataElement process it*/
         if(textDataParser!=null && textDataParser.getTextDataElements().size() != 0) {
@@ -94,7 +96,7 @@ public class InsertRequestProcessor {
 
         }
 
-        if(patternDataParser != null){
+        if(patternDataParser != null && regexDataParser.getRegexDataParserList().size() != 0){
             PatternDataInserter patternDataInserter = new PatternDataInserter();
 
             /* Load the Template PDF in to pdf BOX and return the PDDoc to set pdf Properties*/
@@ -102,11 +104,11 @@ public class InsertRequestProcessor {
             patternDataParser.setPdfFile(node.getPdfFile());
             PDDocument doc =PDDocument.load(patternDataParser.getPdfFile());
 
-            TextDataCoordinates textDataCoordinates=new TextDataCoordinates();
-            /* Set Values for the PDF width, Height and Rotation for each textDataElement*/
-            textDataCoordinates.setPdfProperties(doc, textDataParser);
-            /* Recalculate and set coordinates according to the actual pdf width and height and Page Rotation */
-            textDataCoordinates.calculateCoordinates(textDataParser);
+//            TextDataCoordinates textDataCoordinates=new TextDataCoordinates();
+//            /* Set Values for the PDF width, Height and Rotation for each textDataElement*/
+//            textDataCoordinates.setPdfProperties(doc, textDataParser);
+//            /* Recalculate and set coordinates according to the actual pdf width and height and Page Rotation */
+//            textDataCoordinates.calculateCoordinates(textDataParser);
             /*Insert the assigned values to the templateInfo MongoDB Collection*/
             patternDataInserter.insert(textDataParser,mongoClient);
         }
