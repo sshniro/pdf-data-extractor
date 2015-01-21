@@ -2,6 +2,7 @@ package com.data.extractor.controllers;
 
 import com.data.extractor.model.beans.extract.pdf.ExtractResponse;
 import com.data.extractor.model.beans.extract.pdf.ExtractStatus;
+import com.data.extractor.model.beans.template.info.pattern.HeaderDataBean;
 import com.data.extractor.model.beans.template.info.pattern.PatternDataParser;
 import com.data.extractor.model.beans.upload.template.UploadStatus;
 import com.data.extractor.model.data.access.layer.CounterDAO;
