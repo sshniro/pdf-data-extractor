@@ -7,6 +7,7 @@ import com.google.gson.annotations.Expose;
  */
 public class HeaderDataBean {
 
+
     @Expose
     String headerName;
     @Expose
@@ -47,4 +48,5 @@ public class HeaderDataBean {
     public void setValue(String value) {
         this.value = value;
     }
+
 }

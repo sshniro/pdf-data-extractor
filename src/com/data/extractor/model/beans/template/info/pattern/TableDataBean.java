@@ -1,9 +1,14 @@
 package com.data.extractor.model.beans.template.info.pattern;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class TableDataBean {
+
     private String tableName;
     private String tableStartTag;
     private String tableEndTag;
+    private List<ColumnDataBean> columnDataBeanList=new ArrayList<ColumnDataBean>();
 
 
     public String getTableEndTag() {
@@ -28,5 +33,13 @@ public class TableDataBean {
 
     public void setTableName(String tableName) {
         this.tableName = tableName;
+    }
+
+    public List<ColumnDataBean> getColumnDataBeanList() {
+        return columnDataBeanList;
+    }
+
+    public void setColumnDataBeanList(List<ColumnDataBean> columnDataBeanList) {
+        this.columnDataBeanList = columnDataBeanList;
     }
 }
