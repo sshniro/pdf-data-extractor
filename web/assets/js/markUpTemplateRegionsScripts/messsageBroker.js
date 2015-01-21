@@ -271,10 +271,12 @@ function TableDataElementDTO(dataElement, metaElements){
 }
 // a single column element in the table
 function TableDataColumnDTO(dataElement, metaElement){
+
+    //Meta element
     this.rawData        =   metaElement.rectangle;
     this.metaId         =   metaElement.id;    //////Switched meta with id
-    this.metaName      = ko.utils.unwrapObservable(dataElement.metaName);//// Switch due to data layer requirement
-    if(dataElement.selectedDictionaryItem){
+    this.metaName      = ko.utils.unwrapObservable(metaElement.metaName);//// Switch due to data layer requirement
+    if(metaElement.selectedDictionaryItem){
         this.dictionaryId   = ko.utils.unwrapObservable(metaElement.selectedDictionaryItem.id);
         this.dictionaryName   = ko.utils.unwrapObservable(metaElement.selectedDictionaryItem.name);
     }

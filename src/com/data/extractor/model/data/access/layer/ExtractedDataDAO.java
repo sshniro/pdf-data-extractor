@@ -73,7 +73,7 @@ public class ExtractedDataDAO {
 
         BasicDBObject searchQuery = new BasicDBObject();
         searchQuery.put("id",nodeId);
-        searchQuery.put("dataType","text");
+        searchQuery.put("dataType","image");
 
         DBCursor cursor = collection.find(searchQuery);
         Gson gson = new Gson();
@@ -90,7 +90,7 @@ public class ExtractedDataDAO {
 
         BasicDBObject searchQuery = new BasicDBObject();
         searchQuery.put("id",nodeId);
-        searchQuery.put("dataType","text");
+        searchQuery.put("dataType","table");
 
         DBCursor cursor = collection.find(searchQuery);
         Gson gson = new Gson();

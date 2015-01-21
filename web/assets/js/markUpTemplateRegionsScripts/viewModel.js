@@ -162,24 +162,38 @@ function ViewModel(){
 
         var elementPos = self.pagesDataCache.map(function(pageCache) {return pageCache.pageNumber; }).indexOf(newPageNumber);
         var newPageTemp = self.pagesDataCache[elementPos];
-        var newPage = {};
-        newPage.textElements = $.map( newPageTemp.textElements, function(element) { return new DataElement(element.rectangle,element.subElements) });
-        newPage.tableElements = $.map( newPageTemp.tableElements, function(element) { return new DataElement(element.rectangle,element.subElements) });
-        newPage.pictureElements = $.map( newPageTemp.pictureElements, function(element) { return new DataElement(element.rectangle,element.subElements) });
 
         self.selectionInProgress(newPageTemp.selectionInProgress);
         self.subElementSelectionInProgress(newPageTemp.subElementSelectionInProgress);
         self.currentSelection(newPageTemp.currentSelection);
         self.elementBuffer = newPageTemp.elementBuffer;
+        for(var dataType in newPageTemp) {
+            if(dataType !== "textElements"&& dataType !== "pictureElements" && dataType !== "tableElements"){
+                //this loop activates only for data elements
+                continue;
+            }
+            for (var dataElement in newPageTemp[dataType]) {
+                var rawData = newPageTemp[dataType][dataElement];
 
-        for(var key in newPage.textElements){
-            if(newPage.textElements[key] !== undefined ){   self.textElements.push(newPage.textElements[key])       };
-        }
-        for(var key in newPage.tableElements){
-            if(newPage.tableElements[key] !== undefined ){   self.tableElements.push(newPage.tableElements[key])     };
-        }
-        for(var key in newPage.pictureElements){
-            if(newPage.pictureElements[key] !== undefined ){   self.pictureElements.push(newPage.pictureElements[key]) };
+                rawData.rectangle.labelExtractedData = rawData.labelExtractedData;
+                rawData.rectangle.metaName = rawData.metaName;
+                rawData.rectangle.selectedDictionaryItem = rawData.selectedDictionaryItem;
+                rawData.rectangle.relevantData = rawData.relevantData;
+
+                if (rawData.selectedDictionaryItem !== undefined) {
+                    var dictionaryId = rawData.selectedDictionaryItem.id;
+                    var selectedDictionaryItem = vm.currentDic.remove(function (item) {
+                        return item.id() === dictionaryId;
+                    })[0];
+                    if (selectedDictionaryItem !== undefined) {
+                        vm.currentDic.push(selectedDictionaryItem);
+                        rawData.rectangle.selectedDictionaryItem = selectedDictionaryItem;
+                    }
+                }
+                var newDataElement = new DataElement(rawData.rectangle, rawData.subElements);
+
+                self[dataType].push(newDataElement);
+            }
         }
 
         resetEnvironment();
@@ -393,6 +407,7 @@ function ViewModel(){
         }
 
         self.currentSelection(removedElement.elementType());
+        return removedElement;
 
 
 
@@ -466,7 +481,7 @@ function ViewModel(){
         var bulk = ko.toJSON(sendBulkData(data));
         self.sendingJsonFinal(bulk);
         self.loadNewPageData(currentPage);
-        window.location.href = "default.jsp";
+        window.location.href = "ExtractPdf.jsp";
     }
 
 
