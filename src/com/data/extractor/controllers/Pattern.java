@@ -1,10 +1,8 @@
 package com.data.extractor.controllers;
 
 import com.data.extractor.model.beans.template.info.pattern.ColumnDataBean;
-import com.data.extractor.model.beans.template.info.pattern.PatternDataElement;
 import com.data.extractor.model.beans.template.info.pattern.TableDataBean;
 import com.data.extractor.model.beans.template.info.table.Cell;
-import com.data.extractor.model.beans.template.info.table.Column;
 import org.apache.pdfbox.cos.COSDocument;
 import org.apache.pdfbox.pdfparser.PDFParser;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -16,9 +14,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by niro273 on 1/15/15.
- */
 public class Pattern {
 
     // Extract text from PDF Document
