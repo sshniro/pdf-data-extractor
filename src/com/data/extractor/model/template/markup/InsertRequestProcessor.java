@@ -12,10 +12,7 @@ import com.data.extractor.model.data.access.layer.TemplatesDAO;
 import com.data.extractor.model.template.markup.calculate.coordinates.ImageDataCoordinates;
 import com.data.extractor.model.template.markup.calculate.coordinates.TableDataCoordinates;
 import com.data.extractor.model.template.markup.calculate.coordinates.TextDataCoordinates;
-import com.data.extractor.model.template.markup.insert.coordinate.ImageDataInserter;
-import com.data.extractor.model.template.markup.insert.coordinate.PatternDataInserter;
-import com.data.extractor.model.template.markup.insert.coordinate.TableDataInserter;
-import com.data.extractor.model.template.markup.insert.coordinate.TextDataInserter;
+import com.data.extractor.model.template.markup.insert.coordinate.*;
 import com.google.gson.Gson;
 import com.mongodb.MongoClient;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -96,13 +93,15 @@ public class InsertRequestProcessor {
 
         }
 
-        if(patternDataParser != null && regexDataParser.getRegexDataElementList().size() != 0){
+        if(regexDataParser != null && regexDataParser.getRegexDataElementList().size() != 0){
+
             PatternDataInserter patternDataInserter = new PatternDataInserter();
+            RegexDataInserter regexDataInserter = new RegexDataInserter();
 
             /* Load the Template PDF in to pdf BOX and return the PDDoc to set pdf Properties*/
-            Node node = templatesDAO.getNode(patternDataParser.getId());
+            Node node = templatesDAO.getNode(regexDataParser.getId());
             patternDataParser.setPdfFile(node.getPdfFile());
-            PDDocument doc =PDDocument.load(patternDataParser.getPdfFile());
+            PDDocument doc =PDDocument.load(regexDataParser.getPdfFile());
 
 //            TextDataCoordinates textDataCoordinates=new TextDataCoordinates();
 //            /* Set Values for the PDF width, Height and Rotation for each textDataElement*/
@@ -110,7 +109,7 @@ public class InsertRequestProcessor {
 //            /* Recalculate and set coordinates according to the actual pdf width and height and Page Rotation */
 //            textDataCoordinates.calculateCoordinates(textDataParser);
             /*Insert the assigned values to the templateInfo MongoDB Collection*/
-            patternDataInserter.insert(textDataParser,mongoClient);
+            regexDataInserter.insert(regexDataParser,mongoClient);
         }
     }
 }
