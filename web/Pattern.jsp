@@ -74,9 +74,9 @@
 
     function addNewFormField(){
         index++;
-        $("#headerDetails").append('<label for="headerName1">Add a header Name</label><input id="headerName'+index+'" name="headerName'+index+'" type="text" value="Vendor Name:"/>' +
-        '<label for="headerStart'+index+'">Add Starting Tag</label><input id="headerStart1" name="headerStart'+index+'" type="text" value="Vendor Name:"/>'+
-        '<label for="headerEnd'+index+'">Add Ending Tag</label><input id="headerEnd1" name="headerEnd'+index+'" type="text" value="Address:"/> <br/>');
+        $("#headerDetails").append('<label for="headerName'+index+'">Add a header Name</label><input id="headerName'+index+'" name="headerName'+index+'" type="text" value="Vendor Name:"/>' +
+        '<label for="headerStart'+index+'">Add Starting Tag</label><input id="headerStart'+index+'" name="headerStart'+index+'" type="text" value="Vendor Name:"/>'+
+        '<label for="headerEnd'+index+'">Add Ending Tag</label><input id="headerEnd'+index+'" name="headerEnd'+index+'" type="text" value="Address:"/> <br/>');
     }
 
     var client = new XMLHttpRequest();
