@@ -6,6 +6,8 @@ import com.data.extractor.model.beans.template.info.image.ImageDataParser;
 import com.data.extractor.model.beans.template.info.pattern.HeaderDataBean;
 import com.data.extractor.model.beans.template.info.pattern.PatternDataParser;
 import com.data.extractor.model.beans.template.info.pattern.TableDataBean;
+import com.data.extractor.model.beans.template.info.regex.RegexDataElement;
+import com.data.extractor.model.beans.template.info.regex.RegexDataParser;
 import com.data.extractor.model.beans.template.info.table.Column;
 import com.data.extractor.model.beans.template.info.table.TableDataElement;
 import com.data.extractor.model.beans.template.info.table.TableDataParser;
@@ -345,37 +347,74 @@ public class TemplateInfoDAO {
 
     }
 
-    public void createTemplateInfo(String nodeId,String dataType,TableDataBean tableDataBean){
+    public void createTemplateInfo(String nodeId,String dataType,RegexDataElement regexDataElement){
 
         BasicDBObject insertObject = new BasicDBObject();
         insertObject.put("id", nodeId);
         insertObject.put("dataType", dataType);
 
-        List<BasicDBObject> textDataElementsInsert = new ArrayList<BasicDBObject>();
+        List<BasicDBObject> regexDataElementsInsert = new ArrayList<BasicDBObject>();
 
-        List<TableDataBean> tableDataBeanList = new ArrayList<TableDataBean>();
-        List<HeaderDataBean> headerDataBeanList = new ArrayList<HeaderDataBean>();
+        BasicDBObject regexElementObj = new BasicDBObject();
 
+        regexElementObj.put("regexName",regexDataElement.getRegexName());
+        regexElementObj.put("startTag",regexDataElement.getStartTag());
+        regexElementObj.put("endTag",regexDataElement.getEndTag());
 
-        insertObject.put("textDataElements", textDataElementsInsert);
+//        textElementObject.put("metaId", textDataElement.getMetaId());
+//        textElementObject.put("metaName", textDataElement.getMetaName());
+//        textElementObject.put("elementId", textDataElement.getElementId());
+//        textElementObject.put("dictionaryId", textDataElement.getDictionaryId());
+//        textElementObject.put("dictionaryName", textDataElement.getDictionaryName());
+//        textElementObject.put("pageNumber", textDataElement.getPageNumber());
+//        textElementObject.put("pageRotation", textDataElement.getPageRotation());
+//
+//        textElementObject.put("totalX1", textDataElement.getTotalX1());
+//        textElementObject.put("totalY1", textDataElement.getTotalY1());
+//        textElementObject.put("totalWidth", textDataElement.getTotalWidth());
+//        textElementObject.put("totalHeight", textDataElement.getTotalHeight());
+//
+//        textElementObject.put("metaX1", textDataElement.getMetaX1());
+//        textElementObject.put("metaY1", textDataElement.getMetaY1());
+//        textElementObject.put("metaWidth", textDataElement.getMetaWidth());
+//        textElementObject.put("metaHeight", textDataElement.getMetaHeight());
 
-        infoColl.insert(insertObject);
-    }
+//        BasicDBObject rawDataElement = new BasicDBObject();
+//        RawDataElement rawData= textDataElement.getRawData();
+//        rawDataElement.put("id", rawData.getId());
+//        rawDataElement.put("elementId", rawData.getElementId());
+//        rawDataElement.put("elementType", rawData.getElementType());
+//        rawDataElement.put("page", rawData.getPage());
+//        rawDataElement.put("startX",rawData.getStartX());
+//        rawDataElement.put("startY", rawData.getStartY());
+//        rawDataElement.put("width", rawData.getWidth());
+//        rawDataElement.put("height", rawData.getHeight());
+//        rawDataElement.put("baseUiComponentStartX", rawData.getBaseUiComponentStartX());
+//        rawDataElement.put("baseUiComponentStartY", rawData.getBaseUiComponentStartY());
+//        rawDataElement.put("baseUiComponentWidth", rawData.getBaseUiComponentWidth());
+//        rawDataElement.put("baseUiComponentHeight", rawData.getBaseUiComponentHeight());
+//
+//        RawDataElement metaRawData = textDataElement.getMetaRawData();
+        BasicDBObject metaRawDataElement = new BasicDBObject();
 
-    public void createTemplateInfo(String nodeId,String dataType, com.data.extractor.model.beans.template.info.pattern.HeaderDataBean headerDataBean){
+//        metaRawDataElement.put("id", metaRawData.getId());
+//        metaRawDataElement.put("elementId", metaRawData.getElementId());
+//        metaRawDataElement.put("elementType", metaRawData.getElementType());
+//        metaRawDataElement.put("page", metaRawData.getPage());
+//        metaRawDataElement.put("startX",metaRawData.getStartX());
+//        metaRawDataElement.put("startY", metaRawData.getStartY());
+//        metaRawDataElement.put("width", metaRawData.getWidth());
+//        metaRawDataElement.put("height", metaRawData.getHeight());
+//        metaRawDataElement.put("baseUiComponentStartX", metaRawData.getBaseUiComponentStartX());
+//        metaRawDataElement.put("baseUiComponentStartY", metaRawData.getBaseUiComponentStartY());
+//        metaRawDataElement.put("baseUiComponentWidth", metaRawData.getBaseUiComponentWidth());
+//        metaRawDataElement.put("baseUiComponentHeight", metaRawData.getBaseUiComponentHeight());
 
-        BasicDBObject insertObject = new BasicDBObject();
-        insertObject.put("id", nodeId);
-        insertObject.put("dataType", dataType);
+//        regexElementObj.put("rawData" , rawDataElement);
+//        regexElementObj.put("metaRawData" , metaRawDataElement);
+        regexDataElementsInsert.add(regexElementObj);
 
-        List<BasicDBObject> textDataElementsInsert = new ArrayList<BasicDBObject>();
-
-        List<TableDataBean> tableDataBeanList = new ArrayList<TableDataBean>();
-        List<HeaderDataBean> headerDataBeanList = new ArrayList<HeaderDataBean>();
-
-        BasicDBObject textElementObject = new BasicDBObject();
-
-
+        insertObject.put("regexDataElements", regexDataElementsInsert);
 
         infoColl.insert(insertObject);
     }
@@ -578,4 +617,76 @@ public class TemplateInfoDAO {
         infoColl.update(searchQuery, updateObject);
 
     }
+
+    public void updateTemplateInfo(RegexDataParser regexDataParser,RegexDataElement regexDataElement){
+
+        BasicDBObject searchQuery = new BasicDBObject();
+
+        searchQuery.put("id", regexDataParser.getId());
+        searchQuery.put("dataType", regexDataParser.getDataType());
+
+        BasicDBObject regexElementObj = new BasicDBObject();
+
+        regexElementObj.put("regexName",regexDataElement.getRegexName());
+        regexElementObj.put("startTag",regexDataElement.getStartTag());
+        regexElementObj.put("endTag",regexDataElement.getEndTag());
+
+//        textElementObject.put("metaId", textDataElement.getMetaId());
+//        textElementObject.put("metaName", textDataElement.getMetaName());
+//        textElementObject.put("elementId", textDataElement.getElementId());
+//        /* Dictionary Specifications */
+//        textElementObject.put("dictionaryId", textDataElement.getDictionaryId());
+//        textElementObject.put("dictionaryName", textDataElement.getDictionaryName());
+//        textElementObject.put("pageNumber", textDataElement.getPageNumber());
+//        textElementObject.put("pageRotation", textDataElement.getPageRotation());
+//
+//        textElementObject.put("totalX1", textDataElement.getTotalX1());
+//        textElementObject.put("totalY1", textDataElement.getTotalY1());
+//        textElementObject.put("totalWidth", textDataElement.getTotalWidth());
+//        textElementObject.put("totalHeight", textDataElement.getTotalHeight());
+//
+//        textElementObject.put("metaX1", textDataElement.getMetaX1());
+//        textElementObject.put("metaY1", textDataElement.getMetaY1());
+//        textElementObject.put("metaWidth", textDataElement.getMetaWidth());
+//        textElementObject.put("metaHeight", textDataElement.getMetaHeight());
+
+//        BasicDBObject rawDataElement = new BasicDBObject();
+//        RawDataElement rawData= textDataElement.getRawData();
+//        rawDataElement.put("id", rawData.getId());
+//        rawDataElement.put("elementId", rawData.getElementId());
+//        rawDataElement.put("elementType", rawData.getElementType());
+//        rawDataElement.put("page", rawData.getPage());
+//        rawDataElement.put("startX",rawData.getStartX());
+//        rawDataElement.put("startY", rawData.getStartY());
+//        rawDataElement.put("width", rawData.getWidth());
+//        rawDataElement.put("height", rawData.getHeight());
+//        rawDataElement.put("baseUiComponentStartX", rawData.getBaseUiComponentStartX());
+//        rawDataElement.put("baseUiComponentStartY", rawData.getBaseUiComponentStartY());
+//        rawDataElement.put("baseUiComponentWidth", rawData.getBaseUiComponentWidth());
+//        rawDataElement.put("baseUiComponentHeight", rawData.getBaseUiComponentHeight());
+//
+//        RawDataElement metaRawData = textDataElement.getMetaRawData();
+//        BasicDBObject metaRawDataElement = new BasicDBObject();
+
+//        metaRawDataElement.put("id", metaRawData.getId());
+//        metaRawDataElement.put("elementId", metaRawData.getElementId());
+//        metaRawDataElement.put("elementType", metaRawData.getElementType());
+//        metaRawDataElement.put("page", metaRawData.getPage());
+//        metaRawDataElement.put("startX",metaRawData.getStartX());
+//        metaRawDataElement.put("startY", metaRawData.getStartY());
+//        metaRawDataElement.put("width", metaRawData.getWidth());
+//        metaRawDataElement.put("height", metaRawData.getHeight());
+//        metaRawDataElement.put("baseUiComponentStartX", metaRawData.getBaseUiComponentStartX());
+//        metaRawDataElement.put("baseUiComponentStartY", metaRawData.getBaseUiComponentStartY());
+//        metaRawDataElement.put("baseUiComponentWidth", metaRawData.getBaseUiComponentWidth());
+//        metaRawDataElement.put("baseUiComponentHeight", metaRawData.getBaseUiComponentHeight());
+
+//        regexElementObj.put("rawData" , rawDataElement);
+//        regexElementObj.put("metaRawData" , metaRawDataElement);
+
+        BasicDBObject updateObject = new BasicDBObject();
+        updateObject.put("$push", new BasicDBObject("regexDataElements", regexElementObj));
+        infoColl.update(searchQuery, updateObject);
+    }
+
 }
