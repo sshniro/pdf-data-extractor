@@ -94,6 +94,11 @@
     {
         list-style-type: none;
     }
+    .vertical-text {
+        -ms-transform: rotate(90deg); /* IE 9 */
+        -webkit-transform: rotate(90deg); /* Chrome, Safari, Opera */
+        transform: rotate(90deg);
+    }
 </style>
 
 </head>
@@ -248,16 +253,40 @@
     <div class="mainElement baseUI editableDiv" style="position:absolute; border-style:solid; border-color:#2980b9; border-width: 3px;" data-bind="id:id, style:uiData.elementMap(),  click:$root.selectRectangle">
         <ul class="knockoutIterable" style="padding: 0" data-bind="foreach:$data.subElements()">
             <li data-bind="id:id">
+                <!-- selected element -->
                 <div class="subElement baseUI" style="position: absolute; border-style:solid; border-color:#2980b9; border-width: 3px;" data-bind="click:$parent.showNewSubElement,id:id, style:{width:uiData.width,height:uiData.height,left:uiData.startX, top:uiData.startY}">
                 </div>
-                <button  style="position: absolute; visibility:visible; margin-top:-11; height:24; width:25; border-radius: 50px" data-bind="id:id, click:$root.removeElement, style:{left: uiData.removeX, top:uiData.removeY}" type="button" class="btn btn-default btn-xs removeSubElement">
+
+                <!-- element type select -->
+                <div class="btn-group-vertical" role="group" data-bind="id:id, visible:(elementType() == 'table'), style:{left: (uiData.removeX()+15), top:uiData.removeY }">
+                    <button type="button" class="btn btn-primary" onclick="$(this).parent().next('div').show();$(this).parent().hide()">normal element</button>
+                    <button type="button" class="btn btn-primary">repeating element</button>
+                    <button type="button" class="btn btn-primary">non-ending element</button>
+                </div>
+
+                <!-- element type tag -->
+                <div style="position: absolute;" data-bind="id:id, visible:(elementType() == 'table'), style:{left: (uiData.removeX()+15), top:uiData.removeY }">
+                    <button type="button" class="btn btn-warning" onclick="$(this).parent().hide();">NEE</button>
+                </div>
+
+                <!-- ending tag element -->
+                <div style="position: absolute;" data-bind="id:id, visible:(elementType() == 'table'), style:{left: (uiData.removeX()+65), top:uiData.removeY }">
+                    <span class="btn btn-default">ending: <span>selected 2nd tag data</span></span>
+                </div>
+
+                <!-- selected element close button -->
+                <button  style="position: absolute; visibility:visible; margin-top:-11; height:24; width:25; border-radius: 50%" data-bind="id:id, click:$root.removeElement, style:{left: uiData.removeX, top:uiData.removeY}" type="button" class="btn btn-default btn-xs removeSubElement">
                     <span class="glyphicon glyphicon-remove-circle"></span>
                 </button>
-                <button  style="position: absolute; visibility:visible; margin-top:-11; height:24; width:25; border-radius: 50px" data-bind="id:id, visible:(elementType() == 'table'),id:id, click:$parent.setCurrentSubElement, style:{left: uiData.removeX, top:(uiData.removeY() + uiData.height) }" type="button" class="btn btn-default btn-xs selectSubElement">
+                <!-- selected element index -->
+                <button  style="position: absolute; visibility:visible; margin-top:-11; height:24; width:25; border-radius: 50%" data-bind="id:id, visible:(elementType() == 'table'),id:id, click:$parent.setCurrentSubElement, style:{left: uiData.removeX, top:(uiData.removeY() + uiData.height) }" type="button" class="btn btn-default btn-xs selectSubElement">
                     <span data-bind="text:$index">1</span>
                 </button>
 
-
+                <!-- ending tag close button -->
+                <button  style="position: absolute; visibility:visible; margin-top:-11; height:24; width:25; border-radius: 50%" data-bind="style:{left: (uiData.removeX()+63), top:uiData.removeY}" type="button" class="btn btn-default btn-xs removeSubElement">
+                    <span class="glyphicon glyphicon-remove-circle"></span>
+                </button>
 
             </li>
         </ul>
