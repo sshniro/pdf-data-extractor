@@ -2,7 +2,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Mark Up Regions</title>
+    <title>Enhanzer Extractor</title>
     <title></title>
     <!-------------------------------- CSS Files------------------------------------>
     <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.css">
