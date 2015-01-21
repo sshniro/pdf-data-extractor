@@ -1,9 +1,11 @@
 package com.data.extractor.model.data.access.layer;
 
-
 import com.data.extractor.model.beans.template.info.RawDataElement;
 import com.data.extractor.model.beans.template.info.image.ImageDataElement;
 import com.data.extractor.model.beans.template.info.image.ImageDataParser;
+import com.data.extractor.model.beans.template.info.pattern.HeaderDataBean;
+import com.data.extractor.model.beans.template.info.pattern.PatternDataParser;
+import com.data.extractor.model.beans.template.info.pattern.TableDataBean;
 import com.data.extractor.model.beans.template.info.table.Column;
 import com.data.extractor.model.beans.template.info.table.TableDataElement;
 import com.data.extractor.model.beans.template.info.table.TableDataParser;
@@ -341,6 +343,41 @@ public class TemplateInfoDAO {
         insertObject.put("tableDataElements",tableDataElementsInsert);
         infoColl.insert(insertObject);
 
+    }
+
+    public void createTemplateInfo(String nodeId,String dataType,TableDataBean tableDataBean){
+
+        BasicDBObject insertObject = new BasicDBObject();
+        insertObject.put("id", nodeId);
+        insertObject.put("dataType", dataType);
+
+        List<BasicDBObject> textDataElementsInsert = new ArrayList<BasicDBObject>();
+
+        List<TableDataBean> tableDataBeanList = new ArrayList<TableDataBean>();
+        List<HeaderDataBean> headerDataBeanList = new ArrayList<HeaderDataBean>();
+
+
+        insertObject.put("textDataElements", textDataElementsInsert);
+
+        infoColl.insert(insertObject);
+    }
+
+    public void createTemplateInfo(String nodeId,String dataType, com.data.extractor.model.beans.template.info.pattern.HeaderDataBean headerDataBean){
+
+        BasicDBObject insertObject = new BasicDBObject();
+        insertObject.put("id", nodeId);
+        insertObject.put("dataType", dataType);
+
+        List<BasicDBObject> textDataElementsInsert = new ArrayList<BasicDBObject>();
+
+        List<TableDataBean> tableDataBeanList = new ArrayList<TableDataBean>();
+        List<HeaderDataBean> headerDataBeanList = new ArrayList<HeaderDataBean>();
+
+        BasicDBObject textElementObject = new BasicDBObject();
+
+
+
+        infoColl.insert(insertObject);
     }
 
     /* Method updates the previously available record of textDataParser in the templateInfo collection  */

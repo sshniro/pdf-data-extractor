@@ -2,6 +2,7 @@ package com.data.extractor.model.beans.template.info.insert;
 
 import com.data.extractor.model.beans.template.info.image.ImageDataParser;
 import com.data.extractor.model.beans.template.info.pattern.PatternDataParser;
+import com.data.extractor.model.beans.template.info.regex.RegexDataParser;
 import com.data.extractor.model.beans.template.info.table.TableDataParser;
 import com.data.extractor.model.beans.template.info.text.TextDataParser;
 import com.google.gson.annotations.Expose;
@@ -19,6 +20,8 @@ public class InsertDataParser {
     private TableDataParser tableDataParser;
     @Expose
     private ImageDataParser imageDataParser;
+    @Expose
+    private RegexDataParser regexDataParser;
     @Expose
     private PatternDataParser patternDataParser;
 
@@ -52,6 +55,14 @@ public class InsertDataParser {
 
     public void setTextDataParser(TextDataParser textDataParser) {
         this.textDataParser = textDataParser;
+    }
+
+    public RegexDataParser getRegexDataParser() {
+        return regexDataParser;
+    }
+
+    public void setRegexDataParser(RegexDataParser regexDataParser) {
+        this.regexDataParser = regexDataParser;
     }
 
     public PatternDataParser getPatternDataParser() {

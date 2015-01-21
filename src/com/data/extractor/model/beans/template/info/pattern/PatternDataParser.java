@@ -1,7 +1,6 @@
 package com.data.extractor.model.beans.template.info.pattern;
 
 import com.data.extractor.controllers.*;
-import com.data.extractor.controllers.HeaderDataBean;
 import com.google.gson.annotations.Expose;
 
 import java.util.ArrayList;
