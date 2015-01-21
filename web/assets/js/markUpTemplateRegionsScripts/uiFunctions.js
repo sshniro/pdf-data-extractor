@@ -94,6 +94,12 @@ var drawingRouter = (function (baseUiComponent, selection){
             case 'picture':
                 vm.addPictureElement(rectangle);
                 break;
+            case 'regex':
+                vm.addRegexElement(rectangle);
+                break;
+            case 'pattern':
+                vm.addPatternElement(rectangle);
+                break;
         }
 
         vm.subElementSelectionInProgress(true);
@@ -108,6 +114,25 @@ var drawingRouter = (function (baseUiComponent, selection){
         rectangle.relevantData = response.extractedData;
         //The table selection allows to select an infinite amount of sub elements within the main table rectangle
         if (vm.currentSelection() === 'table') {
+            rectangle.elementId = baseUiComponent.id;
+            //Hide earlier meta for deco
+            $(".subElementDecoMeta").hide();
+            vm.addSubElement(rectangle)
+            $('#'+rectangle.id).css('cursor','default');
+            $('#'+baseUiComponent.id).css('cursor','crosshair');
+            selectionInitializer('#'+baseUiComponent.id+'.mainElement',drawingRouter,rectangle.id);
+        }
+        else if(vm.currentSelection() === 'regex'){
+            rectangle.elementId = baseUiComponent.id;
+            //Hide earlier meta for deco
+            $(".subElementDecoMeta").hide();
+            vm.addSubElement(rectangle)
+            $('#'+rectangle.id).css('cursor','default');
+            $('#'+baseUiComponent.id).css('cursor','crosshair');
+            selectionInitializer('#'+baseUiComponent.id+'.mainElement',drawingRouter,rectangle.id);
+
+        }
+        else if(vm.currentSelection() === 'pattern'){
             rectangle.elementId = baseUiComponent.id;
             //Hide earlier meta for deco
             $(".subElementDecoMeta").hide();

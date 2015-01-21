@@ -40,6 +40,17 @@ var getMainExtraction =  function(rectangleObject, dataType){
             data.extractedData = "Pulse Extractions Not implemented for Table, Select all column headers and click on [Extract Table]";
             ajaxReponse = data;
             break;
+        case 'regex':
+            var data = {};
+            data.extractedData = "Select Start Tags and End Tags to View Tag Extraction";
+            ajaxReponse = data;
+            break;
+        case 'pattern':
+            var data = {};
+            data.extractedData = "Select Start Tags and End Tags to View Tag Extraction";
+            ajaxReponse = data;
+            ajaxReponse = data;
+            break;
         case 'picture':
             var dataDTO = new ImageDataDTO(initData);
             var textDataElement = new ImageDataElementDTO(rectangleObject);
@@ -66,7 +77,6 @@ var getSubExtraction=  function(rectangleObject, dataType){
             dataDTO.textDataElements.push(textDataElement);
             //ajaxReponse = ajaxExtract('MarkUpTemplateRegionController',dataDTO,false,'POST');
             ajaxReponse = ajaxExtract(effectiveController,dataDTO,false,'POST');
-
             break;
         case 'table':
             var data = {};
@@ -78,6 +88,17 @@ var getSubExtraction=  function(rectangleObject, dataType){
             var data = {};
             data.extractedData = "Picture Sub Extraction Not Implemented";
             ajaxReponse = data;
+            break;
+        case 'regex':
+            //Reusing basic main text extraction
+            rectangleObject.dataType ="text";
+            ajaxReponse = getMainExtraction(rectangleObject,"text");
+            break;
+
+        case 'pattern':
+            //Reusing basic main text extraction
+            rectangleObject.dataType ="text";
+            ajaxReponse = getMainExtraction(rectangleObject,"text");
             break;
     }
     return ajaxReponse;
