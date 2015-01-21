@@ -87,20 +87,20 @@ public class PatternControllerServlet extends HttpServlet {
             String processing = null;
             String[] splits = null;
 
-            for (HeaderDataBean h : patternDataElement.getHeaderDataBeanList()){
-                try {
-                    splits = unprocessed.split(h.getStartTag(), 2);
-                    processing =splits[1];
-                    splits = processing.split(h.getEndTag(),2);
-                    h.setValue(splits[0]);
-                    extractedData.append("Text").append(" -(").append(h.getHeaderName()).append(") : ");
-                    extractedData.append(replaceNextLineChar(h.getValue()));
-                    extractedData.append("\n");
-                    //System.out.println(h.getValue());
-                }catch (ArrayIndexOutOfBoundsException e){
-                    e.printStackTrace();
-                }
-            }
+//            for (HeaderDataBean h : patternDataElement.getHeaderDataBeanList()){
+//                try {
+//                    splits = unprocessed.split(h.getStartTag(), 2);
+//                    processing =splits[1];
+//                    splits = processing.split(h.getEndTag(),2);
+//                    h.setValue(splits[0]);
+//                    extractedData.append("Text").append(" -(").append(h.getHeaderName()).append(") : ");
+//                    extractedData.append(replaceNextLineChar(h.getValue()));
+//                    extractedData.append("\n");
+//                    //System.out.println(h.getValue());
+//                }catch (ArrayIndexOutOfBoundsException e){
+//                    e.printStackTrace();
+//                }
+//            }
 
             ExtractResponse extractResponse = new ExtractResponse();
             extractResponse.setExtractedData(extractedData.toString());

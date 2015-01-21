@@ -13,34 +13,18 @@ public class PatternDataParser {
     @Expose
     String extractedId;
     @Expose
+    private String dataType;
+    @Expose
     private String pdfFile;
     @Expose
-    private List<TableDataBean> tableDataBeanList = new ArrayList<TableDataBean>();
-    @Expose
-    private List<HeaderDataBean> headerDataBeanList = new ArrayList<HeaderDataBean>();
+    private List<PatternDataElement> patternDataElementList = new ArrayList<PatternDataElement>();
 
-
-    public List<HeaderDataBean> getHeaderDataBeanList() {
-        return headerDataBeanList;
-    }
-
-    public void setHeaderDataBeanList(List<HeaderDataBean> headerDataBeanList) {
-        this.headerDataBeanList = headerDataBeanList;
-    }
     public String getExtractedId() {
         return extractedId;
     }
 
     public void setExtractedId(String extractedId) {
         this.extractedId = extractedId;
-    }
-
-    public List<TableDataBean> getTableDataBeanList() {
-        return tableDataBeanList;
-    }
-
-    public void setTableDataBeanList(List<TableDataBean> tableDataBeanList) {
-        this.tableDataBeanList = tableDataBeanList;
     }
 
     public String getId() {
@@ -57,5 +41,21 @@ public class PatternDataParser {
 
     public void setPdfFile(String pdfFile) {
         this.pdfFile = pdfFile;
+    }
+
+    public List<PatternDataElement> getPatternDataElementList() {
+        return patternDataElementList;
+    }
+
+    public void setPatternDataElementList(List<PatternDataElement> patternDataElementList) {
+        this.patternDataElementList = patternDataElementList;
+    }
+
+    public String getDataType() {
+        return dataType;
+    }
+
+    public void setDataType(String dataType) {
+        this.dataType = dataType;
     }
 }

@@ -157,6 +157,8 @@
                             <button id ="textSelect"  data-bind="click:textButton"  type="button" class="btn btn-default"><span class="glyphicon glyphicon-text-width"></span>ext</button>
                             <button id ="tableSelect"  data-bind="click:tableButton"  type="button" class="btn btn-default"><span class="glyphicon glyphicon-list-alt"></span>&nbsp;Table</button>
                             <button id ="pictureSelect" data-bind="click:pictureButton" type="button" class="btn btn-default"><span class="glyphicon glyphicon-picture"></span>&nbsp;Picture</button>
+                            <button id ="regexSelect" data-bind="click:regexButton" type="button" class="btn btn-default"><span class="glyphicon glyphicon-list-alt"></span>&nbsp;Regex</button>
+                            <button id ="patternSelect" data-bind="click:patternButton" type="button" class="btn btn-default"><span class="glyphicon glyphicon-list-alt"></span>&nbsp;Pattern</button>
                         </div>
                     </td></tr>
 
@@ -230,6 +232,7 @@
     <div data-bind="id:id, style:{left:uiData.metaStartX, top:uiData.metaStartY}" style="position:absolute;min-width:110px; padding:7px; z-index:1" >
         <!-- Meta/Dic elements-->
 
+        <!-- Dic element -->
         <div class="bs-docs-section elementDecoMeta" data-bind="id:id" style="position: relative; padding: 7px; float:left">
             <legend style="margin-bottom: 10px; font-size: 15px">Meta</legend>
             <div style="display:flex">
@@ -322,7 +325,6 @@
             <img class='extractedImage' style="margin-top: 20;" data-bind="visible:(elementType() == 'picture'),attr:{src: extractedData}"/>
         </div>
     </div>
-
     <div class="elementDecoTableExtract" style="position: absolute;" data-bind="style:{top:(uiData.extractedY() - 40), left:uiData.removeX()}, visible:(elementType() == 'table'), id:id" >
         <button id ="extractTable pull-right"  data-bind="click:$parent.extractTable" type="button" class="btn btn-default">Extract Table</button>
     </div>
