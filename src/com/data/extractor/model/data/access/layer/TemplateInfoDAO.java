@@ -147,6 +147,28 @@ public class TemplateInfoDAO {
         return tableDataParserList;
     }
 
+    public List<RegexDataParser> getRegexTemplateInfo(String id,String dataType){
+
+        BasicDBObject searchQuery = new BasicDBObject();
+        RegexDataParser regexDataParser;
+        List<RegexDataParser> regexDataParserList=new ArrayList<RegexDataParser>();
+
+        searchQuery.put("id", id);
+        searchQuery.put("dataType", dataType);
+
+        DBCursor templateCursor = infoColl.find(searchQuery);
+
+        while (templateCursor.hasNext()){
+            // If there is a Record Present parse the MongoObject returned
+            Gson gson = new Gson();
+            regexDataParser = gson.fromJson(templateCursor.next().toString()
+                    ,RegexDataParser.class);
+            regexDataParserList.add(regexDataParser);
+        }
+
+        return regexDataParserList;
+    }
+
 
     public void createTemplateInfo(String nodeId,String dataType,TextDataElement textDataElement){
 
