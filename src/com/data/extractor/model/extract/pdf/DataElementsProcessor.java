@@ -121,4 +121,11 @@ public class DataElementsProcessor {
         insertDataParser.setTableDataParser(tableDataParser);
         return insertDataParser;
     }
+
+    public InsertDataParser processRegexDataElements(InsertDataParser insertDataParser, ExtractStatus extractStatus, MongoClient mongoClient){
+
+
+
+        return insertDataParser;
+    }
 }

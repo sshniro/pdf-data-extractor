@@ -6,7 +6,6 @@ import com.data.extractor.model.beans.template.info.image.ImageDataParser;
 import com.data.extractor.model.beans.template.info.pattern.HeaderDataBean;
 import com.data.extractor.model.beans.template.info.pattern.PatternDataElement;
 import com.data.extractor.model.beans.template.info.pattern.PatternDataParser;
-import com.data.extractor.model.beans.template.info.pattern.TableDataBean;
 import com.data.extractor.model.beans.template.info.regex.RegexDataElement;
 import com.data.extractor.model.beans.template.info.regex.RegexDataParser;
 import com.data.extractor.model.beans.template.info.table.Column;
