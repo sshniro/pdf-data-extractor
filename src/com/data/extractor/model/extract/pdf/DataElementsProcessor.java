@@ -5,6 +5,8 @@ import com.data.extractor.model.beans.extract.pdf.ExtractStatus;
 import com.data.extractor.model.beans.template.info.image.ImageDataElement;
 import com.data.extractor.model.beans.template.info.image.ImageDataParser;
 import com.data.extractor.model.beans.template.info.insert.InsertDataParser;
+import com.data.extractor.model.beans.template.info.regex.RegexDataElement;
+import com.data.extractor.model.beans.template.info.regex.RegexDataParser;
 import com.data.extractor.model.beans.template.info.table.TableDataParser;
 import com.data.extractor.model.beans.template.info.text.TextDataElement;
 import com.data.extractor.model.beans.template.info.text.TextDataParser;
@@ -15,6 +17,7 @@ import com.data.extractor.model.extract.pdf.inserter.ExtractedTableInserter;
 import com.data.extractor.model.extract.pdf.inserter.ExtractedTextInserter;
 import com.data.extractor.model.extract.pdf.table.DataProcessor;
 import com.data.extractor.model.extractors.image.FullSelectionImageExtractor;
+import com.data.extractor.model.extractors.regex.RegexDataExtractor;
 import com.data.extractor.model.extractors.text.FullSelectionTextExtractor;
 import com.data.extractor.model.extractors.text.MetaSelectionTextExtractor;
 import com.data.extractor.model.template.markup.calculate.coordinates.ImageDataCoordinates;
@@ -36,7 +39,7 @@ public class DataElementsProcessor {
         this.dataInserter = new ExtractedDataInserter();
     }
 
-    public InsertDataParser processTextDataElements(InsertDataParser totalExtractedData , ExtractStatus extractStatus,MongoClient mongoClient) throws IOException {
+    public InsertDataParser processTextDataElements(InsertDataParser insertDataParser , ExtractStatus extractStatus,MongoClient mongoClient) throws IOException {
 
         List<TextDataParser> textDataList;
         TextDataParser textDataParser=null;
@@ -64,11 +67,11 @@ public class DataElementsProcessor {
             dataInserter.insert(textDataParser, extractStatus ,mongoClient);
         }
         /*  to present it to the extracted HTML   */
-        totalExtractedData.setTextDataParser(textDataParser);
-        return totalExtractedData;
+        insertDataParser.setTextDataParser(textDataParser);
+        return insertDataParser;
     }
 
-    public InsertDataParser processImageDataElements(InsertDataParser totalExtractedData , ExtractStatus extractStatus,MongoClient mongoClient) throws IOException {
+    public InsertDataParser processImageDataElements(InsertDataParser insertDataParser , ExtractStatus extractStatus,MongoClient mongoClient) throws IOException {
 
         List<ImageDataParser> imageDataList;
         ImageDataParser imageDataParser=null;
@@ -98,8 +101,8 @@ public class DataElementsProcessor {
         }
 
         /*  to present it to the extracted HTML   */
-        totalExtractedData.setImageDataParser(imageDataParser);
-        return totalExtractedData;
+        insertDataParser.setImageDataParser(imageDataParser);
+        return insertDataParser;
     }
 
     public InsertDataParser processTableDataElements(InsertDataParser insertDataParser , ExtractStatus extractStatus,MongoClient mongoClient) throws IOException, CryptographyException {
@@ -119,6 +122,36 @@ public class DataElementsProcessor {
         }
         /*  to present it to the extracted HTML   */
         insertDataParser.setTableDataParser(tableDataParser);
+        return insertDataParser;
+    }
+
+    public InsertDataParser processRegexDataElements(InsertDataParser insertDataParser, ExtractStatus extractStatus, MongoClient mongoClient) throws IOException {
+
+        List<RegexDataParser> regexDataParserList;
+        RegexDataParser regexDataParser = null;
+
+        regexDataParserList = templateInfoDAO.getRegexTemplateInfo(extractStatus.getParent() , "regex");
+
+        /* Check if no text data available to extract then skip*/
+        if(regexDataParserList.size() !=0 ){
+            /*  Only one record will exist to the text data for a given PDF */
+            regexDataParser =regexDataParserList.get(0);
+            List<RegexDataElement> regexDataElementList = regexDataParser.getRegexDataElementList();
+
+            PDDocument doc = PDDocument.load(extractStatus.getUploadedPdfFile());
+            String extractedText;
+
+            for (RegexDataElement r : regexDataElementList) {
+                RegexDataExtractor regexDataExtractor = new RegexDataExtractor();
+                if(r.getEndTag().equals("eol")){
+                    r.setEndTag(System.getProperty("line.separator"));
+                }
+                extractedText = regexDataExtractor.extract("text",r.getStartTag(),r.getEndTag());
+            }
+            dataInserter.insert(regexDataParser, extractStatus ,mongoClient);
+        }
+        /*  to present it to the extracted HTML   */
+        insertDataParser.setRegexDataParser(regexDataParser);
         return insertDataParser;
     }
 }

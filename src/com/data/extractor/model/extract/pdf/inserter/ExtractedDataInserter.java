@@ -3,6 +3,8 @@ package com.data.extractor.model.extract.pdf.inserter;
 import com.data.extractor.model.beans.extract.pdf.ExtractStatus;
 import com.data.extractor.model.beans.template.info.image.ImageDataElement;
 import com.data.extractor.model.beans.template.info.image.ImageDataParser;
+import com.data.extractor.model.beans.template.info.regex.RegexDataElement;
+import com.data.extractor.model.beans.template.info.regex.RegexDataParser;
 import com.data.extractor.model.beans.template.info.table.TableDataElement;
 import com.data.extractor.model.beans.template.info.table.TableDataParser;
 import com.data.extractor.model.beans.template.info.text.TextDataElement;
@@ -96,6 +98,34 @@ public class ExtractedDataInserter {
                 /* If record exists update the record */
                 extractedDataDAO.updateTemplateInfo(extractStatus.getId(),tableDataParser,tableDataElement);
             }
+        }
+    }
+
+    public void insert(RegexDataParser regexDataParser,ExtractStatus extractStatus,MongoClient mongoClient){
+
+        List<RegexDataElement> regexDataElementList= regexDataParser.getRegexDataElementList();
+        ExtractedDataDAO extractedDataDAO = new ExtractedDataDAO(mongoClient);
+        RegexDataElement regexDataElement;
+        int recordsSize=0;
+
+        for(int i=0;i<regexDataElementList.size();i++){
+
+            regexDataElement=regexDataElementList.get(i);
+
+            /* Only check once from the DB when the loop starts */
+//            if(i==0){
+//                recordsSize = extractedDataDAO.getRecordsSizeOfId(extractStatus.getId(),textDataParser.getDataType());
+//            }
+//
+//            if (recordsSize == 0) {
+//                /* If there is no record exists create a new record and insert */
+//                extractedDataDAO.createTemplateInfo(extractStatus.getId() , extractStatus.getParent() , textDataParser.getDataType(),textDataElement);
+//                recordsSize = 1;
+//
+//            } else {
+//                /* If record exists update the record */
+//                extractedDataDAO.updateTemplateInfo(extractStatus.getId(),textDataParser,textDataElement);
+//            }
         }
     }
 
