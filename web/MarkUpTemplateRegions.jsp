@@ -261,19 +261,19 @@
                 </div>
 
                 <!-- element type select -->
-                <div class="btn-group-vertical" role="group" data-bind="id:id, visible:(elementType() == 'table'), style:{left: (uiData.removeX()+15), top:uiData.removeY }">
-                    <button type="button" class="btn btn-primary" onclick="$(this).parent().next('div').show();$(this).parent().hide()">normal element</button>
-                    <button type="button" class="btn btn-primary">repeating element</button>
-                    <button type="button" class="btn btn-primary">non-ending element</button>
+                <div class="btn-group-vertical" role="group" data-bind="id:id, visible:((elementType() == 'regex' || elementType() == 'pattern') && !(isSubElementTypeSelected())), style:{left: (uiData.removeX()+15), top:uiData.removeY }">
+                    <button type="button" class="btn btn-primary" data-bind="click:selectElementType.bind($data, 'NE')">normal element</button>
+                    <button type="button" class="btn btn-primary" data-bind="click:selectElementType.bind($data, 'RE')">repeating element</button>
+                    <button type="button" class="btn btn-primary" data-bind="click:selectElementType.bind($data, 'NNE')">non-ending element</button>
                 </div>
 
                 <!-- element type tag -->
-                <div style="position: absolute;" data-bind="id:id, visible:(elementType() == 'table'), style:{left: (uiData.removeX()+15), top:uiData.removeY }">
-                    <button type="button" class="btn btn-warning" onclick="$(this).parent().hide();">NEE</button>
+                <div style="position: absolute;" data-bind="id:id, visible:((elementType() == 'regex' || elementType() == 'pattern') && (isSubElementTypeSelected())), style:{left: (uiData.removeX()+15), top:uiData.removeY }">
+                    <button type="button" class="btn btn-warning" data-bind="click:changeElementType"><span data-bind="text:subElementType"></span></button>
                 </div>
 
                 <!-- ending tag element -->
-                <div style="position: absolute;" data-bind="id:id, visible:(elementType() == 'table'), style:{left: (uiData.removeX()+65), top:uiData.removeY }">
+                <div style="position: absolute;" data-bind="id:id, visible:((elementType() == 'regex' || elementType() == 'pattern') && (isHavingEndTag())), style:{left: (uiData.removeX()+65), top:uiData.removeY }">
                     <span class="btn btn-default">ending: <span>selected 2nd tag data</span></span>
                 </div>
 
@@ -287,7 +287,7 @@
                 </button>
 
                 <!-- ending tag close button -->
-                <button  style="position: absolute; visibility:visible; margin-top:-11; height:24; width:25; border-radius: 50%" data-bind="style:{left: (uiData.removeX()+63), top:uiData.removeY}" type="button" class="btn btn-default btn-xs removeSubElement">
+                <button  style="position: absolute; visibility:visible; margin-top:-11; height:24; width:25; border-radius: 50%" data-bind="id:id, visible:((elementType() == 'regex' || elementType() == 'pattern') && (isHavingEndTag())), style:{left: (uiData.removeX()+63), top:uiData.removeY}" type="button" class="btn btn-default btn-xs removeSubElement">
                     <span class="glyphicon glyphicon-remove-circle"></span>
                 </button>
 
