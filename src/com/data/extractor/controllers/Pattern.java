@@ -1,7 +1,7 @@
 package com.data.extractor.controllers;
 
-import com.data.extractor.model.beans.template.info.pattern.ColumnDataBean;
-import com.data.extractor.model.beans.template.info.pattern.TableDataBean;
+import com.data.extractor.model.beans.template.info.pattern.ColumnDataElement;
+import com.data.extractor.model.beans.template.info.regex.RegexDataElement;
 import com.data.extractor.model.beans.template.info.table.Cell;
 import org.apache.pdfbox.cos.COSDocument;
 import org.apache.pdfbox.pdfparser.PDFParser;
@@ -69,72 +69,104 @@ public class Pattern {
         String processing = null;
         String[] splits = null;
 
-        List<TableDataBean> tableDataBeans = new ArrayList<TableDataBean>();
 
-        TableDataBean ta1=new TableDataBean();
-        ta1.setTableName("VSC Color Cde:");
+        List<RegexDataElement> regexDataElementList = new ArrayList<RegexDataElement>();
 
+        RegexDataElement r1 = new RegexDataElement();
+        r1.setRegexName("Vendor Name");
+        r1.setStartTag("Vendor Name:");
+        r1.setEndTag("eol");
 
-        List<ColumnDataBean> columnDataBeanList = new ArrayList<ColumnDataBean>();
+        regexDataElementList.add(r1);
 
-        ColumnDataBean c1= new ColumnDataBean();
-        c1.setColumnName("VSC Color Cde");
-        c1.setColumnStartTag("VSC Color Cde:");
-        c1.setColumnEndTag("VSS Color Code:");
-
-
-        ColumnDataBean c2= new ColumnDataBean();
-        c2.setColumnName("Size");
-        c2.setColumnStartTag("Size:");
-        c2.setColumnEndTag("Qty Ordered:");
-
-        columnDataBeanList.add(c1);
-        columnDataBeanList.add(c2);
-
-        ta1.setColumnDataBeanList(columnDataBeanList);
-
-        tableDataBeans.add(ta1);
-
-        String table =null;
-        List<ColumnDataBean> columnDataBeanList2=null;
-        List<Cell> cellList=null;
-        for(TableDataBean ta : tableDataBeans){
-
-            columnDataBeanList2 = ta.getColumnDataBeanList();
-            for(ColumnDataBean c:columnDataBeanList2){
-                cellList = new ArrayList<Cell>();
-                Cell cell;
-                /* c.startTag : column 1 -> splits[0] = xx + startTag , splits[1] = rest of the table [ROT] */
-                splits = unprocessed.split(c.getColumnStartTag(), 2);
-                try {
-                    /* splits[1] = c.startTag + ROT */
-                    //splits[1] =  splits [1];
-                    /* If this column is the last column */
-                    if(c.getColumnEndTag().equals("eol")){
-                        // Code to break the text when eol occurs
-                    }else {
-                        splits = splits[1].split(c.getColumnEndTag(),2);
-                        /* splits[1] = c.endTag + ROT */
-                        splits[1] = c.getColumnEndTag() + splits [1];
-                        cell = new Cell();
-                        cell.setValue(splits[0]);
-                        cellList.add(cell);
-                    }
-                }catch (ArrayIndexOutOfBoundsException e){
-                    /* No columns start tag found in the text */
-                    break;
+        for(RegexDataElement r : regexDataElementList){
+            try {
+                splits = unprocessed.split(r.getStartTag(),2);
+                if(r.getEndTag().equals("eol")){
+                    splits = splits[1].split(System.getProperty("line.separator"),2);
+                }else {
+                    splits = splits[1].split(r.getEndTag(),2);
                 }
-            }
 
-            splits = unprocessed.split(ta.getTableStartTag(), 2);
-            try{
-                table = ta.getTableStartTag() + splits[1];
-                splits = table.split(ta.getTableEndTag(),2);
+                try {
+                    r.setValue(splits[0]);
+                }catch (ArrayIndexOutOfBoundsException e){
+                    System.out.println("No match found for the end tag : " + r.getEndTag());
+                }
             }catch (ArrayIndexOutOfBoundsException e){
-                // No table with specified name exists in the text
-                e.printStackTrace();
-                break;
+                System.out.println("No match found for the start tag : "+ r.getStartTag());
             }
+        }
+
+
+
+//
+//        List<TableDataBean> tableDataBeans = new ArrayList<TableDataBean>();
+//
+//        TableDataBean ta1=new TableDataBean();
+//        ta1.setTableName("VSC Color Cde:");
+//
+//
+//        List<ColumnDataElement> columnDataElementList = new ArrayList<ColumnDataElement>();
+//
+//        ColumnDataElement c1= new ColumnDataElement();
+//        c1.setColumnName("VSC Color Cde");
+//        c1.setColumnStartTag("VSC Color Cde:");
+//        c1.setColumnEndTag("VSS Color Code:");
+//
+//
+//        ColumnDataElement c2= new ColumnDataElement();
+//        c2.setColumnName("Size");
+//        c2.setColumnStartTag("Size:");
+//        c2.setColumnEndTag("Qty Ordered:");
+//
+//        columnDataElementList.add(c1);
+//        columnDataElementList.add(c2);
+//
+//        ta1.setColumnDataElementList(columnDataElementList);
+//
+//        tableDataBeans.add(ta1);
+//
+//        String table =null;
+//        List<ColumnDataElement> columnDataElementList2 =null;
+//        List<Cell> cellList=null;
+//        for(TableDataBean ta : tableDataBeans){
+//
+//            columnDataElementList2 = ta.getColumnDataElementList();
+//            for(ColumnDataElement c: columnDataElementList2){
+//                cellList = new ArrayList<Cell>();
+//                Cell cell;
+//                /* c.startTag : column 1 -> splits[0] = xx + startTag , splits[1] = rest of the table [ROT] */
+//                splits = unprocessed.split(c.getColumnStartTag(), 2);
+//                try {
+//                    /* splits[1] = c.startTag + ROT */
+//                    //splits[1] =  splits [1];
+//                    /* If this column is the last column */
+//                    if(c.getColumnEndTag().equals("eol")){
+//                        // Code to break the text when eol occurs
+//                    }else {
+//                        splits = splits[1].split(c.getColumnEndTag(),2);
+//                        /* splits[1] = c.endTag + ROT */
+//                        splits[1] = c.getColumnEndTag() + splits [1];
+//                        cell = new Cell();
+//                        cell.setValue(splits[0]);
+//                        cellList.add(cell);
+//                    }
+//                }catch (ArrayIndexOutOfBoundsException e){
+//                    /* No columns start tag found in the text */
+//                    break;
+//                }
+//            }
+//
+//            splits = unprocessed.split(ta.getTableStartTag(), 2);
+//            try{
+//                table = ta.getTableStartTag() + splits[1];
+//                splits = table.split(ta.getTableEndTag(),2);
+//            }catch (ArrayIndexOutOfBoundsException e){
+//                // No table with specified name exists in the text
+//                e.printStackTrace();
+//                break;
+//            }
 
 
                 
@@ -145,7 +177,7 @@ public class Pattern {
 
 
 
-}
+//}
 
 //        PatternDataElement patternDataElement;
 //

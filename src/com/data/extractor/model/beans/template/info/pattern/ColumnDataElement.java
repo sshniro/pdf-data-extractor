@@ -5,7 +5,8 @@ import com.data.extractor.model.beans.template.info.table.Cell;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ColumnDataBean {
+public class ColumnDataElement {
+
     private String columnStartTag;
     private String columnEndTag;
     private String columnName;
