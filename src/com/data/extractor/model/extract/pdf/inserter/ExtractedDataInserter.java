@@ -103,14 +103,14 @@ public class ExtractedDataInserter {
 
     public void insert(RegexDataParser regexDataParser,ExtractStatus extractStatus,MongoClient mongoClient){
 
-        List<RegexDataElement> regexDataElementList= regexDataParser.getRegexDataElementList();
+        List<RegexDataElement> regexDataElementList= regexDataParser.getRegexDataElements();
         ExtractedDataDAO extractedDataDAO = new ExtractedDataDAO(mongoClient);
         RegexDataElement regexDataElement;
         int recordsSize=0;
 
         for(int i=0;i<regexDataElementList.size();i++){
 
-            regexDataElement=regexDataElementList.get(i);
+            regexDataElement = regexDataElementList.get(i);
 
             /* Only check once from the DB when the loop starts */
 //            if(i==0){

@@ -1,6 +1,7 @@
 package com.data.extractor.controllers;
 
 import com.data.extractor.model.beans.template.info.pattern.ColumnDataElement;
+import com.data.extractor.model.beans.template.info.pattern.PatternDataElement;
 import com.data.extractor.model.beans.template.info.regex.RegexDataElement;
 import com.data.extractor.model.beans.template.info.table.Cell;
 import org.apache.pdfbox.cos.COSDocument;
@@ -73,7 +74,7 @@ public class Pattern {
         List<RegexDataElement> regexDataElementList = new ArrayList<RegexDataElement>();
 
         RegexDataElement r1 = new RegexDataElement();
-        r1.setRegexName("Vendor Name");
+        r1.setMetaName("Vendor Name");
         r1.setStartTag("Vendor Name:");
         r1.setEndTag("eol");
 
@@ -96,6 +97,53 @@ public class Pattern {
             }catch (ArrayIndexOutOfBoundsException e){
                 System.out.println("No match found for the start tag : "+ r.getStartTag());
             }
+        }
+
+        List<PatternDataElement> patternDataElementList = new ArrayList<PatternDataElement>();
+
+        PatternDataElement p1 = new PatternDataElement();
+        List<RegexDataElement> regexDataElementList1 = new ArrayList<RegexDataElement>();
+        List<ColumnDataElement> columnDataElementList = new ArrayList<ColumnDataElement>();
+
+        RegexDataElement r2= new RegexDataElement();
+        r2.setStartTag("heelo");
+        r2.setEndTag("");
+        r2.setMetaName("");
+
+        regexDataElementList1.add(r2);
+
+        ColumnDataElement c1=new ColumnDataElement();
+
+        c1.setColumnName("");
+        c1.setColumnStartTag("");
+        c1.setColumnEndTag("");
+
+        ColumnDataElement c2 = new ColumnDataElement();
+
+        c2.setColumnName("");
+        c2.setColumnStartTag("");
+        c2.setColumnEndTag("");
+
+        columnDataElementList.add(c1);
+        columnDataElementList.add(c2);
+
+        List<List<Cell>> complexCellList = new ArrayList<List<Cell>>();
+        List<Cell> cellList = new ArrayList<Cell>();
+
+        for (ColumnDataElement c : columnDataElementList){
+
+            splits = unprocessed.split(c.getColumnStartTag(),2);
+
+            if(c.getColumnEndTag().equals("eol")){
+                splits  = splits[1].split(System.getProperty("line.separator"),2);
+            }else {
+                splits  = splits[1].split(c.getColumnEndTag(),2);
+            }
+
+            splits[1] = c.getColumnEndTag() + splits[1];
+            String cellValue = splits[0];
+
+
         }
 
 

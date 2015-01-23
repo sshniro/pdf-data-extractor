@@ -12,9 +12,6 @@ import com.data.extractor.model.beans.template.info.text.TextDataElement;
 import com.data.extractor.model.beans.template.info.text.TextDataParser;
 import com.data.extractor.model.data.access.layer.TemplateInfoDAO;
 import com.data.extractor.model.extract.pdf.inserter.ExtractedDataInserter;
-import com.data.extractor.model.extract.pdf.inserter.ExtractedImageInserter;
-import com.data.extractor.model.extract.pdf.inserter.ExtractedTableInserter;
-import com.data.extractor.model.extract.pdf.inserter.ExtractedTextInserter;
 import com.data.extractor.model.extract.pdf.table.DataProcessor;
 import com.data.extractor.model.extractors.image.FullSelectionImageExtractor;
 import com.data.extractor.model.extractors.regex.RegexDataExtractor;
@@ -136,7 +133,7 @@ public class DataElementsProcessor {
         if(regexDataParserList.size() !=0 ){
             /*  Only one record will exist to the text data for a given PDF */
             regexDataParser =regexDataParserList.get(0);
-            List<RegexDataElement> regexDataElementList = regexDataParser.getRegexDataElementList();
+            List<RegexDataElement> regexDataElementList = regexDataParser.getRegexDataElements();
 
             PDDocument doc = PDDocument.load(extractStatus.getUploadedPdfFile());
             String extractedText;

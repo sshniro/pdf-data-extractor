@@ -1,6 +1,5 @@
 package com.data.extractor.model.beans.template.info.regex;
 
-import com.data.extractor.model.beans.template.info.pattern.HeaderDataBean;
 import com.google.gson.annotations.Expose;
 
 import java.util.ArrayList;
@@ -15,7 +14,7 @@ public class RegexDataParser {
     @Expose
     private String pdfFile;
     @Expose
-    private List<RegexDataElement> regexDataElementList = new ArrayList<RegexDataElement>();
+    private List<RegexDataElement> regexDataElements = new ArrayList<RegexDataElement>();
 
     public String getId() {
         return id;
@@ -41,11 +40,11 @@ public class RegexDataParser {
         this.pdfFile = pdfFile;
     }
 
-    public List<RegexDataElement> getRegexDataElementList() {
-        return regexDataElementList;
+    public List<RegexDataElement> getRegexDataElements() {
+        return regexDataElements;
     }
 
-    public void setRegexDataElementList(List<RegexDataElement> regexDataElementList) {
-        this.regexDataElementList = regexDataElementList;
+    public void setRegexDataElements(List<RegexDataElement> regexDataElements) {
+        this.regexDataElements = regexDataElements;
     }
 }

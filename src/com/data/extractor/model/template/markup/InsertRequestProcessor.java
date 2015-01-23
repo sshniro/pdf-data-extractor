@@ -93,7 +93,7 @@ public class InsertRequestProcessor {
 
         }
 
-        if(regexDataParser != null && regexDataParser.getRegexDataElementList().size() != 0){
+        if(regexDataParser != null && regexDataParser.getRegexDataElements().size() != 0){
 
             PatternDataInserter patternDataInserter = new PatternDataInserter();
             RegexDataInserter regexDataInserter = new RegexDataInserter();
