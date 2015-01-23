@@ -4,6 +4,9 @@ package com.data.extractor.model.beans.template.info.regex;
 import com.google.gson.annotations.Expose;
 
 public class RegexPairElement {
+
+    @Expose
+    private String metaName;
     @Expose
     private String value;
     @Expose
@@ -33,5 +36,13 @@ public class RegexPairElement {
 
     public void setRegexEndElement(RegexEndElement regexEndElement) {
         this.regexEndElement = regexEndElement;
+    }
+
+    public String getMetaName() {
+        return metaName;
+    }
+
+    public void setMetaName(String metaName) {
+        this.metaName = metaName;
     }
 }

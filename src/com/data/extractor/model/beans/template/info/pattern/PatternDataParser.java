@@ -17,15 +17,7 @@ public class PatternDataParser {
     @Expose
     private String pdfFile;
     @Expose
-    private List<PatternDataElement> patternDataElementList = new ArrayList<PatternDataElement>();
-
-    public String getExtractedId() {
-        return extractedId;
-    }
-
-    public void setExtractedId(String extractedId) {
-        this.extractedId = extractedId;
-    }
+    private List<PatternDataElement> patternDataElements = new ArrayList<PatternDataElement>();
 
     public String getId() {
         return id;
@@ -43,19 +35,19 @@ public class PatternDataParser {
         this.pdfFile = pdfFile;
     }
 
-    public List<PatternDataElement> getPatternDataElementList() {
-        return patternDataElementList;
-    }
-
-    public void setPatternDataElementList(List<PatternDataElement> patternDataElementList) {
-        this.patternDataElementList = patternDataElementList;
-    }
-
     public String getDataType() {
         return dataType;
     }
 
     public void setDataType(String dataType) {
         this.dataType = dataType;
+    }
+
+    public List<PatternDataElement> getPatternDataElements() {
+        return patternDataElements;
+    }
+
+    public void setPatternDataElements(List<PatternDataElement> patternDataElements) {
+        this.patternDataElements = patternDataElements;
     }
 }

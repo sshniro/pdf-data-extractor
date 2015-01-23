@@ -2,10 +2,7 @@ package com.data.extractor.controllers;
 
 import com.data.extractor.model.beans.template.info.RawDataElement;
 import com.data.extractor.model.beans.template.info.insert.InsertDataParser;
-import com.data.extractor.model.beans.template.info.regex.RegexDataElement;
-import com.data.extractor.model.beans.template.info.regex.RegexEndElement;
-import com.data.extractor.model.beans.template.info.regex.RegexPairElement;
-import com.data.extractor.model.beans.template.info.regex.RegexStartElement;
+import com.data.extractor.model.beans.template.info.regex.*;
 import com.data.extractor.model.beans.template.info.table.TableDataElement;
 import com.data.extractor.model.beans.template.info.table.TableDataParser;
 import com.data.extractor.model.data.access.layer.TemplateInfoDAO;
@@ -49,7 +46,16 @@ public class Testing {
 
         TemplateInfoDAO templateInfoDAO = new TemplateInfoDAO(mongoClient);
 
+        List<RegexDataElement> regexDataElementList = new ArrayList<RegexDataElement>();
+        regexDataElementList.add( regexDataElement);
+
+        RegexDataParser regexDataParser = new RegexDataParser();
+        regexDataParser.setRegexDataElements(regexDataElementList);
+        regexDataParser.setId("1");
+        regexDataParser.setDataType("regex");
+
         templateInfoDAO.createTemplateInfo("1","regex",regexDataElement);
+        templateInfoDAO.updateTemplateInfo(regexDataParser,regexDataElement);
 
     }
 

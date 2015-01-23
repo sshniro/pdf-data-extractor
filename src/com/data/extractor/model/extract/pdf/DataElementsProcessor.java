@@ -138,6 +138,7 @@ public class DataElementsProcessor {
             String extractedText;
 
             for (RegexDataElement r : regexDataElementList) {
+
                 RegexDataExtractor regexDataExtractor = new RegexDataExtractor();
                 List<RegexPairElement> regexPairElementList= r.getRegexPairElements();
 
@@ -149,6 +150,7 @@ public class DataElementsProcessor {
                         regexEndElement.setTag(System.getProperty("line.separator"));
                     }
                     extractedText = regexDataExtractor.extract("text",regexStartElement.getTag(),regexEndElement.getTag());
+                    regex.setValue(extractedText);
                 }
             }
             dataInserter.insert(regexDataParser, extractStatus ,mongoClient);

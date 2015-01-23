@@ -109,42 +109,42 @@ public class Pattern {
 //        r2.setStartTag("heelo");
 //        r2.setEndTag("");
 //        r2.setMetaName("");
-
-        regexDataElementList1.add(r2);
-
-        ColumnDataElement c1=new ColumnDataElement();
-
-        c1.setColumnName("");
-        c1.setColumnStartTag("");
-        c1.setColumnEndTag("");
-
-        ColumnDataElement c2 = new ColumnDataElement();
-
-        c2.setColumnName("");
-        c2.setColumnStartTag("");
-        c2.setColumnEndTag("");
-
-        columnDataElementList.add(c1);
-        columnDataElementList.add(c2);
-
-        List<List<Cell>> complexCellList = new ArrayList<List<Cell>>();
-        List<Cell> cellList = new ArrayList<Cell>();
-
-        for (ColumnDataElement c : columnDataElementList){
-
-            splits = unprocessed.split(c.getColumnStartTag(),2);
-
-            if(c.getColumnEndTag().equals("eol")){
-                splits  = splits[1].split(System.getProperty("line.separator"),2);
-            }else {
-                splits  = splits[1].split(c.getColumnEndTag(),2);
-            }
-
-            splits[1] = c.getColumnEndTag() + splits[1];
-            String cellValue = splits[0];
-
-
-        }
+//
+//        regexDataElementList1.add(r2);
+//
+//        ColumnDataElement c1=new ColumnDataElement();
+//
+//        c1.setColumnName("");
+//        c1.setColumnStartTag("");
+//        c1.setColumnEndTag("");
+//
+//        ColumnDataElement c2 = new ColumnDataElement();
+//
+//        c2.setColumnName("");
+//        c2.setColumnStartTag("");
+//        c2.setColumnEndTag("");
+//
+//        columnDataElementList.add(c1);
+//        columnDataElementList.add(c2);
+//
+//        List<List<Cell>> complexCellList = new ArrayList<List<Cell>>();
+//        List<Cell> cellList = new ArrayList<Cell>();
+//
+//        for (ColumnDataElement c : columnDataElementList){
+//
+//            splits = unprocessed.split(c.getColumnStartTag(),2);
+//
+//            if(c.getColumnEndTag().equals("eol")){
+//                splits  = splits[1].split(System.getProperty("line.separator"),2);
+//            }else {
+//                splits  = splits[1].split(c.getColumnEndTag(),2);
+//            }
+//
+//            splits[1] = c.getColumnEndTag() + splits[1];
+//            String cellValue = splits[0];
+//
+//
+//        }
 
 
 

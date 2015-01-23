@@ -3,6 +3,7 @@ package com.data.extractor.model.testing;
 import com.data.extractor.model.beans.template.info.image.ImageDataElement;
 import com.data.extractor.model.beans.template.info.image.ImageDataParser;
 import com.data.extractor.model.beans.template.info.insert.InsertDataParser;
+import com.data.extractor.model.beans.template.info.regex.*;
 import com.data.extractor.model.beans.template.info.table.Cell;
 import com.data.extractor.model.beans.template.info.table.Column;
 import com.data.extractor.model.beans.template.info.table.TableDataElement;
@@ -20,6 +21,7 @@ public class DataExtractor {
         TextDataParser textDataParser = data.getTextDataParser();
         ImageDataParser imageDataParser = data.getImageDataParser();
         TableDataParser tableDataParser = data.getTableDataParser();
+        RegexDataParser regexDataParser= data.getRegexDataParser();
 
         StringBuilder sb=new StringBuilder("");
 
@@ -89,6 +91,21 @@ public class DataExtractor {
                         }
                     }
                 sb.append("\n");
+                }
+            }
+        }
+
+        if(regexDataParser != null){
+            List<RegexDataElement> regexDataElementList = regexDataParser.getRegexDataElements();
+
+            for (RegexDataElement regexElement : regexDataElementList){
+                List<RegexPairElement> regexPairElementList = regexElement.getRegexPairElements();
+
+                for (RegexPairElement regexPair : regexPairElementList){
+                    if(regexPair.getMetaName() == null){
+                        regexPair.setMetaName("Text : ");
+                    }
+                    sb.append(regexPair.getMetaName()).append(" : " ).append(regexPair.getValue()).append("\n");
                 }
             }
         }

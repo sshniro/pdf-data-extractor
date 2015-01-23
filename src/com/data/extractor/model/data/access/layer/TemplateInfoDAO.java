@@ -3,7 +3,6 @@ package com.data.extractor.model.data.access.layer;
 import com.data.extractor.model.beans.template.info.RawDataElement;
 import com.data.extractor.model.beans.template.info.image.ImageDataElement;
 import com.data.extractor.model.beans.template.info.image.ImageDataParser;
-import com.data.extractor.model.beans.template.info.pattern.HeaderDataBean;
 import com.data.extractor.model.beans.template.info.pattern.PatternDataElement;
 import com.data.extractor.model.beans.template.info.pattern.PatternDataParser;
 import com.data.extractor.model.beans.template.info.regex.*;
@@ -35,7 +34,6 @@ public class TemplateInfoDAO {
 
 
     /* Method remove all text image and table data elements from the collection */
-
     public void removeTemplateInfo(String mainCategory){
 
         BasicDBObject searchQuery = new BasicDBObject();
@@ -44,7 +42,6 @@ public class TemplateInfoDAO {
     }
 
     /* Method remove all text image and table data elements from the collection */
-
     public void removeTemplateInfo(String mainCategory,String subCategory){
 
         BasicDBObject searchQuery = new BasicDBObject();
@@ -54,7 +51,6 @@ public class TemplateInfoDAO {
     }
 
     /* Method remove all text image and table data elements from the collection */
-
     public void removeTemplateInfo(String mainCategory,String subCategory,String templateName){
 
         BasicDBObject searchQuery = new BasicDBObject();
@@ -68,7 +64,6 @@ public class TemplateInfoDAO {
     /* @Returns the size of the templateInfo record size for the given mainCat , subCat , tempName , dataType
     * Used preliminary before creating a new record to check whether if there already a record exists
     * */
-
     // TODO override this method from templates
     public int getTemplateInfoSize(String nodeId, String dataType){
         BasicDBObject searchQuery = new BasicDBObject();
@@ -390,16 +385,17 @@ public class TemplateInfoDAO {
 //        rawDataElement.put("baseUiComponentWidth", rawData.getBaseUiComponentWidth());
 //        rawDataElement.put("baseUiComponentHeight", rawData.getBaseUiComponentHeight());
 
-        BasicDBObject regexSingleElementObj = new BasicDBObject();
+        BasicDBObject regexElementObj = new BasicDBObject();
 
-        regexSingleElementObj.put("metaName",regexDataElement.getMetaName());
-        regexSingleElementObj.put("dictionaryId",regexDataElement.getDictionaryId());
+        regexElementObj.put("metaName", regexDataElement.getMetaName());
+        regexElementObj.put("dictionaryId", regexDataElement.getDictionaryId());
 //        regexSingleElementObj.put("rawData",regexDataElement.getRawData());
 
 
         List<RegexPairElement> regexPairElements= regexDataElement.getRegexPairElements();
         RegexStartElement regexStartElement;
         RegexEndElement regexEndElement;
+
         BasicDBObject regexPairObj = new BasicDBObject();
         ArrayList regexPairData = new ArrayList();
 
@@ -411,20 +407,16 @@ public class TemplateInfoDAO {
             BasicDBObject startElementObj = new BasicDBObject();
             BasicDBObject endElementObj = new BasicDBObject();
 
-            startElementObj.put("startTag",regexStartElement.getTag());
-            startElementObj.put("endTag",regexStartElement.getTag());
-
-            endElementObj.put("startTag",regexEndElement.getTag());
-            endElementObj.put("endTag",regexEndElement.getTag());
+            startElementObj.put("tag",regexStartElement.getTag());
+            endElementObj.put("tag",regexEndElement.getTag());
 
             regexPairData.add(new BasicDBObject("regexStartElement",startElementObj)
                         .append("regexEndElement",endElementObj));
 
         }
-        regexSingleElementObj.put("regexPairElements",regexPairData);
 
-        regexDataElementsInsert.add(regexSingleElementObj);
-
+        regexElementObj.put("regexPairElements", regexPairData);
+        regexDataElementsInsert.add(regexElementObj);
         insertObject.put("regexDataElements", regexDataElementsInsert);
 
         infoColl.insert(insertObject);
@@ -707,34 +699,10 @@ public class TemplateInfoDAO {
 
         searchQuery.put("id", regexDataParser.getId());
         searchQuery.put("dataType", regexDataParser.getDataType());
+        List<BasicDBObject> regexDataElementsInsert = new ArrayList<BasicDBObject>();
 
-        BasicDBObject regexElementObj = new BasicDBObject();
-
-        regexElementObj.put("regexName",regexDataElement.getMetaName());
-//        regexElementObj.put("startTag",regexDataElement.getStartTag());
-//        regexElementObj.put("endTag",regexDataElement.getEndTag());
-
-//        textElementObject.put("metaId", textDataElement.getMetaId());
-//        textElementObject.put("metaName", textDataElement.getMetaName());
-//        textElementObject.put("elementId", textDataElement.getElementId());
-//        /* Dictionary Specifications */
-//        textElementObject.put("dictionaryId", textDataElement.getDictionaryId());
-//        textElementObject.put("dictionaryName", textDataElement.getDictionaryName());
-//        textElementObject.put("pageNumber", textDataElement.getPageNumber());
-//        textElementObject.put("pageRotation", textDataElement.getPageRotation());
-//
-//        textElementObject.put("totalX1", textDataElement.getTotalX1());
-//        textElementObject.put("totalY1", textDataElement.getTotalY1());
-//        textElementObject.put("totalWidth", textDataElement.getTotalWidth());
-//        textElementObject.put("totalHeight", textDataElement.getTotalHeight());
-//
-//        textElementObject.put("metaX1", textDataElement.getMetaX1());
-//        textElementObject.put("metaY1", textDataElement.getMetaY1());
-//        textElementObject.put("metaWidth", textDataElement.getMetaWidth());
-//        textElementObject.put("metaHeight", textDataElement.getMetaHeight());
-
-//        BasicDBObject rawDataElement = new BasicDBObject();
-//        RawDataElement rawData= textDataElement.getRawData();
+        BasicDBObject rawDataElement = new BasicDBObject();
+//        RawDataElement rawData= regexDataElement.getRawData();
 //        rawDataElement.put("id", rawData.getId());
 //        rawDataElement.put("elementId", rawData.getElementId());
 //        rawDataElement.put("elementType", rawData.getElementType());
@@ -747,25 +715,37 @@ public class TemplateInfoDAO {
 //        rawDataElement.put("baseUiComponentStartY", rawData.getBaseUiComponentStartY());
 //        rawDataElement.put("baseUiComponentWidth", rawData.getBaseUiComponentWidth());
 //        rawDataElement.put("baseUiComponentHeight", rawData.getBaseUiComponentHeight());
-//
-//        RawDataElement metaRawData = textDataElement.getMetaRawData();
-//        BasicDBObject metaRawDataElement = new BasicDBObject();
 
-//        metaRawDataElement.put("id", metaRawData.getId());
-//        metaRawDataElement.put("elementId", metaRawData.getElementId());
-//        metaRawDataElement.put("elementType", metaRawData.getElementType());
-//        metaRawDataElement.put("page", metaRawData.getPage());
-//        metaRawDataElement.put("startX",metaRawData.getStartX());
-//        metaRawDataElement.put("startY", metaRawData.getStartY());
-//        metaRawDataElement.put("width", metaRawData.getWidth());
-//        metaRawDataElement.put("height", metaRawData.getHeight());
-//        metaRawDataElement.put("baseUiComponentStartX", metaRawData.getBaseUiComponentStartX());
-//        metaRawDataElement.put("baseUiComponentStartY", metaRawData.getBaseUiComponentStartY());
-//        metaRawDataElement.put("baseUiComponentWidth", metaRawData.getBaseUiComponentWidth());
-//        metaRawDataElement.put("baseUiComponentHeight", metaRawData.getBaseUiComponentHeight());
+        BasicDBObject regexElementObj = new BasicDBObject();
 
-//        regexElementObj.put("rawData" , rawDataElement);
-//        regexElementObj.put("metaRawData" , metaRawDataElement);
+        regexElementObj.put("metaName", regexDataElement.getMetaName());
+        regexElementObj.put("dictionaryId", regexDataElement.getDictionaryId());
+//        regexSingleElementObj.put("rawData",regexDataElement.getRawData());
+
+
+        List<RegexPairElement> regexPairElements= regexDataElement.getRegexPairElements();
+        RegexStartElement regexStartElement;
+        RegexEndElement regexEndElement;
+
+        BasicDBObject regexPairObj = new BasicDBObject();
+        ArrayList regexPairData = new ArrayList();
+
+        for (RegexPairElement r : regexPairElements){
+
+            regexStartElement = r.getRegexStartElement();
+            regexEndElement = r.getRegexEndElement();
+
+            BasicDBObject startElementObj = new BasicDBObject();
+            BasicDBObject endElementObj = new BasicDBObject();
+
+            startElementObj.put("tag",regexStartElement.getTag());
+            endElementObj.put("tag",regexEndElement.getTag());
+
+            regexPairData.add(new BasicDBObject("regexStartElement",startElementObj)
+                    .append("regexEndElement",endElementObj));
+
+        }
+        regexElementObj.put("regexPairElements", regexPairData);
 
         BasicDBObject updateObject = new BasicDBObject();
         updateObject.put("$push", new BasicDBObject("regexDataElements", regexElementObj));
