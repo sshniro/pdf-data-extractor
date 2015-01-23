@@ -175,6 +175,22 @@ function SubDataElement(rectangle){
     self.elementType = ko.observable(rectangle.elementType);
     self.metaName = ko.observable();
 
+    //Used for Pattern and regex workflows/////////////////
+    self.subElementType = ko.observable('');
+    self.isSubElementTypeSelected = ko.observable(false);
+    self.subElementEndTag = ko.observable('');
+    self.isHavingEndTag = ko.observable(false);
+
+    self.selectElementType = function(data,element){
+        self.subElementType(data);
+        self.isSubElementTypeSelected(true);
+    }
+
+    self.changeElementType = function(){
+        self.isSubElementTypeSelected(false);
+    }
+    /////////////////////////////////////////////////////
+
     self.elementViseCurrentDic = ko.observable(ko.utils.unwrapObservable(vm.currentDic));
     self.selectedDictionaryItem = ko.observable();
     if(rectangle.selectedDictionaryItem !== undefined){
