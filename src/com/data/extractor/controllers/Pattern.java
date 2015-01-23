@@ -73,31 +73,31 @@ public class Pattern {
 
         List<RegexDataElement> regexDataElementList = new ArrayList<RegexDataElement>();
 
-        RegexDataElement r1 = new RegexDataElement();
-        r1.setMetaName("Vendor Name");
-        r1.setStartTag("Vendor Name:");
-        r1.setEndTag("eol");
-
-        regexDataElementList.add(r1);
-
-        for(RegexDataElement r : regexDataElementList){
-            try {
-                splits = unprocessed.split(r.getStartTag(),2);
-                if(r.getEndTag().equals("eol")){
-                    splits = splits[1].split(System.getProperty("line.separator"),2);
-                }else {
-                    splits = splits[1].split(r.getEndTag(),2);
-                }
-
-                try {
-                    r.setValue(splits[0]);
-                }catch (ArrayIndexOutOfBoundsException e){
-                    System.out.println("No match found for the end tag : " + r.getEndTag());
-                }
-            }catch (ArrayIndexOutOfBoundsException e){
-                System.out.println("No match found for the start tag : "+ r.getStartTag());
-            }
-        }
+//        RegexDataElement r1 = new RegexDataElement();
+//        r1.setMetaName("Vendor Name");
+//        r1.setStartTag("Vendor Name:");
+//        r1.setEndTag("eol");
+//
+//        regexDataElementList.add(r1);
+//
+//        for(RegexDataElement r : regexDataElementList){
+//            try {
+//                splits = unprocessed.split(r.getStartTag(),2);
+//                if(r.getEndTag().equals("eol")){
+//                    splits = splits[1].split(System.getProperty("line.separator"),2);
+//                }else {
+//                    splits = splits[1].split(r.getEndTag(),2);
+//                }
+//
+//                try {
+//                    r.setValue(splits[0]);
+//                }catch (ArrayIndexOutOfBoundsException e){
+//                    System.out.println("No match found for the end tag : " + r.getEndTag());
+//                }
+//            }catch (ArrayIndexOutOfBoundsException e){
+//                System.out.println("No match found for the start tag : "+ r.getStartTag());
+//            }
+//        }
 
         List<PatternDataElement> patternDataElementList = new ArrayList<PatternDataElement>();
 
@@ -106,9 +106,9 @@ public class Pattern {
         List<ColumnDataElement> columnDataElementList = new ArrayList<ColumnDataElement>();
 
         RegexDataElement r2= new RegexDataElement();
-        r2.setStartTag("heelo");
-        r2.setEndTag("");
-        r2.setMetaName("");
+//        r2.setStartTag("heelo");
+//        r2.setEndTag("");
+//        r2.setMetaName("");
 
         regexDataElementList1.add(r2);
 

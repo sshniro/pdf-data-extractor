@@ -11,41 +11,11 @@ public class RegexDataElement {
     @Expose
     String metaName;
     @Expose
-    String startTag;
-    @Expose
-    String endTag;
-    @Expose
-    String value;
-    @Expose
     String dictionaryId;
     @Expose
     RawDataElement rawData;
     @Expose
     private List<RegexPairElement> regexPairElements = new ArrayList<RegexPairElement>();
-
-    public String getStartTag() {
-        return startTag;
-    }
-
-    public void setStartTag(String startTag) {
-        this.startTag = startTag;
-    }
-
-    public String getEndTag() {
-        return endTag;
-    }
-
-    public void setEndTag(String endTag) {
-        this.endTag = endTag;
-    }
-
-    public String getValue() {
-        return value;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
-    }
 
     public String getMetaName() {
         return metaName;

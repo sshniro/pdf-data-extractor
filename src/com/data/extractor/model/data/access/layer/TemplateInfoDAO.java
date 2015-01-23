@@ -711,8 +711,8 @@ public class TemplateInfoDAO {
         BasicDBObject regexElementObj = new BasicDBObject();
 
         regexElementObj.put("regexName",regexDataElement.getMetaName());
-        regexElementObj.put("startTag",regexDataElement.getStartTag());
-        regexElementObj.put("endTag",regexDataElement.getEndTag());
+//        regexElementObj.put("startTag",regexDataElement.getStartTag());
+//        regexElementObj.put("endTag",regexDataElement.getEndTag());
 
 //        textElementObject.put("metaId", textDataElement.getMetaId());
 //        textElementObject.put("metaName", textDataElement.getMetaName());
