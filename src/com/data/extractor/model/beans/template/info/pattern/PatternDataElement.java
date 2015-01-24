@@ -9,23 +9,23 @@ import java.util.List;
 public class PatternDataElement {
 
     @Expose
-    private List<ColumnDataElement> columnDataElementList =new ArrayList<ColumnDataElement>();
+    private List<ColumnDataElement> columnDataElements =new ArrayList<ColumnDataElement>();
     @Expose
-    private List<RegexDataElement> regexDataElementList = new ArrayList<RegexDataElement>();
+    private List<RegexDataElement> regexDataElements = new ArrayList<RegexDataElement>();
 
-    public List<ColumnDataElement> getColumnDataElementList() {
-        return columnDataElementList;
+    public List<ColumnDataElement> getColumnDataElements() {
+        return columnDataElements;
     }
 
-    public void setColumnDataElementList(List<ColumnDataElement> columnDataElementList) {
-        this.columnDataElementList = columnDataElementList;
+    public void setColumnDataElements(List<ColumnDataElement> columnDataElements) {
+        this.columnDataElements = columnDataElements;
     }
 
-    public List<RegexDataElement> getRegexDataElementList() {
-        return regexDataElementList;
+    public List<RegexDataElement> getRegexDataElements() {
+        return regexDataElements;
     }
 
-    public void setRegexDataElementList(List<RegexDataElement> regexDataElementList) {
-        this.regexDataElementList = regexDataElementList;
+    public void setRegexDataElements(List<RegexDataElement> regexDataElements) {
+        this.regexDataElements = regexDataElements;
     }
 }

@@ -2,8 +2,6 @@ package com.data.extractor.model.template.markup.insert.coordinate;
 
 import com.data.extractor.model.beans.template.info.regex.RegexDataElement;
 import com.data.extractor.model.beans.template.info.regex.RegexDataParser;
-import com.data.extractor.model.beans.template.info.text.TextDataElement;
-import com.data.extractor.model.beans.template.info.text.TextDataParser;
 import com.data.extractor.model.data.access.layer.TemplateInfoDAO;
 import com.mongodb.MongoClient;
 
@@ -14,7 +12,7 @@ public class RegexDataInserter {
 
     public void insert(RegexDataParser regexDataParser, MongoClient mongoClient) throws UnknownHostException {
 
-        List<RegexDataElement> regexDataElements= regexDataParser.getRegexDataElementList();
+        List<RegexDataElement> regexDataElements= regexDataParser.getRegexDataElements();
         TemplateInfoDAO templateInfoDAO=new TemplateInfoDAO(mongoClient);
         RegexDataElement regexDataElement;
         int templateInfoSize=0;

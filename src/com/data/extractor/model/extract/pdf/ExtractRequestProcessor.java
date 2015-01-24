@@ -17,7 +17,7 @@ import java.util.List;
 
 public class ExtractRequestProcessor {
 
-    public ExtractStatus processRequest(InsertDataParser extractedData,HttpServletRequest request, ExtractStatus extractStatus , MongoClient mongoClient) {
+    public ExtractStatus processRequest(InsertDataParser insertDataParser,HttpServletRequest request, ExtractStatus extractStatus , MongoClient mongoClient) {
 
         boolean isMultipart = ServletFileUpload.isMultipartContent(request);
         CounterDAO counterDAO = new CounterDAO(mongoClient);
@@ -53,11 +53,13 @@ public class ExtractRequestProcessor {
                         /* Retrieves DataElements [text,image,table] from templateInfo MongoDB Collection and
                         Insert in to extractedData Mongo DB collection
                         */
-                        extractedData = dataElementsProcessor.processTextDataElements( extractedData , extractStatus, mongoClient);
+                        insertDataParser = dataElementsProcessor.processTextDataElements( insertDataParser , extractStatus, mongoClient);
 
-                        extractedData = dataElementsProcessor.processImageDataElements(extractedData , extractStatus, mongoClient);
+                        insertDataParser = dataElementsProcessor.processImageDataElements(insertDataParser , extractStatus, mongoClient);
 
-                        extractedData = dataElementsProcessor.processTableDataElements(extractedData , extractStatus, mongoClient);
+                        insertDataParser = dataElementsProcessor.processTableDataElements(insertDataParser , extractStatus, mongoClient);
+
+                        insertDataParser = dataElementsProcessor.processRegexDataElements(insertDataParser , extractStatus, mongoClient);
                     }
             }
 
