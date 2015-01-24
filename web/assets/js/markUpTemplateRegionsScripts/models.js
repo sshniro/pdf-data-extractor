@@ -178,7 +178,7 @@ function SubDataElement(rectangle){
     //Used for Pattern and regex workflows/////////////////
     self.subElementType = ko.observable('');
     self.isSubElementTypeSelected = ko.observable(false);
-    self.subElementEndTag = ko.observable('');
+    self.subElementEndTag = 'SELECT END TAG';
     self.isHavingEndTag = ko.observable(false);
 
     self.selectElementType = function(data,element){
