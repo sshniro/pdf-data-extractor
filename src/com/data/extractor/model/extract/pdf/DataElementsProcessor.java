@@ -5,16 +5,12 @@ import com.data.extractor.model.beans.extract.pdf.ExtractStatus;
 import com.data.extractor.model.beans.template.info.image.ImageDataElement;
 import com.data.extractor.model.beans.template.info.image.ImageDataParser;
 import com.data.extractor.model.beans.template.info.insert.InsertDataParser;
-import com.data.extractor.model.beans.template.info.regex.RegexDataElement;
-import com.data.extractor.model.beans.template.info.regex.RegexDataParser;
+import com.data.extractor.model.beans.template.info.regex.*;
 import com.data.extractor.model.beans.template.info.table.TableDataParser;
 import com.data.extractor.model.beans.template.info.text.TextDataElement;
 import com.data.extractor.model.beans.template.info.text.TextDataParser;
 import com.data.extractor.model.data.access.layer.TemplateInfoDAO;
 import com.data.extractor.model.extract.pdf.inserter.ExtractedDataInserter;
-import com.data.extractor.model.extract.pdf.inserter.ExtractedImageInserter;
-import com.data.extractor.model.extract.pdf.inserter.ExtractedTableInserter;
-import com.data.extractor.model.extract.pdf.inserter.ExtractedTextInserter;
 import com.data.extractor.model.extract.pdf.table.DataProcessor;
 import com.data.extractor.model.extractors.image.FullSelectionImageExtractor;
 import com.data.extractor.model.extractors.regex.RegexDataExtractor;
@@ -136,17 +132,26 @@ public class DataElementsProcessor {
         if(regexDataParserList.size() !=0 ){
             /*  Only one record will exist to the text data for a given PDF */
             regexDataParser =regexDataParserList.get(0);
-            List<RegexDataElement> regexDataElementList = regexDataParser.getRegexDataElementList();
+            List<RegexDataElement> regexDataElementList = regexDataParser.getRegexDataElements();
 
             PDDocument doc = PDDocument.load(extractStatus.getUploadedPdfFile());
             String extractedText;
 
             for (RegexDataElement r : regexDataElementList) {
+
                 RegexDataExtractor regexDataExtractor = new RegexDataExtractor();
-                if(r.getEndTag().equals("eol")){
-                    r.setEndTag(System.getProperty("line.separator"));
+                List<RegexPairElement> regexPairElementList= r.getRegexPairElements();
+
+                for (RegexPairElement regex: regexPairElementList){
+                    RegexStartElement regexStartElement = regex.getRegexStartElement();
+                    RegexEndElement regexEndElement = regex.getRegexEndElement();
+
+                    if(regexEndElement.getTag().equals("eol")){
+                        regexEndElement.setTag(System.getProperty("line.separator"));
+                    }
+                    extractedText = regexDataExtractor.extract("text",regexStartElement.getTag(),regexEndElement.getTag());
+                    regex.setValue(extractedText);
                 }
-                extractedText = regexDataExtractor.extract("text",r.getStartTag(),r.getEndTag());
             }
             dataInserter.insert(regexDataParser, extractStatus ,mongoClient);
         }

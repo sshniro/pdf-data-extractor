@@ -93,7 +93,7 @@ public class InsertRequestProcessor {
 
         }
 
-        if(regexDataParser != null && regexDataParser.getRegexDataElementList().size() != 0){
+        if(regexDataParser != null && regexDataParser.getRegexDataElements().size() != 0){
 
             PatternDataInserter patternDataInserter = new PatternDataInserter();
             RegexDataInserter regexDataInserter = new RegexDataInserter();
@@ -103,6 +103,7 @@ public class InsertRequestProcessor {
             patternDataParser.setPdfFile(node.getPdfFile());
             PDDocument doc =PDDocument.load(regexDataParser.getPdfFile());
 
+            /* TODO Calculate the regex coordinates and then save in the db */
 //            TextDataCoordinates textDataCoordinates=new TextDataCoordinates();
 //            /* Set Values for the PDF width, Height and Rotation for each textDataElement*/
 //            textDataCoordinates.setPdfProperties(doc, textDataParser);

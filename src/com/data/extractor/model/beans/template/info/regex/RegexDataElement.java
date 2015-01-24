@@ -1,46 +1,51 @@
 package com.data.extractor.model.beans.template.info.regex;
 
+import com.data.extractor.model.beans.template.info.RawDataElement;
+import com.data.extractor.model.beans.template.info.pattern.ColumnDataElement;
 import com.google.gson.annotations.Expose;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class RegexDataElement {
     @Expose
-    String regexName;
+    String metaName;
     @Expose
-    String startTag;
+    String dictionaryId;
     @Expose
-    String endTag;
+    RawDataElement rawData;
     @Expose
-    String value;
+    private List<RegexPairElement> regexPairElements = new ArrayList<RegexPairElement>();
 
-    public String getRegexName() {
-        return regexName;
+    public String getMetaName() {
+        return metaName;
     }
 
-    public void setRegexName(String regexName) {
-        this.regexName = regexName;
+    public void setMetaName(String metaName) {
+        this.metaName = metaName;
     }
 
-    public String getStartTag() {
-        return startTag;
+    public String getDictionaryId() {
+        return dictionaryId;
     }
 
-    public void setStartTag(String startTag) {
-        this.startTag = startTag;
+    public void setDictionaryId(String dictionaryId) {
+        this.dictionaryId = dictionaryId;
     }
 
-    public String getEndTag() {
-        return endTag;
+    public RawDataElement getRawData() {
+        return rawData;
     }
 
-    public void setEndTag(String endTag) {
-        this.endTag = endTag;
+    public void setRawData(RawDataElement rawData) {
+        this.rawData = rawData;
     }
 
-    public String getValue() {
-        return value;
+    public List<RegexPairElement> getRegexPairElements() {
+        return regexPairElements;
     }
 
-    public void setValue(String value) {
-        this.value = value;
+    public void setRegexPairElements(List<RegexPairElement> regexPairElements) {
+        this.regexPairElements = regexPairElements;
     }
 }

@@ -123,13 +123,30 @@ var drawingRouter = (function (baseUiComponent, selection){
             selectionInitializer('#'+baseUiComponent.id+'.mainElement',drawingRouter,rectangle.id);
         }
         else if(vm.currentSelection() === 'regex'){
-            rectangle.elementId = baseUiComponent.id;
-            //Hide earlier meta for deco
-            $(".subElementDecoMeta").hide();
-            vm.addSubElement(rectangle)
-            $('#'+rectangle.id).css('cursor','default');
-            $('#'+baseUiComponent.id).css('cursor','crosshair');
-            selectionInitializer('#'+baseUiComponent.id+'.mainElement',drawingRouter,rectangle.id);
+            if(vm.currentProcessingSubElement()==''){   // if regex drawing start element
+                rectangle.elementId = baseUiComponent.id;
+                //Hide earlier meta for deco
+                $(".subElementDecoMeta").hide();
+                vm.addSubElement(rectangle)
+                $('#'+rectangle.id).css('cursor','default');
+                $('#'+baseUiComponent.id).css('cursor','crosshair');
+                selectionInitializer('#'+baseUiComponent.id+'.mainElement',drawingRouter,rectangle.id);
+            }
+            else if(vm.currentProcessingSubElement() == 'NE'){  // if start element set to Normal element
+                rectangle.elementId = baseUiComponent.id;
+                //Hide earlier meta for deco
+                $(".subElementDecoMeta").hide();
+                vm.addSubElement(rectangle)
+                $('#'+rectangle.id).css('cursor','default');
+                $('#'+baseUiComponent.id).css('cursor','crosshair');
+                selectionInitializer('#'+baseUiComponent.id+'.mainElement',drawingRouter,rectangle.id);
+            }
+            else if(vm.currentProcessingSubElement() == 'RE'){  // if start element set to Normal element
+
+            }
+            else if(vm.currentProcessingSubElement() == 'NNE'){  // if start element set to Normal element
+
+            }
 
         }
         else if(vm.currentSelection() === 'pattern'){
@@ -593,4 +610,8 @@ var initTrees = function(){
 var resetLongPage = function(){
     $('a#PageAn2').click();
     $('a#PageAn1').click();
+}
+
+var stopEventPropergation = function(event){
+    event.stopPropagation();
 }
