@@ -269,12 +269,12 @@
 
                 <!-- element type tag -->
                 <div style="position: absolute;" data-bind="id:id, visible:((elementType() == 'regex' || elementType() == 'pattern') && (isSubElementTypeSelected())), style:{left: (uiData.removeX()+15), top:uiData.removeY }">
-                    <button type="button" class="btn btn-warning" data-bind="click:changeElementType"><span data-bind="text:subElementType"></span></button>
+                    <button type="button" class="btn btn-warning"><span data-bind="text:subElementType"></span></button>
                 </div>
 
                 <!-- ending tag element -->
                 <div style="position: absolute;" data-bind="id:id, visible:((elementType() == 'regex' || elementType() == 'pattern') && (isHavingEndTag())), style:{left: (uiData.removeX()+65), top:uiData.removeY }">
-                    <span class="btn btn-default">ending: <span>selected 2nd tag data</span></span>
+                    <span class="btn btn-default">ending: <span data-bind="text:subElementEndTag">selected 2nd tag data</span></span>
                 </div>
 
                 <!-- selected element close button -->
