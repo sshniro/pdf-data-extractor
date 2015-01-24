@@ -261,7 +261,7 @@
                 </div>
 
                 <!-- element type select -->
-                <div class="btn-group-vertical" role="group" data-bind="id:id, visible:((elementType() == 'regex' || elementType() == 'pattern') && !(isSubElementTypeSelected())), style:{left: (uiData.removeX()+15), top:uiData.removeY }">
+                <div style="position: absolute" class="btn-group-vertical" role="group" data-bind="id:id, visible:((elementType() == 'regex' || elementType() == 'pattern') && !(isSubElementTypeSelected())), style:{left: (uiData.removeX()+15), top:uiData.removeY }">
                     <button type="button" class="btn btn-primary" data-bind="click:selectElementType.bind($data, 'NE')">normal element</button>
                     <button type="button" class="btn btn-primary" data-bind="click:selectElementType.bind($data, 'RE')">repeating element</button>
                     <button type="button" class="btn btn-primary" data-bind="click:selectElementType.bind($data, 'NNE')">non-ending element</button>

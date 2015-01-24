@@ -184,10 +184,15 @@ function SubDataElement(rectangle){
     self.selectElementType = function(data,element){
         self.subElementType(data);
         self.isSubElementTypeSelected(true);
+        vm.currentProcessingSubElement(data);
+        if(data == 'NE'){
+            self.isHavingEndTag(true);
+        }
     }
 
     self.changeElementType = function(){
         self.isSubElementTypeSelected(false);
+        vm.currentProcessingSubElement('');
     }
     /////////////////////////////////////////////////////
 
