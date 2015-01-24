@@ -35,6 +35,10 @@ function ViewModel(){
     self.regexElements = ko.observableArray([]);
     self.patternElements = ko.observableArray([]);
     self.currentDic = ko.observableArray([]);
+
+    // sub element selection
+    self.currentProcessingSubElement = ko.observable('');
+
     self.elementBuffer;
 
 
@@ -417,9 +421,11 @@ function ViewModel(){
             }
             else if (removedElement.elementType() === 'regex') {
                 self.regexElements.remove(removedElement);
+                vm.currentProcessingSubElement('');
             }
             else if (removedElement.elementType() === 'pattern') {
                 self.patternElements.remove(removedElement);
+                vm.currentProcessingSubElement('');
             }
             resetEnvironment();
         }
@@ -479,6 +485,7 @@ function ViewModel(){
                 self.patternElements.push(relevantPatternElement);
             }
             vm.subElementSelectionInProgress(true);
+            vm.currentProcessingSubElement('');
             $('div#'+removedElement.elementId()+'.mainElement').css('cursor','crosshair');
             selectionInitializer('div#'+removedElement.elementId()+'.mainElement',drawingRouter);
         }
