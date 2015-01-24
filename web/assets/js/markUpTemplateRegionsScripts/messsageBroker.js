@@ -91,14 +91,20 @@ var getSubExtraction=  function(rectangleObject, dataType){
             break;
         case 'regex':
             //Reusing basic main text extraction
-            rectangleObject.dataType ="text";
-            ajaxReponse = getMainExtraction(rectangleObject,"text");
+            var tempRectangleObject =  $.extend(true, {}, rectangleObject);
+            tempRectangleObject.dataType ="text";
+            tempRectangleObject.startX = rectangleObject.startX + bufferedElement.startX;
+            tempRectangleObject.startY = rectangleObject.startY + bufferedElement.startY;
+            ajaxReponse = getMainExtraction(tempRectangleObject,"text");
             break;
 
         case 'pattern':
             //Reusing basic main text extraction
-            rectangleObject.dataType ="text";
-            ajaxReponse = getMainExtraction(rectangleObject,"text");
+            var tempRectangleObject =  $.extend(true, {}, rectangleObject);
+            tempRectangleObject.dataType ="text";
+            tempRectangleObject.startX = rectangleObject.startX + bufferedElement.startX;
+            tempRectangleObject.startY = rectangleObject.startY + bufferedElement.startY;
+            ajaxReponse = getMainExtraction(tempRectangleObject,"text");
             break;
     }
     return ajaxReponse;
@@ -309,7 +315,81 @@ function TableDataColumnDTO(dataElement, metaElement){
     this.metaY1         =   dataElement.startY + (metaElement.startY);
     this.metaWidth      =   this.metaX1 + (metaElement.width);
     this.metaHeight     =   this.metaY1 + (metaElement.height);
-    //
 
 }
+
+function RegexDataDTO(pageData){
+    this.id = pageData.id;
+    this.status= "extract";///Static Data
+    this.dataType= "regex";////Static Data
+    this.regexDataElements =[];
+}
+function RegexDataElementDTO(dataElements, metaElements){
+    this.rawData       = dataElement.rectangle;
+    this.id        = ko.utils.unwrapObservable(dataElement.id);    //////Switched meta with id
+    this.metaName      = ko.utils.unwrapObservable(dataElement.metaName);//// Switch due to data layer requirement
+    if(dataElement.selectedDictionaryItem){
+        this.dictionaryId   = ko.utils.unwrapObservable(dataElement.selectedDictionaryItem.id);
+        this.dictionaryName   = ko.utils.unwrapObservable(dataElement.selectedDictionaryItem.name);
+    }
+    else{
+        this.dictionaryId   = -1;
+        this.dictionaryName   =  -1;
+    }
+    this.boundaryTags = [];
+    for(var key in metaElements) {
+        var metaElement = metaElements[key];
+        var boundryTag = new BoundaryTagDTO(dataElement,metaElement);
+        this.boundaryTags.push(boundryTag);
+    }
+}
+
+
+function PatternDataDTO(pageData){
+    this.id = pageData.id;
+    this.status= "extract";///Static Data
+    this.dataType= "regex";////Static Data
+    this.regexDataElements =[];
+}
+function PatternDataElementDTO(dataElements, metaElements){
+    this.rawData       = dataElement.rectangle;
+    this.id        = ko.utils.unwrapObservable(dataElement.id);    //////Switched meta with id
+    this.name      = ko.utils.unwrapObservable(dataElement.metaName);//// Switch due to data layer requirement
+    if(dataElement.selectedDictionaryItem){
+        this.dictionaryId   = ko.utils.unwrapObservable(dataElement.selectedDictionaryItem.id);
+        this.dictionaryName   = ko.utils.unwrapObservable(dataElement.selectedDictionaryItem.name);
+    }
+    else{
+        this.dictionaryId   = -1;
+        this.dictionaryName   =  -1;
+    }
+    this.boundaryTags = [];
+    for(var key in metaElements) {
+        var metaElement = metaElements[key];
+        var boundryTag = new BoundaryTagDTO(dataElement,metaElement);
+        this.boundaryTags.push(boundryTag);
+    }
+}
+
+function BoundaryTagDTO(dataElement,metaElement){
+    //Meta element
+    this.rawData        =   metaElement.rectangle;
+    this.metaId         =   metaElement.id;                                 /////Switched meta with id
+    this.metaName       =   ko.utils.unwrapObservable(metaElement.metaName);//// Switch due to data layer requirement
+    if(metaElement.selectedDictionaryItem){
+        this.dictionaryId       = ko.utils.unwrapObservable(metaElement.selectedDictionaryItem.id);
+        this.dictionaryName     = ko.utils.unwrapObservable(metaElement.selectedDictionaryItem.name);
+    }
+    else{
+        this.dictionaryId       =   -1;
+        this.dictionaryName     =   -1;
+    }
+    this.startTag       =   metaElement.startTag;
+    this.endTag         =   metaElement.endTag;
+}
+
+
+
+
+
 
