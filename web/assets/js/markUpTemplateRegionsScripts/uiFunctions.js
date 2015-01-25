@@ -132,24 +132,16 @@ var drawingRouter = (function (baseUiComponent, selection){
                 $('#'+baseUiComponent.id).css('cursor','crosshair');
                 vm.immediateSelectedObject(new immediateSelectedObjectModel(baseUiComponent, rectangle));
             }
-            else if(vm.currentProcessingSubElement() == 'NE'){  // if start element set to Normal element
+            else if(vm.currentProcessingSubElement() == 'RE'){  // if start element set to Normal element
                 rectangle.elementId = baseUiComponent.id;
                 vm.completeSubElement(rectangle);
                 vm.currentProcessingSubElement('');
                 selectionInitializer('#'+baseUiComponent.id+'.mainElement',drawingRouter,rectangle.id);
             }
-            /*else if(vm.currentProcessingSubElement() == 'RE'){  // if start element set to Normal element
-                rectangle.elementId = baseUiComponent.id;
-                //Hide earlier meta for deco
-                $(".subElementDecoMeta").hide();
-                vm.addSubElement(rectangle);
-                $('#'+rectangle.id).css('cursor','default');
-                $('#'+baseUiComponent.id).css('cursor','crosshair');
-            }*/
-            else if(vm.currentProcessingSubElement() == 'RE'){  // if start element set to repeating element
+            else if(vm.currentProcessingSubElement() == 'PE'){  // if start element set to repeating element
                 // will never reach... if do, there is some error  :)
             }
-            else if(vm.currentProcessingSubElement() == 'NNE'){  // if start element set to non-ending element
+            else if(vm.currentProcessingSubElement() == 'LEE'){  // if start element set to non-ending element
                 // will never reach... if do, there is some error  :)
             }
         }
