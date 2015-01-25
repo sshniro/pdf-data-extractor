@@ -112,5 +112,24 @@ public class InsertRequestProcessor {
             /*Insert the assigned values to the templateInfo MongoDB Collection*/
             regexDataInserter.insert(regexDataParser,mongoClient);
         }
+
+        if(patternDataParser != null && patternDataParser.getPatternDataElements().size() != 0){
+
+            PatternDataInserter patternDataInserter = new PatternDataInserter();
+
+            /* Load the Template PDF in to pdf BOX and return the PDDoc to set pdf Properties*/
+            Node node = templatesDAO.getNode(regexDataParser.getId());
+            patternDataParser.setPdfFile(node.getPdfFile());
+            PDDocument doc =PDDocument.load(regexDataParser.getPdfFile());
+
+            /* TODO Calculate the regex coordinates and then save in the db */
+//            TextDataCoordinates textDataCoordinates=new TextDataCoordinates();
+//            /* Set Values for the PDF width, Height and Rotation for each textDataElement*/
+//            textDataCoordinates.setPdfProperties(doc, textDataParser);
+//            /* Recalculate and set coordinates according to the actual pdf width and height and Page Rotation */
+//            textDataCoordinates.calculateCoordinates(textDataParser);
+            /*Insert the assigned values to the templateInfo MongoDB Collection*/
+            patternDataInserter.insert(patternDataParser,mongoClient);
+        }
     }
 }

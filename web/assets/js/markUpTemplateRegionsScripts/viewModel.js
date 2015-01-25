@@ -38,6 +38,8 @@ function ViewModel(){
 
     // sub element selection
     self.currentProcessingSubElement = ko.observable('');
+    self.immediateSelectedObject = ko.observable(new immediateSelectedObjectModel());
+
 
     self.elementBuffer;
 
