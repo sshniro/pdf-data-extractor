@@ -7,6 +7,7 @@ import com.data.extractor.model.beans.template.info.regex.RegexPairElement;
 import com.data.extractor.model.beans.template.info.regex.RegexStartElement;
 import com.data.extractor.model.beans.template.info.table.Cell;
 import com.mongodb.MongoClient;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.apache.pdfbox.cos.COSDocument;
 import org.apache.pdfbox.pdfparser.PDFParser;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -100,13 +101,17 @@ public class Pattern {
         Boolean status = true;
         while (status){
 
-            for (RegexPairElement regexPair : regexPairElementList){
-
+            for (int i =0; i<regexPairElementList.size();i++){
+                RegexPairElement regexPair = regexPairElementList.get(i);
                 extractedValue = new String();
                 RegexStartElement regexStartElement = regexPair.getRegexStartElement();
                 RegexEndElement regexEndElement = regexPair.getRegexEndElement();
 
                 splits = regexLastEnded.split(regexStartElement.getTag(),2);
+                if(i == 0){
+                    columnStarted = splits[1];
+                }
+
                 try {
                     if(regexEndElement.getTag().equals("eol")){
                         regexEndElement.setTag(System.getProperty("line.separator"));
@@ -134,27 +139,53 @@ public class Pattern {
                 }
 
             }
+            Boolean columnStatus = true;
+            while (columnStatus){
+                for (int i=0; i < columnDataElementList.size();i++){
 
-            for (int i=0; i < columnDataElementList.size();i++){
-                ColumnDataElement columnDataElement =columnDataElementList.get(i);
-                List<Cell> cellList = columnDataElement.getCellList();
+                    ColumnDataElement columnDataElement =columnDataElementList.get(i);
+                    List<Cell> cellList = columnDataElement.getCellList();
 
-                ColumnStartElement columnStartElement = columnDataElement.getColumnStartElement();
-                ColumnEndElement columnEndElement = columnDataElement.getColumnEndElement();
+                    ColumnStartElement columnStartElement = columnDataElement.getColumnStartElement();
+                    ColumnEndElement columnEndElement = columnDataElement.getColumnEndElement();
 
-                splits = columnStarted.split(columnStartElement.getTag(),2);
-                try {
 
-                }catch (ArrayIndexOutOfBoundsException e){
-                    
+                    try {
+
+
+                        splits = columnStarted.split(columnStartElement.getTag(),2);
+
+                        if(columnEndElement.getTag().equals("eol")){
+                            columnEndElement.setTag(System.getProperty("line.separator"));
+                        }
+
+                        splits = splits[1].split(columnEndElement.getTag(),2);
+                        splits[1] = columnEndElement.getTag() + splits [1];
+                        columnStarted = splits[1];
+                        Cell cell = new Cell();
+                        cell.setValue(splits[0]);
+                        cellList.add(cell);
+
+                        if(i == columnDataElementList.size() -1){
+                        // Check if the next line start with the word otherwise break.
+                            ColumnStartElement testElement = columnDataElementList.get(0).getColumnStartElement();
+                            int j = splits[1].indexOf(testElement.getTag());
+                            System.out.println(j);
+                        }
+                        try {
+
+                        }catch (ArrayIndexOutOfBoundsException e){
+
+                        }
+                    }catch (ArrayIndexOutOfBoundsException e){
+                        columnStatus =false;
+                        break;
+                    }
+
                 }
-
             }
+
         }
-
-
-
-
 
 
 //        r2.setStartTag("heelo");
@@ -197,7 +228,7 @@ public class Pattern {
 //
 //        }
 
-        }
+    }
 
     public static PatternDataParser assignValues(PatternDataParser patternDataParser){
 
@@ -209,6 +240,7 @@ public class Pattern {
 
         ColumnDataElement columnDataElement = new ColumnDataElement();
         ColumnDataElement columnDataElement2 = new ColumnDataElement();
+        ColumnDataElement columnDataElement3 = new ColumnDataElement();
         RegexDataElement regexDataElement = new RegexDataElement();
         RegexDataElement regexDataElement2 = new RegexDataElement();
 
@@ -221,11 +253,18 @@ public class Pattern {
         ColumnStartElement cs2 = new ColumnStartElement();
         ColumnEndElement ce2 = new ColumnEndElement();
 
-        cs1.setTag("");
-        ce1.setTag("");
+        ColumnStartElement cs3 = new ColumnStartElement();
+        ColumnEndElement ce3 = new ColumnEndElement();
 
-        cs2.setTag("");
-        ce2.setTag("");
+
+        cs1.setTag("Size:");
+        ce1.setTag("Qty Ordered:");
+
+        cs2.setTag("Qty Ordered:");
+        ce2.setTag("Cost per Unit:");
+
+        cs3.setTag("Cost per Unit:");
+        ce3.setTag("eol");
 
         columnDataElement.setColumnStartElement(cs1);
         columnDataElement.setColumnEndElement(ce1);
@@ -233,8 +272,12 @@ public class Pattern {
         columnDataElement2.setColumnStartElement(cs2);
         columnDataElement2.setColumnEndElement(ce2);
 
+        columnDataElement3.setColumnStartElement(cs3);
+        columnDataElement3.setColumnEndElement(ce3);
+
         columnDataElementList.add(columnDataElement);
         columnDataElementList.add(columnDataElement2);
+        columnDataElementList.add(columnDataElement3);
 
         patternDataElement.setColumnDataElements(columnDataElementList);
         patternDataElement2.setColumnDataElements(columnDataElementList);
@@ -284,6 +327,6 @@ public class Pattern {
 
         return patternDataParser;
     }
-    }
+}
 
 
