@@ -295,17 +295,19 @@
                 <div class="well well-sm" style="position: absolute; width:400px" data-bind="id:id, visible:((elementType()=='pattern') && (isHavingRepeatedHeaders())), style:{left: ($parent.uiData.removeX() + 12), top:$parent.uiData.removeY}">
                     <form class="form-horizontal" role="form">
                         <!-- added elements *** do foreach *** -->
-                        <div class="form-group">
-                            <label class="col-sm-8 control-label">text</label>
-                            <div class="col-sm-2"><button class="btn btn-danger" style="border-radius: 50%; height:24px; width:24px; padding: 0"><span class="glyphicon glyphicon-remove-circle"></span></button></div>
+                        <div data-bind="foreach:repeatingSubElements">
+                            <div class="form-group">
+                                <label data-bind="text:$data" class="col-sm-8 control-label">text</label>
+                                <div class="col-sm-2"><a data-bind="click:$parent.removeRepeatingElement" class="btn btn-danger" style="border-radius: 50%; height:24px; width:24px; padding: 2 0"><span class="glyphicon glyphicon-remove-circle"></span></a></div>
+                            </div>
                         </div>
                         <!-- form elements -->
                         <div class="form-group">
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" placeholder="type repeating headers" />
+                                <input data-bind="value:bufferedRepeatingElement" type="text" class="form-control sub" />
                             </div>
                             <div class="col-sm-2">
-                                <button class="btn btn-default"><span class="glyphicon glyphicon-ok"></span></button>
+                                <a class="btn btn-default" data-bind="click:addRepeatingElement" onclick="$('.sub').focus()"><span class="glyphicon glyphicon-ok"></span></a>
                             </div>
                         </div>
                         <div class="form-group"><div class="col-sm-offset-2 col-sm-8"><button data-bind="click:completeElement" class="btn btn-default" style="background-color: green; color:#ffffff">complete pattern element</button></div></div>
