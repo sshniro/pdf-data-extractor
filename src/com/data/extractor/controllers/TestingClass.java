@@ -5,6 +5,7 @@ import com.data.extractor.model.beans.template.info.regex.RegexDataElement;
 import com.data.extractor.model.beans.template.info.regex.RegexEndElement;
 import com.data.extractor.model.beans.template.info.regex.RegexPairElement;
 import com.data.extractor.model.beans.template.info.regex.RegexStartElement;
+import com.data.extractor.model.data.access.layer.TemplateInfoDAO;
 import com.data.extractor.model.template.markup.insert.coordinate.PatternDataInserter;
 import com.mongodb.MongoClient;
 
@@ -20,6 +21,7 @@ public class TestingClass {
         List<PatternDataElement> patternDataElementList = new ArrayList<PatternDataElement>();
 
         PatternDataElement patternDataElement = new PatternDataElement();
+        PatternDataElement patternDataElement2 = new PatternDataElement();
         MongoClient mongoClient = new MongoClient("localhost",27017);
 
         ColumnDataElement columnDataElement = new ColumnDataElement();
@@ -52,6 +54,7 @@ public class TestingClass {
         columnDataElementList.add(columnDataElement2);
 
         patternDataElement.setColumnDataElements(columnDataElementList);
+        patternDataElement2.setColumnDataElements(columnDataElementList);
 
         RegexStartElement rs1 = new RegexStartElement();
         RegexEndElement re1 = new RegexEndElement();
@@ -79,20 +82,27 @@ public class TestingClass {
         regexPairElementList.add(regexPairElement2);
 
         regexDataElement.setRegexPairElements(regexPairElementList);
+        regexDataElement2.setRegexPairElements(regexPairElementList);
 
         regexDataElementList.add(regexDataElement);
+        //regexDataElementList.add(regexDataElement2);
 
         //patternDataElement.setRegexDataElements(regexDataElementList);
-        patternDataElement.setRegexDataElement(regexDataElement);
+        patternDataElement.setRegexDataElements(regexDataElement);
+        patternDataElement2.setRegexDataElements(regexDataElement2);
 
         patternDataElementList.add(patternDataElement);
+        patternDataElementList.add(patternDataElement2);
 
         patternDataParser.setPatternDataElements(patternDataElementList);
         patternDataParser.setDataType("pattern");
         patternDataParser.setId("3");
 
-        PatternDataInserter patternDataInserter = new PatternDataInserter();
-        patternDataInserter.insert(patternDataParser,mongoClient);
+        TemplateInfoDAO templateInfoDAO = new TemplateInfoDAO(mongoClient);
+        templateInfoDAO.getPatternTemplateInfo("3","pattern");
+
+        //PatternDataInserter patternDataInserter = new PatternDataInserter();
+        //patternDataInserter.insert(patternDataParser,mongoClient);
 
 
 

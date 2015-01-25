@@ -1,9 +1,12 @@
 package com.data.extractor.controllers;
 
-import com.data.extractor.model.beans.template.info.pattern.ColumnDataElement;
-import com.data.extractor.model.beans.template.info.pattern.PatternDataElement;
+import com.data.extractor.model.beans.template.info.pattern.*;
 import com.data.extractor.model.beans.template.info.regex.RegexDataElement;
+import com.data.extractor.model.beans.template.info.regex.RegexEndElement;
+import com.data.extractor.model.beans.template.info.regex.RegexPairElement;
+import com.data.extractor.model.beans.template.info.regex.RegexStartElement;
 import com.data.extractor.model.beans.template.info.table.Cell;
+import com.mongodb.MongoClient;
 import org.apache.pdfbox.cos.COSDocument;
 import org.apache.pdfbox.pdfparser.PDFParser;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -70,42 +73,30 @@ public class Pattern {
         String processing = null;
         String[] splits = null;
 
+        String regexLastEnded;
+        String columnLastEnded;
 
-        List<RegexDataElement> regexDataElementList = new ArrayList<RegexDataElement>();
+        PatternDataParser patternDataParser = new PatternDataParser();
+        patternDataParser = assignValues(patternDataParser);
 
-//        RegexDataElement r1 = new RegexDataElement();
-//        r1.setMetaName("Vendor Name");
-//        r1.setStartTag("Vendor Name:");
-//        r1.setEndTag("eol");
-//
-//        regexDataElementList.add(r1);
-//
-//        for(RegexDataElement r : regexDataElementList){
-//            try {
-//                splits = unprocessed.split(r.getStartTag(),2);
-//                if(r.getEndTag().equals("eol")){
-//                    splits = splits[1].split(System.getProperty("line.separator"),2);
-//                }else {
-//                    splits = splits[1].split(r.getEndTag(),2);
-//                }
-//
-//                try {
-//                    r.setValue(splits[0]);
-//                }catch (ArrayIndexOutOfBoundsException e){
-//                    System.out.println("No match found for the end tag : " + r.getEndTag());
-//                }
-//            }catch (ArrayIndexOutOfBoundsException e){
-//                System.out.println("No match found for the start tag : "+ r.getStartTag());
-//            }
-//        }
+        List<PatternDataElement> patternDataElementList = patternDataParser.getPatternDataElements();
+        PatternDataElement patternDataElement = patternDataElementList.get(0);
 
-        List<PatternDataElement> patternDataElementList = new ArrayList<PatternDataElement>();
+        List<ColumnDataElement> columnDataElementList = patternDataElement.getColumnDataElements();
+        RegexDataElement regexDataElement = patternDataElement.getRegexDataElements();
 
-        PatternDataElement p1 = new PatternDataElement();
-        List<RegexDataElement> regexDataElementList1 = new ArrayList<RegexDataElement>();
-        List<ColumnDataElement> columnDataElementList = new ArrayList<ColumnDataElement>();
+        List<RegexPairElement> regexPairElementList = regexDataElement.getRegexPairElements();
 
-        RegexDataElement r2= new RegexDataElement();
+        for (RegexPairElement regexPair : regexPairElementList){
+
+        }
+
+        for (ColumnDataElement c : columnDataElementList){
+
+        }
+
+
+
 //        r2.setStartTag("heelo");
 //        r2.setEndTag("");
 //        r2.setMetaName("");
@@ -146,112 +137,93 @@ public class Pattern {
 //
 //        }
 
-
-
-//
-//        List<TableDataBean> tableDataBeans = new ArrayList<TableDataBean>();
-//
-//        TableDataBean ta1=new TableDataBean();
-//        ta1.setTableName("VSC Color Cde:");
-//
-//
-//        List<ColumnDataElement> columnDataElementList = new ArrayList<ColumnDataElement>();
-//
-//        ColumnDataElement c1= new ColumnDataElement();
-//        c1.setColumnName("VSC Color Cde");
-//        c1.setColumnStartTag("VSC Color Cde:");
-//        c1.setColumnEndTag("VSS Color Code:");
-//
-//
-//        ColumnDataElement c2= new ColumnDataElement();
-//        c2.setColumnName("Size");
-//        c2.setColumnStartTag("Size:");
-//        c2.setColumnEndTag("Qty Ordered:");
-//
-//        columnDataElementList.add(c1);
-//        columnDataElementList.add(c2);
-//
-//        ta1.setColumnDataElementList(columnDataElementList);
-//
-//        tableDataBeans.add(ta1);
-//
-//        String table =null;
-//        List<ColumnDataElement> columnDataElementList2 =null;
-//        List<Cell> cellList=null;
-//        for(TableDataBean ta : tableDataBeans){
-//
-//            columnDataElementList2 = ta.getColumnDataElementList();
-//            for(ColumnDataElement c: columnDataElementList2){
-//                cellList = new ArrayList<Cell>();
-//                Cell cell;
-//                /* c.startTag : column 1 -> splits[0] = xx + startTag , splits[1] = rest of the table [ROT] */
-//                splits = unprocessed.split(c.getColumnStartTag(), 2);
-//                try {
-//                    /* splits[1] = c.startTag + ROT */
-//                    //splits[1] =  splits [1];
-//                    /* If this column is the last column */
-//                    if(c.getColumnEndTag().equals("eol")){
-//                        // Code to break the text when eol occurs
-//                    }else {
-//                        splits = splits[1].split(c.getColumnEndTag(),2);
-//                        /* splits[1] = c.endTag + ROT */
-//                        splits[1] = c.getColumnEndTag() + splits [1];
-//                        cell = new Cell();
-//                        cell.setValue(splits[0]);
-//                        cellList.add(cell);
-//                    }
-//                }catch (ArrayIndexOutOfBoundsException e){
-//                    /* No columns start tag found in the text */
-//                    break;
-//                }
-//            }
-//
-//            splits = unprocessed.split(ta.getTableStartTag(), 2);
-//            try{
-//                table = ta.getTableStartTag() + splits[1];
-//                splits = table.split(ta.getTableEndTag(),2);
-//            }catch (ArrayIndexOutOfBoundsException e){
-//                // No table with specified name exists in the text
-//                e.printStackTrace();
-//                break;
-//            }
-
-
-                
-
         }
 
+    public static PatternDataParser assignValues(PatternDataParser patternDataParser){
+
+        List<PatternDataElement> patternDataElementList = new ArrayList<PatternDataElement>();
+
+        PatternDataElement patternDataElement = new PatternDataElement();
+        PatternDataElement patternDataElement2 = new PatternDataElement();
+        //MongoClient mongoClient = new MongoClient("localhost",27017);
+
+        ColumnDataElement columnDataElement = new ColumnDataElement();
+        ColumnDataElement columnDataElement2 = new ColumnDataElement();
+        RegexDataElement regexDataElement = new RegexDataElement();
+        RegexDataElement regexDataElement2 = new RegexDataElement();
+
+        List<RegexDataElement> regexDataElementList = new ArrayList<RegexDataElement>();
+        List<ColumnDataElement> columnDataElementList = new ArrayList<ColumnDataElement>();
+
+        ColumnStartElement cs1 = new ColumnStartElement();
+        ColumnEndElement ce1 = new ColumnEndElement();
+
+        ColumnStartElement cs2 = new ColumnStartElement();
+        ColumnEndElement ce2 = new ColumnEndElement();
+
+        cs1.setTag("");
+        ce1.setTag("");
+
+        cs2.setTag("");
+        ce2.setTag("");
+
+        columnDataElement.setColumnStartElement(cs1);
+        columnDataElement.setColumnEndElement(ce1);
+
+        columnDataElement2.setColumnStartElement(cs2);
+        columnDataElement2.setColumnEndElement(ce2);
+
+        columnDataElementList.add(columnDataElement);
+        columnDataElementList.add(columnDataElement2);
+
+        patternDataElement.setColumnDataElements(columnDataElementList);
+        patternDataElement2.setColumnDataElements(columnDataElementList);
+
+        RegexStartElement rs1 = new RegexStartElement();
+        RegexEndElement re1 = new RegexEndElement();
+
+        RegexStartElement rs2 = new RegexStartElement();
+        RegexEndElement re2 = new RegexEndElement();
+
+        rs1.setTag("");
+        re1.setTag("");
+
+        rs2.setTag("");
+        re2.setTag("");
+
+        RegexPairElement regexPairElement = new RegexPairElement();
+        RegexPairElement regexPairElement2 = new RegexPairElement();
+
+        regexPairElement.setRegexStartElement(rs1);
+        regexPairElement.setRegexEndElement(re1);
+
+        regexPairElement2.setRegexStartElement(rs2);
+        regexPairElement2.setRegexEndElement(re2);
+
+        List<RegexPairElement> regexPairElementList = new ArrayList<RegexPairElement>();
+        regexPairElementList.add(regexPairElement);
+        regexPairElementList.add(regexPairElement2);
+
+        regexDataElement.setRegexPairElements(regexPairElementList);
+        regexDataElement2.setRegexPairElements(regexPairElementList);
+
+        regexDataElementList.add(regexDataElement);
+        //regexDataElementList.add(regexDataElement2);
+
+        //patternDataElement.setRegexDataElements(regexDataElementList);
+        patternDataElement.setRegexDataElements(regexDataElement);
+        patternDataElement2.setRegexDataElements(regexDataElement2);
+
+        patternDataElementList.add(patternDataElement);
+        patternDataElementList.add(patternDataElement2);
+
+        patternDataParser.setPatternDataElements(patternDataElementList);
+        patternDataParser.setDataType("pattern");
+        patternDataParser.setId("3");
+
+
+        return patternDataParser;
+    }
     }
 
 
-
-//}
-
-//        PatternDataElement patternDataElement;
-//
-//        List<HeaderDataBean> headerDataBeans = new ArrayList<HeaderDataBean>();
-//
-//        HeaderDataBean h1 = new HeaderDataBean();
-//        h1.setHeaderName("Vendor Name:");
-//        h1.setStartTag("Vendor Name:");
-//        h1.setEndTag("Address:");
-//
-//        HeaderDataBean h2 = new HeaderDataBean();
-//        h2.setHeaderName("Address:");
-//        h2.setStartTag("Address:");
-//        h2.setEndTag("Ship To:");
-//
-//        headerDataBeans.add(h1);
-//        headerDataBeans.add(h2);
-//
-//        for (HeaderDataBean h : headerDataBeans){
-//            try {
-//                splits = unprocessed.split(h.getStartTag(), 2);
-//                processing =splits[1];
-//                splits = processing.split(h.getEndTag(),2);
-//                h.setValue(splits[0]);
-//                System.out.println(h.getValue());
-//            }catch (ArrayIndexOutOfBoundsException e){
-//                e.printStackTrace();
-//            }
-//        }
