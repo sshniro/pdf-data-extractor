@@ -303,10 +303,19 @@
                         </div>
                         <!-- form elements -->
                         <div class="form-group">
+                            <label class="col-sm-2 control-label">Start</label>
                             <div class="col-sm-10">
-                                <input data-bind="value:bufferedRepeatingElement" type="text" class="form-control sub" />
+                                <input data-bind="value:bufferedRepeatingElement_start" type="text" class="form-control sub" />
                             </div>
-                            <div class="col-sm-2">
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">End</label>
+                            <div class="col-sm-10">
+                                <input data-bind="value:bufferedRepeatingElement_end" type="text" class="form-control sub" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-10 col-sm-2">
                                 <a class="btn btn-default" data-bind="click:addRepeatingElement" onclick="$('.sub').focus()"><span class="glyphicon glyphicon-ok"></span></a>
                             </div>
                         </div>

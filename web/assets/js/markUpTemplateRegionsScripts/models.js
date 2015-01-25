@@ -191,7 +191,8 @@ function SubDataElement(rectangle) {
         self.isHavingRepeatedHeaders = ko.observable(false);
 
         self.repeatingSubElements = ko.observableArray([]);
-        self.bufferedRepeatingElement = ko.observable('');
+        self.bufferedRepeatingElement_start = ko.observable('');
+        self.bufferedRepeatingElement_end = ko.observable('');
 
         self.selectElementType = function (data, element) {
             self.subElementType(data);
@@ -223,8 +224,13 @@ function SubDataElement(rectangle) {
         };
 
         self.addRepeatingElement = function () {
-            self.repeatingSubElements.push(self.bufferedRepeatingElement());
-            self.bufferedRepeatingElement('');
+            var pair = {
+                start:self.bufferedRepeatingElement_start(),
+                end:self.bufferedRepeatingElement_end()
+            };
+            self.repeatingSubElements.push(pair);
+            self.bufferedRepeatingElement_start('');
+            self.bufferedRepeatingElement_end('');
         };
 
         self.removeRepeatingElement = function (data) {
