@@ -297,7 +297,8 @@
                         <!-- added elements *** do foreach *** -->
                         <div data-bind="foreach:repeatingSubElements">
                             <div class="form-group">
-                                <label data-bind="text:$data" class="col-sm-8 control-label">text</label>
+                                <label data-bind="text:start" class="col-sm-4 control-label">text</label>
+                                <label data-bind="text:end" class="col-sm-4 control-label">text</label>
                                 <div class="col-sm-2"><a data-bind="click:$parent.removeRepeatingElement" class="btn btn-danger" style="border-radius: 50%; height:24px; width:24px; padding: 2 0"><span class="glyphicon glyphicon-remove-circle"></span></a></div>
                             </div>
                         </div>
