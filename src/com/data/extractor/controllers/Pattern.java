@@ -73,8 +73,13 @@ public class Pattern {
         String processing = null;
         String[] splits = null;
 
-        String regexLastEnded;
-        String columnLastEnded;
+        String regexLastEnded = unprocessed;
+        String columnLastEnded = unprocessed;
+
+        String regexStarted = unprocessed;
+        String columnStarted = unprocessed;
+
+        String extractedValue;
 
         PatternDataParser patternDataParser = new PatternDataParser();
         patternDataParser = assignValues(patternDataParser);
@@ -87,13 +92,68 @@ public class Pattern {
 
         List<RegexPairElement> regexPairElementList = regexDataElement.getRegexPairElements();
 
-        for (RegexPairElement regexPair : regexPairElementList){
+        List<RegexPairElement> extractedPairElementsList = new ArrayList<RegexPairElement>();
+        RegexPairElement extractedPairElement = new RegexPairElement();
 
+
+        // Must have a logic to break this loop
+        Boolean status = true;
+        while (status){
+
+            for (RegexPairElement regexPair : regexPairElementList){
+
+                extractedValue = new String();
+                RegexStartElement regexStartElement = regexPair.getRegexStartElement();
+                RegexEndElement regexEndElement = regexPair.getRegexEndElement();
+
+                splits = regexLastEnded.split(regexStartElement.getTag(),2);
+                try {
+                    if(regexEndElement.getTag().equals("eol")){
+                        regexEndElement.setTag(System.getProperty("line.separator"));
+                    }
+                    splits = splits[1].split(regexEndElement.getTag(),2);
+
+                    try {
+                        splits[1] = regexEndElement.getTag() + splits[1];
+                        extractedValue = splits [0];
+                        regexPair.setValue(extractedValue);
+                        regexLastEnded = splits[1];
+
+                        extractedPairElement = new RegexPairElement();
+                        extractedPairElement.setValue(extractedValue);
+                        extractedPairElementsList.add(extractedPairElement);
+                    }catch (ArrayIndexOutOfBoundsException e){
+                        System.out.println("No end Tag with " + regexEndElement.getTag() + " was found");
+                        break;
+                    }
+
+                }catch (ArrayIndexOutOfBoundsException e){
+                    System.out.println("No Start Tag with " + regexStartElement.getTag() + " was found");
+                    status =false;
+                    break;
+                }
+
+            }
+
+            for (int i=0; i < columnDataElementList.size();i++){
+                ColumnDataElement columnDataElement =columnDataElementList.get(i);
+                List<Cell> cellList = columnDataElement.getCellList();
+
+                ColumnStartElement columnStartElement = columnDataElement.getColumnStartElement();
+                ColumnEndElement columnEndElement = columnDataElement.getColumnEndElement();
+
+                splits = columnStarted.split(columnStartElement.getTag(),2);
+                try {
+
+                }catch (ArrayIndexOutOfBoundsException e){
+                    
+                }
+
+            }
         }
 
-        for (ColumnDataElement c : columnDataElementList){
 
-        }
+
 
 
 
@@ -185,11 +245,11 @@ public class Pattern {
         RegexStartElement rs2 = new RegexStartElement();
         RegexEndElement re2 = new RegexEndElement();
 
-        rs1.setTag("");
-        re1.setTag("");
+        rs1.setTag("VSC Color Cde:");
+        re1.setTag("VSS Color Code:");
 
-        rs2.setTag("");
-        re2.setTag("");
+        rs2.setTag("VSS Color Code:");
+        re2.setTag("eol");
 
         RegexPairElement regexPairElement = new RegexPairElement();
         RegexPairElement regexPairElement2 = new RegexPairElement();
