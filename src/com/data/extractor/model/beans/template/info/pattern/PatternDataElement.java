@@ -11,7 +11,7 @@ public class PatternDataElement {
     @Expose
     private List<ColumnDataElement> columnDataElements =new ArrayList<ColumnDataElement>();
     @Expose
-    private List<RegexDataElement> regexDataElements = new ArrayList<RegexDataElement>();
+    private RegexDataElement regexDataElement;
 
     public List<ColumnDataElement> getColumnDataElements() {
         return columnDataElements;
@@ -21,11 +21,11 @@ public class PatternDataElement {
         this.columnDataElements = columnDataElements;
     }
 
-    public List<RegexDataElement> getRegexDataElements() {
-        return regexDataElements;
+    public RegexDataElement getRegexDataElement() {
+        return regexDataElement;
     }
 
-    public void setRegexDataElements(List<RegexDataElement> regexDataElements) {
-        this.regexDataElements = regexDataElements;
+    public void setRegexDataElement(RegexDataElement regexDataElement) {
+        this.regexDataElement = regexDataElement;
     }
 }

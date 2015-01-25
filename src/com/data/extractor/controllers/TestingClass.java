@@ -2,22 +2,30 @@ package com.data.extractor.controllers;
 
 import com.data.extractor.model.beans.template.info.pattern.*;
 import com.data.extractor.model.beans.template.info.regex.RegexDataElement;
+import com.data.extractor.model.beans.template.info.regex.RegexEndElement;
+import com.data.extractor.model.beans.template.info.regex.RegexPairElement;
+import com.data.extractor.model.beans.template.info.regex.RegexStartElement;
+import com.data.extractor.model.template.markup.insert.coordinate.PatternDataInserter;
+import com.mongodb.MongoClient;
 
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class TestingClass {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws UnknownHostException {
 
         PatternDataParser patternDataParser = new PatternDataParser();
         List<PatternDataElement> patternDataElementList = new ArrayList<PatternDataElement>();
 
         PatternDataElement patternDataElement = new PatternDataElement();
+        MongoClient mongoClient = new MongoClient("localhost",27017);
 
         ColumnDataElement columnDataElement = new ColumnDataElement();
         ColumnDataElement columnDataElement2 = new ColumnDataElement();
         RegexDataElement regexDataElement = new RegexDataElement();
+        RegexDataElement regexDataElement2 = new RegexDataElement();
 
         List<RegexDataElement> regexDataElementList = new ArrayList<RegexDataElement>();
         List<ColumnDataElement> columnDataElementList = new ArrayList<ColumnDataElement>();
@@ -42,6 +50,49 @@ public class TestingClass {
 
         columnDataElementList.add(columnDataElement);
         columnDataElementList.add(columnDataElement2);
+
+        patternDataElement.setColumnDataElements(columnDataElementList);
+
+        RegexStartElement rs1 = new RegexStartElement();
+        RegexEndElement re1 = new RegexEndElement();
+
+        RegexStartElement rs2 = new RegexStartElement();
+        RegexEndElement re2 = new RegexEndElement();
+
+        rs1.setTag("");
+        re1.setTag("");
+
+        rs2.setTag("");
+        re2.setTag("");
+
+        RegexPairElement regexPairElement = new RegexPairElement();
+        RegexPairElement regexPairElement2 = new RegexPairElement();
+
+        regexPairElement.setRegexStartElement(rs1);
+        regexPairElement.setRegexEndElement(re1);
+
+        regexPairElement2.setRegexStartElement(rs2);
+        regexPairElement2.setRegexEndElement(re2);
+
+        List<RegexPairElement> regexPairElementList = new ArrayList<RegexPairElement>();
+        regexPairElementList.add(regexPairElement);
+        regexPairElementList.add(regexPairElement2);
+
+        regexDataElement.setRegexPairElements(regexPairElementList);
+
+        regexDataElementList.add(regexDataElement);
+
+        //patternDataElement.setRegexDataElements(regexDataElementList);
+        patternDataElement.setRegexDataElement(regexDataElement);
+
+        patternDataElementList.add(patternDataElement);
+
+        patternDataParser.setPatternDataElements(patternDataElementList);
+        patternDataParser.setDataType("pattern");
+        patternDataParser.setId("3");
+
+        PatternDataInserter patternDataInserter = new PatternDataInserter();
+        patternDataInserter.insert(patternDataParser,mongoClient);
 
 
 
