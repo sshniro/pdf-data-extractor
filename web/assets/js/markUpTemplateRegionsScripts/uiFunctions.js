@@ -134,6 +134,15 @@ var drawingRouter = (function (baseUiComponent, selection){
             }
             else if(vm.currentProcessingSubElement() == 'NE'){  // if start element set to Normal element
                 rectangle.elementId = baseUiComponent.id;
+                // ######################## get extraction without drawing element
+                effectiveController = 'MarkUpTemplateRegionController';
+                var responseData = getMainExtraction(rectangle, 'text');
+
+                // set extracted data
+                vm.currentProcessingSubElement('');
+            }
+            else if(vm.currentProcessingSubElement() == 'RE'){  // if start element set to Normal element
+                rectangle.elementId = baseUiComponent.id;
                 //Hide earlier meta for deco
                 $(".subElementDecoMeta").hide();
                 vm.addSubElement(rectangle);

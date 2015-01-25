@@ -174,10 +174,10 @@ function immediateSelectedObjectModel(baseUiComponent, rectangle){
 };
 
 //Coordinates Relative to parent ELement!!!!
-function SubDataElement(rectangle){
+function SubDataElement(rectangle) {
     var self = this;
     self.rectangle = rectangle;
-    self.elementId  = ko.observable(rectangle.elementId);
+    self.elementId = ko.observable(rectangle.elementId);
     self.id = ko.observable(rectangle.id);
     self.elementType = ko.observable(rectangle.elementType);
     self.metaName = ko.observable();
@@ -188,6 +188,7 @@ function SubDataElement(rectangle){
     self.isHavingEndTag = ko.observable(false);
     self.subElementEndTag = '';
     self.isHavingRepeatedHeaders = ko.observable(false);
+    if (self.elementType() === 'regex' || self.elementType() === 'pattern') {
 
     self.repeatingSubElements = ko.observableArray([]);
     self.bufferedRepeatingElement = ko.observable('');
@@ -247,7 +248,9 @@ function SubDataElement(rectangle){
     self.width = ko.observable(rectangle.width);
     self.height = ko.observable(rectangle.height);
 
+    //getMainExtraction gives extactedData
     self.extractedData = ko.observable(rectangle.extractedData);
+    //getSubExtraction gives relevantData
     self.relevantData = ko.observable(rectangle.relevantData);
 
     self.elementClass = ko.observable('sub');
