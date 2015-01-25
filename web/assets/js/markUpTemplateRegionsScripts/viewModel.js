@@ -401,10 +401,61 @@ function ViewModel(){
             self.patternElements.push(relevantPatternElement);
             var subElement = $("div#"+subElement.id()+".subElement");
             subElement.css('background-color','rgba(46, 204, 113,0.3)');
-        }        
+        }
         self.tempSubs.push(subElement);
         ////////////////
         ////////////////
+    }
+
+    //Implemented for rejex extraction
+    self.completeSubElement = function(data){
+
+        if (data.elementType === 'regex') {
+            var relevantRegexElement  = self.regexElements.remove(function(item) {
+                return item.elementId === data.elementId;
+            })[0];
+            relevantRegexElement.extractedData(data.relevantData);
+
+            var relevantSubElement =  relevantRegexElement.subElements.pop();
+            relevantSubElement.subElementEndTag = data.relevantData;
+
+            relevantRegexElement.subElements.push(relevantSubElement);
+
+            //Used in workflow for meta generations for column headers
+            relevantRegexElement.setCurrentSubElement(relevantSubElement);
+            relevantRegexElement.saveCurrentSubElement();
+
+            indexInSubElements =  relevantRegexElement.subElements.indexOf(relevantSubElement);
+            //Setting the current sub element within the regex object object
+            relevantRegexElement.currentSubElement(relevantRegexElement.subElements()[indexInSubElements]);
+
+            self.regexElements.push(relevantRegexElement);
+            var subElement = $("div#"+relevantSubElement.id()+".subElement");
+            subElement.css('background-color','rgba(46, 204, 113,0.3)');
+        }
+        else if (data.elementType === 'pattern') {
+            var relevantPatternElement  = self.patternElements.remove(function(item) {
+                return item.elementId === data.elementId;
+            })[0];
+            relevantPatternElement.extractedData(data.relevantData);
+
+            var relevantSubElement =  relevantPatternElement.subElements.pop();
+            relevantSubElement.subElementEndTag = data.relevantData();
+
+            relevantPatternElement.subElements.push(relevantSubElement);
+
+            //Used in workflow for meta generations for column headers
+            relevantPatternElement.setCurrentSubElement(relevantSubElement);
+            relevantPatternElement.saveCurrentSubElement();
+
+            indexInSubElements =  relevantPatternElement.subElements.indexOf(relevantSubElement);
+            //Setting the current sub element within the pattern object object
+            relevantPatternElement.currentSubElement(relevantPatternElement.subElements()[indexInSubElements]);
+
+            self.patternElements.push(relevantPatternElement);
+            var subElement = $("div#"+relevantSubElement.id()+".subElement");
+            subElement.css('background-color','rgba(46, 204, 113,0.3)');
+        }
     }
 
     //Can remove elements on demand

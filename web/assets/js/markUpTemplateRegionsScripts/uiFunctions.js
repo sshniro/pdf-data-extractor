@@ -134,6 +134,11 @@ var drawingRouter = (function (baseUiComponent, selection){
             }
             else if(vm.currentProcessingSubElement() == 'NE'){  // if start element set to Normal element
                 rectangle.elementId = baseUiComponent.id;
+                vm.completeSubElement(rectangle);
+                vm.currentProcessingSubElement('');
+            }
+            else if(vm.currentProcessingSubElement() == 'RE'){  // if start element set to Normal element
+                rectangle.elementId = baseUiComponent.id;
                 //Hide earlier meta for deco
                 $(".subElementDecoMeta").hide();
                 vm.addSubElement(rectangle);
