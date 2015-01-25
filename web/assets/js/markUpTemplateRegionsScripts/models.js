@@ -178,16 +178,21 @@ function SubDataElement(rectangle){
     //Used for Pattern and regex workflows/////////////////
     self.subElementType = ko.observable('');
     self.isSubElementTypeSelected = ko.observable(false);
-    self.subElementEndTag = ko.observable('');
+    self.subElementEndTag = 'SELECT END TAG';
     self.isHavingEndTag = ko.observable(false);
 
     self.selectElementType = function(data,element){
         self.subElementType(data);
         self.isSubElementTypeSelected(true);
+        vm.currentProcessingSubElement(data);
+        if(data == 'NE'){
+            self.isHavingEndTag(true);
+        }
     }
 
     self.changeElementType = function(){
         self.isSubElementTypeSelected(false);
+        vm.currentProcessingSubElement('');
     }
     /////////////////////////////////////////////////////
 

@@ -35,6 +35,10 @@ function ViewModel(){
     self.regexElements = ko.observableArray([]);
     self.patternElements = ko.observableArray([]);
     self.currentDic = ko.observableArray([]);
+
+    // sub element selection
+    self.currentProcessingSubElement = ko.observable('');
+
     self.elementBuffer;
 
 
@@ -360,7 +364,7 @@ function ViewModel(){
             var relevantRegexElement  = self.regexElements.remove(function(item) {
                 return item.elementId === data.elementId;
             })[0];
-            relevantRegexElement.relevantData(subElement.relevantData());
+            relevantRegexElement.extractedData(subElement.relevantData());
 
             relevantRegexElement.subElements.push(subElement);
 
@@ -380,7 +384,7 @@ function ViewModel(){
             var relevantPatternElement  = self.patternElements.remove(function(item) {
                 return item.elementId === data.elementId;
             })[0];
-            relevantPatternElement.relevantData(subElement.relevantData());
+            relevantPatternElement.extractedData(subElement.relevantData());
 
             relevantPatternElement.subElements.push(subElement);
 
@@ -417,9 +421,11 @@ function ViewModel(){
             }
             else if (removedElement.elementType() === 'regex') {
                 self.regexElements.remove(removedElement);
+                vm.currentProcessingSubElement('');
             }
             else if (removedElement.elementType() === 'pattern') {
                 self.patternElements.remove(removedElement);
+                vm.currentProcessingSubElement('');
             }
             resetEnvironment();
         }
@@ -479,6 +485,7 @@ function ViewModel(){
                 self.patternElements.push(relevantPatternElement);
             }
             vm.subElementSelectionInProgress(true);
+            vm.currentProcessingSubElement('');
             $('div#'+removedElement.elementId()+'.mainElement').css('cursor','crosshair');
             selectionInitializer('div#'+removedElement.elementId()+'.mainElement',drawingRouter);
         }
