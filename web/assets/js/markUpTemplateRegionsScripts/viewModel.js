@@ -364,7 +364,7 @@ function ViewModel(){
             var relevantRegexElement  = self.regexElements.remove(function(item) {
                 return item.elementId === data.elementId;
             })[0];
-            relevantRegexElement.relevantData(subElement.relevantData());
+            relevantRegexElement.extractedData(subElement.relevantData());
 
             relevantRegexElement.subElements.push(subElement);
 
@@ -384,7 +384,7 @@ function ViewModel(){
             var relevantPatternElement  = self.patternElements.remove(function(item) {
                 return item.elementId === data.elementId;
             })[0];
-            relevantPatternElement.relevantData(subElement.relevantData());
+            relevantPatternElement.extractedData(subElement.relevantData());
 
             relevantPatternElement.subElements.push(subElement);
 
