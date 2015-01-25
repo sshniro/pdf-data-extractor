@@ -165,34 +165,76 @@ function DataElement(rectangle, subElements){
 
 }
 
+function immediateSelectedObjectModel(baseUiComponent, rectangle){
+    var self = this;
+    if(!(baseUiComponent == undefined || rectangle == undefined)){
+        self.baseUiComponent = baseUiComponent;
+        self.rectangle = rectangle;
+    }
+};
 
 //Coordinates Relative to parent ELement!!!!
-function SubDataElement(rectangle){
+function SubDataElement(rectangle) {
     var self = this;
     self.rectangle = rectangle;
-    self.elementId  = ko.observable(rectangle.elementId);
+    self.elementId = ko.observable(rectangle.elementId);
     self.id = ko.observable(rectangle.id);
     self.elementType = ko.observable(rectangle.elementType);
     self.metaName = ko.observable();
 
     //Used for Pattern and regex workflows/////////////////
-    self.subElementType = ko.observable('');
-    self.isSubElementTypeSelected = ko.observable(false);
-    self.subElementEndTag = 'SELECT END TAG';
-    self.isHavingEndTag = ko.observable(false);
+    if (self.elementType() === 'regex' || self.elementType() === 'pattern') {
+        self.subElementType = ko.observable('');
+        self.isSubElementTypeSelected = ko.observable(false);
+        self.isHavingEndTag = ko.observable(false);
+        self.subElementEndTag = '';
+        self.isHavingRepeatedHeaders = ko.observable(false);
 
-    self.selectElementType = function(data,element){
-        self.subElementType(data);
-        self.isSubElementTypeSelected(true);
-        vm.currentProcessingSubElement(data);
-        if(data == 'NE'){
-            self.isHavingEndTag(true);
-        }
-    }
+        self.repeatingSubElements = ko.observableArray([]);
+        self.bufferedRepeatingElement = ko.observable('');
 
-    self.changeElementType = function(){
-        self.isSubElementTypeSelected(false);
-        vm.currentProcessingSubElement('');
+        self.selectElementType = function (data, element) {
+            self.subElementType(data);
+            self.isSubElementTypeSelected(true);
+            vm.currentProcessingSubElement(data);
+            if (data == 'NE') {
+                self.isHavingEndTag(true);
+                self.isHavingRepeatedHeaders(false);
+                self.subElementEndTag = 'SELECT END TAG';
+                selectionInitializer('#' + vm.immediateSelectedObject().baseUiComponent.id + '.mainElement', drawingRouter, vm.immediateSelectedObject().rectangle.id);
+            }
+            else if (data == 'RE') {
+                self.isHavingEndTag(false);
+                self.isHavingRepeatedHeaders(true);
+            }
+            else if (data == 'NNE') {
+                self.isHavingEndTag(false);
+                self.isHavingRepeatedHeaders(false);
+                self.subElementEndTag = 'line end';
+                vm.currentProcessingSubElement('');
+                selectionInitializer('#' + vm.immediateSelectedObject().baseUiComponent.id + '.mainElement', drawingRouter, vm.immediateSelectedObject().rectangle.id);
+            }
+        };
+
+        self.changeElementType = function () {
+            self.subElementType('');
+            self.isSubElementTypeSelected(false);
+            vm.currentProcessingSubElement('');
+        };
+
+        self.addRepeatingElement = function () {
+            self.repeatingSubElements.push(self.bufferedRepeatingElement());
+            self.bufferedRepeatingElement('');
+        };
+
+        self.removeRepeatingElement = function (data) {
+            self.repeatingSubElements.remove(data);
+        };
+
+        self.completeElement = function () {
+            vm.currentProcessingSubElement('');
+            selectionInitializer('#' + vm.immediateSelectedObject().baseUiComponent.id + '.mainElement', drawingRouter, vm.immediateSelectedObject().rectangle.id);
+        };
     }
     /////////////////////////////////////////////////////
 
@@ -207,7 +249,9 @@ function SubDataElement(rectangle){
     self.width = ko.observable(rectangle.width);
     self.height = ko.observable(rectangle.height);
 
+    //getMainExtraction gives extactedData
     self.extractedData = ko.observable(rectangle.extractedData);
+    //getSubExtraction gives relevantData
     self.relevantData = ko.observable(rectangle.relevantData);
 
     self.elementClass = ko.observable('sub');

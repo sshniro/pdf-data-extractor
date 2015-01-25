@@ -263,7 +263,7 @@
                 <!-- element type select -->
                 <div style="position: absolute" class="btn-group-vertical" role="group" data-bind="id:id, visible:((elementType() == 'regex' || elementType() == 'pattern') && !(isSubElementTypeSelected())), style:{left: (uiData.removeX()+15), top:uiData.removeY }">
                     <button type="button" class="btn btn-primary" data-bind="click:selectElementType.bind($data, 'NE')">normal element</button>
-                    <button type="button" class="btn btn-primary" data-bind="click:selectElementType.bind($data, 'RE')">repeating element</button>
+                    <button type="button" class="btn btn-primary" data-bind="visible:(elementType() == 'pattern'), click:selectElementType.bind($data, 'RE')">repeating element</button>
                     <button type="button" class="btn btn-primary" data-bind="click:selectElementType.bind($data, 'NNE')">non-ending element</button>
                 </div>
 
@@ -291,6 +291,29 @@
                     <span class="glyphicon glyphicon-remove-circle"></span>
                 </button>
 
+                <!-- form element for repeatingSubElements in pattern -->
+                <div class="well well-sm" style="position: absolute; width:400px" data-bind="id:id, visible:((elementType()=='pattern') && (isHavingRepeatedHeaders())), style:{left: ($parent.uiData.removeX() + 12), top:$parent.uiData.removeY}">
+                    <form class="form-horizontal" role="form">
+                        <!-- added elements *** do foreach *** -->
+                        <div data-bind="foreach:repeatingSubElements">
+                            <div class="form-group">
+                                <label data-bind="text:$data" class="col-sm-8 control-label">text</label>
+                                <div class="col-sm-2"><a data-bind="click:$parent.removeRepeatingElement" class="btn btn-danger" style="border-radius: 50%; height:24px; width:24px; padding: 2 0"><span class="glyphicon glyphicon-remove-circle"></span></a></div>
+                            </div>
+                        </div>
+                        <!-- form elements -->
+                        <div class="form-group">
+                            <div class="col-sm-10">
+                                <input data-bind="value:bufferedRepeatingElement" type="text" class="form-control sub" />
+                            </div>
+                            <div class="col-sm-2">
+                                <a class="btn btn-default" data-bind="click:addRepeatingElement" onclick="$('.sub').focus()"><span class="glyphicon glyphicon-ok"></span></a>
+                            </div>
+                        </div>
+                        <div class="form-group"><div class="col-sm-offset-2 col-sm-8"><button data-bind="click:completeElement" class="btn btn-default" style="background-color: green; color:#ffffff">complete pattern element</button></div></div>
+                    </form>
+                </div>
+
             </li>
         </ul>
 
@@ -298,6 +321,8 @@
         <button  style="position:absolute; margin-top:-11; height:24; width:25; border-radius: 50px; z-index:1" data-bind="id:id, click:$parent.removeElement, style:{left: uiData.removeX, top:uiData.removeY}" type="button" class="btn btn-default btn-xs removeElement">
             <span class="glyphicon glyphicon-remove-circle"></span>
         </button>
+
+
 
     </div>
 
