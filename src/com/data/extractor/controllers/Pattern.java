@@ -71,8 +71,8 @@ public class Pattern {
 
         StringBuilder sb=pdftoText("/Users/niro273/Desktop/test.pdf");
         String unprocessed = sb.toString();
-        String processing = null;
         String[] splits = null;
+        String[] regexSplits = null;
 
         String regexLastEnded = unprocessed;
         String columnLastEnded = unprocessed;
@@ -96,6 +96,10 @@ public class Pattern {
         List<RegexPairElement> extractedPairElementsList = new ArrayList<RegexPairElement>();
         RegexPairElement extractedPairElement = new RegexPairElement();
 
+        List<PatternDataElement> extractedPatternElement = new ArrayList<PatternDataElement>();
+
+        List<ColumnDataElement> extractedColumnList = new ArrayList<ColumnDataElement>();
+
 
         // Must have a logic to break this loop
         Boolean status = true;
@@ -103,26 +107,26 @@ public class Pattern {
 
             for (int i =0; i<regexPairElementList.size();i++){
                 RegexPairElement regexPair = regexPairElementList.get(i);
-                extractedValue = new String();
                 RegexStartElement regexStartElement = regexPair.getRegexStartElement();
                 RegexEndElement regexEndElement = regexPair.getRegexEndElement();
 
-                splits = regexLastEnded.split(regexStartElement.getTag(),2);
-                if(i == 0){
-                    columnStarted = splits[1];
-                }
-
+                regexSplits = regexLastEnded.split(regexStartElement.getTag(),2);
                 try {
+
+                    if(i == 0){
+                        columnStarted = regexSplits[1];
+                    }
+
                     if(regexEndElement.getTag().equals("eol")){
                         regexEndElement.setTag(System.getProperty("line.separator"));
                     }
-                    splits = splits[1].split(regexEndElement.getTag(),2);
+                    regexSplits = regexSplits[1].split(regexEndElement.getTag(),2);
 
                     try {
-                        splits[1] = regexEndElement.getTag() + splits[1];
-                        extractedValue = splits [0];
+                        regexSplits[1] = regexEndElement.getTag() + regexSplits[1];
+                        extractedValue = regexSplits [0];
                         regexPair.setValue(extractedValue);
-                        regexLastEnded = splits[1];
+                        regexLastEnded = regexSplits[1];
 
                         extractedPairElement = new RegexPairElement();
                         extractedPairElement.setValue(extractedValue);
@@ -139,20 +143,22 @@ public class Pattern {
                 }
 
             }
+
             Boolean columnStatus = true;
+            ColumnDataElement extractedColumnElement ;
+
             while (columnStatus){
+
                 for (int i=0; i < columnDataElementList.size();i++){
 
                     ColumnDataElement columnDataElement =columnDataElementList.get(i);
-                    List<Cell> cellList = columnDataElement.getCellList();
+
+
 
                     ColumnStartElement columnStartElement = columnDataElement.getColumnStartElement();
                     ColumnEndElement columnEndElement = columnDataElement.getColumnEndElement();
 
-
                     try {
-
-
                         splits = columnStarted.split(columnStartElement.getTag(),2);
 
                         if(columnEndElement.getTag().equals("eol")){
@@ -161,72 +167,61 @@ public class Pattern {
 
                         splits = splits[1].split(columnEndElement.getTag(),2);
                         splits[1] = columnEndElement.getTag() + splits [1];
+
+                        if (extractedColumnList.size() > i){
+                            extractedColumnElement = extractedColumnList.get(i);
+                        }else {
+                            extractedColumnElement = new ColumnDataElement();
+                            extractedColumnList.add(extractedColumnElement);
+                        }
+
+                        List<Cell> extractedCellList = extractedColumnElement.getCellList();
+                        List<Cell> cellList = columnDataElement.getCellList();
+
                         columnStarted = splits[1];
                         Cell cell = new Cell();
                         cell.setValue(splits[0]);
                         cellList.add(cell);
 
+                        extractedCellList.add(cell);
+
                         if(i == columnDataElementList.size() -1){
                         // Check if the next line start with the word otherwise break.
                             ColumnStartElement testElement = columnDataElementList.get(0).getColumnStartElement();
                             int j = splits[1].indexOf(testElement.getTag());
-                            System.out.println(j);
-                        }
-                        try {
-
-                        }catch (ArrayIndexOutOfBoundsException e){
-
+                            if(j > 3 ){
+                                columnStatus =false;
+                                break;
+                            }
                         }
                     }catch (ArrayIndexOutOfBoundsException e){
                         columnStatus =false;
                         break;
                     }
-
                 }
             }
+
+
+            PatternDataElement pElement = new PatternDataElement();
+            if(extractedPairElementsList.size() != 0 ){
+                RegexDataElement regexDataElement1 = new RegexDataElement();
+                regexDataElement1.setRegexPairElements(extractedPairElementsList);
+                pElement.setRegexDataElements(regexDataElement1);
+            }
+            if(extractedColumnList.size() != 0){
+                pElement.setColumnDataElements(extractedColumnList);
+            }
+            if(extractedPairElementsList.size() != 0 || extractedColumnList.size() != 0){
+                extractedPatternElement.add(pElement);
+            }
+
+            extractedPairElementsList = new ArrayList<RegexPairElement>();
+            extractedColumnList = new ArrayList<ColumnDataElement>();
+
 
         }
 
 
-//        r2.setStartTag("heelo");
-//        r2.setEndTag("");
-//        r2.setMetaName("");
-//
-//        regexDataElementList1.add(r2);
-//
-//        ColumnDataElement c1=new ColumnDataElement();
-//
-//        c1.setColumnName("");
-//        c1.setColumnStartTag("");
-//        c1.setColumnEndTag("");
-//
-//        ColumnDataElement c2 = new ColumnDataElement();
-//
-//        c2.setColumnName("");
-//        c2.setColumnStartTag("");
-//        c2.setColumnEndTag("");
-//
-//        columnDataElementList.add(c1);
-//        columnDataElementList.add(c2);
-//
-//        List<List<Cell>> complexCellList = new ArrayList<List<Cell>>();
-//        List<Cell> cellList = new ArrayList<Cell>();
-//
-//        for (ColumnDataElement c : columnDataElementList){
-//
-//            splits = unprocessed.split(c.getColumnStartTag(),2);
-//
-//            if(c.getColumnEndTag().equals("eol")){
-//                splits  = splits[1].split(System.getProperty("line.separator"),2);
-//            }else {
-//                splits  = splits[1].split(c.getColumnEndTag(),2);
-//            }
-//
-//            splits[1] = c.getColumnEndTag() + splits[1];
-//            String cellValue = splits[0];
-//
-//
-//        }
 
     }
 

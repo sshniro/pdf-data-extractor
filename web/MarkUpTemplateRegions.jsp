@@ -262,9 +262,9 @@
 
                 <!-- element type select -->
                 <div style="position: absolute" class="btn-group-vertical" role="group" data-bind="id:id, visible:((elementType() == 'regex' || elementType() == 'pattern') && !(isSubElementTypeSelected())), style:{left: (uiData.removeX()+15), top:uiData.removeY }">
-                    <button type="button" class="btn btn-primary" data-bind="click:selectElementType.bind($data, 'NE')">normal element</button>
-                    <button type="button" class="btn btn-primary" data-bind="visible:(elementType() == 'pattern'), click:selectElementType.bind($data, 'RE')">repeating element</button>
-                    <button type="button" class="btn btn-primary" data-bind="click:selectElementType.bind($data, 'NNE')">non-ending element</button>
+                    <button type="button" class="btn btn-primary" data-bind="click:selectElementType.bind($data, 'RE')">regex element</button>
+                    <button type="button" class="btn btn-primary" data-bind="visible:(elementType() == 'pattern'), click:selectElementType.bind($data, 'PE')">pattern element</button>
+                    <button type="button" class="btn btn-primary" data-bind="click:selectElementType.bind($data, 'LEE')">line-ending element</button>
                 </div>
 
                 <!-- element type tag -->
@@ -297,16 +297,26 @@
                         <!-- added elements *** do foreach *** -->
                         <div data-bind="foreach:repeatingSubElements">
                             <div class="form-group">
-                                <label data-bind="text:$data" class="col-sm-8 control-label">text</label>
+                                <label data-bind="text:start" class="col-sm-4 control-label">text</label>
+                                <label data-bind="text:end" class="col-sm-4 control-label">text</label>
                                 <div class="col-sm-2"><a data-bind="click:$parent.removeRepeatingElement" class="btn btn-danger" style="border-radius: 50%; height:24px; width:24px; padding: 2 0"><span class="glyphicon glyphicon-remove-circle"></span></a></div>
                             </div>
                         </div>
                         <!-- form elements -->
                         <div class="form-group">
+                            <label class="col-sm-2 control-label">Start</label>
                             <div class="col-sm-10">
-                                <input data-bind="value:bufferedRepeatingElement" type="text" class="form-control sub" />
+                                <input data-bind="value:bufferedRepeatingElement_start" type="text" class="form-control sub" />
                             </div>
-                            <div class="col-sm-2">
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">End</label>
+                            <div class="col-sm-10">
+                                <input data-bind="value:bufferedRepeatingElement_end" type="text" class="form-control sub" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-10 col-sm-2">
                                 <a class="btn btn-default" data-bind="click:addRepeatingElement" onclick="$('.sub').focus()"><span class="glyphicon glyphicon-ok"></span></a>
                             </div>
                         </div>

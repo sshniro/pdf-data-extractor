@@ -1,10 +1,13 @@
 package com.data.extractor.model.extract.pdf;
 
 
+import com.data.extractor.controllers.Pattern;
 import com.data.extractor.model.beans.extract.pdf.ExtractStatus;
 import com.data.extractor.model.beans.template.info.image.ImageDataElement;
 import com.data.extractor.model.beans.template.info.image.ImageDataParser;
 import com.data.extractor.model.beans.template.info.insert.InsertDataParser;
+import com.data.extractor.model.beans.template.info.pattern.PatternDataElement;
+import com.data.extractor.model.beans.template.info.pattern.PatternDataParser;
 import com.data.extractor.model.beans.template.info.regex.*;
 import com.data.extractor.model.beans.template.info.table.TableDataParser;
 import com.data.extractor.model.beans.template.info.text.TextDataElement;
@@ -14,9 +17,11 @@ import com.data.extractor.model.extract.pdf.inserter.ExtractedDataInserter;
 import com.data.extractor.model.extract.pdf.table.DataProcessor;
 import com.data.extractor.model.extractors.image.FullSelectionImageExtractor;
 import com.data.extractor.model.extractors.regex.RegexDataExtractor;
+import com.data.extractor.model.extractors.text.FullPageTextExtractor;
 import com.data.extractor.model.extractors.text.FullSelectionTextExtractor;
 import com.data.extractor.model.extractors.text.MetaSelectionTextExtractor;
 import com.data.extractor.model.template.markup.calculate.coordinates.ImageDataCoordinates;
+import com.google.gson.annotations.Expose;
 import com.mongodb.MongoClient;
 import org.apache.pdfbox.exceptions.CryptographyException;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -128,7 +133,7 @@ public class DataElementsProcessor {
 
         regexDataParserList = templateInfoDAO.getRegexTemplateInfo(extractStatus.getParent() , "regex");
 
-        /* Check if no text data available to extract then skip*/
+        /* Check if no regex data available to extract then skip*/
         if(regexDataParserList.size() !=0 ){
             /*  Only one record will exist to the text data for a given PDF */
             regexDataParser =regexDataParserList.get(0);
@@ -136,6 +141,9 @@ public class DataElementsProcessor {
 
             PDDocument doc = PDDocument.load(extractStatus.getUploadedPdfFile());
             String extractedText;
+
+            FullPageTextExtractor fullPageTextExtractor = new FullPageTextExtractor();
+            String rawText = fullPageTextExtractor.pdftoText(doc,1,doc.getNumberOfPages()).toString();
 
             for (RegexDataElement r : regexDataElementList) {
 
@@ -149,7 +157,7 @@ public class DataElementsProcessor {
                     if(regexEndElement.getTag().equals("eol")){
                         regexEndElement.setTag(System.getProperty("line.separator"));
                     }
-                    extractedText = regexDataExtractor.extract("text",regexStartElement.getTag(),regexEndElement.getTag());
+                    extractedText = regexDataExtractor.extract(rawText,regexStartElement.getTag(),regexEndElement.getTag());
                     regex.setValue(extractedText);
                 }
             }
@@ -157,6 +165,33 @@ public class DataElementsProcessor {
         }
         /*  to present it to the extracted HTML   */
         insertDataParser.setRegexDataParser(regexDataParser);
+        return insertDataParser;
+    }
+
+    public InsertDataParser processPatternDataElements(InsertDataParser insertDataParser,ExtractStatus extractStatus, MongoClient mongoClient) throws IOException {
+
+        List<PatternDataParser> patternDataParserList;
+        PatternDataParser patternDataParser = null;
+
+        patternDataParserList = templateInfoDAO.getPatternTemplateInfo(extractStatus.getParent() , "pattern");
+
+        PDDocument doc = PDDocument.load(extractStatus.getUploadedPdfFile());
+        String extractedText;
+
+        FullPageTextExtractor fullPageTextExtractor = new FullPageTextExtractor();
+        String rawText = fullPageTextExtractor.pdftoText(doc,1,doc.getNumberOfPages()).toString();
+
+        /* Check if no regex data available to extract then skip*/
+        if(patternDataParserList.size() != 0 ){
+            /*  Only one record will exist to the text data for a given PDF */
+            patternDataParser = patternDataParserList.get(0);
+            List<PatternDataElement> patternDataElementList = patternDataParser.getPatternDataElements();
+
+            for (PatternDataElement P : patternDataElementList){
+
+            }
+        }
+
         return insertDataParser;
     }
 }
