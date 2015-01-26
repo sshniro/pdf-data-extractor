@@ -223,7 +223,7 @@ function SubDataElement(rectangle) {
         else if (data == 'LEE') {
             self.isHavingEndTag(false);
             self.isHavingRepeatedHeaders(false);
-            self.subElementEndTag('line end');
+            self.subElementEndTag('eol');
             vm.currentProcessingSubElement('');
             selectionInitializer('#' + vm.immediateSelectedObject().baseUiComponent.id + '.mainElement', drawingRouter, vm.immediateSelectedObject().rectangle.id);
         }

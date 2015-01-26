@@ -100,7 +100,7 @@ public class InsertRequestProcessor {
 
             /* Load the Template PDF in to pdf BOX and return the PDDoc to set pdf Properties*/
             Node node = templatesDAO.getNode(regexDataParser.getId());
-            patternDataParser.setPdfFile(node.getPdfFile());
+            regexDataParser.setPdfFile(node.getPdfFile());
             PDDocument doc =PDDocument.load(regexDataParser.getPdfFile());
 
             /* TODO Calculate the regex coordinates and then save in the db */

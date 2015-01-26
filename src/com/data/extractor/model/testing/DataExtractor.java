@@ -3,6 +3,8 @@ package com.data.extractor.model.testing;
 import com.data.extractor.model.beans.template.info.image.ImageDataElement;
 import com.data.extractor.model.beans.template.info.image.ImageDataParser;
 import com.data.extractor.model.beans.template.info.insert.InsertDataParser;
+import com.data.extractor.model.beans.template.info.pattern.PatternDataElement;
+import com.data.extractor.model.beans.template.info.pattern.PatternDataParser;
 import com.data.extractor.model.beans.template.info.regex.*;
 import com.data.extractor.model.beans.template.info.table.Cell;
 import com.data.extractor.model.beans.template.info.table.Column;
@@ -22,6 +24,7 @@ public class DataExtractor {
         ImageDataParser imageDataParser = data.getImageDataParser();
         TableDataParser tableDataParser = data.getTableDataParser();
         RegexDataParser regexDataParser= data.getRegexDataParser();
+        PatternDataParser patternDataParser= data.getPatternDataParser();
 
         StringBuilder sb=new StringBuilder("");
 
@@ -107,6 +110,14 @@ public class DataExtractor {
                     }
                     sb.append(regexPair.getMetaName()).append(" : " ).append(regexPair.getValue()).append("\n");
                 }
+            }
+        }
+
+        if(patternDataParser != null){
+            List<List<PatternDataElement>> complexList = patternDataParser.getComplexPatternList();
+
+            for (int i=0;i<complexList.size();i++){
+                List<PatternDataElement> patternDataElementList = complexList.get(i);
             }
         }
 

@@ -399,9 +399,9 @@ function RegexPairElementDTO(metaElement){
         this.dictionaryName     =   -1;
     }
     this.regexStartElement = {};
-    this.regexStartElement.tag       =   metaElement.subElementEndTag;
+    this.regexStartElement.tag       =   metaElement.subElementStartTag;
     this.regexEndElement = {};
-    this.regexEndElement.tag         =   metaElement.subElementStartTag;
+    this.regexEndElement.tag         =   metaElement.subElementEndTag;
 }
 
 function ColumnDataElementDTO(column){
