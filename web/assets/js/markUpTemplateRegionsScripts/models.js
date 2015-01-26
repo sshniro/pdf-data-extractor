@@ -183,66 +183,69 @@ function SubDataElement(rectangle) {
     self.metaName = ko.observable();
 
     //Used for Pattern and regex workflows/////////////////
+    self.subElementType = ko.observable(rectangle.subElementType);
+    self.isSubElementTypeSelected = ko.observable(rectangle.isSubElementTypeSelected);
+    self.isHavingEndTag = ko.observable(rectangle.isHavingEndTag);
+    self.subElementEndTag = ko.observable(rectangle.subElementEndTag);
+    self.subElementStartTag = ko.observable(rectangle.subElementStartTag);
+    self.isHavingRepeatedHeaders = ko.observable(false);
+
+    self.repeatingSubElements = ko.observableArray([]);
+    self.bufferedRepeatingElement_start = ko.observable('');
+    self.bufferedRepeatingElement_end = ko.observable('');
+
+/*
     if (self.elementType() === 'regex' || self.elementType() === 'pattern') {
-        self.subElementType = ko.observable(rectangle.subElementType);
-        self.isSubElementTypeSelected = ko.observable(rectangle.isSubElementTypeSelected);
-        self.isHavingEndTag = ko.observable(rectangle.isHavingEndTag);
-        self.subElementEndTag = ko.observable(rectangle.subElementEndTag);
-        self.subElementStartTag = ko.observable(rectangle.subElementStartTag);
-        self.isHavingRepeatedHeaders = ko.observable(false);
 
-        self.repeatingSubElements = ko.observableArray([]);
-        self.bufferedRepeatingElement_start = ko.observable('');
-        self.bufferedRepeatingElement_end = ko.observable('');
+    }*/
 
-        self.selectElementType = function (data, element) {
-            self.subElementType(data);
-            self.isSubElementTypeSelected(true);
-            vm.currentProcessingSubElement(data);
-            if (data == 'RE') {
-                self.isHavingEndTag(true);
-                self.isHavingRepeatedHeaders(false);
-                self.subElementEndTag('SELECT END TAG');
-                selectionInitializer('#' + vm.immediateSelectedObject().baseUiComponent.id + '.mainElement', drawingRouter, vm.immediateSelectedObject().rectangle.id);
-            }
-            else if (data == 'PE') {
-                self.isHavingEndTag(false);
-                self.isHavingRepeatedHeaders(true);
-            }
-            else if (data == 'LEE') {
-                self.isHavingEndTag(false);
-                self.isHavingRepeatedHeaders(false);
-                self.subElementEndTag('line end');
-                vm.currentProcessingSubElement('');
-                selectionInitializer('#' + vm.immediateSelectedObject().baseUiComponent.id + '.mainElement', drawingRouter, vm.immediateSelectedObject().rectangle.id);
-            }
-        };
-
-        self.changeElementType = function () {
-            self.subElementType('');
-            self.isSubElementTypeSelected(false);
-            vm.currentProcessingSubElement('');
-        };
-
-        self.addRepeatingElement = function () {
-            var pair = {
-                start:self.bufferedRepeatingElement_start(),
-                end:self.bufferedRepeatingElement_end()
-            };
-            self.repeatingSubElements.push(pair);
-            self.bufferedRepeatingElement_start('');
-            self.bufferedRepeatingElement_end('');
-        };
-
-        self.removeRepeatingElement = function (data) {
-            self.repeatingSubElements.remove(data);
-        };
-
-        self.completeElement = function () {
+    self.selectElementType = function (data, element) {
+        self.subElementType(data);
+        self.isSubElementTypeSelected(true);
+        vm.currentProcessingSubElement(data);
+        if (data == 'RE') {
+            self.isHavingEndTag(true);
+            self.isHavingRepeatedHeaders(false);
+            self.subElementEndTag('SELECT END TAG');
+            selectionInitializer('#' + vm.immediateSelectedObject().baseUiComponent.id + '.mainElement', drawingRouter, vm.immediateSelectedObject().rectangle.id);
+        }
+        else if (data == 'PE') {
+            self.isHavingEndTag(false);
+            self.isHavingRepeatedHeaders(true);
+        }
+        else if (data == 'LEE') {
+            self.isHavingEndTag(false);
+            self.isHavingRepeatedHeaders(false);
+            self.subElementEndTag('line end');
             vm.currentProcessingSubElement('');
             selectionInitializer('#' + vm.immediateSelectedObject().baseUiComponent.id + '.mainElement', drawingRouter, vm.immediateSelectedObject().rectangle.id);
+        }
+    };
+
+    self.changeElementType = function () {
+        self.subElementType('');
+        self.isSubElementTypeSelected(false);
+        vm.currentProcessingSubElement('');
+    };
+
+    self.addRepeatingElement = function () {
+        var pair = {
+            start:self.bufferedRepeatingElement_start(),
+            end:self.bufferedRepeatingElement_end()
         };
-    }
+        self.repeatingSubElements.push(pair);
+        self.bufferedRepeatingElement_start('');
+        self.bufferedRepeatingElement_end('');
+    };
+
+    self.removeRepeatingElement = function (data) {
+        self.repeatingSubElements.remove(data);
+    };
+
+    self.completeElement = function () {
+        vm.currentProcessingSubElement('');
+        selectionInitializer('#' + vm.immediateSelectedObject().baseUiComponent.id + '.mainElement', drawingRouter, vm.immediateSelectedObject().rectangle.id);
+    };
     /////////////////////////////////////////////////////
 
     self.elementViseCurrentDic = ko.observable(ko.utils.unwrapObservable(vm.currentDic));
