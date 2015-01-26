@@ -349,7 +349,7 @@ function RegexDataDTO(pageData){
     this.dataType= "regex";////Static Data
     this.regexDataElements =[];
 }
-function RegexDataElementDTO(dataElements, metaElements){
+function RegexDataElementDTO(dataElement, metaElements){
     this.id        = ko.utils.unwrapObservable(dataElement.id);    //////Switched meta with id
     this.metaName      = ko.utils.unwrapObservable(dataElement.metaName);//// Switch due to data layer requirement
     if(dataElement.selectedDictionaryItem){
@@ -377,12 +377,12 @@ function PatternDataDTO(pageData){
 }
 
 
-function PatternDataElementDTO(dataElements, metaElements){
+function PatternDataElementDTO(dataElement, metaElements){
     this.regexDataElements = [];
     this.columnDataElements = [];
 }
 
-function PatternDataElementDTO(dataElements, metaElements){
+function PatternDataElementDTO(dataElement, metaElements){
     this.rawData       = dataElement.rectangle;
     this.id        = ko.utils.unwrapObservable(dataElement.id);    //////Switched meta with id
     this.metaName      = ko.utils.unwrapObservable(dataElement.metaName);//// Switch due to data layer requirement
