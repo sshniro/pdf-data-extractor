@@ -627,6 +627,7 @@ function ViewModel(){
         element.extractedData(response.extractedData);
     }
 
+    self.sendingJson  = ko.observable();
 
     //The final call which saves the total bulk data to the DB
     self.sendJson = function (){
@@ -640,6 +641,8 @@ function ViewModel(){
         data.textDataElements   =   []
         data.tableDataElements   =   []
         data.pictureDataELements   =   []
+        data.regexDataELements   =   []
+        data.patternDataElements   =   []
         //Restructure removing pages super collection
         for(var key in self.pagesDataCache ){
             var pageDataCache = self.pagesDataCache[key];
@@ -652,9 +655,7 @@ function ViewModel(){
 
 
 
-        self.sendingJson(JSON.stringify(data).toString());
-        var bulk = ko.toJSON(sendBulkData(data));
-        self.sendingJsonFinal(bulk);
+       sendBulkData(data);
         self.loadNewPageData(currentPage);
         window.location.href = "ExtractPdf.jsp";
     }
