@@ -440,7 +440,7 @@ function ViewModel(){
             relevantPatternElement.extractedData(data.relevantData);
 
             var relevantSubElement =  relevantPatternElement.subElements.pop();
-            relevantSubElement.subElementEndTag = data.relevantData();
+            relevantSubElement.subElementEndTag = data.relevantData;
 
             relevantPatternElement.subElements.push(relevantSubElement);
 
