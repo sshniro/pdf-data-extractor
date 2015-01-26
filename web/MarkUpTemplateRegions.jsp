@@ -220,12 +220,6 @@
 
 
 
-<!-- final json results -->
-<p data-bind="text:sendingJson"></p><br>
-<hr>
-<p data-bind="text:sendingJsonFinal"></p>
-
-
 <!-- selected main element -->
 <script type="text/html" id="rectangleTemplate">
 
