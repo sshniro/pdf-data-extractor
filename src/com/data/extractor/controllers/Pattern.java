@@ -220,15 +220,25 @@ public class Pattern {
 
 
         }
-        for (PatternDataElement p :extractedPatternElement){
-            RegexDataElement regexDataElement1 = p.getRegexDataElements();
-            p.setRegexDataElements(regexDataElement);
 
-            List<RegexPairElement> regexPairElementList1 = p.getRegexDataElements().getRegexPairElements();
+        List<PatternDataElement> finalPatternElement = extractedPatternElement;
 
-            for (int i=0; i < regexPairElementList1.size();i++){
-                RegexPairElement regexPairElement = regexPairElementList.get(i);
-                regexPairElement.setValue(regexDataElement1.getRegexPairElements().get(i).getValue());
+        List<PatternDataElement> testPattern = new ArrayList<PatternDataElement>();
+        testPattern= extractedPatternElement;
+
+        for (int j=0; j < extractedPatternElement.size() ; j++){
+
+            PatternDataElement p = extractedPatternElement.get(j);
+
+            p.setRegexDataElements(patternDataElement.getRegexDataElements());
+            p.setColumnDataElements(patternDataElement.getColumnDataElements());
+        }
+
+        for (int j=0 ; j<extractedPatternElement.size();j++){
+            PatternDataElement patternElement = extractedPatternElement.get(j);
+            RegexDataElement regexElement = patternElement.getRegexDataElements();
+            for (int i=0 ; i  < regexElement.getRegexPairElements().size(); i++){
+                regexDataElement.getRegexPairElements().get(i).setValue(finalPatternElement.get(j).getRegexDataElements().getRegexPairElements().get(i).getValue());
             }
         }
 

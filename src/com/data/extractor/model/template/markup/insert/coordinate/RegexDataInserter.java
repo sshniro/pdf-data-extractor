@@ -1,7 +1,6 @@
 package com.data.extractor.model.template.markup.insert.coordinate;
 
-import com.data.extractor.model.beans.template.info.regex.RegexDataElement;
-import com.data.extractor.model.beans.template.info.regex.RegexDataParser;
+import com.data.extractor.model.beans.template.info.regex.*;
 import com.data.extractor.model.data.access.layer.TemplateInfoDAO;
 import com.mongodb.MongoClient;
 
@@ -12,6 +11,7 @@ public class RegexDataInserter {
 
     public void insert(RegexDataParser regexDataParser, MongoClient mongoClient) throws UnknownHostException {
 
+        regexDataParser = removeNextLine(regexDataParser);
         List<RegexDataElement> regexDataElements= regexDataParser.getRegexDataElements();
         TemplateInfoDAO templateInfoDAO=new TemplateInfoDAO(mongoClient);
         RegexDataElement regexDataElement;
@@ -38,5 +38,23 @@ public class RegexDataInserter {
 
         }
 
+    }
+
+    public RegexDataParser removeNextLine(RegexDataParser regexDataParser){
+
+        List<RegexDataElement> regexDataElements= regexDataParser.getRegexDataElements();
+
+        for (RegexDataElement r:regexDataElements){
+            List<RegexPairElement> regexPairElementList = r.getRegexPairElements();
+            for (RegexPairElement regexPair:regexPairElementList){
+                RegexStartElement regexStartElement = regexPair.getRegexStartElement();
+                RegexEndElement regexEndElement = regexPair.getRegexEndElement();
+
+                regexStartElement.setTag(regexStartElement.getTag().trim());
+                regexEndElement.setTag(regexEndElement.getTag().trim());
+            }
+        }
+
+        return regexDataParser;
     }
 }
