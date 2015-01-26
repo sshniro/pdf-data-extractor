@@ -101,9 +101,10 @@ function DataElement(rectangle, subElements){
         self.tempSubelements = [];
         for(var key in subElements) {
             var tempRectangle = subElements[key];
+            var subDataElement   = new SubDataElement(tempRectangle);
+            self.subElements.push(subDataElement);
         };
-        var subDataElement   = new SubDataElement(tempRectangle);
-        self.subElements.push(subDataElement);
+
 
     }
     else if(rectangle.subElements !== undefined ) {
@@ -193,6 +194,10 @@ function SubDataElement(rectangle) {
     self.isHavingRepeatedHeaders = ko.observable(false);
 
     self.repeatingSubElements = ko.observableArray([]);
+    if(rectangle.repeatingSubElements !== undefined){
+        self.repeatingSubElements(rectangle.repeatingSubElements);
+    }
+
     self.bufferedRepeatingElement_start = ko.observable('');
     self.bufferedRepeatingElement_end = ko.observable('');
 

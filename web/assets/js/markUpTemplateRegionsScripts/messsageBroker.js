@@ -185,13 +185,13 @@ var  transformToRegexParser= function(regexDataElements){
     return dataDTO;
 }
 var  transformToPatternParser= function(regexDataElements){
-    var dataDTO = new RegexDataDTO(initData);
+    var dataDTO = new PatternDataDTO(initData);
     dataDTO.status = 'insert';
     for(var key in regexDataElements) {
         var dataElement = regexDataElements[key];
         var metaElements = regexDataElements[key].subElements;
-        var regexDataElement = new RegexDataElementDTO(dataElement,metaElements);
-        dataDTO.regexDataElements.push(regexDataElement);
+        var patternDataElement = new PatternDataElementDTO(dataElement,metaElements);
+        dataDTO.patternDataElements.push(patternDataElement);
     }
     return dataDTO;
 }
@@ -372,29 +372,16 @@ function PatternDataDTO(pageData){
     this.patternDataElements =[];
 }
 
-
-function PatternDataElementDTO(dataElement, metaElements){
-    this.regexDataElements = [];
+function PatternDataElementDTO(dataElement,metaElements){
+    this.regexDataElements = new RegexDataElementDTO(dataElement,metaElements);
     this.columnDataElements = [];
-}
-
-function PatternDataElementDTO(dataElement, metaElements){
-    this.rawData       = dataElement.rectangle;
-    this.id        = ko.utils.unwrapObservable(dataElement.id);    //////Switched meta with id
-    this.metaName      = ko.utils.unwrapObservable(dataElement.metaName);//// Switch due to data layer requirement
-    if(dataElement.selectedDictionaryItem){
-        this.dictionaryId   = ko.utils.unwrapObservable(dataElement.selectedDictionaryItem.id);
-        this.dictionaryName   = ko.utils.unwrapObservable(dataElement.selectedDictionaryItem.name);
-    }
-    else{
-        this.dictionaryId   = -1;
-        this.dictionaryName   =  -1;
-    }
-    this.regexPairElements = [];
-    for(var key in metaElements) {
-        var metaElement = metaElements[key];
-        var regexPairElement = new RegexPairElementDTO(metaElement);
-        this.regexPairElements.push(regexPairElement);
+    for(var metaKey in metaElements){
+        for(var repeatingKey in metaElements[metaKey].repeatingSubElements)
+        {
+            var metaElement = metaElements[metaKey].repeatingSubElements[repeatingKey];
+            var column = new ColumnDataElementDTO(metaElement);
+            this.columnDataElements.push(column);
+        }
     }
 }
 
@@ -415,6 +402,25 @@ function RegexPairElementDTO(metaElement){
     this.regexStartElement.tag       =   metaElement.subElementEndTag;
     this.regexEndElement = {};
     this.regexEndElement.tag         =   metaElement.subElementStartTag;
+}
+
+function ColumnDataElementDTO(column){
+    //Meta element
+    this.rawData        =   column.rectangle;
+    this.metaId         =   column.id;                                 /////Switched meta with id
+    this.metaName       =   ko.utils.unwrapObservable(column.metaName);//// Switch due to data layer requirement
+    if(column.selectedDictionaryItem){
+        this.dictionaryId       = ko.utils.unwrapObservable(column.selectedDictionaryItem.id);
+        this.dictionaryName     = ko.utils.unwrapObservable(column.selectedDictionaryItem.name);
+    }
+    else{
+        this.dictionaryId       =   -1;
+        this.dictionaryName     =   -1;
+    }
+    this.columnStartElement = {};
+    this.columnStartElement.tag       =   column.start;
+    this.columnEndElement = {};
+    this.columnEndElement.tag         =   column.end;
 }
 
 

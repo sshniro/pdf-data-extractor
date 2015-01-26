@@ -210,16 +210,11 @@ function ViewModel(){
             for (var dataElement in newPageTemp[dataType]) {
                 var rawData = newPageTemp[dataType][dataElement];
 
-                rawData.rectangle.labelExtractedData = rawData.labelExtractedData;
-                rawData.rectangle.metaName = rawData.metaName;
-                rawData.rectangle.selectedDictionaryItem = rawData.selectedDictionaryItem;
-                rawData.rectangle.relevantData = rawData.relevantData;
+                rawData.rectangle.labelExtractedData        = rawData.labelExtractedData;
+                rawData.rectangle.metaName                  = rawData.metaName;
+                rawData.rectangle.selectedDictionaryItem    = rawData.selectedDictionaryItem;
+                rawData.rectangle.relevantData              = rawData.relevantData;
 
-                rawData.rectangle.subElementType            = rawData.subElementType;
-                rawData.rectangle.isSubElementTypeSelected  = rawData.isSubElementTypeSelected;
-                rawData.rectangle.isHavingEndTag            = rawData.isHavingEndTag;
-                rawData.rectangle.subElementEndTag          = rawData.subElementEndTag;
-                rawData.rectangle.subElementStartTag        = rawData.subElementStartTag;
 
                 if (rawData.selectedDictionaryItem !== undefined) {
                     var dictionaryId = rawData.selectedDictionaryItem.id;
