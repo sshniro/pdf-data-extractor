@@ -221,29 +221,52 @@ public class Pattern {
 
         }
 
-        List<PatternDataElement> finalPatternElement = extractedPatternElement;
-
-        List<PatternDataElement> testPattern = new ArrayList<PatternDataElement>();
-        testPattern= extractedPatternElement;
-
-        for (int j=0; j < extractedPatternElement.size() ; j++){
-
-            PatternDataElement p = extractedPatternElement.get(j);
-
-            p.setRegexDataElements(patternDataElement.getRegexDataElements());
-            p.setColumnDataElements(patternDataElement.getColumnDataElements());
-        }
 
         for (int j=0 ; j<extractedPatternElement.size();j++){
+
             PatternDataElement patternElement = extractedPatternElement.get(j);
             RegexDataElement regexElement = patternElement.getRegexDataElements();
-            for (int i=0 ; i  < regexElement.getRegexPairElements().size(); i++){
-                regexDataElement.getRegexPairElements().get(i).setValue(finalPatternElement.get(j).getRegexDataElements().getRegexPairElements().get(i).getValue());
+
+            RegexDataElement regexDataElements = patternElement.getRegexDataElements();
+            List<ColumnDataElement> columnDataElements = patternElement.getColumnDataElements();
+
+            for (int i=0 ; i  < regexDataElements.getRegexPairElements().size(); i++){
+
+                regexDataElements.getRegexPairElements().get(i).setMetaName(patternDataElement.getRegexDataElements().getRegexPairElements().get(i).getMetaName());
+                regexDataElements.getRegexPairElements().get(i).setRegexStartElement(patternDataElement.getRegexDataElements().getRegexPairElements().get(i).getRegexStartElement());
+                regexDataElements.getRegexPairElements().get(i).setRegexEndElement(patternDataElement.getRegexDataElements().getRegexPairElements().get(i).getRegexEndElement());
+
+            }
+
+            for (int i =0 ; i < columnDataElements.size() ; i++){
+
+                columnDataElements.get(i).setColumnEndElement(patternDataElement.getColumnDataElements().get(i).getColumnEndElement());
+                columnDataElements.get(i).setColumnStartElement(patternDataElement.getColumnDataElements().get(i).getColumnStartElement());
+                columnDataElements.get(i).setMetaName(patternDataElement.getColumnDataElements().get(i).getMetaName());
             }
         }
 
     String test = new String("");
 
+    }
+
+    public static List<PatternDataElement> getNewData(List<PatternDataElement> patternDataElements){
+        List<PatternDataElement> newData = new ArrayList<PatternDataElement>();
+        newData = patternDataElements;
+        return newData;
+    }
+
+    public static List<PatternDataElement> generateNewModel(List<PatternDataElement> patternDataElements , List<PatternDataElement> patternDataElementList){
+
+        for (int j=0; j < patternDataElements.size() ; j++){
+
+            PatternDataElement p = patternDataElements.get(j);
+
+            p.setRegexDataElements(patternDataElementList.get(j).getRegexDataElements());
+            p.setColumnDataElements(patternDataElementList.get(j).getColumnDataElements());
+        }
+
+        return patternDataElements;
     }
 
     public static PatternDataParser assignValues(PatternDataParser patternDataParser){
