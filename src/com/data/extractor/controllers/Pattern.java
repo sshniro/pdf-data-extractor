@@ -221,10 +221,7 @@ public class Pattern {
 
         }
 
-        for (PatternDataElement p : extractedPatternElement ){
-            RegexDataElement regexDataElement1= p.getRegexDataElements();
-            List<ColumnDataElement> columnDataElementList1 = p.getColumnDataElements();
-        }
+
 
     }
 
