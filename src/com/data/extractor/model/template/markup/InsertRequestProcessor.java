@@ -118,9 +118,9 @@ public class InsertRequestProcessor {
             PatternDataInserter patternDataInserter = new PatternDataInserter();
 
             /* Load the Template PDF in to pdf BOX and return the PDDoc to set pdf Properties*/
-            Node node = templatesDAO.getNode(regexDataParser.getId());
+            Node node = templatesDAO.getNode(patternDataParser.getId());
             patternDataParser.setPdfFile(node.getPdfFile());
-            PDDocument doc =PDDocument.load(regexDataParser.getPdfFile());
+            PDDocument doc =PDDocument.load(patternDataParser.getPdfFile());
 
             /* TODO Calculate the regex coordinates and then save in the db */
 //            TextDataCoordinates textDataCoordinates=new TextDataCoordinates();
