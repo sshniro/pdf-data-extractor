@@ -203,7 +203,7 @@ function ViewModel(){
         self.currentSelection(newPageTemp.currentSelection);
         self.elementBuffer = newPageTemp.elementBuffer;
         for(var dataType in newPageTemp) {
-            if(dataType !== "textElements"&& dataType !== "pictureElements" && dataType !== "tableElements"){
+            if(dataType !== "textElements"&& dataType !== "pictureElements" && dataType !== "tableElements" && dataType !== "regexElements"&& dataType !== "patternElements"){
                 //this loop activates only for data elements
                 continue;
             }
@@ -214,6 +214,12 @@ function ViewModel(){
                 rawData.rectangle.metaName = rawData.metaName;
                 rawData.rectangle.selectedDictionaryItem = rawData.selectedDictionaryItem;
                 rawData.rectangle.relevantData = rawData.relevantData;
+
+                rawData.rectangle.subElementType            = rawData.subElementType;
+                rawData.rectangle.isSubElementTypeSelected  = rawData.isSubElementTypeSelected;
+                rawData.rectangle.isHavingEndTag            = rawData.isHavingEndTag;
+                rawData.rectangle.subElementEndTag          = rawData.subElementEndTag;
+                rawData.rectangle.subElementStartTag        = rawData.subElementStartTag;
 
                 if (rawData.selectedDictionaryItem !== undefined) {
                     var dictionaryId = rawData.selectedDictionaryItem.id;
@@ -367,7 +373,7 @@ function ViewModel(){
                 return item.elementId === data.elementId;
             })[0];
             relevantRegexElement.extractedData(subElement.relevantData());
-
+            subElement.subElementStartTag(subElement.relevantData());
             relevantRegexElement.subElements.push(subElement);
 
             //Used in workflow for meta generations for column headers
@@ -387,7 +393,7 @@ function ViewModel(){
                 return item.elementId === data.elementId;
             })[0];
             relevantPatternElement.extractedData(subElement.relevantData());
-
+            subElement.subElementStartTag(subElement.relevantData());
             relevantPatternElement.subElements.push(subElement);
 
             //Used in workflow for meta generations for column headers
@@ -613,10 +619,6 @@ function ViewModel(){
         }
     }
 
-    self.sendingJson = ko.observable("Content Creating");
-
-    self.sendingJsonFinal = ko.observable("Content Creating");
-
     //The alternative method to pulse extraction
     //specially tailored for table extraction
     self.extractTable = function(element){
@@ -625,6 +627,7 @@ function ViewModel(){
         element.extractedData(response.extractedData);
     }
 
+    self.sendingJson  = ko.observable();
 
     //The final call which saves the total bulk data to the DB
     self.sendJson = function (){
@@ -638,19 +641,21 @@ function ViewModel(){
         data.textDataElements   =   []
         data.tableDataElements   =   []
         data.pictureDataELements   =   []
+        data.regexDataELements   =   []
+        data.patternDataElements   =   []
         //Restructure removing pages super collection
         for(var key in self.pagesDataCache ){
             var pageDataCache = self.pagesDataCache[key];
-            if(pageDataCache.textElements !== undefined)    {  data.textDataElements = data.textDataElements.concat(pageDataCache.textElements);   }
-            if(pageDataCache.tableElements !== undefined)   {  data.tableDataElements =  data.tableDataElements.concat(pageDataCache.tableElements);   }
-            if(pageDataCache.pictureElements !== undefined) {  data.pictureDataELements =  data.pictureDataELements.concat(pageDataCache.pictureElements); }
+            if(pageDataCache.textElements !== undefined)        {  data.textDataElements = data.textDataElements.concat(pageDataCache.textElements);   }
+            if(pageDataCache.tableElements !== undefined)       {  data.tableDataElements =  data.tableDataElements.concat(pageDataCache.tableElements);   }
+            if(pageDataCache.pictureElements !== undefined)     {  data.pictureDataELements =  data.pictureDataELements.concat(pageDataCache.pictureElements); }
+            if(pageDataCache.regexElements !== undefined)       {  data.regexDataELements =  data.regexDataELements.concat(pageDataCache.regexElements); }
+            if(pageDataCache.patternElements !== undefined)     {  data.patternDataElements =  data.patternDataElements.concat(pageDataCache.patternElements);   }
         }
 
 
 
-        self.sendingJson(JSON.stringify(data).toString());
-        var bulk = ko.toJSON(sendBulkData(data));
-        self.sendingJsonFinal(bulk);
+       sendBulkData(data);
         self.loadNewPageData(currentPage);
         window.location.href = "ExtractPdf.jsp";
     }
