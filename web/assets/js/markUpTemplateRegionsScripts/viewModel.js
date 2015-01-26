@@ -151,7 +151,7 @@ function ViewModel(){
         //Set Current Page Number
         self.currentPage(newPageNumber);
         self.loadNewPageData(newPageNumber);
-    }
+    };
 
     //saves current page and resets all element collections
     self.savePage = function(pageNumber){

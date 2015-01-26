@@ -317,20 +317,17 @@ function TableDataElementDTO(dataElement, metaElements){
         var tableDataColumn = new TableDataColumnDTO(dataElement,metaElement);
         this.columns.push(tableDataColumn);
     }
-
-
-
 }
 // a single column element in the table
 function TableDataColumnDTO(dataElement, metaElement){
 
     //Meta element
-    this.rawData        =   metaElement.rectangle;
-    this.metaId         =   metaElement.id;    //////Switched meta with id
-    this.metaName      = ko.utils.unwrapObservable(metaElement.metaName);//// Switch due to data layer requirement
+    this.rawData                =   metaElement.rectangle;
+    this.metaId                 =   metaElement.id;    //////Switched meta with id
+    this.metaName               = ko.utils.unwrapObservable(metaElement.metaName);//// Switch due to data layer requirement
     if(metaElement.selectedDictionaryItem){
-        this.dictionaryId   = ko.utils.unwrapObservable(metaElement.selectedDictionaryItem.id);
-        this.dictionaryName   = ko.utils.unwrapObservable(metaElement.selectedDictionaryItem.name);
+        this.dictionaryId       = ko.utils.unwrapObservable(metaElement.selectedDictionaryItem.id);
+        this.dictionaryName     = ko.utils.unwrapObservable(metaElement.selectedDictionaryItem.name);
     }
     else{
         this.dictionaryId   = -1;
@@ -340,7 +337,6 @@ function TableDataColumnDTO(dataElement, metaElement){
     this.metaY1         =   dataElement.startY + (metaElement.startY);
     this.metaWidth      =   this.metaX1 + (metaElement.width);
     this.metaHeight     =   this.metaY1 + (metaElement.height);
-
 }
 
 function RegexDataDTO(pageData){
