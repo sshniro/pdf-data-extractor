@@ -220,8 +220,19 @@ public class Pattern {
 
 
         }
+        for (PatternDataElement p :extractedPatternElement){
+            RegexDataElement regexDataElement1 = p.getRegexDataElements();
+            p.setRegexDataElements(regexDataElement);
 
+            List<RegexPairElement> regexPairElementList1 = p.getRegexDataElements().getRegexPairElements();
 
+            for (int i=0; i < regexPairElementList1.size();i++){
+                RegexPairElement regexPairElement = regexPairElementList.get(i);
+                regexPairElement.setValue(regexDataElement1.getRegexPairElements().get(i).getValue());
+            }
+        }
+
+    String test = new String("");
 
     }
 
