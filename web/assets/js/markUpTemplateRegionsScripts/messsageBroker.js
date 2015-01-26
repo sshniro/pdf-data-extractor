@@ -131,6 +131,8 @@ var sendBulkData=  function(sendingJSON){
     finalDataDTO.textDataParser     =   transformToTextParser(sendingJSON.textDataElements);
     finalDataDTO.tableDataParser    =   transformToTableParser(sendingJSON.tableDataElements);
     finalDataDTO.imageDataParser    =   transformToImageParser(sendingJSON.pictureDataELements);
+    finalDataDTO.regexDataParser    =   transformToRegexParser(sendingJSON.regexDataELements);
+    finalDataDTO.patternDataParser    =   transformToPatternParser(sendingJSON.patternDataElements);
     //ajaxReponse = ajaxExtract('MarkUpTemplateRegionController',finalDataDTO,false,'POST');
     ajaxReponse = ajaxExtract(effectiveController,finalDataDTO,false,'POST');
     return finalDataDTO;
@@ -167,6 +169,29 @@ var  transformToTableParser= function(tableDataElements){
         var metaElements = tableDataElements[key].subElements;
         var tableDataElement = new TableDataElementDTO(dataElement,metaElements);
         dataDTO.tableDataElements.push(tableDataElement);
+    }
+    return dataDTO;
+}
+
+var  transformToRegexParser= function(regexDataElements){
+    var dataDTO = new RegexDataDTO(initData);
+    dataDTO.status = 'insert';
+    for(var key in regexDataElements) {
+        var dataElement = regexDataElements[key];
+        var metaElements = regexDataElements[key].subElements;
+        var regexDataElement = new RegexDataElementDTO(dataElement,metaElements);
+        dataDTO.regexDataElements.push(regexDataElement);
+    }
+    return dataDTO;
+}
+var  transformToPatternParser= function(regexDataElements){
+    var dataDTO = new RegexDataDTO(initData);
+    dataDTO.status = 'insert';
+    for(var key in regexDataElements) {
+        var dataElement = regexDataElements[key];
+        var metaElements = regexDataElements[key].subElements;
+        var regexDataElement = new RegexDataElementDTO(dataElement,metaElements);
+        dataDTO.regexDataElements.push(regexDataElement);
     }
     return dataDTO;
 }
@@ -324,7 +349,40 @@ function RegexDataDTO(pageData){
     this.dataType= "regex";////Static Data
     this.regexDataElements =[];
 }
-function RegexDataElementDTO(dataElements, metaElements){
+function RegexDataElementDTO(dataElement, metaElements){
+    this.id        = ko.utils.unwrapObservable(dataElement.id);    //////Switched meta with id
+    this.metaName      = ko.utils.unwrapObservable(dataElement.metaName);//// Switch due to data layer requirement
+    if(dataElement.selectedDictionaryItem){
+        this.dictionaryId   = ko.utils.unwrapObservable(dataElement.selectedDictionaryItem.id);
+        this.dictionaryName   = ko.utils.unwrapObservable(dataElement.selectedDictionaryItem.name);
+    }
+    else{
+        this.dictionaryId   = -1;
+        this.dictionaryName   =  -1;
+    }
+    this.regexPairElements = [];
+    for(var key in metaElements) {
+        var metaElement = metaElements[key];
+        var regexPairElement = new RegexPairElementDTO(metaElement);
+        this.regexPairElements.push(regexPairElement);
+    }
+}
+
+
+function PatternDataDTO(pageData){
+    this.id = pageData.id;
+    this.status= "extract";///Static Data
+    this.dataType= "regex";////Static Data
+    this.patternDataElements =[];
+}
+
+
+function PatternDataElementDTO(dataElement, metaElements){
+    this.regexDataElements = [];
+    this.columnDataElements = [];
+}
+
+function PatternDataElementDTO(dataElement, metaElements){
     this.rawData       = dataElement.rectangle;
     this.id        = ko.utils.unwrapObservable(dataElement.id);    //////Switched meta with id
     this.metaName      = ko.utils.unwrapObservable(dataElement.metaName);//// Switch due to data layer requirement
@@ -336,42 +394,15 @@ function RegexDataElementDTO(dataElements, metaElements){
         this.dictionaryId   = -1;
         this.dictionaryName   =  -1;
     }
-    this.boundaryTags = [];
+    this.regexPairElements = [];
     for(var key in metaElements) {
         var metaElement = metaElements[key];
-        var boundryTag = new BoundaryTagDTO(dataElement,metaElement);
-        this.boundaryTags.push(boundryTag);
+        var regexPairElement = new RegexPairElementDTO(metaElement);
+        this.regexPairElements.push(regexPairElement);
     }
 }
 
-
-function PatternDataDTO(pageData){
-    this.id = pageData.id;
-    this.status= "extract";///Static Data
-    this.dataType= "regex";////Static Data
-    this.regexDataElements =[];
-}
-function PatternDataElementDTO(dataElements, metaElements){
-    this.rawData       = dataElement.rectangle;
-    this.id        = ko.utils.unwrapObservable(dataElement.id);    //////Switched meta with id
-    this.name      = ko.utils.unwrapObservable(dataElement.metaName);//// Switch due to data layer requirement
-    if(dataElement.selectedDictionaryItem){
-        this.dictionaryId   = ko.utils.unwrapObservable(dataElement.selectedDictionaryItem.id);
-        this.dictionaryName   = ko.utils.unwrapObservable(dataElement.selectedDictionaryItem.name);
-    }
-    else{
-        this.dictionaryId   = -1;
-        this.dictionaryName   =  -1;
-    }
-    this.boundaryTags = [];
-    for(var key in metaElements) {
-        var metaElement = metaElements[key];
-        var boundryTag = new BoundaryTagDTO(dataElement,metaElement);
-        this.boundaryTags.push(boundryTag);
-    }
-}
-
-function BoundaryTagDTO(dataElement,metaElement){
+function RegexPairElementDTO(metaElement){
     //Meta element
     this.rawData        =   metaElement.rectangle;
     this.metaId         =   metaElement.id;                                 /////Switched meta with id
@@ -384,8 +415,10 @@ function BoundaryTagDTO(dataElement,metaElement){
         this.dictionaryId       =   -1;
         this.dictionaryName     =   -1;
     }
-    this.startTag       =   metaElement.startTag;
-    this.endTag         =   metaElement.endTag;
+    this.regexStartElement = {};
+    this.regexStartElement.tag       =   metaElement.subElementEndTag;
+    this.regexEndElement = {};
+    this.regexEndElement.tag         =   metaElement.subElementStartTag;
 }
 
 
