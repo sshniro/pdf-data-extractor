@@ -73,6 +73,7 @@ public class Pattern {
         String unprocessed = sb.toString();
         String processing = null;
         String[] splits = null;
+        String[] regexSplits = null;
 
         String regexLastEnded = unprocessed;
         String columnLastEnded = unprocessed;
@@ -107,22 +108,24 @@ public class Pattern {
                 RegexStartElement regexStartElement = regexPair.getRegexStartElement();
                 RegexEndElement regexEndElement = regexPair.getRegexEndElement();
 
-                splits = regexLastEnded.split(regexStartElement.getTag(),2);
-                if(i == 0){
-                    columnStarted = splits[1];
-                }
+                regexSplits = regexLastEnded.split(regexStartElement.getTag(),2);
 
                 try {
+
+                    if(i == 0){
+                        columnStarted = regexSplits[1];
+                    }
+
                     if(regexEndElement.getTag().equals("eol")){
                         regexEndElement.setTag(System.getProperty("line.separator"));
                     }
-                    splits = splits[1].split(regexEndElement.getTag(),2);
+                    regexSplits = regexSplits[1].split(regexEndElement.getTag(),2);
 
                     try {
-                        splits[1] = regexEndElement.getTag() + splits[1];
-                        extractedValue = splits [0];
+                        regexSplits[1] = regexEndElement.getTag() + regexSplits[1];
+                        extractedValue = regexSplits [0];
                         regexPair.setValue(extractedValue);
-                        regexLastEnded = splits[1];
+                        regexLastEnded = regexSplits[1];
 
                         extractedPairElement = new RegexPairElement();
                         extractedPairElement.setValue(extractedValue);
@@ -139,8 +142,11 @@ public class Pattern {
                 }
 
             }
+
             Boolean columnStatus = true;
+
             while (columnStatus){
+
                 for (int i=0; i < columnDataElementList.size();i++){
 
                     ColumnDataElement columnDataElement =columnDataElementList.get(i);
@@ -170,7 +176,10 @@ public class Pattern {
                         // Check if the next line start with the word otherwise break.
                             ColumnStartElement testElement = columnDataElementList.get(0).getColumnStartElement();
                             int j = splits[1].indexOf(testElement.getTag());
-                            System.out.println(j);
+                            if(j > 3 ){
+                                columnStatus =false;
+                                break;
+                            }
                         }
                         try {
 
@@ -186,6 +195,7 @@ public class Pattern {
             }
 
         }
+        System.out.println("done");
 
 
 //        r2.setStartTag("heelo");
