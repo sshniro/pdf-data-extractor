@@ -15,7 +15,7 @@ import java.util.List;
 
 public class PatternExtractor {
 
-    public void extractPattern(String rawText , PatternDataElement patternDataElement){ 
+    public void extractPattern(String rawText , PatternDataElement patternDataElement){
 
         String[] splits = null;
         String[] regexSplits = null;
@@ -160,6 +160,18 @@ public class PatternExtractor {
             extractedColumnList = new ArrayList<ColumnDataElement>();
 
 
+        }
+
+        for (PatternDataElement p :extractedPatternElement){
+            RegexDataElement regexDataElement1 = p.getRegexDataElements();
+            p.setRegexDataElements(regexDataElement);
+
+            List<RegexPairElement> regexPairElementList1 = p.getRegexDataElements().getRegexPairElements();
+
+            for (int i=0; i < regexPairElementList1.size();i++){
+                RegexPairElement regexPairElement = p.getRegexDataElements().getRegexPairElements().get(i);
+                regexPairElement.setValue(regexDataElement1.getRegexPairElements().get(i).getValue());
+            }
         }
 
     }
