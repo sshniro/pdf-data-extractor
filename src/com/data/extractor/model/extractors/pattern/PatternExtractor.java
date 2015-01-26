@@ -15,7 +15,7 @@ import java.util.List;
 
 public class PatternExtractor {
 
-    public void extractPattern(String rawText , PatternDataElement patternDataElement){
+    public List<PatternDataElement> extractPattern(String rawText , PatternDataElement patternDataElement){
 
         String[] splits = null;
         String[] regexSplits = null;
@@ -162,18 +162,29 @@ public class PatternExtractor {
 
         }
 
-        for (PatternDataElement p :extractedPatternElement){
-            RegexDataElement regexDataElement1 = p.getRegexDataElements();
-            p.setRegexDataElements(regexDataElement);
+        for (int j=0 ; j<extractedPatternElement.size();j++){
 
-            List<RegexPairElement> regexPairElementList1 = p.getRegexDataElements().getRegexPairElements();
+            PatternDataElement patternElement = extractedPatternElement.get(j);
 
-            for (int i=0; i < regexPairElementList1.size();i++){
-                RegexPairElement regexPairElement = p.getRegexDataElements().getRegexPairElements().get(i);
-                regexPairElement.setValue(regexDataElement1.getRegexPairElements().get(i).getValue());
+            RegexDataElement regexDataElements = patternElement.getRegexDataElements();
+            List<ColumnDataElement> columnDataElements = patternElement.getColumnDataElements();
+
+            for (int i=0 ; i  < regexDataElements.getRegexPairElements().size(); i++){
+
+                regexDataElements.getRegexPairElements().get(i).setMetaName(patternDataElement.getRegexDataElements().getRegexPairElements().get(i).getMetaName());
+                regexDataElements.getRegexPairElements().get(i).setRegexStartElement(patternDataElement.getRegexDataElements().getRegexPairElements().get(i).getRegexStartElement());
+                regexDataElements.getRegexPairElements().get(i).setRegexEndElement(patternDataElement.getRegexDataElements().getRegexPairElements().get(i).getRegexEndElement());
+
+            }
+
+            for (int i =0 ; i < columnDataElements.size() ; i++){
+
+                columnDataElements.get(i).setColumnEndElement(patternDataElement.getColumnDataElements().get(i).getColumnEndElement());
+                columnDataElements.get(i).setColumnStartElement(patternDataElement.getColumnDataElements().get(i).getColumnStartElement());
+                columnDataElements.get(i).setMetaName(patternDataElement.getColumnDataElements().get(i).getMetaName());
             }
         }
-
+    return extractedPatternElement;
     }
 
 }

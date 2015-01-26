@@ -225,7 +225,6 @@ public class Pattern {
         for (int j=0 ; j<extractedPatternElement.size();j++){
 
             PatternDataElement patternElement = extractedPatternElement.get(j);
-            RegexDataElement regexElement = patternElement.getRegexDataElements();
 
             RegexDataElement regexDataElements = patternElement.getRegexDataElements();
             List<ColumnDataElement> columnDataElements = patternElement.getColumnDataElements();

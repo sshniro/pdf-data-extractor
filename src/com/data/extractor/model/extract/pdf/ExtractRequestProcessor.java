@@ -60,6 +60,8 @@ public class ExtractRequestProcessor {
                         insertDataParser = dataElementsProcessor.processTableDataElements(insertDataParser , extractStatus, mongoClient);
 
                         insertDataParser = dataElementsProcessor.processRegexDataElements(insertDataParser , extractStatus, mongoClient);
+
+                        insertDataParser = dataElementsProcessor.processPatternDataElements(insertDataParser,extractStatus,mongoClient);
                     }
             }
 
