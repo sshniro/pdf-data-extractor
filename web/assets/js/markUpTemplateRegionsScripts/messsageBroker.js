@@ -131,7 +131,8 @@ var sendBulkData=  function(sendingJSON){
     finalDataDTO.textDataParser     =   transformToTextParser(sendingJSON.textDataElements);
     finalDataDTO.tableDataParser    =   transformToTableParser(sendingJSON.tableDataElements);
     finalDataDTO.imageDataParser    =   transformToImageParser(sendingJSON.pictureDataELements);
-    finalDataDTO.regexDataParser    =   transformToImageParser(sendingJSON.regexDataELements);
+    finalDataDTO.regexDataParser    =   transformToRegexParser(sendingJSON.regexDataELements);
+    finalDataDTO.patternDataParser    =   transformToPatternParser(sendingJSON.patternDataElements);
     //ajaxReponse = ajaxExtract('MarkUpTemplateRegionController',finalDataDTO,false,'POST');
     ajaxReponse = ajaxExtract(effectiveController,finalDataDTO,false,'POST');
     return finalDataDTO;
@@ -183,7 +184,17 @@ var  transformToRegexParser= function(regexDataElements){
     }
     return dataDTO;
 }
-
+var  transformToPatternParser= function(regexDataElements){
+    var dataDTO = new RegexDataDTO(initData);
+    dataDTO.status = 'insert';
+    for(var key in regexDataElements) {
+        var dataElement = regexDataElements[key];
+        var metaElements = regexDataElements[key].subElements;
+        var regexDataElement = new RegexDataElementDTO(dataElement,metaElements);
+        dataDTO.regexDataElements.push(regexDataElement);
+    }
+    return dataDTO;
+}
 
 
 
@@ -338,7 +349,7 @@ function RegexDataDTO(pageData){
     this.dataType= "regex";////Static Data
     this.regexDataElements =[];
 }
-function RegexDataElementDTO(dataElements, metaElements){
+function RegexDataElementDTO(dataElement, metaElements){
     this.id        = ko.utils.unwrapObservable(dataElement.id);    //////Switched meta with id
     this.metaName      = ko.utils.unwrapObservable(dataElement.metaName);//// Switch due to data layer requirement
     if(dataElement.selectedDictionaryItem){
@@ -366,12 +377,12 @@ function PatternDataDTO(pageData){
 }
 
 
-function PatternDataElementDTO(dataElements, metaElements){
+function PatternDataElementDTO(dataElement, metaElements){
     this.regexDataElements = [];
     this.columnDataElements = [];
 }
 
-function PatternDataElementDTO(dataElements, metaElements){
+function PatternDataElementDTO(dataElement, metaElements){
     this.rawData       = dataElement.rectangle;
     this.id        = ko.utils.unwrapObservable(dataElement.id);    //////Switched meta with id
     this.metaName      = ko.utils.unwrapObservable(dataElement.metaName);//// Switch due to data layer requirement
