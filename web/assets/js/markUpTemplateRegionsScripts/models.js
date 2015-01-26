@@ -184,10 +184,11 @@ function SubDataElement(rectangle) {
 
     //Used for Pattern and regex workflows/////////////////
     if (self.elementType() === 'regex' || self.elementType() === 'pattern') {
-        self.subElementType = ko.observable('');
-        self.isSubElementTypeSelected = ko.observable(false);
-        self.isHavingEndTag = ko.observable(false);
-        self.subElementEndTag = '';
+        self.subElementType = ko.observable(rectangle.subElementType);
+        self.isSubElementTypeSelected = ko.observable(rectangle.isSubElementTypeSelected);
+        self.isHavingEndTag = ko.observable(rectangle.isHavingEndTag);
+        self.subElementEndTag = ko.observable(rectangle.subElementEndTag);
+        self.subElementStartTag = ko.observable(rectangle.subElementStartTag);
         self.isHavingRepeatedHeaders = ko.observable(false);
 
         self.repeatingSubElements = ko.observableArray([]);
@@ -201,7 +202,7 @@ function SubDataElement(rectangle) {
             if (data == 'RE') {
                 self.isHavingEndTag(true);
                 self.isHavingRepeatedHeaders(false);
-                self.subElementEndTag = 'SELECT END TAG';
+                self.subElementEndTag('SELECT END TAG');
                 selectionInitializer('#' + vm.immediateSelectedObject().baseUiComponent.id + '.mainElement', drawingRouter, vm.immediateSelectedObject().rectangle.id);
             }
             else if (data == 'PE') {
@@ -211,7 +212,7 @@ function SubDataElement(rectangle) {
             else if (data == 'LEE') {
                 self.isHavingEndTag(false);
                 self.isHavingRepeatedHeaders(false);
-                self.subElementEndTag = 'line end';
+                self.subElementEndTag('line end');
                 vm.currentProcessingSubElement('');
                 selectionInitializer('#' + vm.immediateSelectedObject().baseUiComponent.id + '.mainElement', drawingRouter, vm.immediateSelectedObject().rectangle.id);
             }
