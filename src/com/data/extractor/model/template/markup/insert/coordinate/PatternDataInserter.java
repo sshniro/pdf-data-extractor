@@ -56,8 +56,16 @@ public class PatternDataInserter {
                 RegexStartElement regexStartElement = regexPair.getRegexStartElement();
                 RegexEndElement regexEndElement = regexPair.getRegexEndElement();
 
-                regexStartElement.setTag(regexStartElement.getTag().trim());
-                regexEndElement.setTag(regexEndElement.getTag().trim());
+                if (regexStartElement.getTag() != null){
+                    regexStartElement.setTag(regexStartElement.getTag().trim());
+                }
+                if (regexEndElement.getTag() != null){
+                    regexEndElement.setTag(regexEndElement.getTag().trim());
+                }else {
+                    regexEndElement.setTag("eol");
+                }
+
+
             }
 
             for (ColumnDataElement columnElement : columnDataElementList){

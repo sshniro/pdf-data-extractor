@@ -359,8 +359,10 @@ function RegexDataElementDTO(dataElement, metaElements){
     this.regexPairElements = [];
     for(var key in metaElements) {
         var metaElement = metaElements[key];
-        var regexPairElement = new RegexPairElementDTO(metaElement);
-        this.regexPairElements.push(regexPairElement);
+        if(metaElement.repeatingSubElements.length === 0){
+            var regexPairElement = new RegexPairElementDTO(metaElement);
+            this.regexPairElements.push(regexPairElement);
+        }
     }
 }
 
@@ -368,7 +370,7 @@ function RegexDataElementDTO(dataElement, metaElements){
 function PatternDataDTO(pageData){
     this.id = pageData.id;
     this.status= "extract";///Static Data
-    this.dataType= "regex";////Static Data
+    this.dataType= "pattern";////Static Data
     this.patternDataElements =[];
 }
 
