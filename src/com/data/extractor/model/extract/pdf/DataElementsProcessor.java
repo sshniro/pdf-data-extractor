@@ -183,6 +183,8 @@ public class DataElementsProcessor {
         FullPageTextExtractor fullPageTextExtractor = new FullPageTextExtractor();
         String rawText = fullPageTextExtractor.pdftoText(doc,1,doc.getNumberOfPages()).toString();
 
+        List<List<PatternDataElement>> listList = new ArrayList<List<PatternDataElement>>();
+
         /* Check if no regex data available to extract then skip*/
         if(patternDataParserList.size() != 0 ){
             /*  Only one record will exist to the text data for a given PDF */
@@ -190,17 +192,17 @@ public class DataElementsProcessor {
             List<PatternDataElement> patternDataElementList = patternDataParser.getPatternDataElements();
 
             PatternExtractor patternExtractor = new PatternExtractor();
-            List<List<PatternDataElement>> listList = new ArrayList<List<PatternDataElement>>();
+
 
             for (PatternDataElement p : patternDataElementList){
                 List<PatternDataElement> xPatternDataElements = patternExtractor.extractPattern(rawText,p);
                 listList.add(xPatternDataElements);
-                xPatternDataElements = new ArrayList<PatternDataElement>();
+                //xPatternDataElements = new ArrayList<PatternDataElement>();
             }
             patternDataParser.setComplexPatternList(listList);
             dataInserter.insert(patternDataParser,extractStatus,mongoClient);
         }
-
+        insertDataParser.setPatternDataParser(patternDataParser);
         return insertDataParser;
     }
 }
