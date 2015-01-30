@@ -3,6 +3,8 @@ package com.data.extractor.model.extract.pdf.inserter;
 import com.data.extractor.model.beans.extract.pdf.ExtractStatus;
 import com.data.extractor.model.beans.template.info.image.ImageDataElement;
 import com.data.extractor.model.beans.template.info.image.ImageDataParser;
+import com.data.extractor.model.beans.template.info.pattern.PatternDataElement;
+import com.data.extractor.model.beans.template.info.pattern.PatternDataParser;
 import com.data.extractor.model.beans.template.info.regex.RegexDataElement;
 import com.data.extractor.model.beans.template.info.regex.RegexDataParser;
 import com.data.extractor.model.beans.template.info.table.TableDataElement;
@@ -127,6 +129,13 @@ public class ExtractedDataInserter {
 //                extractedDataDAO.updateTemplateInfo(extractStatus.getId(),textDataParser,textDataElement);
 //            }
         }
+    }
+
+    public void insert(PatternDataParser patternDataParser,ExtractStatus extractStatus, MongoClient mongoClient){
+        List<PatternDataElement> patternDataElementList = patternDataParser.getPatternDataElements();
+        ExtractedDataDAO extractedDataDAO = new ExtractedDataDAO(mongoClient);
+        PatternDataElement patternDataElement;
+        int recordSize = 0;
     }
 
 }

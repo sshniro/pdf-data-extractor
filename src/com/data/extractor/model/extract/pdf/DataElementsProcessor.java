@@ -16,6 +16,7 @@ import com.data.extractor.model.data.access.layer.TemplateInfoDAO;
 import com.data.extractor.model.extract.pdf.inserter.ExtractedDataInserter;
 import com.data.extractor.model.extract.pdf.table.DataProcessor;
 import com.data.extractor.model.extractors.image.FullSelectionImageExtractor;
+import com.data.extractor.model.extractors.pattern.PatternExtractor;
 import com.data.extractor.model.extractors.regex.RegexDataExtractor;
 import com.data.extractor.model.extractors.text.FullPageTextExtractor;
 import com.data.extractor.model.extractors.text.FullSelectionTextExtractor;
@@ -28,6 +29,7 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DataElementsProcessor {
@@ -181,17 +183,26 @@ public class DataElementsProcessor {
         FullPageTextExtractor fullPageTextExtractor = new FullPageTextExtractor();
         String rawText = fullPageTextExtractor.pdftoText(doc,1,doc.getNumberOfPages()).toString();
 
+        List<List<PatternDataElement>> listList = new ArrayList<List<PatternDataElement>>();
+
         /* Check if no regex data available to extract then skip*/
         if(patternDataParserList.size() != 0 ){
             /*  Only one record will exist to the text data for a given PDF */
             patternDataParser = patternDataParserList.get(0);
             List<PatternDataElement> patternDataElementList = patternDataParser.getPatternDataElements();
 
-            for (PatternDataElement P : patternDataElementList){
+            PatternExtractor patternExtractor = new PatternExtractor();
 
+
+            for (PatternDataElement p : patternDataElementList){
+                List<PatternDataElement> xPatternDataElements = patternExtractor.extractPattern(rawText,p);
+                listList.add(xPatternDataElements);
+                //xPatternDataElements = new ArrayList<PatternDataElement>();
             }
+            patternDataParser.setComplexPatternList(listList);
+            dataInserter.insert(patternDataParser,extractStatus,mongoClient);
         }
-
+        insertDataParser.setPatternDataParser(patternDataParser);
         return insertDataParser;
     }
 }

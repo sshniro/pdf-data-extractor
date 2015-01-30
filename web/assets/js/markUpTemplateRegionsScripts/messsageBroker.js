@@ -185,13 +185,13 @@ var  transformToRegexParser= function(regexDataElements){
     return dataDTO;
 }
 var  transformToPatternParser= function(regexDataElements){
-    var dataDTO = new RegexDataDTO(initData);
+    var dataDTO = new PatternDataDTO(initData);
     dataDTO.status = 'insert';
     for(var key in regexDataElements) {
         var dataElement = regexDataElements[key];
         var metaElements = regexDataElements[key].subElements;
-        var regexDataElement = new RegexDataElementDTO(dataElement,metaElements);
-        dataDTO.regexDataElements.push(regexDataElement);
+        var patternDataElement = new PatternDataElementDTO(dataElement,metaElements);
+        dataDTO.patternDataElements.push(patternDataElement);
     }
     return dataDTO;
 }
@@ -317,20 +317,17 @@ function TableDataElementDTO(dataElement, metaElements){
         var tableDataColumn = new TableDataColumnDTO(dataElement,metaElement);
         this.columns.push(tableDataColumn);
     }
-
-
-
 }
 // a single column element in the table
 function TableDataColumnDTO(dataElement, metaElement){
 
     //Meta element
-    this.rawData        =   metaElement.rectangle;
-    this.metaId         =   metaElement.id;    //////Switched meta with id
-    this.metaName      = ko.utils.unwrapObservable(metaElement.metaName);//// Switch due to data layer requirement
+    this.rawData                =   metaElement.rectangle;
+    this.metaId                 =   metaElement.id;    //////Switched meta with id
+    this.metaName               = ko.utils.unwrapObservable(metaElement.metaName);//// Switch due to data layer requirement
     if(metaElement.selectedDictionaryItem){
-        this.dictionaryId   = ko.utils.unwrapObservable(metaElement.selectedDictionaryItem.id);
-        this.dictionaryName   = ko.utils.unwrapObservable(metaElement.selectedDictionaryItem.name);
+        this.dictionaryId       = ko.utils.unwrapObservable(metaElement.selectedDictionaryItem.id);
+        this.dictionaryName     = ko.utils.unwrapObservable(metaElement.selectedDictionaryItem.name);
     }
     else{
         this.dictionaryId   = -1;
@@ -340,7 +337,6 @@ function TableDataColumnDTO(dataElement, metaElement){
     this.metaY1         =   dataElement.startY + (metaElement.startY);
     this.metaWidth      =   this.metaX1 + (metaElement.width);
     this.metaHeight     =   this.metaY1 + (metaElement.height);
-
 }
 
 function RegexDataDTO(pageData){
@@ -363,8 +359,10 @@ function RegexDataElementDTO(dataElement, metaElements){
     this.regexPairElements = [];
     for(var key in metaElements) {
         var metaElement = metaElements[key];
-        var regexPairElement = new RegexPairElementDTO(metaElement);
-        this.regexPairElements.push(regexPairElement);
+        if(metaElement.repeatingSubElements.length === 0){
+            var regexPairElement = new RegexPairElementDTO(metaElement);
+            this.regexPairElements.push(regexPairElement);
+        }
     }
 }
 
@@ -372,33 +370,20 @@ function RegexDataElementDTO(dataElement, metaElements){
 function PatternDataDTO(pageData){
     this.id = pageData.id;
     this.status= "extract";///Static Data
-    this.dataType= "regex";////Static Data
+    this.dataType= "pattern";////Static Data
     this.patternDataElements =[];
 }
 
-
-function PatternDataElementDTO(dataElement, metaElements){
-    this.regexDataElements = [];
+function PatternDataElementDTO(dataElement,metaElements){
+    this.regexDataElements = new RegexDataElementDTO(dataElement,metaElements);
     this.columnDataElements = [];
-}
-
-function PatternDataElementDTO(dataElement, metaElements){
-    this.rawData       = dataElement.rectangle;
-    this.id        = ko.utils.unwrapObservable(dataElement.id);    //////Switched meta with id
-    this.metaName      = ko.utils.unwrapObservable(dataElement.metaName);//// Switch due to data layer requirement
-    if(dataElement.selectedDictionaryItem){
-        this.dictionaryId   = ko.utils.unwrapObservable(dataElement.selectedDictionaryItem.id);
-        this.dictionaryName   = ko.utils.unwrapObservable(dataElement.selectedDictionaryItem.name);
-    }
-    else{
-        this.dictionaryId   = -1;
-        this.dictionaryName   =  -1;
-    }
-    this.regexPairElements = [];
-    for(var key in metaElements) {
-        var metaElement = metaElements[key];
-        var regexPairElement = new RegexPairElementDTO(metaElement);
-        this.regexPairElements.push(regexPairElement);
+    for(var metaKey in metaElements){
+        for(var repeatingKey in metaElements[metaKey].repeatingSubElements)
+        {
+            var metaElement = metaElements[metaKey].repeatingSubElements[repeatingKey];
+            var column = new ColumnDataElementDTO(metaElement);
+            this.columnDataElements.push(column);
+        }
     }
 }
 
@@ -416,9 +401,28 @@ function RegexPairElementDTO(metaElement){
         this.dictionaryName     =   -1;
     }
     this.regexStartElement = {};
-    this.regexStartElement.tag       =   metaElement.subElementEndTag;
+    this.regexStartElement.tag       =   metaElement.subElementStartTag;
     this.regexEndElement = {};
-    this.regexEndElement.tag         =   metaElement.subElementStartTag;
+    this.regexEndElement.tag         =   metaElement.subElementEndTag;
+}
+
+function ColumnDataElementDTO(column){
+    //Meta element
+    this.rawData        =   column.rectangle;
+    this.metaId         =   column.id;                                 /////Switched meta with id
+    this.metaName       =   ko.utils.unwrapObservable(column.metaName);//// Switch due to data layer requirement
+    if(column.selectedDictionaryItem){
+        this.dictionaryId       = ko.utils.unwrapObservable(column.selectedDictionaryItem.id);
+        this.dictionaryName     = ko.utils.unwrapObservable(column.selectedDictionaryItem.name);
+    }
+    else{
+        this.dictionaryId       =   -1;
+        this.dictionaryName     =   -1;
+    }
+    this.columnStartElement = {};
+    this.columnStartElement.tag       =   column.start;
+    this.columnEndElement = {};
+    this.columnEndElement.tag         =   column.end;
 }
 
 

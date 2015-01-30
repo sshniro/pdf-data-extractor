@@ -19,7 +19,6 @@ public class NavigationController extends HttpServlet {
         }
         Gson gson=new Gson();
 
-
         NavRequest navRequest;
         navRequest=gson.fromJson(sb.toString(),NavRequest.class);
         response.getWriter().print(navRequest.getRedirect()+".jsp");

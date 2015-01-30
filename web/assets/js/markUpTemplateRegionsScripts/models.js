@@ -82,7 +82,6 @@ function DataElement(rectangle, subElements){
     self.labelExtractedData = ko.observable(rectangle.labelExtractedData);
     //Change at message broker to meta id
     self.metaName = ko.observable(rectangle.metaName);
-
     self.elementViseCurrentDic = ko.observable(ko.utils.unwrapObservable(vm.currentDic));
     self.selectedDictionaryItem = ko.observable();
     if(rectangle.selectedDictionaryItem !== undefined){
@@ -99,12 +98,16 @@ function DataElement(rectangle, subElements){
     self.subElements = ko.observableArray([]);
 
     if(subElements !== undefined){
-        self.tempSubElements = $.map( subElements, function(subElement) { return new SubDataElement(subElement.rectangle) });
-        self.subElements = ko.observableArray(self.tempSubElements);
+        self.tempSubelements = [];
+        for(var key in subElements) {
+            var tempRectangle = subElements[key];
+            var subDataElement   = new SubDataElement(tempRectangle);
+            self.subElements.push(subDataElement);
+        };
+
 
     }
     else if(rectangle.subElements !== undefined ) {
-
         self.tempSubElements = $.map( rectangle.subElements, function(subElement) { return new SubDataElement(subElement) });
         self.subElements = ko.observableArray(self.tempSubElements);
 
@@ -191,10 +194,14 @@ function SubDataElement(rectangle) {
     self.isHavingRepeatedHeaders = ko.observable(false);
 
     self.repeatingSubElements = ko.observableArray([]);
+    if(rectangle.repeatingSubElements !== undefined){
+        self.repeatingSubElements(rectangle.repeatingSubElements);
+    }
+
     self.bufferedRepeatingElement_start = ko.observable('');
     self.bufferedRepeatingElement_end = ko.observable('');
 
-/*
+    /*
     if (self.elementType() === 'regex' || self.elementType() === 'pattern') {
 
     }*/
@@ -216,7 +223,7 @@ function SubDataElement(rectangle) {
         else if (data == 'LEE') {
             self.isHavingEndTag(false);
             self.isHavingRepeatedHeaders(false);
-            self.subElementEndTag('line end');
+            self.subElementEndTag('eol');
             vm.currentProcessingSubElement('');
             selectionInitializer('#' + vm.immediateSelectedObject().baseUiComponent.id + '.mainElement', drawingRouter, vm.immediateSelectedObject().rectangle.id);
         }
