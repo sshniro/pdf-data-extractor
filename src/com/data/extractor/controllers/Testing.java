@@ -5,7 +5,9 @@ import com.data.extractor.model.beans.template.info.insert.InsertDataParser;
 import com.data.extractor.model.beans.template.info.regex.*;
 import com.data.extractor.model.beans.template.info.table.TableDataElement;
 import com.data.extractor.model.beans.template.info.table.TableDataParser;
+import com.data.extractor.model.beans.user.UserBean;
 import com.data.extractor.model.data.access.layer.TemplateInfoDAO;
+import com.data.extractor.model.data.access.layer.UsersDAO;
 import com.mongodb.MongoClient;
 
 import java.net.UnknownHostException;
@@ -23,39 +25,45 @@ public class Testing {
 //        System.out.println("testing");
 
         MongoClient mongoClient = new MongoClient("localhost",27017);
-        RegexDataElement regexDataElement = new RegexDataElement();
-        RawDataElement rawDataElement = new RawDataElement();
 
-        RegexStartElement regexStartElement = new RegexStartElement();
-        RegexEndElement regexEndElement = new RegexEndElement();
+        UserBean userBean = new UserBean();
+        UsersDAO usersDAO = new UsersDAO(mongoClient);
 
-        regexStartElement.setTag("a");
 
-        regexEndElement.setTag("a");
 
-        RegexPairElement regexPairElement = new RegexPairElement();
-        regexPairElement.setRegexStartElement(regexStartElement);
-        regexPairElement.setRegexEndElement(regexEndElement);
-
-        List<RegexPairElement> regexPairElements = new ArrayList<RegexPairElement>();
-        regexPairElements.add(regexPairElement);
-
-        regexDataElement.setRegexPairElements(regexPairElements);
-        regexDataElement.setMetaName("1");
-        regexDataElement.setRawData(rawDataElement);
-
-        TemplateInfoDAO templateInfoDAO = new TemplateInfoDAO(mongoClient);
-
-        List<RegexDataElement> regexDataElementList = new ArrayList<RegexDataElement>();
-        regexDataElementList.add( regexDataElement);
-
-        RegexDataParser regexDataParser = new RegexDataParser();
-        regexDataParser.setRegexDataElements(regexDataElementList);
-        regexDataParser.setId("1");
-        regexDataParser.setDataType("regex");
-
-        templateInfoDAO.createTemplateInfo("1","regex",regexDataElement);
-        templateInfoDAO.updateTemplateInfo(regexDataParser,regexDataElement);
+//        RegexDataElement regexDataElement = new RegexDataElement();
+//        RawDataElement rawDataElement = new RawDataElement();
+//
+//        RegexStartElement regexStartElement = new RegexStartElement();
+//        RegexEndElement regexEndElement = new RegexEndElement();
+//
+//        regexStartElement.setTag("a");
+//
+//        regexEndElement.setTag("a");
+//
+//        RegexPairElement regexPairElement = new RegexPairElement();
+//        regexPairElement.setRegexStartElement(regexStartElement);
+//        regexPairElement.setRegexEndElement(regexEndElement);
+//
+//        List<RegexPairElement> regexPairElements = new ArrayList<RegexPairElement>();
+//        regexPairElements.add(regexPairElement);
+//
+//        regexDataElement.setRegexPairElements(regexPairElements);
+//        regexDataElement.setMetaName("1");
+//        regexDataElement.setRawData(rawDataElement);
+//
+//        TemplateInfoDAO templateInfoDAO = new TemplateInfoDAO(mongoClient);
+//
+//        List<RegexDataElement> regexDataElementList = new ArrayList<RegexDataElement>();
+//        regexDataElementList.add( regexDataElement);
+//
+//        RegexDataParser regexDataParser = new RegexDataParser();
+//        regexDataParser.setRegexDataElements(regexDataElementList);
+//        regexDataParser.setId("1");
+//        regexDataParser.setDataType("regex");
+//
+//        templateInfoDAO.createTemplateInfo("1","regex",regexDataElement);
+//        templateInfoDAO.updateTemplateInfo(regexDataParser,regexDataElement);
 
     }
 
