@@ -59,7 +59,7 @@
                     <li><a href="/data-dictionary.jsp">Data Dictionary</a></li>
                 </ul>
                 <ul class="nav navbar-nav">
-                    <li><a href="/data-dictionary.jsp">User Management</a></li>
+                    <li><a href="/user-management.jsp">User Management</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li style="margin: 15px 15px 0 0">Login as: <b>administrator</b></li>
@@ -218,7 +218,7 @@
                         <div style="width: 100%">
                             <iframe id="pdfRenderer" style="width: 100%"></iframe>
                         </div>
-: absolute; top: 0; left: 0; width: 100%; height: 100%; background-col                    </div>
+                    </div>
                 </div>
             </div>
         </div>
