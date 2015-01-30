@@ -64,6 +64,14 @@
         <servlet-name>PatternControllerServlet</servlet-name>
         <servlet-class>com.data.extractor.controllers.PatternControllerServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ManageUsersController</servlet-name>
+        <servlet-class>com.data.extractor.controllers.ManageUsersController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AccessRightController</servlet-name>
+        <servlet-class>com.data.extractor.controllers.AccessRightController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>TemplateUploadController</servlet-name>
         <url-pattern>/TemplateUploadController</url-pattern>
@@ -111,6 +119,14 @@
     <servlet-mapping>
         <servlet-name>PatternControllerServlet</servlet-name>
         <url-pattern>/PatternControllerServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ManageUsersController</servlet-name>
+        <url-pattern>/ManageUsersController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AccessRightController</servlet-name>
+        <url-pattern>/AccessRightController</url-pattern>
     </servlet-mapping>
 
 

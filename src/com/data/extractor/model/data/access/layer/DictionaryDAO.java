@@ -29,7 +29,6 @@ public class DictionaryDAO {
         Gson gson = new Gson();
         List<Dictionary> dictionaryList = new ArrayList<Dictionary>();
 
-        BasicDBObject searchQuery = new BasicDBObject();
         DBCursor dbCursor = dictionaryColl.find();
 
         while(dbCursor.hasNext()){
