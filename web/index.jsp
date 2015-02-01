@@ -65,10 +65,10 @@
                 return false;
             }
 
-            data={ userName : $('#userName').val(),  pass  : $('#pass').val()  };
+            data={ userName : $('#userName').val(),  pass  : $('#pass').val() , request : "login" };
 
             $.ajax({
-                type: 'POST', url: 'InitController',
+                type: 'POST', url: 'SessionController',
                 contentType: 'application/json; charset=utf-8',
                 dataType: 'json',
                 data: JSON.stringify(data),

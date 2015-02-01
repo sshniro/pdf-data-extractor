@@ -13,7 +13,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-
+/*
+This Controller is deprecated
+ */
 public class InitController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -32,8 +34,8 @@ public class InitController extends HttpServlet {
         LoginRequestProcessor requestProcessor=new LoginRequestProcessor();
 
         /* sets loginResponse.isAuthenticated ==true if successfully authenticated */
-        LoginResponse loginResponse;
-        loginResponse=requestProcessor.processRequest(loginRequest,mongoClient);
+        LoginResponse loginResponse=new LoginResponse();
+        //loginResponse=requestProcessor.processRequest(loginRequest,mongoClient);
 
         if(loginResponse.getIsAuthenticated()){
             HttpSession session=request.getSession();

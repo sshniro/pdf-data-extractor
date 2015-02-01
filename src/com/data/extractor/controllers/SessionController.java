@@ -1,6 +1,8 @@
 package com.data.extractor.controllers;
 
+import com.data.extractor.model.beans.authenticate.login.LoginResponse;
 import com.data.extractor.model.beans.authentication.AuthenticationRequest;
+import com.data.extractor.model.login.LoginRequestProcessor;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -23,12 +25,12 @@ public class SessionController extends HttpServlet {
 
         Gson gson=new Gson();
         AuthenticationRequest authenticationRequest=gson.fromJson(sb.toString(),AuthenticationRequest.class);
+        HttpSession session=request.getSession();
 
         /* Get the mongo client from the servletContext */
         MongoClient mongoClient = (MongoClient) request.getServletContext().getAttribute("MONGO_CLIENT");
 
         if(authenticationRequest.getRequest().equals("logout")){
-            HttpSession session=request.getSession();
 
             /* remove session attributes and to redirect to loginJSP */
             session.removeAttribute("loggedIn");
@@ -38,6 +40,26 @@ public class SessionController extends HttpServlet {
             JsonElement element = gson.fromJson (jsonStr, JsonElement.class);
             JsonObject jsonObj = element.getAsJsonObject();
             response.getWriter().print(gson.toJson(jsonObj));
+        }
+
+        if(authenticationRequest.getRequest().equals("login")){
+            LoginRequestProcessor requestProcessor=new LoginRequestProcessor();
+
+        /* sets loginResponse.isAuthenticated ==true if successfully authenticated */
+            LoginResponse loginResponse=requestProcessor.processRequest(authenticationRequest,mongoClient);
+
+            if(loginResponse.getIsAuthenticated()){
+
+
+            /* Set session attributes to redirect to login Page if the user Not Logged In */
+                session.setAttribute("loggedIn",true);
+                session.setAttribute("userName",authenticationRequest.getUserName());
+
+                loginResponse.setRedirectUrl("ManageCategories.jsp");
+                response.getWriter().print(gson.toJson(loginResponse));
+            }else {
+                response.getWriter().print(gson.toJson(loginResponse));
+            }
         }
     }
 }

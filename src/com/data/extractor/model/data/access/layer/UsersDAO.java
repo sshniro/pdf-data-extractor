@@ -2,6 +2,7 @@ package com.data.extractor.model.data.access.layer;
 
 
 import com.data.extractor.model.beans.authenticate.login.LoginRequest;
+import com.data.extractor.model.beans.authentication.AuthenticationRequest;
 import com.data.extractor.model.beans.dictionary.Dictionary;
 import com.data.extractor.model.beans.user.UserBean;
 import com.data.extractor.model.db.connect.dbInitializer;
@@ -30,7 +31,7 @@ public class UsersDAO {
         this.usersColl = dbInitializer.getCollection(db,coll);
     }
 
-    public Boolean isUserExists(LoginRequest loginRequest){
+    public Boolean isUserExists(AuthenticationRequest loginRequest){
         BasicDBObject basicDBObject = new BasicDBObject();
 
         basicDBObject.put("userName", loginRequest.getUserName());

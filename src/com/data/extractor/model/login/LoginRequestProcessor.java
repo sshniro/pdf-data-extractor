@@ -3,13 +3,14 @@ package com.data.extractor.model.login;
 
 import com.data.extractor.model.beans.authenticate.login.LoginRequest;
 import com.data.extractor.model.beans.authenticate.login.LoginResponse;
+import com.data.extractor.model.beans.authentication.AuthenticationRequest;
 import com.data.extractor.model.data.access.layer.CounterDAO;
 import com.data.extractor.model.data.access.layer.UsersDAO;
 import com.mongodb.MongoClient;
 
 public class LoginRequestProcessor {
 
-    public LoginResponse processRequest(LoginRequest loginRequest,MongoClient mongoClient){
+    public LoginResponse processRequest(AuthenticationRequest loginRequest,MongoClient mongoClient){
         /* set initially authenticated to false */
         loginRequest.setIsAuthenticated(false);
 
@@ -36,7 +37,7 @@ public class LoginRequestProcessor {
 
     }
 
-    public void createAdminUser(MongoClient mongoClient,LoginRequest loginRequest){
+    public void createAdminUser(MongoClient mongoClient,AuthenticationRequest loginRequest){
         CounterDAO counterDAO = new CounterDAO(mongoClient);
         UsersDAO usersDAO = new UsersDAO(mongoClient);
         Integer id = counterDAO.getNextId("userId");
