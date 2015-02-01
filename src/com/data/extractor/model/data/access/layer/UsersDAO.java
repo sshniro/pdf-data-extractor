@@ -51,11 +51,12 @@ public class UsersDAO {
         return userCursor.size();
     }
 
-    public void createUser(String userName,String pass){
+    public void createUser(String userName,String pass,String role){
         BasicDBObject basicDBObject = new BasicDBObject();
 
         basicDBObject.put("userName",userName);
         basicDBObject.put("pass",pass);
+        basicDBObject.put("role",role);
 
         usersColl.insert(basicDBObject);
     }

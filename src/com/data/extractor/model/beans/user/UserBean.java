@@ -13,6 +13,16 @@ public class UserBean {
     private String pass;
     @Expose
     private String request;
+    @Expose
+    private String role;
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
 
     public String getRequest() {
         return request;
