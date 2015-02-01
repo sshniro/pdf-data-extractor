@@ -39,7 +39,7 @@ public class ExtractPdfController extends HttpServlet {
 
         if(extractStatus.getStatus()) {
             DataExtractor dataExtractor = new DataExtractor();
-            extractedData = dataExtractor.convertToString(dataExtracted);
+            extractedData = dataExtractor.convertToString(dataExtracted,false);
         }
 
         extractResponse=responseGenerator.generateResponse(extractStatus , extractedData);
