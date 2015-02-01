@@ -75,29 +75,29 @@ public class TemplatesDAO implements Templates {
         }
     }
 
-    public void addUserToNode(String id , String parent , String userName){
+    public void addUserToNode(String id , String parent , String userId){
         BasicDBObject searchQuery= new BasicDBObject();
 
         searchQuery.put("id",id);
         searchQuery.put("parent",parent);
 
-        BasicDBObject userObj = new BasicDBObject("userName",userName);
+        BasicDBObject userObj = new BasicDBObject("id",userId);
 
         BasicDBObject updateObject = new BasicDBObject();
-        updateObject.put("$push", new BasicDBObject("users", userObj));
+        updateObject.put("$push", new BasicDBObject("users", userId));
         templatesColl.update(searchQuery, updateObject);
     }
 
-    public void removeUserFromNode(String id,String parent , String userName){
+    public void removeUserFromNode(String id,String parent , String userId){
         BasicDBObject searchQuery = new BasicDBObject();
 
         searchQuery.put("id",id);
         searchQuery.put("parent",parent);
 
-        BasicDBObject userObj = new BasicDBObject("userName",userName);
+        BasicDBObject userObj = new BasicDBObject("id",userId);
 
         BasicDBObject updateObject = new BasicDBObject();
-        updateObject.put("$pull", new BasicDBObject("users", userObj));
+        updateObject.put("$pull", new BasicDBObject("users", userId));
         templatesColl.update(searchQuery, updateObject);
     }
 
