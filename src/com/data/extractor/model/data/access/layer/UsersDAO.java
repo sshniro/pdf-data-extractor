@@ -63,6 +63,17 @@ public class UsersDAO {
         return userBean;
     }
 
+    public UserBean getUserByName(String userName){
+        BasicDBObject searchQuery = new BasicDBObject();
+
+        searchQuery.put("userName",userName);
+        DBObject dbObject = usersColl.findOne(searchQuery);
+
+        Gson gson=new Gson();
+        UserBean userBean = gson.fromJson(dbObject.toString(),UserBean.class);
+        return userBean;
+    }
+
     public void createUser(String id,String userName,String pass,String role,String fullName){
         BasicDBObject basicDBObject = new BasicDBObject();
 

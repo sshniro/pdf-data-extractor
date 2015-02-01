@@ -49,11 +49,10 @@ public class SessionController extends HttpServlet {
             LoginResponse loginResponse=requestProcessor.processRequest(authenticationRequest,mongoClient);
 
             if(loginResponse.getIsAuthenticated()){
-
-
             /* Set session attributes to redirect to login Page if the user Not Logged In */
                 session.setAttribute("loggedIn",true);
                 session.setAttribute("userName",authenticationRequest.getUserName());
+                session.setAttribute("userId",authenticationRequest.getUserName());
 
                 loginResponse.setRedirectUrl("ManageCategories.jsp");
                 response.getWriter().print(gson.toJson(loginResponse));
