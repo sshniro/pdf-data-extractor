@@ -60,23 +60,89 @@ function ViewModel() {
         }
     };
     self.newUserBuffer = ko.observable(new userModel());
+    self.isUsernameValid = ko.observable(false);
     self.usersCollection = ko.observableArray([]);
-    self.createNewUser = function(){
-        var sendingDataObj = {
-            request: 'CreateNewUser',
-            username: self.newUserBuffer().username(),
-            fullname: self.newUserBuffer().fullname(),
-            password: self.newUserBuffer().password()
-        };
-        var response = doAjax('POST','UserController', sendingDataObj);
+    self.testCollection = ko.observableArray([{"username":"admin",fullname: undefined,"password":"admin"},{"username":"kasun",fullname: undefined,"password":"kasun"},{"username":"mihirangi",fullname: undefined,"password":"love"}]);
+    self.selectedUserInHierachyMan = ko.observable();
 
-        window.location.reload();
+    self.getAllUsers = function(){
+        var userCollection;
+        $.ajax({
+            type: 'POST', url: 'ManageUsersController',
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            data: JSON.stringify({request:'getAllUsers'}),
+            success: function(data, textStatus, jqXHR) {
+                userCollection =  JSON.parse(jqXHR.responseText);
+                for(user in userCollection){
+                    self.usersCollection().push(new User(userCollection[user]));
+                };
+            }
+        });
+
     };
 
+    self.createNewUser = function(){
+        var sendingDataObj = {
+            request: 'createUser',
+            userName: self.newUserBuffer().username(),
+            fullname: self.newUserBuffer().fullname(),
+            pass: self.newUserBuffer().password()
+        };
+        $.ajax({
+            type: 'POST', url: 'ManageUsersController',
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            data: JSON.stringify(sendingDataObj),
+            success: function(data, textStatus, jqXHR) {
+                var response =  JSON.parse(jqXHR.responseText);
+                if(response.state === 'success'){
+                    window.location.reload();
+                }
+                else{
+                    alert("couldn't create user.\nPlease try again.");
+                }
+            }
+        });
 
+    };
 
+    self.validateUserName = function(){
+        self.isUsernameValid(true);
+        for(user in self.usersCollection()){
+            if(self.newUserBuffer().username() === self.usersCollection()[user].username){
+                self.isUsernameValid(false);
+            };
+        };
+    };
+
+    self.removeUser = function(){
+        var sendingDataObj = {
+            request: 'removeUser',
+            userName: self.newUserBuffer().username(),
+            fullname: self.newUserBuffer().fullname(),
+            pass: self.newUserBuffer().password()
+        };
+        $.ajax({
+            type: 'POST', url: 'ManageUsersController',
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            data: JSON.stringify(sendingDataObj),
+            success: function(data, textStatus, jqXHR) {
+                var response =  JSON.parse(jqXHR.responseText);
+                if(response.state === 'success'){
+                    window.location.reload();
+                }
+                else{
+                    alert("couldn't remove user.\nPlease try again.");
+                }
+            }
+        });
+
+    };
 
 }
 
 userVM = new ViewModel();
+userVM.getAllUsers();
 ko.applyBindings(userVM);

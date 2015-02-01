@@ -112,10 +112,11 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">User Name</label>
                         <div class="col-sm-9">
-                            <input data-bind="value:newUserBuffer().username" type="text" class="form-control" />
+                            <input data-bind="value:newUserBuffer().username, event:{blur:validateUserName}" type="text" class="form-control" />
                         </div>
                         <div class="col-sm-1">
-                            <span class="glyphicon glyphicon-check" style="font-size: 20px"></span>
+                            <span data-bind="visible:isUsernameValid" class="glyphicon glyphicon-check" style="font-size: 20px"></span>
+                            <span data-bind="visible:(!isUsernameValid())" class="glyphicon glyphicon-info-sign" style="font-size: 20px; color:red"></span>
                         </div>
                     </div>
                     <div class="form-group">
@@ -178,11 +179,12 @@
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">Select user</label>
                                 <div class="col-sm-6">
-                                    <select class="form-control">
-                                        <option>dummy</option>
-                                    </select>
+                                    <select data-bind="options:testCollection(), option:'username'" class="form-control"></select>
                                 </div>
-                                <div class="col-sm-4">or <a>Create a new user</a></div>
+                                <div class="col-sm-4">
+                                    <a href="#" data-bind="click:setShowingDiv.bind($data,'createUser')">Create a new user</a><br/>
+                                    or <a href="#" data-bind="click:removeUser" style="color: indianred">Delete user</a>
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">Username</label>
@@ -252,7 +254,6 @@
     var selectedNodeParentRow = undefined;
 
     initTrees();
-    getAllUsers();
 
     // search tree
     var to = false;

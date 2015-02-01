@@ -60,20 +60,14 @@ function doAjax (type, url, sendingDataObj){
     });
 };
 
-function getAllUsers(){
-    var response = doAjax('POST', 'UserController', {request:'getAllUsers'});
-    var userCollection =  JSON.parse(response.jqXHR.responseText);
-    for(user in userCollection){
-        userVM.usersCollection().push(new User(userCollection[user]));
-    };
-};
+
 
 ////////////////////////////////////////////////////////////////////////////
 /////////////////////////         models         ///////////////////////////
 ////////////////////////////////////////////////////////////////////////////
 
 function User(data){
-    this.username = data.username;
+    this.username = data.userName;
     this.fullname = data.fullname;
-    this.password = data.password;
+    this.password = data.pass;
 };
