@@ -1,29 +1,19 @@
-package com.data.extractor.model.beans.user;
+package com.data.extractor.model.beans.authentication;
 
 import com.google.gson.annotations.Expose;
 
-public class UserBean {
+public class AuthenticationRequest {
 
     @Expose
-    private String id;
+    private String request;
     @Expose
     private String userName;
     @Expose
     private String pass;
-    @Expose
-    private String request;
-    @Expose
-    private String role;
-    @Expose
-    private String fullName;
 
-    public String getRole() {
-        return role;
-    }
+    private String errorCause;
 
-    public void setRole(String role) {
-        this.role = role;
-    }
+    private Boolean isAuthenticated;
 
     public String getRequest() {
         return request;
@@ -49,19 +39,19 @@ public class UserBean {
         this.pass = pass;
     }
 
-    public String getId() {
-        return id;
+    public String getErrorCause() {
+        return errorCause;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setErrorCause(String errorCause) {
+        this.errorCause = errorCause;
     }
 
-    public String getFullName() {
-        return fullName;
+    public Boolean getIsAuthenticated() {
+        return isAuthenticated;
     }
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
+    public void setIsAuthenticated(Boolean isAuthenticated) {
+        this.isAuthenticated = isAuthenticated;
     }
 }

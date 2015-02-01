@@ -29,11 +29,11 @@ public class AccessRightController extends HttpServlet {
         MongoClient mongoClient = (MongoClient) request.getServletContext().getAttribute("MONGO_CLIENT");
         TemplatesDAO templatesDAO = new TemplatesDAO(mongoClient);
 
-        if(data.getRequest().equals("addUserName")){
-            templatesDAO.addUserToNode(data.getId(),data.getParent(),data.getUserName());
+        if(data.getRequest().equals("addUserToNode")){
+            templatesDAO.addUserToNode(data.getId(),data.getParent(),data.getUserId());
         }
-        if(data.getRequest().equals("removeUserName")){
-            templatesDAO.removeUserFromNode(data.getId(),data.getParent(),data.getUserName());
+        if(data.getRequest().equals("removeUserFromNode")){
+            templatesDAO.removeUserFromNode(data.getId(),data.getParent(),data.getUserId());
         }
 
         String jsonStr = "{\"state\": \"success\"}";

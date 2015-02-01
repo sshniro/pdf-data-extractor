@@ -28,7 +28,7 @@ public class RequestProcessor {
         }
 
         if(data.getRequest().equals("getUserNodes")){
-            
+
         }
         return data;
     }

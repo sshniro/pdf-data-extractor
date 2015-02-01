@@ -2,6 +2,7 @@ package com.data.extractor.model.data.access.layer;
 
 
 import com.data.extractor.model.beans.authenticate.login.LoginRequest;
+import com.data.extractor.model.beans.authentication.AuthenticationRequest;
 import com.data.extractor.model.beans.dictionary.Dictionary;
 import com.data.extractor.model.beans.user.UserBean;
 import com.data.extractor.model.db.connect.dbInitializer;
@@ -30,7 +31,7 @@ public class UsersDAO {
         this.usersColl = dbInitializer.getCollection(db,coll);
     }
 
-    public Boolean isUserExists(LoginRequest loginRequest){
+    public Boolean isUserExists(AuthenticationRequest loginRequest){
         BasicDBObject basicDBObject = new BasicDBObject();
 
         basicDBObject.put("userName", loginRequest.getUserName());
@@ -51,22 +52,22 @@ public class UsersDAO {
         return userCursor.size();
     }
 
-    public void createUser(String userName,String pass,String role){
+    public void createUser(String id,String userName,String pass,String role,String fullName){
         BasicDBObject basicDBObject = new BasicDBObject();
 
+        basicDBObject.put("id",id);
         basicDBObject.put("userName",userName);
         basicDBObject.put("pass",pass);
         basicDBObject.put("role",role);
+        basicDBObject.put("fullName",fullName);
 
         usersColl.insert(basicDBObject);
     }
 
-    public void removeUser(String userName,String pass){
+    public void removeUser(String id){
         BasicDBObject removeQuery =new BasicDBObject();
 
-        removeQuery.put("userName",userName);
-        removeQuery.put("pass",pass);
-
+        removeQuery.put("id",id);
         usersColl.remove(removeQuery);
     }
 
