@@ -10,6 +10,8 @@ public class AuthenticationRequest {
     private String userName;
     @Expose
     private String pass;
+    @Expose
+    private String userId;
 
     private String errorCause;
 
@@ -53,5 +55,13 @@ public class AuthenticationRequest {
 
     public void setIsAuthenticated(Boolean isAuthenticated) {
         this.isAuthenticated = isAuthenticated;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

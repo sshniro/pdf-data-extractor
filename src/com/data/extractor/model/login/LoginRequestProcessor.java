@@ -4,6 +4,7 @@ package com.data.extractor.model.login;
 import com.data.extractor.model.beans.authenticate.login.LoginRequest;
 import com.data.extractor.model.beans.authenticate.login.LoginResponse;
 import com.data.extractor.model.beans.authentication.AuthenticationRequest;
+import com.data.extractor.model.beans.user.UserBean;
 import com.data.extractor.model.data.access.layer.CounterDAO;
 import com.data.extractor.model.data.access.layer.UsersDAO;
 import com.mongodb.MongoClient;
@@ -26,6 +27,11 @@ public class LoginRequestProcessor {
                 loginRequest.setErrorCause("Invalid UserName or Password");
             }
 
+        }
+
+        if (loginRequest.getIsAuthenticated()){
+            UserBean userBean = usersDAO.getUserByName(loginRequest.getUserName());
+            loginRequest.setUserId(userBean.getId());
         }
 
         LoginResponse loginResponse=new LoginResponse();
