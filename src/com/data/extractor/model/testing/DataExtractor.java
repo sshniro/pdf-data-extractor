@@ -3,6 +3,7 @@ package com.data.extractor.model.testing;
 import com.data.extractor.model.beans.template.info.image.ImageDataElement;
 import com.data.extractor.model.beans.template.info.image.ImageDataParser;
 import com.data.extractor.model.beans.template.info.insert.InsertDataParser;
+import com.data.extractor.model.beans.template.info.pattern.ColumnDataElement;
 import com.data.extractor.model.beans.template.info.pattern.PatternDataElement;
 import com.data.extractor.model.beans.template.info.pattern.PatternDataParser;
 import com.data.extractor.model.beans.template.info.regex.*;
@@ -114,10 +115,54 @@ public class DataExtractor {
         }
 
         if(patternDataParser != null){
+            String columnName;
             List<List<PatternDataElement>> complexList = patternDataParser.getComplexPatternList();
 
             for (int i=0;i<complexList.size();i++){
                 List<PatternDataElement> patternDataElementList = complexList.get(i);
+                sb.append("Table Collection " ).append(i+1).append(" : \n");
+
+                for (int j=0 ;j<patternDataElementList.size();j++ ){
+
+                    sb.append("Table " ).append(j+1).append(" : \n");
+
+                    RegexDataElement regexDataElement= patternDataElementList.get(j).getRegexDataElements();
+                    List<ColumnDataElement> columnDataElementList =patternDataElementList.get(j).getColumnDataElements();
+                    List<RegexPairElement> regexPairElementList = regexDataElement.getRegexPairElements();
+
+
+
+                    for (int k=0; k<regexPairElementList.size();k++){
+                        RegexPairElement regexPairElement = regexPairElementList.get(k);
+                        sb.append("Text " ).append(k+1).append(" : ").append(regexPairElement.getValue()).append("\n");
+                    }
+
+                    for (int k = 0; k < columnDataElementList.size();k++){
+
+                        ColumnDataElement columnDataElement = columnDataElementList.get(k);
+
+
+                        // set the columnName for east identification in the front end
+                        if(columnDataElement.getMetaName() == null)
+                            columnName = "column " +k;
+                        else
+                            columnName = columnDataElement.getMetaName();
+
+                        sb.append("Column ").append(k+1).append(" -(").append(columnName).append(") : ");
+                        List<Cell> cellList = columnDataElement.getCellList();
+
+                        for(int c=0 ; c < cellList.size() ; c++ ){
+
+                            Cell cell=cellList.get(c);
+                            sb.append(cell.getValue());
+                            /* append ',' until the element before the last */
+                            if(c != cellList.size()-1){
+                                sb.append(" , ");
+                            }
+                        }
+                        sb.append("\n");
+                    }
+                }
             }
         }
 

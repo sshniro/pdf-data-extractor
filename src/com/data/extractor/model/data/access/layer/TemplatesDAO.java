@@ -75,6 +75,32 @@ public class TemplatesDAO implements Templates {
         }
     }
 
+    public void addUserToNode(String id , String parent , String userName){
+        BasicDBObject searchQuery= new BasicDBObject();
+
+        searchQuery.put("id",id);
+        searchQuery.put("parent",parent);
+
+        BasicDBObject userObj = new BasicDBObject("userName",userName);
+
+        BasicDBObject updateObject = new BasicDBObject();
+        updateObject.put("$push", new BasicDBObject("users", userObj));
+        templatesColl.update(searchQuery, updateObject);
+    }
+
+    public void removeUserFromNode(String id,String parent , String userName){
+        BasicDBObject searchQuery = new BasicDBObject();
+
+        searchQuery.put("id",id);
+        searchQuery.put("parent",parent);
+
+        BasicDBObject userObj = new BasicDBObject("userName",userName);
+
+        BasicDBObject updateObject = new BasicDBObject();
+        updateObject.put("$pull", new BasicDBObject("users", userObj));
+        templatesColl.update(searchQuery, updateObject);
+    }
+
 
     public List<TemplatesParser> getTemplates(List<String> categories){
         TemplatesParser template;
@@ -114,7 +140,6 @@ public class TemplatesDAO implements Templates {
 
     public  ManageCategoriesData getAllNodes(ManageCategoriesData data){
 
-        BasicDBObject searchQuery = new BasicDBObject();
         DBCursor cursor = templatesColl.find(null);
 
         Gson gson=new Gson();

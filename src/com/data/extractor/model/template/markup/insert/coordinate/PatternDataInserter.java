@@ -1,10 +1,8 @@
 package com.data.extractor.model.template.markup.insert.coordinate;
 
 
-import com.data.extractor.model.beans.template.info.pattern.ColumnDataElement;
-import com.data.extractor.model.beans.template.info.pattern.PatternDataElement;
-import com.data.extractor.model.beans.template.info.pattern.PatternDataParser;
-import com.data.extractor.model.beans.template.info.regex.RegexDataElement;
+import com.data.extractor.model.beans.template.info.pattern.*;
+import com.data.extractor.model.beans.template.info.regex.*;
 import com.data.extractor.model.data.access.layer.TemplateInfoDAO;
 import com.mongodb.MongoClient;
 
@@ -21,6 +19,8 @@ public class PatternDataInserter {
         PatternDataElement patternDataElement;
         int templateInfoSize=0;
         int index = 0;
+
+        patternDataParser = removeNextLine(patternDataParser);
 
         for (PatternDataElement p : patternDataElementList){
 
@@ -40,4 +40,45 @@ public class PatternDataInserter {
             templateInfoSize=1;
         }
     }
+
+    public PatternDataParser removeNextLine(PatternDataParser patternDataParser){
+
+        List<PatternDataElement> patternDataElementList= patternDataParser.getPatternDataElements();
+
+        for (PatternDataElement patternElement:patternDataElementList){
+            RegexDataElement regexDataElement = patternElement.getRegexDataElements();
+            List<ColumnDataElement> columnDataElementList = patternElement.getColumnDataElements();
+
+            List<RegexPairElement> regexPairElementList = regexDataElement.getRegexPairElements();
+
+            for (RegexPairElement regexPair:regexPairElementList){
+
+                RegexStartElement regexStartElement = regexPair.getRegexStartElement();
+                RegexEndElement regexEndElement = regexPair.getRegexEndElement();
+
+                if (regexStartElement.getTag() != null){
+                    regexStartElement.setTag(regexStartElement.getTag().trim());
+                }
+                if (regexEndElement.getTag() != null){
+                    regexEndElement.setTag(regexEndElement.getTag().trim());
+                }else {
+                    regexEndElement.setTag("eol");
+                }
+
+
+            }
+
+            for (ColumnDataElement columnElement : columnDataElementList){
+
+                ColumnStartElement columnStartElement = columnElement.getColumnStartElement();
+                ColumnEndElement columnEndElement= columnElement.getColumnEndElement();
+
+                columnStartElement.setTag(columnStartElement.getTag().trim());
+                columnEndElement.setTag(columnEndElement.getTag().trim());
+            }
+        }
+
+        return patternDataParser;
+    }
+
 }

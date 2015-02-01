@@ -2,8 +2,14 @@ package com.data.extractor.model.data.access.layer;
 
 
 import com.data.extractor.model.beans.authenticate.login.LoginRequest;
+import com.data.extractor.model.beans.dictionary.Dictionary;
+import com.data.extractor.model.beans.user.UserBean;
 import com.data.extractor.model.db.connect.dbInitializer;
+import com.google.gson.Gson;
 import com.mongodb.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class UsersDAO {
 
@@ -34,6 +40,51 @@ public class UsersDAO {
 
         return templateCursor.size() == 1;
     }
+
+    public int getRecordSize (String userName){
+        BasicDBObject searchQuery = new BasicDBObject();
+
+        searchQuery.put("userName",userName);
+
+        DBCursor userCursor = usersColl.find(searchQuery);
+
+        return userCursor.size();
+    }
+
+    public void createUser(String userName,String pass,String role){
+        BasicDBObject basicDBObject = new BasicDBObject();
+
+        basicDBObject.put("userName",userName);
+        basicDBObject.put("pass",pass);
+        basicDBObject.put("role",role);
+
+        usersColl.insert(basicDBObject);
+    }
+
+    public void removeUser(String userName,String pass){
+        BasicDBObject removeQuery =new BasicDBObject();
+
+        removeQuery.put("userName",userName);
+        removeQuery.put("pass",pass);
+
+        usersColl.remove(removeQuery);
+    }
+
+    public List<UserBean> getAllUsers(){
+
+        List<UserBean> userBeanList = new ArrayList<UserBean>();
+        UserBean userBean;
+        DBCursor dbCursor = usersColl.find();
+        Gson gson = new Gson();
+
+        while(dbCursor.hasNext()){
+            userBean = gson.fromJson(dbCursor.next().toString(),UserBean.class);
+            userBeanList.add(userBean);
+        }
+        return userBeanList;
+    }
+
+
 
 
 }
