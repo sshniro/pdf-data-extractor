@@ -54,17 +54,19 @@ function ViewModel() {
         user.username = ko.observable();
         user.fullname = ko.observable();
         user.password = ko.observable();
+        user.role = ko.observable();
         if(data!=undefined){
             user.username(data.username);
             user.fullname(data.fullname);
             user.password(data.password);
+            user.role(data.role);
         }
     };
     self.newUserBuffer = ko.observable(new userModel());
     self.isUsernameValid = ko.observable(false);
     self.usersCollection = ko.observableArray([]);
     self.selectedUserInHierachyMan = ko.observable();
-    var dummy = {username:'u', fullname:'f', password:'p'};
+    var dummy = {username:'u', fullname:'f', password:'p', role:'r'};
     self.selectedUserInHierachyManCopy = ko.observable(dummy);
 
     self.getAllUsers = function(){
@@ -88,8 +90,9 @@ function ViewModel() {
         var sendingDataObj = {
             request: 'createUser',
             userName: self.newUserBuffer().username(),
-            fullname: self.newUserBuffer().fullname(),
-            pass: self.newUserBuffer().password()
+            fullName: self.newUserBuffer().fullname(),
+            pass: self.newUserBuffer().password(),
+            role: self.newUserBuffer().role()
         };
         $.ajax({
             type: 'POST', url: 'ManageUsersController',
@@ -119,11 +122,13 @@ function ViewModel() {
     };
 
     self.removeUser = function(){
+        if(self.selectedUserInHierachyManCopy().username === 'admin'){
+            alert('cannot remove admin');
+            return false;
+        };
         var sendingDataObj = {
             request: 'removeUser',
-            userName: self.selectedUserInHierachyManCopy().username,
-            fullname: self.selectedUserInHierachyManCopy().fullname,
-            pass: self.selectedUserInHierachyManCopy().password
+            id: self.selectedUserInHierachyManCopy().id
         };
         $.ajax({
             type: 'POST', url: 'ManageUsersController',
@@ -145,6 +150,30 @@ function ViewModel() {
 
     self.setSelectedUserValues = function(){
         self.selectedUserInHierachyManCopy(ko.toJS(self.selectedUserInHierachyMan()));
+    };
+
+    self.assignUserToCategory = function(){
+        var data = {
+            request: "addUserToNode",
+            userId: self.selectedUserInHierachyManCopy().id,
+            id: self.currentSelectedTreeNode().id(),
+            parent: self.currentSelectedTreeNode().parent()
+        };
+        $.ajax({
+            type: 'POST', url: 'AccessRightController',
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            data: JSON.stringify(data),
+            success: function(data, textStatus, jqXHR) {
+                var response =  JSON.parse(jqXHR.responseText);
+                if(response.state === 'success'){
+                    window.location.reload();
+                }
+                else{
+                    alert("couldn't assign user.\nPlease try again.");
+                }
+            }
+        });
     };
 
 }

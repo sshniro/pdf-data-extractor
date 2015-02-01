@@ -6,9 +6,9 @@
 /////////////////////////    js tree functions    ///////////////////////////
 /////////////////////////////////////////////////////////////////////////////
 
-var initTrees = function(){
+var initTrees = function(requestType){
     var treeObj;
-    var data={ 'request' : "getAllNodes"};
+    var data={ 'request' : requestType}; // getUserNodes / getAllNodes
     $.ajax({
         type: 'POST', url: 'ManageCategoriesController',
         contentType: 'application/json; charset=utf-8',
@@ -44,32 +44,16 @@ var initTrees = function(){
 };
 
 
-////////////////// generalized ajax call ///////////////////////
-function doAjax (type, url, sendingDataObj){
-    $.ajax({
-        type: type, url: url,
-        contentType: 'application/json; charset=utf-8',
-        dataType: 'json',
-        data: JSON.stringify(sendingDataObj),
-        success: function(data, textStatus, jqXHR) {
-            return {
-                data: data,
-                textStatus: textStatus,
-                jqXHR: jqXHR
-            };
-        }
-    });
-};
-
-
 
 ////////////////////////////////////////////////////////////////////////////
 /////////////////////////         models         ///////////////////////////
 ////////////////////////////////////////////////////////////////////////////
 
 function User(data){
+    this.id = ko.observable(data.id);
     this.username = ko.observable(data.userName);
-    this.fullname = ko.observable(data.fullname);
+    this.fullname = ko.observable(data.fullName);
     this.password = ko.observable(data.pass);
-
+    this.role = ko.observable(data.role);
+    this.nodes = ko.observableArray([]);
 };

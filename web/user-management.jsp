@@ -126,6 +126,17 @@
                         </div>
                     </div>
                     <div class="form-group">
+                        <label class="col-sm-2 control-label">Role</label>
+                        <div class="col-sm-9">
+                            <select data-bind="value:newUserBuffer().role" type="text" class="form-control">
+                                <option>Developer</option>
+                                <option>Editor</option>
+                                <option>QA</option>
+                                <option>Admin</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label class="col-sm-2 control-label">Password</label>
                         <div class="col-sm-9">
                             <input data-bind="value:newUserBuffer().password" type="password" class="form-control" id="closePass" />
@@ -199,8 +210,12 @@
                                 <label class="col-sm-10">Brandix</label>
                             </div>
                             <div class="form-group">
+                                <label class="col-sm-2 control-label">Role</label>
+                                <label data-bind="text:selectedUserInHierachyManCopy().role" class="col-sm-10"></label>
+                            </div>
+                            <div class="form-group">
                                 <label class="col-sm-2 control-label">Assigned Categories</label>
-                                <label class="col-sm-10">Brandix</label>
+                                <label class="col-sm-10"></label>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">Selected Category</label>
@@ -208,7 +223,7 @@
                             </div>
                             <div class="form-group">
                                 <div class="col-sm-offset-2 col-sm-10">
-                                    <button class="btn btn-default">Assign</button>
+                                    <button data-bind="click:assignUserToCategory" class="btn btn-default">Assign</button>
                                 </div>
                             </div>
                         </form>
@@ -257,7 +272,7 @@
     var selectedNodeChildRow = undefined;
     var selectedNodeParentRow = undefined;
 
-    initTrees();
+    initTrees('getAllNodes');
 
     // search tree
     var to = false;
