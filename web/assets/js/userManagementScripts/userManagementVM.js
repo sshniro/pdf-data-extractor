@@ -176,8 +176,32 @@ function ViewModel() {
         });
     };
 
+    self.removeUserFromNode = function(node){
+        var data = {
+            request: "removeUserFromNode",
+            userId: self.selectedUserInHierachyManCopy().id,
+            id: node.id,
+            parent: node.parent
+        };
+        $.ajax({
+            type: 'POST', url: 'AccessRightController',
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            data: JSON.stringify(data),
+            success: function(data, textStatus, jqXHR) {
+                var response =  JSON.parse(jqXHR.responseText);
+                if(response.state === 'success'){
+                    window.location.reload();
+                }
+                else{
+                    alert("couldn't remove category.\nPlease try again.");
+                }
+            }
+        });
+    };
+
 }
 
 userVM = new ViewModel();
-userVM.getAllUsers();
+
 ko.applyBindings(userVM);

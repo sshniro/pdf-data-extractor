@@ -258,7 +258,7 @@
     var selectedNodeChildRow = undefined;
     var selectedNodeParentRow = undefined;
 
-    initTrees('getAllNodes');
+    initTrees('getUserNodes');
 
     // search tree
     var to = false;
