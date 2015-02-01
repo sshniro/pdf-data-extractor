@@ -26,6 +26,10 @@ public class RequestProcessor {
             data = templatesDAO.getAllNodes(data);
 
         }
+
+        if(data.getRequest().equals("getUserNodes")){
+            
+        }
         return data;
     }
 }

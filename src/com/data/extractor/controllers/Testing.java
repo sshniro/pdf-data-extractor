@@ -7,6 +7,7 @@ import com.data.extractor.model.beans.template.info.table.TableDataElement;
 import com.data.extractor.model.beans.template.info.table.TableDataParser;
 import com.data.extractor.model.beans.user.UserBean;
 import com.data.extractor.model.data.access.layer.TemplateInfoDAO;
+import com.data.extractor.model.data.access.layer.TemplatesDAO;
 import com.data.extractor.model.data.access.layer.UsersDAO;
 import com.mongodb.MongoClient;
 
@@ -29,6 +30,9 @@ public class Testing {
         UserBean userBean = new UserBean();
         UsersDAO usersDAO = new UsersDAO(mongoClient);
 
+        userBean.setUserName("hello");
+        TemplatesDAO templatesDAO = new TemplatesDAO(mongoClient);
+        templatesDAO.removeUserFromNode("56","45",userBean.getUserName());
 
 
 //        RegexDataElement regexDataElement = new RegexDataElement();
