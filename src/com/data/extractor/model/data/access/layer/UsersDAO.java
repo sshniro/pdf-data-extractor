@@ -52,6 +52,17 @@ public class UsersDAO {
         return userCursor.size();
     }
 
+    public UserBean getUser(String userId){
+        BasicDBObject searchQuery = new BasicDBObject();
+
+        searchQuery.put("id",userId);
+        DBObject dbObject = usersColl.findOne(searchQuery);
+
+        Gson gson=new Gson();
+        UserBean userBean = gson.fromJson(dbObject.toString(),UserBean.class);
+        return userBean;
+    }
+
     public void createUser(String id,String userName,String pass,String role,String fullName){
         BasicDBObject basicDBObject = new BasicDBObject();
 
@@ -83,6 +94,26 @@ public class UsersDAO {
             userBeanList.add(userBean);
         }
         return userBeanList;
+    }
+
+    public void addNodeToUser(String userId ,String nodeId){
+        BasicDBObject searchQuery= new BasicDBObject();
+
+        searchQuery.put("id",userId);
+
+        BasicDBObject updateObject = new BasicDBObject();
+        updateObject.put("$push", new BasicDBObject("nodes", nodeId));
+        usersColl.update(searchQuery, updateObject);
+    }
+
+    public void removeNodeFromUser(String userId ,String nodeId){
+        BasicDBObject searchQuery= new BasicDBObject();
+
+        searchQuery.put("id",userId);
+
+        BasicDBObject updateObject = new BasicDBObject();
+        updateObject.put("$pull", new BasicDBObject("nodes", nodeId));
+        usersColl.update(searchQuery, updateObject);
     }
 
 

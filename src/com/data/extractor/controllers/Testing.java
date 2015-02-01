@@ -32,8 +32,9 @@ public class Testing {
 
         userBean.setUserName("hello");
         userBean.setId("24");
-        TemplatesDAO templatesDAO = new TemplatesDAO(mongoClient);
-        templatesDAO.removeUserFromNode("1","0",userBean.getId());
+        //TemplatesDAO templatesDAO = new TemplatesDAO(mongoClient);
+        //templatesDAO.removeUserFromNode("1","0",userBean.getId());
+        usersDAO.getUser("0");
 
 
 //        RegexDataElement regexDataElement = new RegexDataElement();
