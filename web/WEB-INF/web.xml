@@ -72,6 +72,10 @@
         <servlet-name>AccessRightController</servlet-name>
         <servlet-class>com.data.extractor.controllers.AccessRightController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>SessionController</servlet-name>
+        <servlet-class>com.data.extractor.controllers.SessionController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>TemplateUploadController</servlet-name>
         <url-pattern>/TemplateUploadController</url-pattern>
@@ -127,6 +131,10 @@
     <servlet-mapping>
         <servlet-name>AccessRightController</servlet-name>
         <url-pattern>/AccessRightController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SessionController</servlet-name>
+        <url-pattern>/SessionController</url-pattern>
     </servlet-mapping>
 
 
