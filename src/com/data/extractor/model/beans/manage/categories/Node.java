@@ -11,14 +11,14 @@ public class Node {
     private String parent;
     private String text;
     private String pdfFile;
-    private List<UserBean> users;
+    private List<String> userIdList;
 
-    public List<UserBean> getUsers() {
-        return users;
+    public List<String> getUserIdList() {
+        return userIdList;
     }
 
-    public void setUsers(List<UserBean> users) {
-        this.users = users;
+    public void setUserIdList(List<String> userIdList) {
+        this.userIdList = userIdList;
     }
 
     public String getId() {        return id;    }
