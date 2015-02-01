@@ -88,6 +88,19 @@ public class TemplatesDAO implements Templates {
         templatesColl.update(searchQuery, updateObject);
     }
 
+    public void removeUserFromNode(String id,String parent , String userName){
+        BasicDBObject searchQuery = new BasicDBObject();
+
+        searchQuery.put("id",id);
+        searchQuery.put("parent",parent);
+
+        BasicDBObject userObj = new BasicDBObject("userName",userName);
+
+        BasicDBObject updateObject = new BasicDBObject();
+        updateObject.put("$pull", new BasicDBObject("users", userObj));
+        templatesColl.update(searchQuery, updateObject);
+    }
+
 
     public List<TemplatesParser> getTemplates(List<String> categories){
         TemplatesParser template;

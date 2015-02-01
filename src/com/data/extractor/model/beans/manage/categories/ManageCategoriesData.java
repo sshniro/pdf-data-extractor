@@ -14,6 +14,7 @@ public class ManageCategoriesData {
     private String parent;
     private String text;
     private List<Node> nodes;
+    private String userName;
 
     public List<Node> getNodes() {
         return nodes;
@@ -67,4 +68,11 @@ public class ManageCategoriesData {
 
     public void setTemplateName(String templateName) {       this.templateName = templateName;    }
 
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
 }

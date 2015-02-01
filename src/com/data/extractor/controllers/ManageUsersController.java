@@ -36,7 +36,7 @@ public class ManageUsersController extends HttpServlet {
             String jsonStr;
             int recordSize = usersDAO.getRecordSize(userBean.getUserName());
             if (recordSize == 0 ){
-                usersDAO.createUser(userBean.getUserName(),userBean.getPass());
+                usersDAO.createUser(userBean.getUserName(),userBean.getPass(),userBean.getRole());
                 jsonStr= "{\"state\": \"success\"}";
             }else {
                 jsonStr = "{\"state\": \"fail\"}";
