@@ -199,30 +199,47 @@
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">Username</label>
-                                <label data-bind="text:selectedUserInHierachyManCopy().username" class="col-sm-10">dummy username</label>
+                                <div class="col-sm-6">
+                                    <label data-bind="text:selectedUserInHierachyManCopy().username" class="form-control" style="border: 0">dummy username</label>
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">Full Name</label>
-                                <label data-bind="text:selectedUserInHierachyManCopy().fullname" class="col-sm-10">Dummy full name</label>
+                                <div class="col-sm-6">
+                                    <label data-bind="text:selectedUserInHierachyManCopy().fullname" class="col-sm-6 form-control" style="border: 0">Dummy full name</label>
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">Company</label>
-                                <label class="col-sm-10">Brandix</label>
+                                <div class="col-sm-6">
+                                    <label class="col-sm-10 form-control" style="border: 0">Brandix</label>
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">Role</label>
-                                <label data-bind="text:selectedUserInHierachyManCopy().role" class="col-sm-10"></label>
+                                <div class="col-sm-6">
+                                    <label data-bind="text:selectedUserInHierachyManCopy().role" class="col-sm-6 form-control" style="border: 0"></label>
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">Assigned Categories</label>
-                                <label class="col-sm-10"></label>
+                                <div class="col-sm-6">
+                                    <ul data-bind="foreach:selectedUserInHierachyManCopy().nodes" class="list-group">
+                                        <li class="list-group-item" style="border: 0">
+                                            <span data-bind="text:$data.text"></span>&nbsp;&nbsp;&nbsp;
+                                            <span data-bind="click:$parent.removeUserFromNode" class="badge"><span class="glyphicon glyphicon-remove"></span></span>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">Selected Category</label>
-                                <label data-bind="text:currentSelectedTreeNode().text()" class="col-sm-10">selected name</label>
+                                <div class="col-sm-6">
+                                    <label data-bind="text:currentSelectedTreeNode().text()" class="form-control" style="border: 0">selected name</label>
+                                </div>
                             </div>
                             <div class="form-group">
-                                <div class="col-sm-offset-2 col-sm-10">
+                                <div class="col-sm-offset-2 col-sm-6">
                                     <button data-bind="click:assignUserToCategory" class="btn btn-default">Assign</button>
                                 </div>
                             </div>
@@ -273,6 +290,7 @@
     var selectedNodeParentRow = undefined;
 
     initTrees('getAllNodes');
+    userVM.getAllUsers();
 
     // search tree
     var to = false;
