@@ -179,7 +179,7 @@
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">Select user</label>
                                 <div class="col-sm-6">
-                                    <select data-bind="options:testCollection(), option:'username'" class="form-control"></select>
+                                    <select data-bind="options:usersCollection, optionsText:'username', value:selectedUserInHierachyMan, event:{change:setSelectedUserValues}" class="form-control"></select>
                                 </div>
                                 <div class="col-sm-4">
                                     <a href="#" data-bind="click:setShowingDiv.bind($data,'createUser')">Create a new user</a><br/>
@@ -188,19 +188,23 @@
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">Username</label>
-                                <label class="col-sm-10">Dummy name</label>
+                                <label data-bind="text:selectedUserInHierachyManCopy().username" class="col-sm-10">dummy username</label>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">Full Name</label>
-                                <label class="col-sm-10">Dummy full name</label>
+                                <label data-bind="text:selectedUserInHierachyManCopy().fullname" class="col-sm-10">Dummy full name</label>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">Company</label>
                                 <label class="col-sm-10">Brandix</label>
                             </div>
                             <div class="form-group">
+                                <label class="col-sm-2 control-label">Assigned Categories</label>
+                                <label class="col-sm-10">Brandix</label>
+                            </div>
+                            <div class="form-group">
                                 <label class="col-sm-2 control-label">Selected Category</label>
-                                <label class="col-sm-10">selected name</label>
+                                <label data-bind="text:currentSelectedTreeNode().text()" class="col-sm-10">selected name</label>
                             </div>
                             <div class="form-group">
                                 <div class="col-sm-offset-2 col-sm-10">

@@ -16,6 +16,7 @@ var initTrees = function(){
         data: JSON.stringify(data),
         success: function(data, textStatus, jqXHR) {
             treeObj = JSON.parse(jqXHR.responseText);
+            userVM.allTreeNodesCollection(treeObj);
             $('.treeView')
                 .jstree({
                     'plugins': ["search", "state", "types", "wholerow"],
@@ -67,7 +68,8 @@ function doAjax (type, url, sendingDataObj){
 ////////////////////////////////////////////////////////////////////////////
 
 function User(data){
-    this.username = data.userName;
-    this.fullname = data.fullname;
-    this.password = data.pass;
+    this.username = ko.observable(data.userName);
+    this.fullname = ko.observable(data.fullname);
+    this.password = ko.observable(data.pass);
+
 };

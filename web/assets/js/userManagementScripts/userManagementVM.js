@@ -21,6 +21,7 @@ function ViewModel() {
         this.text = ko.observable(data.text);
     };
     var rootNode = {'id':'#', 'parent':undefined, 'text':'root'};
+    self.allTreeNodesCollection = ko.observableArray([]);
     self.currentSelectedTreeNode = ko.observable(new nodeModel(rootNode));
     self.currentNodeParent = ko.observable(new nodeModel(rootNode));
     self.isSelectedTemplate = ko.observable(false);
@@ -62,8 +63,9 @@ function ViewModel() {
     self.newUserBuffer = ko.observable(new userModel());
     self.isUsernameValid = ko.observable(false);
     self.usersCollection = ko.observableArray([]);
-    self.testCollection = ko.observableArray([{"username":"admin",fullname: undefined,"password":"admin"},{"username":"kasun",fullname: undefined,"password":"kasun"},{"username":"mihirangi",fullname: undefined,"password":"love"}]);
     self.selectedUserInHierachyMan = ko.observable();
+    var dummy = {username:'u', fullname:'f', password:'p'};
+    self.selectedUserInHierachyManCopy = ko.observable(dummy);
 
     self.getAllUsers = function(){
         var userCollection;
@@ -75,7 +77,7 @@ function ViewModel() {
             success: function(data, textStatus, jqXHR) {
                 userCollection =  JSON.parse(jqXHR.responseText);
                 for(user in userCollection){
-                    self.usersCollection().push(new User(userCollection[user]));
+                    self.usersCollection.push(new User(userCollection[user]));
                 };
             }
         });
@@ -119,9 +121,9 @@ function ViewModel() {
     self.removeUser = function(){
         var sendingDataObj = {
             request: 'removeUser',
-            userName: self.newUserBuffer().username(),
-            fullname: self.newUserBuffer().fullname(),
-            pass: self.newUserBuffer().password()
+            userName: self.selectedUserInHierachyManCopy().username,
+            fullname: self.selectedUserInHierachyManCopy().fullname,
+            pass: self.selectedUserInHierachyManCopy().password
         };
         $.ajax({
             type: 'POST', url: 'ManageUsersController',
@@ -139,6 +141,10 @@ function ViewModel() {
             }
         });
 
+    };
+
+    self.setSelectedUserValues = function(){
+        self.selectedUserInHierachyManCopy(ko.toJS(self.selectedUserInHierachyMan()));
     };
 
 }
