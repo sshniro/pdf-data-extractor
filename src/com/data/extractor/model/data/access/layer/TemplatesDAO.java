@@ -4,6 +4,7 @@ package com.data.extractor.model.data.access.layer;
 import com.data.extractor.model.beans.manage.categories.ManageCategoriesData;
 import com.data.extractor.model.beans.manage.categories.Node;
 import com.data.extractor.model.beans.templates.TemplatesParser;
+import com.data.extractor.model.beans.user.UserBean;
 import com.data.extractor.model.db.connect.dbInitializer;
 import com.data.extractor.model.interfaces.Templates;
 import com.google.gson.Gson;
@@ -75,29 +76,29 @@ public class TemplatesDAO implements Templates {
         }
     }
 
-    public void addUserToNode(String id , String parent , String userName){
+    public void addUserToNode(String id , String parent , String userId){
         BasicDBObject searchQuery= new BasicDBObject();
 
         searchQuery.put("id",id);
         searchQuery.put("parent",parent);
 
-        BasicDBObject userObj = new BasicDBObject("userName",userName);
+        BasicDBObject userObj = new BasicDBObject("id",userId);
 
         BasicDBObject updateObject = new BasicDBObject();
-        updateObject.put("$push", new BasicDBObject("users", userObj));
+        updateObject.put("$push", new BasicDBObject("users", userId));
         templatesColl.update(searchQuery, updateObject);
     }
 
-    public void removeUserFromNode(String id,String parent , String userName){
+    public void removeUserFromNode(String id,String parent , String userId){
         BasicDBObject searchQuery = new BasicDBObject();
 
         searchQuery.put("id",id);
         searchQuery.put("parent",parent);
 
-        BasicDBObject userObj = new BasicDBObject("userName",userName);
+        BasicDBObject userObj = new BasicDBObject("id",userId);
 
         BasicDBObject updateObject = new BasicDBObject();
-        updateObject.put("$pull", new BasicDBObject("users", userObj));
+        updateObject.put("$pull", new BasicDBObject("users", userId));
         templatesColl.update(searchQuery, updateObject);
     }
 
@@ -170,18 +171,13 @@ public class TemplatesDAO implements Templates {
     }
 
     public Node getNode(String nodeId){
+        BasicDBObject searchQuery = new BasicDBObject();
+        searchQuery.put("id", nodeId);
 
-        BasicDBObject basicDBObject = new BasicDBObject();
-        basicDBObject.put("id", nodeId);
+        DBObject dbObject = templatesColl.findOne(searchQuery);
 
-        DBCursor templateCursor = templatesColl.find(basicDBObject);
-
-        Node node=new Node();
-        Gson gson = new Gson();
-        if(templateCursor.hasNext()){
-            node = gson.fromJson(templateCursor.next().toString(),Node.class);
-        }
-        return node;
+        Gson gson=new Gson();
+        return gson.fromJson(dbObject.toString(),Node.class);
     }
 
     @Override

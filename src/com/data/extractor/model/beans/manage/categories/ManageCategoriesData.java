@@ -15,6 +15,7 @@ public class ManageCategoriesData {
     private String text;
     private List<Node> nodes;
     private String userName;
+    private String userId;
 
     public List<Node> getNodes() {
         return nodes;
@@ -74,5 +75,13 @@ public class ManageCategoriesData {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

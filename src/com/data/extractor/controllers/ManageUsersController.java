@@ -1,6 +1,7 @@
 package com.data.extractor.controllers;
 
 import com.data.extractor.model.beans.user.UserBean;
+import com.data.extractor.model.data.access.layer.CounterDAO;
 import com.data.extractor.model.data.access.layer.UsersDAO;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -36,7 +37,11 @@ public class ManageUsersController extends HttpServlet {
             String jsonStr;
             int recordSize = usersDAO.getRecordSize(userBean.getUserName());
             if (recordSize == 0 ){
-                usersDAO.createUser(userBean.getUserName(),userBean.getPass(),userBean.getRole());
+
+                CounterDAO counterDAO = new CounterDAO(mongoClient);
+                Integer id = counterDAO.getNextId("userId");
+
+                usersDAO.createUser(id.toString(),userBean.getUserName(),userBean.getPass(),userBean.getRole(),userBean.getFullName());
                 jsonStr= "{\"state\": \"success\"}";
             }else {
                 jsonStr = "{\"state\": \"fail\"}";
@@ -48,7 +53,7 @@ public class ManageUsersController extends HttpServlet {
         }
 
         if(userBean.getRequest().equals("removeUser")){
-            usersDAO.removeUser(userBean.getUserName(), userBean.getPass());
+            usersDAO.removeUser(userBean.getId());
 
             String jsonStr = "{\"state\": \"success\"}";
             JsonElement element = gson.fromJson (jsonStr, JsonElement.class);
@@ -60,6 +65,12 @@ public class ManageUsersController extends HttpServlet {
 
             List<UserBean> userBeanList = usersDAO.getAllUsers();
             response.getWriter().print(gson.toJson(userBeanList));
+        }
+
+        if(userBean.getRequest().equals("getUser")){
+
+            UserBean user = usersDAO.getUser(userBean.getId());
+            response.getWriter().print(gson.toJson(user));
         }
 
 

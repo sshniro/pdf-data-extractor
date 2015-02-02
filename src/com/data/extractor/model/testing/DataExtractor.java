@@ -13,13 +13,14 @@ import com.data.extractor.model.beans.template.info.table.TableDataElement;
 import com.data.extractor.model.beans.template.info.table.TableDataParser;
 import com.data.extractor.model.beans.template.info.text.TextDataElement;
 import com.data.extractor.model.beans.template.info.text.TextDataParser;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class DataExtractor {
 
-    public String convertToString(InsertDataParser data){
+    public String convertToString(InsertDataParser data,Boolean isFromTemplateEdit){
 
         TextDataParser textDataParser = data.getTextDataParser();
         ImageDataParser imageDataParser = data.getImageDataParser();
@@ -83,17 +84,31 @@ public class DataExtractor {
                         columnName = column.getMetaName();
 
                     sb.append("Column ").append(j+1).append(" -(").append(columnName).append(") : ");
-                    List<Cell> cellList = column.getCellList();
 
-                    for(int c=0 ; c < cellList.size() ; c++ ){
+                    if(!isFromTemplateEdit){
+                        List<Cell> cellList = column.getCellList();
 
-                        Cell cell=cellList.get(c);
-                        sb.append(cell.getValue());
+                        for(int c=0 ; c < cellList.size() ; c++ ){
+
+                            Cell cell=cellList.get(c);
+                            sb.append(cell.getValue());
                         /* append ',' until the element before the last */
-                        if(c != cellList.size()-1){
-                            sb.append(" , ");
+                            if(c != cellList.size()-1){
+                                sb.append(" , ");
+                            }
+                        }
+                    }else {
+                        List<String> cellValues = column.getCellValues();
+
+                        for (int c=0;c<cellValues.size();c++){
+                            sb.append(cellValues.get(c));
+                            if(c != cellValues.size()-1){
+                                sb.append(" , ");
+                            }
                         }
                     }
+
+
                 sb.append("\n");
                 }
             }

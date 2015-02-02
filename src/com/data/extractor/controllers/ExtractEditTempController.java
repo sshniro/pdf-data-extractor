@@ -68,7 +68,7 @@ public class ExtractEditTempController extends HttpServlet {
         DataExtractor dataExtractor = new DataExtractor();
         String extractedData = null;
 
-        extractedData = dataExtractor.convertToString(insertDataParser);
+        extractedData = dataExtractor.convertToString(insertDataParser,true);
         ExtractResponse extractResponse=responseGenerator.generateResponse(extractStatus , extractedData);
         /* Remove session to only trigger the data presentation function in the ExtractPdf Page after template Edit */
         session.removeAttribute("editJsonResponse");

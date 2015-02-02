@@ -2,11 +2,12 @@ package com.data.extractor.model.beans.user;
 
 import com.google.gson.annotations.Expose;
 
-/**
- * Created by niro273 on 1/30/15.
- */
+import java.util.List;
+
 public class UserBean {
 
+    @Expose
+    private String id;
     @Expose
     private String userName;
     @Expose
@@ -15,6 +16,10 @@ public class UserBean {
     private String request;
     @Expose
     private String role;
+    @Expose
+    private String fullName;
+    @Expose
+    private List<String> nodes;
 
     public String getRole() {
         return role;
@@ -46,5 +51,29 @@ public class UserBean {
 
     public void setPass(String pass) {
         this.pass = pass;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public List<String> getNodes() {
+        return nodes;
+    }
+
+    public void setNodes(List<String> nodes) {
+        this.nodes = nodes;
     }
 }

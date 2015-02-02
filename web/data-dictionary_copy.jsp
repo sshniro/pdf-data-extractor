@@ -7,30 +7,15 @@
   November 11, 2014 -    - K D K Madusanka    - Creating basic UI wireframe
   December 11, 2014 -    - K D K Madusanka    - Integrate with service / modify UI
 --%>
-<!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html lang="en">
+<html>
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Xractor/Data Dictionary</title>
 
     <!-- jQuery -->
     <script type="text/javascript" src="assets/js/jquery-1.10.2.js"></script>
     <!-- bootstrap -->
     <script type="text/javascript" src="assets/js/bootstrap.js"></script>
     <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.css">
-
-    <!-- added -->
-    <link href="assets/css/style.css" rel="stylesheet">
-    <link href="assets/css/checkbox-x.css" rel="stylesheet">
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
 
     <!-- custom css -->
     <style type="text/css">
@@ -39,7 +24,7 @@
         }
         .box{
             border: 1px solid #a0a0a0;
-            height: 80vh;
+            height: 85vh;
             width: 100%;
             padding: 5px;
             overflow-y: auto;
@@ -54,93 +39,36 @@
 
 <!-- nav bar -->
 <header>
-    <div class="navbar container-header">
-        <div class="col-md-5">
-            <img class="menu-logo" src="assets/img/images/logo.png" alt="" />
-        </div>
-        <div class="col-md-7">
-            <ul class="list-inline text-left header-main-menu">
-                <li class="menu-width text-center">
-                    <a href="/index.jsp">
-                        <img class="menu-icon" src="assets/img/images/home.png" alt="" /> <br>
-                        <span class="menu-span text-center">Home</span>
-                    </a>
-                </li>
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="navbar_collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/default.jsp">Enhan<i>z</i>er</a>
+            </div>
 
-                <li class="menu-width text-center">
-                    <a href="/default.jsp">
-                        <img class="menu-icon" src="assets/img/images/m1.png" alt="" /> <br>
-                        <span class="menu-span text-center">Manage Nodes</span>
-                    </a>
-                </li>
-
-                <li class="menu-width text-center">
-                    <a href="/data-dictionary.jsp">
-                        <img class="menu-icon active" src="assets/img/images/m2.png" alt="" /> <br>
-                        <span class="menu-span text-center">Data Dictionary</span>
-                    </a>
-                </li>
-
-                <li class="menu-width text-center">
-                    <a href="/ExtractPdf.jsp">
-                        <img class="menu-icon" src="assets/img/images/m3.png" alt="" /> <br>
-                        <span class="menu-span text-center">Extract Doc</span>
-                    </a>
-                </li>
-
-                <li class="menu-width text-center">
-                    <a href="/user-management.jsp">
-                        <img class="menu-icon" src="assets/img/images/m4.png" alt="" /> <br>
-                        <span class="menu-span text-center">User Man.</span>
-                    </a>
-                </li>
-
-                <li class="menu-width text-center">
-                    <a href="#">
-                        <img class="menu-icon" src="assets/img/images/m6.png" alt="" /> <br>
-                        <span class="menu-span text-center">Help</span>
-                    </a>
-                </li>
-
-            </ul>
-        </div>
-
-        <!-- mobile menu -->
-
-        <nav class="navbar navbar-default" role="navigation">
-            <div class="container-fluid">
-                <!-- Brand and toggle get grouped for better mobile display -->
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="#"></a>
-                </div>
-
-                <!-- Collect the nav links, forms, and other content for toggling -->
-                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                    <ul class="nav navbar-nav">
-                        <li><a href="/index.jsp">Home <span class="sr-only">(current)</span></a></li>
-                        <li><a href="default.jsp">Manage Catogory/Templates</a></li>
-                        <li class="active"><a href="data-dictionary.jsp">Data Dictionary</a></li>
-                        <li><a href="/ExtractPdf.jsp">Extract Doc</a></li>
-                        <li><a href="/user-management.jsp">User Management</a></li>
-                        <li><a href="#">Help</a></li>
-
-                    </ul>
-                </div><!-- /.navbar-collapse -->
-            </div><!-- /.container-fluid -->
-        </nav>
-    </div>
-    <div class="row"></div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="navbar_collapse">
+                <ul class="nav navbar-nav">
+                    <li><a id="templateExtract" href="/ExtractPdf.jsp">Extract Doc</a></li>
+                </ul>
+                <ul class="nav navbar-nav">
+                    <li><a href="/data-dictionary.jsp">Data Dictionary</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li style="margin: 15px 15px 0 0">Login as: <b>administrator</b></li>
+                    <li><a onclick="window.location.href = 'index.jsp'" class="btn btn-default" style="padding: 5px; margin-top: 10px; max-width: 100px;">Logout <span class="glyphicon glyphicon-log-out"></span></a></li>
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </nav>
 </header>
 
 <!-- container -->
-<div class="container-new">
-<div class="sign-cont-body" style="padding: 20px 20px 20px 20px">
+<div style="padding: 0 20px 0 20px">
     <div class="row">
 
         <!-- defining dictionary -->
@@ -240,47 +168,6 @@
         </div>
     </div>
 </div>
-</div>
-
-<footer>
-    <div class="navbar container-footer">
-        <div class="col-md-12">
-            <div class="col-md-7">
-                <p class="copyright footer-h5">COPYRIGHT &copy; 2015 XTRACTOR</p>
-            </div>
-            <div class="col-md-5">
-                <ul class="list-inline text-center">
-                    <li class="text-center footer-img-li">
-                        <a href=""><img class="footer-img" src="assets/img/images/1.png" alt="" /> <br></a>
-                    </li>
-                    <li class="text-center footer-img-li">
-                        <a href=""><img class="footer-img" src="assets/img/images/2.png" alt="" /> <br></a>
-                    </li>
-                    <li class="text-center footer-img-li">
-                        <a href=""><img class="footer-img" src="assets/img/images/3.png" alt="" /> <br></a>
-                    </li>
-                    <li class="text-center footer-img-li">
-                        <a href=""><img class="footer-img" src="assets/img/images/4.png" alt="" /> <br></a>
-                    </li>
-                    <li class="text-center footer-img-li">
-                        <a href=""><img class="footer-img" src="assets/img/images/5.png" alt="" /> <br></a>
-                    </li>
-                    <li class="text-center footer-img-li">
-                        <a href=""><img class="footer-img" src="assets/img/images/6.png" alt="" /> <br></a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-
-    </div>
-</footer>
-
-
-
-
-
-
-
 
 
 
