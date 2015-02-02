@@ -4,10 +4,6 @@
 
 // head append //
 
-var knkOut = document.createElement('script');
-knkOut.src = 'assets/js/knockout-3.2.0.js';
-document.body.appendChild(knkOut);
-
 var bst = document.createElement('script');
 bst.src = 'assets/js/bootstrap.js';
 document.body.appendChild(bst);
