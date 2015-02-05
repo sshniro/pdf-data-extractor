@@ -50,10 +50,18 @@ var initTrees = function(requestType){
 ////////////////////////////////////////////////////////////////////////////
 
 function User(data){
-    this.id = ko.observable(data.id);
-    this.username = ko.observable(data.userName);
-    this.fullname = ko.observable(data.fullName);
-    this.password = ko.observable(data.pass);
-    this.role = ko.observable(data.role);
-    this.nodes = ko.observableArray([]);
+    var thisUser = this;
+    thisUser.id = ko.observable(data.id);
+    thisUser.username = ko.observable(data.userName);
+    thisUser.fullname = ko.observable(data.fullName);
+    thisUser.password = ko.observable(data.pass);
+    thisUser.role = ko.observable(data.role);
+    thisUser.nodes = ko.observableArray([]);
+    for(assignedNode in data.nodes){
+        for(treeNode in userVM.allTreeNodesCollection().nodes){
+            if(data.nodes[assignedNode] === userVM.allTreeNodesCollection().nodes[treeNode].id){
+                thisUser.nodes().push(ko.toJS(userVM.allTreeNodesCollection().nodes[treeNode]));
+            };
+        };
+    };
 };

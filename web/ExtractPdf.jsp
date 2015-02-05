@@ -5,10 +5,14 @@
   ----------------------------------
   Log:
 --%>
+<!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
+<html lang="en">
 <head>
-    <title>PDF Extract</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Xractor/Extract Documents</title>
 
     <!-- jQuery -->
     <script type="text/javascript" src="assets/js/jquery-1.10.2.js"></script>
@@ -22,6 +26,16 @@
     <!-- custom -->
     <script type="text/javascript" src="assets/js/PageNavigator.js"></script>
     <script type="text/javascript" src="assets/js/JspFormPopulate.js"></script>
+
+    <!-- added -->
+    <link href="assets/css/style.css" rel="stylesheet">
+    <link href="assets/css/checkbox-x.css" rel="stylesheet">
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
 
     <script>
         //var isMCValid = true;
@@ -74,109 +88,208 @@
 
 <!-- nav bar -->
 <header>
-    <nav class="navbar navbar-default" role="navigation">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="navbar_collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="/default.jsp">Enhan<i>z</i>er</a>
-            </div>
+    <div class="navbar container-header">
+        <div class="col-md-5">
+            <img class="menu-logo" src="assets/img/images/logo.png" alt="" />
+        </div>
+        <div class="col-md-7">
+            <ul class="list-inline text-left header-main-menu">
+                <li class="menu-width text-center">
+                    <a href="/index.jsp">
+                        <img class="menu-icon" src="assets/img/images/home.png" alt="" /> <br>
+                        <span class="menu-span text-center">Home</span>
+                    </a>
+                </li>
 
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="navbar_collapse">
-                <ul class="nav navbar-nav">
-                    <li><a id="templateExtract" href="/ExtractPdf.jsp">Extract Doc</a></li>
-                </ul>
-                <ul class="nav navbar-nav">
-                    <li><a href="/data-dictionary.jsp">Data Dictionary</a></li>
-                </ul>
-                <ul class="nav navbar-nav navbar-right">
-                    <li style="margin: 15px 15px 0 0">Login as: <b>administrator</b></li>
-                    <li><a data-bind="click:logout" class="btn btn-default" style="padding: 5px; margin-top: 10px; max-width: 100px;">Logout <span class="glyphicon glyphicon-log-out"></span></a></li>
-                </ul>
-            </div><!-- /.navbar-collapse -->
-        </div><!-- /.container-fluid -->
-    </nav>
+                <li class="menu-width text-center">
+                    <a href="/default.jsp">
+                        <img class="menu-icon" src="assets/img/images/m1.png" alt="" /> <br>
+                        <span class="menu-span text-center">Manage Nodes</span>
+                    </a>
+                </li>
+
+                <li class="menu-width text-center">
+                    <a href="/data-dictionary.jsp">
+                        <img class="menu-icon" src="assets/img/images/m2.png" alt="" /> <br>
+                        <span class="menu-span text-center">Data Dictionary</span>
+                    </a>
+                </li>
+
+                <li class="menu-width text-center">
+                    <a href="/ExtractPdf.jsp">
+                        <img class="menu-icon active" src="assets/img/images/m3.png" alt="" /> <br>
+                        <span class="menu-span text-center">Extract Doc</span>
+                    </a>
+                </li>
+
+                <li class="menu-width text-center">
+                    <a href="/user-management.jsp">
+                        <img class="menu-icon" src="assets/img/images/m4.png" alt="" /> <br>
+                        <span class="menu-span text-center">User Man.</span>
+                    </a>
+                </li>
+
+                <li class="menu-width text-center">
+                    <a href="#">
+                        <img class="menu-icon" src="assets/img/images/m6.png" alt="" /> <br>
+                        <span class="menu-span text-center">Help</span>
+                    </a>
+                </li>
+
+            </ul>
+        </div>
+
+        <!-- mobile menu -->
+
+        <nav class="navbar navbar-default" role="navigation">
+            <div class="container-fluid">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#"></a>
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <li><a href="/index.jsp">Home <span class="sr-only">(current)</span></a></li>
+                        <li><a href="default.jsp">Manage Catogory/Templates</a></li>
+                        <li><a href="data-dictionary.jsp">Data Dictionary</a></li>
+                        <li class="active"><a href="/ExtractPdf.jsp">Extract Doc</a></li>
+                        <li><a href="/user-management.jsp">User Management</a></li>
+                        <li><a href="#">Help</a></li>
+
+                    </ul>
+                </div><!-- /.navbar-collapse -->
+            </div><!-- /.container-fluid -->
+        </nav>
+    </div>
+    <div class="row"></div>
 </header>
 
 
 <!-- container -->
-<div class="container row" style="margin: 0 auto;">
-    <!-- tree view -->
-    <div class="col-sm-4">
-        <fieldset>
-            <legend>
-                Select a Template<br/>
-                <input class="form-control" type="text" id="treeSearch" placeholder="search tree" style="margin-top: 8px" />
-            </legend>
-        </fieldset>
-
-        <br/>
-        <!-- root node -->
-        <p data-bind="click:setRootAsCurrentSelectedTreeNode" style="cursor:pointer; font-size: large"><span class="glyphicon glyphicon-tree-conifer"></span>&nbsp;&nbsp;<i>Root</i></p>
-        <!-- tree -->
-        <div class="treeView">
-        </div>
-
-        <%-- <br/><br/>
-        <!-- preview of template -->
-        <div style="width: 100%">
-            <iframe id="pdfRenderer" style="width: 100%"></iframe>
-        </div> --%>
-    </div>
-
-    <!-- extract form and data -->
-    <div class="col-sm-8" style="border-left: 1px solid #ffffff">
-        <!-- form -->
-        <form class="form-horizontal" role="form">
+<div class="container-new">
+    <div class="container row sign-cont-body" style="margin: 20px auto; padding-top: 40px; min-height: 500px">
+        <!-- tree view -->
+        <div class="col-sm-4">
             <fieldset>
                 <legend>
-                    Upload a PDF and extract<br/>
-                    <h5 style="font-style: italic; color: darkgray">Selecting a Template (from the left) is required for extract a PDF file.<br/>If cannot see any template, goto <a href="/default.jsp">"Create a New Template"</a></h5>
+                    Select a Template<br/>
+                    <input class="form-control" type="text" id="treeSearch" placeholder="search tree" style="margin-top: 8px" />
                 </legend>
             </fieldset>
-            <fieldset>
-                <table>
-                    <tbody>
-                    <tr>    <td>Selected Template&nbsp;&nbsp;&nbsp;&nbsp;</td>      <td>:&nbsp;<span data-bind="visible:isSelectedTemplate(), text:currentSelectedTreeNode().text()">$template_name</span><span data-bind="visible:!isSelectedTemplate()" style="color: red">Node you selected is not a Template!</span></td></tr>
-                    <tr>    <td>Parent Category&nbsp;&nbsp;&nbsp;&nbsp;</td>        <td>:&nbsp;<span data-bind="text:currentNodeParent().text">$category_name</span></td></tr>
-                    </tbody>
-                </table>
-            </fieldset>
-            <hr style="color: #eee" />
-            <!-- form fields -->
-            <div class="form-group">
-                <label class="control-label col-sm-4">Document Identification Name</label>
-                <div class="col-sm-8">
-                    <input data-bind="value:selectedDocumentId" type="text" class="form-control" />
+
+            <br/>
+            <!-- root node -->
+            <p data-bind="click:setRootAsCurrentSelectedTreeNode" style="cursor:pointer; font-size: large"><span class="glyphicon glyphicon-tree-conifer"></span>&nbsp;&nbsp;<i>Root</i></p>
+            <!-- tree -->
+            <div class="treeView">
+            </div>
+
+            <%-- <br/><br/>
+            <!-- preview of template -->
+            <div style="width: 100%">
+                <iframe id="pdfRenderer" style="width: 100%"></iframe>
+            </div> --%>
+            <hr/>
+        </div>
+
+        <!-- extract form and data -->
+        <div class="col-sm-8" style="border-left: 1px solid #ffffff">
+            <!-- form -->
+            <form class="form-horizontal" role="form">
+                <fieldset>
+                    <legend>
+                        Upload a PDF and extract<br/>
+                        <h5 style="font-style: italic; color: darkgray">Selecting a Template (from the left) is required for extract a PDF file.<br/>If cannot see any template, goto <a href="/default.jsp">"Create a New Template"</a></h5>
+                    </legend>
+                </fieldset>
+                <fieldset>
+                    <table>
+                        <tbody>
+                        <tr>    <td>Selected Template&nbsp;&nbsp;&nbsp;&nbsp;</td>      <td>:&nbsp;<span data-bind="visible:isSelectedTemplate(), text:currentSelectedTreeNode().text()">$template_name</span><span data-bind="visible:!isSelectedTemplate()" style="color: red">Node you selected is not a Template!</span></td></tr>
+                        <tr>    <td>Parent Category&nbsp;&nbsp;&nbsp;&nbsp;</td>        <td>:&nbsp;<span data-bind="text:currentNodeParent().text">$category_name</span></td></tr>
+                        </tbody>
+                    </table>
+                </fieldset>
+                <hr style="color: #eee" />
+                <!-- form fields -->
+                <div class="form-group">
+                    <label class="control-label col-sm-4">Document Identification Name</label>
+                    <div class="col-sm-8">
+                        <input data-bind="value:selectedDocumentId" type="text" class="form-control" />
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <label class="control-label col-sm-4">Select PDF file</label>
-                <div class="col-sm-8">
-                    <input id="pdfFile" type="file" typeof=".pdf" datatype=".pdf" />
+                <div class="form-group">
+                    <label class="control-label col-sm-4">Select PDF file</label>
+                    <div class="col-sm-8">
+                        <input id="pdfFile" type="file" typeof=".pdf" datatype=".pdf" />
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <div class="col-sm-offset-4 col-sm-8">
-                    <button data-bind="click:uploadPdfFile" id="ajaxStart" class="btn btn-default">Upload&nbsp;<span class="glyphicon glyphicon-cloud-upload"></span> | Extract&nbsp;<span class="glyphicon glyphicon-check"></span></button>
+                <div class="form-group">
+                    <div class="col-sm-offset-4 col-sm-8">
+                        <button data-bind="click:uploadPdfFile" id="ajaxStart" class="btn btn-default">Upload&nbsp;<span class="glyphicon glyphicon-cloud-upload"></span> | Extract&nbsp;<span class="glyphicon glyphicon-check"></span></button>
+                    </div>
                 </div>
+            </form>
+            <!-- extracted data -->
+            <div class="well well-sm row" style="margin-top: 20px">
+               <div>
+                    <h4 style="display: inline;">Extracted Data For Pdf ID <span id="extractedPdfId" data-bind="text:extractedPdfId"></span></h4>
+                    <button id="editTemplate" class="form-control pull-right" data-bind="click:editTemplate" style=" width: 50px; display: none">Edit</button>
+                </div>
+                <div id="extractedText"></div>
             </div>
-        </form>
-        <!-- extracted data -->
-        <div class="well well-sm row" style="margin-top: 20px">
-           <div>
-                <h4 style="display: inline;">Extracted Data For Pdf ID <span id="extractedPdfId" data-bind="text:extractedPdfId"></span></h4>
-                <button id="editTemplate" class="form-control pull-right" data-bind="click:editTemplate" style=" width: 50px; display: none">Edit</button>
-            </div>
-            <div id="extractedText"></div>
         </div>
     </div>
-
 </div>
+
+<footer>
+    <div class="navbar container-footer">
+        <div class="col-md-12">
+            <div class="col-md-7">
+                <p class="copyright footer-h5">COPYRIGHT &copy; 2015 XTRACTOR</p>
+            </div>
+            <div class="col-md-5">
+                <ul class="list-inline text-center">
+                    <li class="text-center footer-img-li">
+                        <a href=""><img class="footer-img" src="assets/img/images/1.png" alt="" /> <br></a>
+                    </li>
+                    <li class="text-center footer-img-li">
+                        <a href=""><img class="footer-img" src="assets/img/images/2.png" alt="" /> <br></a>
+                    </li>
+                    <li class="text-center footer-img-li">
+                        <a href=""><img class="footer-img" src="assets/img/images/3.png" alt="" /> <br></a>
+                    </li>
+                    <li class="text-center footer-img-li">
+                        <a href=""><img class="footer-img" src="assets/img/images/4.png" alt="" /> <br></a>
+                    </li>
+                    <li class="text-center footer-img-li">
+                        <a href=""><img class="footer-img" src="assets/img/images/5.png" alt="" /> <br></a>
+                    </li>
+                    <li class="text-center footer-img-li">
+                        <a href=""><img class="footer-img" src="assets/img/images/6.png" alt="" /> <br></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+</footer>
+
+
+
+
+
+
+
+
 
 <!-- overlay div -->
 <div id="overlay" style="position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; display: none;">
