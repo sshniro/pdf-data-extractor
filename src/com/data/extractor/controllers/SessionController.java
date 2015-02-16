@@ -55,6 +55,7 @@ public class SessionController extends HttpServlet {
                 session.setAttribute("userId",authenticationRequest.getUserName());
 
                 loginResponse.setRedirectUrl("ManageCategories.jsp");
+                loginResponse.setUserId(authenticationRequest.getUserName());
                 response.getWriter().print(gson.toJson(loginResponse));
             }else {
                 response.getWriter().print(gson.toJson(loginResponse));

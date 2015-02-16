@@ -128,7 +128,7 @@
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li style="margin: 15px 15px 0 0">Login as: <b>administrator</b></li>
-                    <li><a data-bind="click:logout" class="btn btn-default" style="padding: 5px; margin-top: 10px; max-width: 100px;">Logout <span class="glyphicon glyphicon-log-out"></span></a></li>
+                    <li><a onclick="logout()" class="btn btn-default" style="padding: 5px; margin-top: 10px; max-width: 100px;">Logout <span class="glyphicon glyphicon-log-out"></span></a></li>
                 </ul>
             </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->
@@ -372,7 +372,7 @@
 
 
 <!-- overlay div -->
-<div id="overlay" style="position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; display: none;">
+<div id="overlay" style="position: absolute; top: 0; left: 0; width: 133vw; height: 133vh; display: none;">
     <div style="position: relative; margin: 40vh auto; max-width: 600px; height: 75px; text-align: center; background-color: #fff; border-radius: 10px; padding: 25px; box-shadow: 0 0 10px #303030; z-index: 110">
         <img src="assets/img/win-loader.gif" alt="loading" />&nbsp;&nbsp;&nbsp;
         <label><span>Loading...</span></label>
@@ -391,6 +391,7 @@
 <script type="text/javascript" src="assets/js/markUpTemplateRegionsScripts/viewModel.js"> </script>
 <script type="text/javascript" src="assets/js/markUpTemplateRegionsScripts/uiFunctions.js"> </script>
 <script type="text/javascript" src="assets/js/markUpTemplateRegionsScripts/initScript.js"> </script>
+<script type="text/javascript" src="assets/js/userManagementScripts/security.js"> </script>
 
 <!-- UI behaviors -->
 <script type="text/javascript">
