@@ -5,6 +5,8 @@ public class LoginResponse {
 
     private String redirectUrl;
 
+    private String userId;
+
     private String errorCause;
 
     private Boolean isAuthenticated;
@@ -12,6 +14,10 @@ public class LoginResponse {
     public String getRedirectUrl() {        return redirectUrl;    }
 
     public void setRedirectUrl(String redirectUrl) {        this.redirectUrl = redirectUrl;    }
+
+    public String getUserId() {        return userId;    }
+
+    public void setUserId(String userId) {        this.userId = userId;    }
 
     public String getErrorCause() {        return errorCause;    }
 

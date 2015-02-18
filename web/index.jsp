@@ -38,10 +38,10 @@
 
 <header>
     <div class="navbar container-header">
-        <div class="col-md-5">
+        <div class="col-md-3">
             <img class="menu-logo" src="assets/img/images/logo.png" alt="" />
         </div>
-        <div class="col-md-7">
+        <div class="col-md-9">
             <ul class="list-inline text-left header-main-menu pull-right">
                 <li class="menu-width text-center">
                     <a href="#">
@@ -99,6 +99,15 @@
                 </div>
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" id="rememberMe" name="rememberMe"> Remember me
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
                         <button class="btn btn-warning" id="submit" type="button">SIGN IN &nbsp;<span class="glyphicon glyphicon-log-in"></span></button>
                     </div>
                 </div>
@@ -143,6 +152,7 @@
 
 <!-- importing libraries -->
 <script type="text/javascript" src="assets/js/knockout-3.2.0.js" ></script>
+<script type="text/javascript" src="assets/js/userManagementScripts/security.js" ></script>
 
 <script>
     $(document).ready(function() {
@@ -161,36 +171,7 @@
                 return false;
             }
 
-            data={ userName : $('#userName').val(),  pass  : $('#pass').val() , request : "login" };
-
-            $.ajax({
-                type: 'POST', url: 'SessionController',
-                contentType: 'application/json; charset=utf-8',
-                dataType: 'json',
-                data: JSON.stringify(data),
-
-                success: function(data, textStatus, jqXHR) {
-                    var responseObj = JSON.parse(jqXHR.responseText);
-                    if(responseObj.isAuthenticated===true){
-                        window.location.href = "default.jsp";
-                    }else{
-                        alert(responseObj.errorCause);
-                    }
-                },
-
-                error: function(jqXHR, textStatus, errorThrown) {
-                    if(jqXHR.status == 400) {
-                        var messages = JSON.parse(jqXHR.responseText);
-                        $('#messages').empty();
-                        $.each(messages, function(i, v) {
-                            var item = $('<li>').append(v);
-                            $('#messages').append(item);
-                        });
-                    } else {
-                        alert('Unexpected server error.');
-                    }
-                }
-            });
+            var loginReturn = login({username:userName, password:pass},$('#rememberMe').is(':checked'),localStorage.getItem('xtractor_lastPage'));
         });
     });
 </script>

@@ -69,7 +69,7 @@ public class ManageUsersController extends HttpServlet {
 
         if(userBean.getRequest().equals("getUser")){
 
-            UserBean user = usersDAO.getUser(userBean.getId());
+            UserBean user = usersDAO.getUserByName(userBean.getId());
             response.getWriter().print(gson.toJson(user));
         }
 
