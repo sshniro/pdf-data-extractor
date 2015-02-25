@@ -368,7 +368,7 @@ public class ExtractedDataDAO {
 
     }
 
-    public void createTemplateInfo(String nodeId,String dataType,PatternDataElement patternDataElement){
+    public void createTemplateInfo(String nodeId, String parentId ,String dataType,PatternDataElement patternDataElement){
 
         BasicDBObject insertObject = new BasicDBObject();
         insertObject.put("id", nodeId);
@@ -701,7 +701,7 @@ public class ExtractedDataDAO {
 
     }
 
-    public void updateTemplateInfo(PatternDataParser patternDataParser,PatternDataElement patternDataElement){
+    public void updateTemplateInfo(String nodeId ,PatternDataParser patternDataParser,PatternDataElement patternDataElement){
 
 
         BasicDBObject searchQuery = new BasicDBObject();

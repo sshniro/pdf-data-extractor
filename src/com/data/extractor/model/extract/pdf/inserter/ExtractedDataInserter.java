@@ -135,7 +135,27 @@ public class ExtractedDataInserter {
         List<PatternDataElement> patternDataElementList = patternDataParser.getPatternDataElements();
         ExtractedDataDAO extractedDataDAO = new ExtractedDataDAO(mongoClient);
         PatternDataElement patternDataElement;
-        int recordSize = 0;
+        int recordsSize = 0;
+
+        for(int i=0;i<patternDataElementList.size();i++){
+
+            patternDataElement = patternDataElementList.get(i);
+
+            /* Only check once from the DB when the loop starts */
+            if(i==0){
+                recordsSize = extractedDataDAO.getRecordsSizeOfId(extractStatus.getId(),patternDataParser.getDataType());
+            }
+
+            if (recordsSize == 0) {
+                /* If there is no record exists create a new record and insert */
+                extractedDataDAO.createTemplateInfo(extractStatus.getId() , extractStatus.getParent() , patternDataParser.getDataType(),patternDataElement);
+                recordsSize = 1;
+
+            } else {
+                /* If record exists update the record */
+                extractedDataDAO.updateTemplateInfo(extractStatus.getId(),patternDataParser,patternDataElement);
+            }
+        }
     }
 
 }
