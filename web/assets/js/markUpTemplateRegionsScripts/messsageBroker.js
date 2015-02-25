@@ -359,6 +359,7 @@ function RegexDataElementDTO(dataElement, metaElements){
     this.regexPairElements = [];
     for(var key in metaElements) {
         var metaElement = metaElements[key];
+        //Fix - Iff this does not contain pattern data add it as a a regex pair
         if(metaElement.repeatingSubElements.length === 0){
             var regexPairElement = new RegexPairElementDTO(metaElement);
             this.regexPairElements.push(regexPairElement);

@@ -170,8 +170,13 @@
                 alert("PassWord is Required");
                 return false;
             }
+            if(localStorage.getItem('xtractor_lastPage') === null){
+                var loginReturn = login({username:userName, password:pass},$('#rememberMe').is(':checked'),localStorage.getItem('xtractor_lastPage'));
+            }
+            else{
+                var loginReturn = login({username:userName, password:pass},$('#rememberMe').is(':checked'),'default.jsp');
+            }
 
-            var loginReturn = login({username:userName, password:pass},$('#rememberMe').is(':checked'),localStorage.getItem('xtractor_lastPage'));
         });
     });
 </script>
