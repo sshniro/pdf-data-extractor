@@ -69,20 +69,20 @@ function ViewModel(){
     self.textButton= function(){
         vm.currentSelection("text");
         selectionStarted();
-        selectionInitializer("img",drawingRouter);
+        selectionInitializer("img.templatingImage",drawingRouter);
         $("#runningInstructions").text('Select Text Element');
     }
     self.tableButton= function(){
         vm.currentSelection("table");
         selectionStarted();
-        selectionInitializer("img",drawingRouter);
+        selectionInitializer("img.templatingImage",drawingRouter);
         $("#runningInstructions").text('Select Table Element');
     }
     self.pictureButton= function(){
         event.stopPropagation();
         vm.currentSelection("picture");
         selectionStarted();
-        selectionInitializer("img",drawingRouter);
+        selectionInitializer("img.templatingImage",drawingRouter);
         $("#runningInstructions").text('Select Picure Element');
     }
 
@@ -90,7 +90,7 @@ function ViewModel(){
         event.stopPropagation();
         vm.currentSelection("regex");
         selectionStarted();
-        selectionInitializer("img",drawingRouter);
+        selectionInitializer("img.templatingImage",drawingRouter);
         $("#runningInstructions").text('Select Starting Tag');
     }
 
@@ -98,7 +98,7 @@ function ViewModel(){
         event.stopPropagation();
         vm.currentSelection("pattern");
         selectionStarted();
-        selectionInitializer("img",drawingRouter);
+        selectionInitializer("img.templatingImage",drawingRouter);
         $("#runningInstructions").text('Select Starting Tag');
     }
 
