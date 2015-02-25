@@ -70,6 +70,14 @@
                         parent = result.parent;
                         id = result.id;
                         alert(extractedData);
+                        /*  replace all occurrence of next line character to </br> tag
+                         *   g => global , so replaces all occurrences of the '\n'
+                         *   */
+                        var str = extractedData.replace( new RegExp('\n', 'g') , '</br>');
+                        $('#extractedText').html(str);
+                        $('button#editTemplate').css('display','block');
+                        vm.extractedPdfId(messages.id);
+                        $('#overlay').css('display', 'none');
                     }
                 });
             }
@@ -89,10 +97,10 @@
 <!-- nav bar -->
 <header>
     <div class="navbar container-header">
-        <div class="col-md-5">
+        <div class="col-md-3">
             <img class="menu-logo" src="assets/img/images/logo.png" alt="" />
         </div>
-        <div class="col-md-7">
+        <div class="col-md-9">
             <ul class="list-inline text-left header-main-menu">
                 <li class="menu-width text-center">
                     <a href="/index.jsp">
@@ -136,6 +144,18 @@
                     </a>
                 </li>
 
+                <li class="menu-dwidth row">
+                    <div class="col-sm-10">
+                        <span class="username-text">Administrator</span> <br/>
+                        <span class="username-text role">admin</span>
+                    </div>
+                    <div class="col-sm-2">
+                        <a href="#" onclick="logout()">
+                            <img class="menu-icon" src="assets/img/images/logout.png" alt="" /> <br>
+                            <span class="menu-span text-center">Logout</span>
+                        </a>
+                    </div>
+                </li>
             </ul>
         </div>
 
@@ -163,7 +183,7 @@
                         <li class="active"><a href="/ExtractPdf.jsp">Extract Doc</a></li>
                         <li><a href="/user-management.jsp">User Management</a></li>
                         <li><a href="#">Help</a></li>
-
+                        <li><a href="#" onclick="logout()">Logout</a></li>
                     </ul>
                 </div><!-- /.navbar-collapse -->
             </div><!-- /.container-fluid -->
@@ -292,7 +312,7 @@
 
 
 <!-- overlay div -->
-<div id="overlay" style="position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; display: none;">
+<div id="overlay" style="position: absolute; top: 0; left: 0; width: 133vw; height: 133vh; display: none;">
     <div style="position: relative; margin: 40vh auto; max-width: 600px; height: 75px; text-align: center; background-color: #fff; border-radius: 10px; padding: 25px; box-shadow: 0 0 10px #303030; z-index: 110">
         <img src="assets/img/win-loader.gif" alt="loading" />&nbsp;&nbsp;&nbsp;
         <label><span data-bind="text:overlayNotification">Notification...</span></label>
@@ -309,6 +329,7 @@
 <script type="text/javascript" src="assets/js/markUpTemplateRegionsScripts/uiFunctions.js"> </script>
 <script type="text/javascript" src="assets/js/markUpTemplateRegionsScripts/models.js"> </script>
 <script type="text/javascript" src="assets/js/markUpTemplateRegionsScripts/viewModel.js"> </script>
+<script type="text/javascript" src="assets/js/userManagementScripts/security.js"> </script>
 
 <script>
     // tree view script
