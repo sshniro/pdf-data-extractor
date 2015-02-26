@@ -4,6 +4,8 @@ package com.data.extractor.model.data.access.layer;
 import com.data.extractor.model.beans.template.info.RawDataElement;
 import com.data.extractor.model.beans.template.info.image.ImageDataElement;
 import com.data.extractor.model.beans.template.info.image.ImageDataParser;
+import com.data.extractor.model.beans.template.info.pattern.*;
+import com.data.extractor.model.beans.template.info.regex.*;
 import com.data.extractor.model.beans.template.info.table.Cell;
 import com.data.extractor.model.beans.template.info.table.Column;
 import com.data.extractor.model.beans.template.info.table.TableDataElement;
@@ -319,6 +321,138 @@ public class ExtractedDataDAO {
 
     }
 
+    public void createTemplateInfo(String nodeId, String parentId ,String dataType,RegexDataElement regexDataElement){
+
+        BasicDBObject insertObject = new BasicDBObject();
+        insertObject.put("id", nodeId);
+        insertObject.put("parent",parentId);
+        insertObject.put("dataType", dataType);
+
+        List<BasicDBObject> regexDataElementsInsert = new ArrayList<BasicDBObject>();
+
+        BasicDBObject regexElementObj = new BasicDBObject();
+
+        regexElementObj.put("metaName", regexDataElement.getMetaName());
+        regexElementObj.put("dictionaryId", regexDataElement.getDictionaryId());
+
+        List<RegexPairElement> regexPairElements= regexDataElement.getRegexPairElements();
+        RegexStartElement regexStartElement;
+        RegexEndElement regexEndElement;
+
+        BasicDBObject regexPairObj = new BasicDBObject();
+        ArrayList regexPairData = new ArrayList();
+
+        for (RegexPairElement r : regexPairElements){
+
+            regexStartElement = r.getRegexStartElement();
+            regexEndElement = r.getRegexEndElement();
+
+            BasicDBObject startElementObj = new BasicDBObject();
+            BasicDBObject endElementObj = new BasicDBObject();
+            BasicDBObject valueElementObj = new BasicDBObject();
+
+            startElementObj.put("tag",regexStartElement.getTag());
+            endElementObj.put("tag",regexEndElement.getTag());
+            endElementObj.put("tag",regexEndElement.getTag());
+
+            regexPairData.add(new BasicDBObject("regexStartElement",startElementObj)
+                    .append("regexEndElement",endElementObj).append("value",r.getValue()));
+
+        }
+
+        regexElementObj.put("regexPairElements", regexPairData);
+        regexDataElementsInsert.add(regexElementObj);
+        insertObject.put("regexDataElements", regexDataElementsInsert);
+
+        collection.insert(insertObject);
+
+    }
+
+    public void createTemplateInfo(String nodeId, String parentId ,String dataType,PatternDataElement patternDataElement){
+
+        BasicDBObject insertObject = new BasicDBObject();
+        insertObject.put("id", nodeId);
+        insertObject.put("dataType", dataType);
+
+        RegexDataElement regexDataElement = patternDataElement.getRegexDataElements();
+        List<ColumnDataElement> columnDataElementList = patternDataElement.getColumnDataElements();
+
+
+        BasicDBObject regexElementObj = new BasicDBObject();
+
+        regexElementObj.put("metaName", regexDataElement.getMetaName());
+        regexElementObj.put("dictionaryId", regexDataElement.getDictionaryId());
+
+
+        List<RegexPairElement> regexPairElements= regexDataElement.getRegexPairElements();
+        RegexStartElement regexStartElement;
+        RegexEndElement regexEndElement;
+
+        ArrayList regexPairData = new ArrayList();
+
+        for (RegexPairElement r : regexPairElements){
+
+            regexStartElement = r.getRegexStartElement();
+            regexEndElement = r.getRegexEndElement();
+
+            BasicDBObject startElementObj = new BasicDBObject();
+            BasicDBObject endElementObj = new BasicDBObject();
+
+            startElementObj.put("tag",regexStartElement.getTag());
+            endElementObj.put("tag",regexEndElement.getTag());
+
+            regexPairData.add(new BasicDBObject("regexStartElement",startElementObj)
+                    .append("regexEndElement",endElementObj).append("value",r.getValue()));
+
+        }
+
+        List<BasicDBObject> columnStartEnd = new ArrayList<BasicDBObject>();
+
+        List<Cell> cellList = null;
+        List<String> cellValues= null;
+
+        for (ColumnDataElement c: columnDataElementList){
+
+            ColumnStartElement columnStartElement = c.getColumnStartElement();
+            ColumnEndElement columnEndElement = c.getColumnEndElement();
+
+            BasicDBObject columnStartObj = new BasicDBObject();
+            BasicDBObject columnEndObj = new BasicDBObject();
+
+            columnStartObj.put("tag",columnStartElement.getTag());
+            columnEndObj.put("tag",columnEndElement.getTag());
+
+            BasicDBObject cStart = new BasicDBObject();
+
+            cellList= c.getCellList();
+            cellValues = new ArrayList<String>();
+
+            for (Cell ce : cellList){
+                cellValues.add(ce.getValue());
+            }
+
+            cStart.put("columnStartElement",columnStartObj);
+            cStart.put("columnEndElement",columnEndObj);
+            cStart.put("cellValues",cellValues);
+
+            columnStartEnd.add(cStart);
+
+        }
+
+        BasicDBObject regexDataFullObj= new BasicDBObject();
+
+        regexElementObj.put("regexPairElements", regexPairData);
+        regexDataFullObj.put("regexDataElements", regexElementObj);
+        regexDataFullObj.put("columnDataElements",columnStartEnd);
+
+        List<BasicDBObject> basicDBObjects = new ArrayList<BasicDBObject>();
+        basicDBObjects.add(regexDataFullObj);
+        insertObject.put("patternDataElements", basicDBObjects);
+
+        collection.insert(insertObject);
+    }
+
+
 
     public void updateTemplateInfo(String nodeId , TextDataParser textDataParser,TextDataElement textDataElement){
 
@@ -521,5 +655,136 @@ public class ExtractedDataDAO {
         collection.update(searchQuery, updateObject);
 
     }
+
+    public void updateTemplateInfo(String nodeId , RegexDataParser regexDataParser,RegexDataElement regexDataElement){
+
+        BasicDBObject searchQuery = new BasicDBObject();
+
+        searchQuery.put("id", regexDataParser.getId());
+        searchQuery.put("dataType", regexDataParser.getDataType());
+        List<BasicDBObject> regexDataElementsInsert = new ArrayList<BasicDBObject>();
+
+        BasicDBObject regexElementObj = new BasicDBObject();
+
+        regexElementObj.put("metaName", regexDataElement.getMetaName());
+        regexElementObj.put("dictionaryId", regexDataElement.getDictionaryId());
+
+
+        List<RegexPairElement> regexPairElements= regexDataElement.getRegexPairElements();
+        RegexStartElement regexStartElement;
+        RegexEndElement regexEndElement;
+
+        BasicDBObject regexPairObj = new BasicDBObject();
+        ArrayList regexPairData = new ArrayList();
+
+        for (RegexPairElement r : regexPairElements){
+
+            regexStartElement = r.getRegexStartElement();
+            regexEndElement = r.getRegexEndElement();
+
+            BasicDBObject startElementObj = new BasicDBObject();
+            BasicDBObject endElementObj = new BasicDBObject();
+
+            startElementObj.put("tag",regexStartElement.getTag());
+            endElementObj.put("tag",regexEndElement.getTag());
+
+            regexPairData.add(new BasicDBObject("regexStartElement",startElementObj)
+                    .append("regexEndElement",endElementObj).append("value",r.getValue()));
+
+        }
+        regexElementObj.put("regexPairElements", regexPairData);
+
+        BasicDBObject updateObject = new BasicDBObject();
+        updateObject.put("$push", new BasicDBObject("regexDataElements", regexElementObj));
+        collection.update(searchQuery, updateObject);
+
+
+    }
+
+    public void updateTemplateInfo(String nodeId ,PatternDataParser patternDataParser,PatternDataElement patternDataElement){
+
+
+        BasicDBObject searchQuery = new BasicDBObject();
+
+        searchQuery.put("id", patternDataParser.getId());
+        searchQuery.put("dataType", patternDataParser.getDataType());
+
+        RegexDataElement regexDataElement = patternDataElement.getRegexDataElements();
+        List<ColumnDataElement> columnDataElementList = patternDataElement.getColumnDataElements();
+
+        BasicDBObject regexElementObj = new BasicDBObject();
+
+        regexElementObj.put("metaName", regexDataElement.getMetaName());
+        regexElementObj.put("dictionaryId", regexDataElement.getDictionaryId());
+
+        List<RegexPairElement> regexPairElements= regexDataElement.getRegexPairElements();
+        RegexStartElement regexStartElement;
+        RegexEndElement regexEndElement;
+
+        ArrayList regexPairData = new ArrayList();
+
+        for (RegexPairElement r : regexPairElements){
+
+            regexStartElement = r.getRegexStartElement();
+            regexEndElement = r.getRegexEndElement();
+
+            BasicDBObject startElementObj = new BasicDBObject();
+            BasicDBObject endElementObj = new BasicDBObject();
+
+            startElementObj.put("tag",regexStartElement.getTag());
+            endElementObj.put("tag",regexEndElement.getTag());
+
+            regexPairData.add(new BasicDBObject("regexStartElement",startElementObj)
+                    .append("regexEndElement",endElementObj).append("value",r.getValue()));
+
+        }
+
+        List<BasicDBObject> columnStartEnd = new ArrayList<BasicDBObject>();
+
+        List<Cell> cellList = null;
+        List<String> cellValues= null;
+
+        for (ColumnDataElement c: columnDataElementList){
+
+            ColumnStartElement columnStartElement = c.getColumnStartElement();
+            ColumnEndElement columnEndElement = c.getColumnEndElement();
+
+            BasicDBObject columnStartObj = new BasicDBObject();
+            BasicDBObject columnEndObj = new BasicDBObject();
+
+            columnStartObj.put("tag",columnStartElement.getTag());
+            columnEndObj.put("tag",columnEndElement.getTag());
+
+            cellList= c.getCellList();
+            cellValues = new ArrayList<String>();
+
+            for (Cell ce : cellList){
+                cellValues.add(ce.getValue());
+            }
+
+            BasicDBObject cStart = new BasicDBObject();
+
+            cStart.put("columnStartElement",columnStartObj);
+            cStart.put("columnEndElement",columnEndObj);
+            cStart.put("cellValues",cellValues);
+
+            columnStartEnd.add(cStart);
+
+        }
+
+        BasicDBObject regexDataFullObj= new BasicDBObject();
+
+        regexElementObj.put("regexPairElements", regexPairData);
+        regexDataFullObj.put("regexDataElements", regexElementObj);
+        regexDataFullObj.put("columnDataElements",columnStartEnd);
+
+        List<BasicDBObject> basicDBObjects = new ArrayList<BasicDBObject>();
+        basicDBObjects.add(regexDataFullObj);
+
+        BasicDBObject updateObject = new BasicDBObject();
+        updateObject.put("$push", new BasicDBObject("patternDataElements", regexDataFullObj));
+        collection.update(searchQuery, updateObject);
+    }
+
 
 }

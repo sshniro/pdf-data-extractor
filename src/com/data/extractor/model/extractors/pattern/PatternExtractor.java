@@ -21,11 +21,7 @@ public class PatternExtractor {
         String[] regexSplits = null;
 
         String regexLastEnded = rawText;
-        String columnLastEnded = rawText;
-
-        String regexStarted = rawText;
-        String columnStarted = rawText;
-
+        String columnStartText = rawText;
         String extractedValue;
 
         List<ColumnDataElement> columnDataElementList = patternDataElement.getColumnDataElements();
@@ -34,44 +30,54 @@ public class PatternExtractor {
         List<RegexPairElement> regexPairElementList = regexDataElement.getRegexPairElements();
 
         List<RegexPairElement> extractedPairElementsList = new ArrayList<RegexPairElement>();
-        RegexPairElement extractedPairElement = new RegexPairElement();
+        RegexPairElement extractRegexPairElement;
 
         List<PatternDataElement> extractedPatternElement = new ArrayList<PatternDataElement>();
-
         List<ColumnDataElement> extractedColumnList = new ArrayList<ColumnDataElement>();
-
-
 
         // Must have a logic to break this loop
         Boolean status = true;
         while (status){
 
             for (int i =0; i<regexPairElementList.size();i++){
+
                 RegexPairElement regexPair = regexPairElementList.get(i);
+                /* Get the Start and End Tags of the regex pair */
                 RegexStartElement regexStartElement = regexPair.getRegexStartElement();
                 RegexEndElement regexEndElement = regexPair.getRegexEndElement();
 
+                /* Split the rawData */
                 regexSplits = regexLastEnded.split(regexStartElement.getTag(),2);
                 try {
 
+                    /* when loop starts assign the regex start position to the column element */
                     if(i == 0){
-                        columnStarted = regexSplits[1];
+                        columnStartText = regexSplits[1];
                     }
 
+                    /* set the system line separator if end of line element is found  */
                     if(regexEndElement.getTag().equals("eol")){
                         regexEndElement.setTag(System.getProperty("line.separator"));
                     }
+
+                    /* Split the rawText with the end tag */
                     regexSplits = regexSplits[1].split(regexEndElement.getTag(),2);
 
                     try {
-                        regexSplits[1] = regexEndElement.getTag() + regexSplits[1];
                         extractedValue = regexSplits [0];
+                        /* Append the endTag to the split rawText */
+                        regexSplits[1] = regexEndElement.getTag() + regexSplits[1];
+
+                        /* TODO CHECK IF NEEDED */
                         regexPair.setValue(extractedValue);
                         regexLastEnded = regexSplits[1];
 
-                        extractedPairElement = new RegexPairElement();
-                        extractedPairElement.setValue(extractedValue);
-                        extractedPairElementsList.add(extractedPairElement);
+                        /* Assign extracted value to the extractedRegexPairElement */
+                        extractRegexPairElement = new RegexPairElement();
+                        extractRegexPairElement.setValue(extractedValue);
+                        /* Add the extractedRegexPairElement to the List */
+                        extractedPairElementsList.add(extractRegexPairElement);
+
                     }catch (ArrayIndexOutOfBoundsException e){
                         System.out.println("No end Tag with " + regexEndElement.getTag() + " was found");
                         break;
@@ -79,6 +85,7 @@ public class PatternExtractor {
 
                 }catch (ArrayIndexOutOfBoundsException e){
                     System.out.println("No Start Tag with " + regexStartElement.getTag() + " was found");
+                    /* End the while loop because no regex word was found in the raw text*/
                     status =false;
                     break;
                 }
@@ -100,7 +107,7 @@ public class PatternExtractor {
                     ColumnEndElement columnEndElement = columnDataElement.getColumnEndElement();
 
                     try {
-                        splits = columnStarted.split(columnStartElement.getTag(),2);
+                        splits = columnStartText.split(columnStartElement.getTag(),2);
 
                         if(columnEndElement.getTag().equals("eol")){
                             columnEndElement.setTag(System.getProperty("line.separator"));
@@ -119,7 +126,7 @@ public class PatternExtractor {
                         List<Cell> extractedCellList = extractedColumnElement.getCellList();
                         List<Cell> cellList = columnDataElement.getCellList();
 
-                        columnStarted = splits[1];
+                        columnStartText = splits[1];
                         Cell cell = new Cell();
                         cell.setValue(splits[0]);
                         cellList.add(cell);
