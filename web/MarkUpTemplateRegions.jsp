@@ -106,7 +106,7 @@
 
 <!-- nav bar -->
 <header>
-    <nav class="navbar navbar-default" role="navigation">
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
         <div class="container-fluid">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="navbar_collapse">
@@ -136,7 +136,7 @@
 </header>
 
 <!-- tool bar -->
-<nav id="nav-toolbar" class="navbar navbar-default" role="navigation" style="margin-top: -20px; border-radius: 0; background-color: transparent; border: #eee solid 1px; padding-top: 3px">
+<nav id="nav-toolbar" class="navbar navbar-default navbar-fixed-top" role="navigation" style="margin-top: 47px; border-radius: 0; border: #eee solid 1px; padding-top: 3px">
     <div class="container-fluid">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="toolbar_collapse">
@@ -200,7 +200,7 @@
 <%--<div data-bind="template:{name:'subRectangleTemplate', foreach:subDataElements()() }"></div>--%>
 
 <!-- template previewing area -->
-<div class="bs-example">
+<div class="bs-example" style="margin-top:120px">
     <!-- tabular navigation -->
     <ul class="nav nav-tabs" data-bind="foreach:pagesData">
         <li  data-bind="attr:{id:pageIdLi, class:activeStatus}">
