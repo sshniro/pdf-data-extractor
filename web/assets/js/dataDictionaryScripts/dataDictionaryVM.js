@@ -31,11 +31,19 @@ function ViewModel() {
     self.addNew = function(){
         // validate form
         if(self.newData().name() === undefined || self.newData().dataType() === undefined){
+            alert("Name or Data-type Cannot be empty");
             return false;
         }
-
-        // call
         var data = ko.toJS(self.newData());
+
+        for(var key in self.currentDic()){
+            var keyword = ko.toJS(self.currentDic()[key]);
+            if (keyword.name === data.name ){
+                alert("The stated Dictionary Name '"+ keyword.name +"' is already in use. Please use a different name.");
+                return false;
+            }
+        }
+
         data.request = "createNewDataDicItem";
         self.overlayNotification('sending...');
         $("#overlay").css("display","block");
