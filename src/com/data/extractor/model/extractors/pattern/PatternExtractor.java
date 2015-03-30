@@ -19,6 +19,7 @@ public class PatternExtractor {
 
         String[] splits = null;
         String[] regexSplits = null;
+        String[] test = null;
 
         String regexLastEnded = rawText;
         String columnStartText = rawText;
@@ -53,6 +54,8 @@ public class PatternExtractor {
                     /* when loop starts assign the regex start position to the column element */
                     if(i == 0){
                         columnStartText = regexSplits[1];
+                        test = regexSplits[1].split(regexStartElement.getTag(),2);
+                        columnStartText = test[0];
                     }
 
                     /* set the system line separator if end of line element is found  */
@@ -133,15 +136,15 @@ public class PatternExtractor {
 
                         extractedCellList.add(cell);
 
-                        if(i == columnDataElementList.size() -1){
-                            // Check if the next line start with the word otherwise break.
-                            ColumnStartElement testElement = columnDataElementList.get(0).getColumnStartElement();
-                            int j = splits[1].indexOf(testElement.getTag());
-                            if(j > 3 ){
-                                columnStatus =false;
-                                break;
-                            }
-                        }
+//                        if(i == columnDataElementList.size() -1){
+//                            // Check if the next line start with the word otherwise break.
+//                            ColumnStartElement testElement = columnDataElementList.get(0).getColumnStartElement();
+//                            int j = splits[1].indexOf(testElement.getTag());
+//                            if(j > 3 ){
+//                                columnStatus =false;
+//                                break;
+//                            }
+//                        }
                     }catch (ArrayIndexOutOfBoundsException e){
                         columnStatus =false;
                         break;
