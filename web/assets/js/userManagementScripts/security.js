@@ -31,7 +31,8 @@ function sessionValidate(){
 };
 
 $(document).ready(function(){
-    if(window.location.href.split('/')[window.location.href.split('/').length-1] === 'index.jsp'){
+    var windowName = window.location.href.split('/')[window.location.href.split('/').length-1];
+    if((windowName === 'index.jsp') || (windowName === '')){
         if(sessionStorage.getItem('xtractor_user_username') != null || localStorage.getItem('xtractor_user_username') != null){
             var st = undefined;
             if(sessionStorage.getItem('xtractor_user_username') != null){ st = sessionStorage }
