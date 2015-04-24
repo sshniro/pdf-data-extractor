@@ -19,6 +19,7 @@ public class PatternExtractor {
 
         String[] splits = null;
         String[] regexSplits = null;
+        String[] test = null;
 
         String regexLastEnded = rawText;
         String columnStartText = rawText;
@@ -53,6 +54,8 @@ public class PatternExtractor {
                     /* when loop starts assign the regex start position to the column element */
                     if(i == 0){
                         columnStartText = regexSplits[1];
+                        test = regexSplits[1].split(regexStartElement.getTag(),2);
+                        columnStartText = test[0];
                     }
 
                     /* set the system line separator if end of line element is found  */
@@ -133,15 +136,15 @@ public class PatternExtractor {
 
                         extractedCellList.add(cell);
 
-                        if(i == columnDataElementList.size() -1){
-                            // Check if the next line start with the word otherwise break.
-                            ColumnStartElement testElement = columnDataElementList.get(0).getColumnStartElement();
-                            int j = splits[1].indexOf(testElement.getTag());
-                            if(j > 3 ){
-                                columnStatus =false;
-                                break;
-                            }
-                        }
+//                        if(i == columnDataElementList.size() -1){
+//                            // Check if the next line start with the word otherwise break.
+//                            ColumnStartElement testElement = columnDataElementList.get(0).getColumnStartElement();
+//                            int j = splits[1].indexOf(testElement.getTag());
+//                            if(j > 3 ){
+//                                columnStatus =false;
+//                                break;
+//                            }
+//                        }
                     }catch (ArrayIndexOutOfBoundsException e){
                         columnStatus =false;
                         break;
@@ -176,20 +179,27 @@ public class PatternExtractor {
             RegexDataElement regexDataElements = patternElement.getRegexDataElements();
             List<ColumnDataElement> columnDataElements = patternElement.getColumnDataElements();
 
-            for (int i=0 ; i  < regexDataElements.getRegexPairElements().size(); i++){
+            try {
+                for (int i=0 ; i  < regexDataElements.getRegexPairElements().size(); i++){
 
-                regexDataElements.getRegexPairElements().get(i).setMetaName(patternDataElement.getRegexDataElements().getRegexPairElements().get(i).getMetaName());
-                regexDataElements.getRegexPairElements().get(i).setRegexStartElement(patternDataElement.getRegexDataElements().getRegexPairElements().get(i).getRegexStartElement());
-                regexDataElements.getRegexPairElements().get(i).setRegexEndElement(patternDataElement.getRegexDataElements().getRegexPairElements().get(i).getRegexEndElement());
+                    regexDataElements.getRegexPairElements().get(i).setMetaName(patternDataElement.getRegexDataElements().getRegexPairElements().get(i).getMetaName());
+                    regexDataElements.getRegexPairElements().get(i).setRegexStartElement(patternDataElement.getRegexDataElements().getRegexPairElements().get(i).getRegexStartElement());
+                    regexDataElements.getRegexPairElements().get(i).setRegexEndElement(patternDataElement.getRegexDataElements().getRegexPairElements().get(i).getRegexEndElement());
 
+                }
+
+                for (int i =0 ; i < columnDataElements.size() ; i++){
+
+                    columnDataElements.get(i).setColumnEndElement(patternDataElement.getColumnDataElements().get(i).getColumnEndElement());
+                    columnDataElements.get(i).setColumnStartElement(patternDataElement.getColumnDataElements().get(i).getColumnStartElement());
+                    columnDataElements.get(i).setMetaName(patternDataElement.getColumnDataElements().get(i).getMetaName());
+                }
+            }catch (NullPointerException e){
+                System.out.println("null pointer exception occured");
+                extractedPatternElement.remove(j);
+                return extractedPatternElement;
             }
 
-            for (int i =0 ; i < columnDataElements.size() ; i++){
-
-                columnDataElements.get(i).setColumnEndElement(patternDataElement.getColumnDataElements().get(i).getColumnEndElement());
-                columnDataElements.get(i).setColumnStartElement(patternDataElement.getColumnDataElements().get(i).getColumnStartElement());
-                columnDataElements.get(i).setMetaName(patternDataElement.getColumnDataElements().get(i).getMetaName());
-            }
         }
     return extractedPatternElement;
     }
