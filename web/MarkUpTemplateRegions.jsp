@@ -235,8 +235,8 @@
             </div>
         </div>
 
-        <!--Meta Tag Appears only for Table elements-->
-        <div class="bs-docs-section subElementDecoMeta" data-bind="id:id, visible:(elementType() == 'table' && id() !== undefined)" style="position:relative; float:left;min-width:110px; padding:7px;" >
+        <!--Meta Tag Appears only for Table / regex / repeating elements-->
+        <div class="bs-docs-section subElementDecoMeta" data-bind="id:id, visible:((elementType() == 'table' || elementType() == 'pattern' || elementType() == 'regex' )&& id() !== undefined)" style="position:relative; float:left;min-width:110px; padding:7px;" >
             <legend style="margin-bottom: 10px; font-size: 15px">Sub-Meta <span data-bind="text:currentSubElement().index">1</span></legend>
             <div style="display:flex">
                 <input type="text" class="form-control" data-bind="value:currentSubElement().metaName" style="margin:1px"/>
@@ -276,7 +276,7 @@
                     <span class="glyphicon glyphicon-remove-circle"></span>
                 </button>
                 <!-- selected element index -->
-                <button  style="position: absolute; visibility:visible; margin-top:-11; height:24; width:25; border-radius: 50%" data-bind="id:id, visible:(elementType() == 'table'),id:id, click:$parent.setCurrentSubElement, style:{left: uiData.removeX, top:(uiData.removeY() + uiData.height) }" type="button" class="btn btn-default btn-xs selectSubElement">
+                <button  style="position: absolute; visibility:visible; margin-top:-11; height:24; width:25; border-radius: 50%" data-bind="id:id, visible:(elementType() == 'table' || elementType() == 'pattern' || elementType() == 'regex'),id:id, click:$parent.setCurrentSubElement, style:{left: uiData.removeX, top:(uiData.removeY() + uiData.height) }" type="button" class="btn btn-default btn-xs selectSubElement">
                     <span data-bind="text:$index">1</span>
                 </button>
 
@@ -354,7 +354,7 @@
             <img class='extractedImage' style="margin-top: 20;" data-bind="visible:(elementType() == 'picture'),attr:{src: extractedData}"/>
         </div>
     </div>
-    <div class="elementDecoTableExtract" style="position: absolute;" data-bind="style:{top:(uiData.extractedY() - 40), left:uiData.removeX()}, visible:(elementType() == 'table'), id:id" >
+    <div class="elementDecoTableExtract" style="position: absolute;" data-bind="style:{top:(uiData.extractedY() - 40), left:uiData.removeX()}, visible:(elementType() == 'table' ), id:id" >
         <button id ="extractTable pull-right"  data-bind="click:$parent.extractTable" type="button" class="btn btn-default">Extract Table</button>
     </div>
 
