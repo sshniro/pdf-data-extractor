@@ -11,6 +11,7 @@ public class UploadStatus {
     private String  pdfUploadErrorCause;
     private String  RootPath;
     private String  templateName;
+    private String  docName;
     private String  pdfLocation;
     private String  pdfName;
     private String  uploadedPdfFile;
@@ -109,4 +110,11 @@ public class UploadStatus {
 
     public void setPdfName(String pdfName) {  this.pdfName = pdfName; }
 
+    public String getDocName() {
+        return docName;
+    }
+
+    public void setDocName(String docName) {
+        this.docName = docName;
+    }
 }

@@ -53,7 +53,7 @@ public class PdfFileProcessor {
         pdfItem.write(uploadedFile);
 
         ExtractedFilesDAO extractedFilesDAO = new ExtractedFilesDAO(mongoClient);
-        extractedFilesDAO.createRecord(extractStatus.getId(),extractStatus.getParent(),extractStatus.getUploadedPdfFile());
+        extractedFilesDAO.createRecord(extractStatus.getId(),extractStatus.getParent(),extractStatus.getUploadedPdfFile(),extractStatus.getDocumentId());
 
         /*  Checks if the uploaded file is PDF if Not remove the file and set the Error Message */
         UploadedFileType fileType=new UploadedFileType();

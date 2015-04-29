@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 import com.mongodb.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class ExtractedFilesDAO {
@@ -22,13 +23,15 @@ public class ExtractedFilesDAO {
         this.collection = dbInitializer.getCollection(db,templateInfoColl);
     }
 
-    public void createRecord(String id, String parent , String pdfFile){
+    public void createRecord(String id, String parent , String pdfFile,String docName){
 
         BasicDBObject insertObject=new BasicDBObject();
 
         insertObject.put("id", id);
         insertObject.put("parent", parent);
         insertObject.put("uploadedPdfFile", pdfFile);
+        insertObject.put("docName", docName);
+        insertObject.put("dateCreated",new Date());
 
         collection.insert(insertObject);
     }
