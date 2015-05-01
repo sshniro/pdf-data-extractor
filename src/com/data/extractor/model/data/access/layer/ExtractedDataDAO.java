@@ -344,7 +344,6 @@ public class ExtractedDataDAO {
         RegexStartElement regexStartElement;
         RegexEndElement regexEndElement;
 
-        BasicDBObject regexPairObj = new BasicDBObject();
         ArrayList regexPairData = new ArrayList();
 
         for (RegexPairElement r : regexPairElements){
@@ -361,7 +360,9 @@ public class ExtractedDataDAO {
             endElementObj.put("tag",regexEndElement.getTag());
 
             regexPairData.add(new BasicDBObject("regexStartElement",startElementObj)
-                    .append("regexEndElement",endElementObj).append("value",r.getValue()));
+                    .append("regexEndElement",endElementObj).append("value",r.getValue())
+                    .append("metaName",r.getMetaName()).append("dictionaryId",r.getDictionaryId())
+                    .append("dictionaryName",r.getDictionaryName()));
 
         }
 
@@ -695,7 +696,9 @@ public class ExtractedDataDAO {
             endElementObj.put("tag",regexEndElement.getTag());
 
             regexPairData.add(new BasicDBObject("regexStartElement",startElementObj)
-                    .append("regexEndElement",endElementObj).append("value",r.getValue()));
+                    .append("regexEndElement",endElementObj).append("value",r.getValue())
+                    .append("metaName",r.getMetaName()).append("dictionaryId",r.getDictionaryId())
+                    .append("dictionaryName",r.getDictionaryName()));
 
         }
         regexElementObj.put("regexPairElements", regexPairData);
@@ -741,7 +744,9 @@ public class ExtractedDataDAO {
             endElementObj.put("tag",regexEndElement.getTag());
 
             regexPairData.add(new BasicDBObject("regexStartElement",startElementObj)
-                    .append("regexEndElement",endElementObj).append("value",r.getValue()));
+                    .append("regexEndElement",endElementObj).append("value",r.getValue())
+                    .append("metaName",r.getMetaName()).append("dictionaryId",r.getDictionaryId())
+                    .append("dictionaryName",r.getDictionaryName()));
 
         }
 
