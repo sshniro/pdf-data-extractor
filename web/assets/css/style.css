@@ -256,8 +256,9 @@ header nav{
 }
 
 
-.menu-width a:hover{
-    opacity: 0.4;
+.menu-width:hover{
+    opacity: 0.9;
+    background-color: orange;
 }
 
 .footer-img-li a:hover{
