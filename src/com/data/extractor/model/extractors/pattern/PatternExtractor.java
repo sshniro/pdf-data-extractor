@@ -180,11 +180,17 @@ public class PatternExtractor {
             List<ColumnDataElement> columnDataElements = patternElement.getColumnDataElements();
 
             try {
+
+                regexDataElement.setMetaName(patternDataElement.getRegexDataElements().getMetaName());
+                regexDataElement.setDictionaryId(patternDataElement.getRegexDataElements().getDictionaryId());
+
                 for (int i=0 ; i  < regexDataElements.getRegexPairElements().size(); i++){
 
                     regexDataElements.getRegexPairElements().get(i).setMetaName(patternDataElement.getRegexDataElements().getRegexPairElements().get(i).getMetaName());
                     regexDataElements.getRegexPairElements().get(i).setRegexStartElement(patternDataElement.getRegexDataElements().getRegexPairElements().get(i).getRegexStartElement());
                     regexDataElements.getRegexPairElements().get(i).setRegexEndElement(patternDataElement.getRegexDataElements().getRegexPairElements().get(i).getRegexEndElement());
+                    regexDataElements.getRegexPairElements().get(i).setDictionaryId(patternDataElement.getRegexDataElements().getRegexPairElements().get(i).getDictionaryId());
+                    regexDataElements.getRegexPairElements().get(i).setDictionaryName(patternDataElement.getRegexDataElements().getRegexPairElements().get(i).getDictionaryName());
 
                 }
 
@@ -195,7 +201,7 @@ public class PatternExtractor {
                     columnDataElements.get(i).setMetaName(patternDataElement.getColumnDataElements().get(i).getMetaName());
                 }
             }catch (NullPointerException e){
-                System.out.println("null pointer exception occured");
+                System.out.println("null pointer exception occurred");
                 extractedPatternElement.remove(j);
                 return extractedPatternElement;
             }

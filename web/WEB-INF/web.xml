@@ -76,6 +76,10 @@
         <servlet-name>SessionController</servlet-name>
         <servlet-class>com.data.extractor.controllers.SessionController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ExtractDocViewerServlet</servlet-name>
+        <servlet-class>com.data.extractor.controllers.ExtractDocViewerServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>TemplateUploadController</servlet-name>
         <url-pattern>/TemplateUploadController</url-pattern>
@@ -135,6 +139,10 @@
     <servlet-mapping>
         <servlet-name>SessionController</servlet-name>
         <url-pattern>/SessionController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ExtractDocViewerServlet</servlet-name>
+        <url-pattern>/ExtractDocViewerServlet</url-pattern>
     </servlet-mapping>
 
 

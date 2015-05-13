@@ -8,6 +8,10 @@ public class RegexPairElement {
     @Expose
     private String metaName;
     @Expose
+    private String dictionaryId;
+    @Expose
+    private String dictionaryName;
+    @Expose
     private String value;
     @Expose
     private RegexStartElement regexStartElement;
@@ -44,5 +48,21 @@ public class RegexPairElement {
 
     public void setMetaName(String metaName) {
         this.metaName = metaName;
+    }
+
+    public String getDictionaryId() {
+        return dictionaryId;
+    }
+
+    public void setDictionaryId(String dictionaryId) {
+        this.dictionaryId = dictionaryId;
+    }
+
+    public String getDictionaryName() {
+        return dictionaryName;
+    }
+
+    public void setDictionaryName(String dictionaryName) {
+        this.dictionaryName = dictionaryName;
     }
 }
