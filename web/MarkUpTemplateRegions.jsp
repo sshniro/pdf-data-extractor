@@ -120,7 +120,7 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="navbar_collapse">
                 <ul class="nav navbar-nav">
-                    <li><a id="templateExtract" href="/ExtractPdf.jsp">Extract Doc</a></li>
+                    <li><a id="templateExtract" href="/ExtractPdf.jsp">Extract</a></li>
                     <li><a style="cursor: pointer" onclick="$('#nav-toolbar').show('500')">Tools&nbsp;<small class="glyphicon glyphicon-chevron-down"></small></a></li>
                 </ul>
                 <ul class="nav navbar-nav">
