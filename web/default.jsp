@@ -63,9 +63,9 @@
             <img class="menu-logo" src="assets/img/images/logo.png" alt="" />
         </div>
         <div class="col-md-9">
-            <ul class="list-inline text-left header-main-menu">
+            <ul class="list-inline text-left username-text role-menu">
                 <li class="menu-width text-center">
-                    <a href="/index.jsp">
+                     <a href="/Home_Page.html">
                         <img class="menu-icon" src="assets/img/images/home.png" alt="" /> <br>
                         <span class="menu-span text-center">Home</span>
                     </a>
@@ -108,13 +108,11 @@
 
                 <li class="menu-dwidth row">
                     <div class="col-sm-10">
-                        <span class="username-text">Administrator</span> <br/>
-                        <span class="username-text role">admin</span>
+
                     </div>
                     <div class="col-sm-2">
                         <a href="#" onclick="logout()">
-                            <img class="menu-icon" src="assets/img/images/logout.png" alt="" style="width: 47px; height: 50px" /> <br>
-                            <span class="menu-span text-center">Logout</span>
+                                                      <span class="menu-span text-center">Logout</span>
                         </a>
                     </div>
                 </li>

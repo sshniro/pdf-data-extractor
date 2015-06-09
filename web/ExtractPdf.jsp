@@ -146,12 +146,11 @@
 
                 <li class="menu-dwidth row">
                     <div class="col-sm-10">
-                        <span class="username-text">Administrator</span> <br/>
-                        <span class="username-text role">admin</span>
+
                     </div>
                     <div class="col-sm-2">
                         <a href="#" onclick="logout()">
-                            <img class="menu-icon" src="assets/img/images/logout.png" alt="" style="width: 47px; height: 50px" /> <br>
+
                             <span class="menu-span text-center">Logout</span>
                         </a>
                     </div>

@@ -243,23 +243,27 @@ header nav{
     font-size: 12px;
 }
 
-.header-main-menu .active {
+.header-main-menu :hover ,.header-main-menu .active{
+
     background-color: #000;
     border: 2px solid #000;
     border-radius: 40px;
     opacity: 0.4;
 }
 
+
+
 .menu-icon{
     width: 65px;
     height:65px;
 }
 
-
+/*
 .menu-width:hover{
     opacity: 0.9;
     background-color: orange;
 }
+*/
 
 .footer-img-li a:hover{
     opacity: 0.5;
