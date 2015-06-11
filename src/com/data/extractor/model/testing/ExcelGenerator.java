@@ -236,11 +236,19 @@ public class ExcelGenerator {
             }
 
             // get the column size to iterate
-
+            Row patternTableHeadRow=sheet.createRow(rowCount++);
+            Cell headTableCell = patternTableHeadRow.createCell(0);
+            headTableCell.setCellValue("Pattern Element Data Tabular");
 
             for (int k=0;k<rows.size();k++){
-                ColumnDataElement columnDataElement = columnDataElementList.get(k);
 
+                Row row=sheet.createRow(rowCount++);
+                Cell cell;
+                List<String> tableRow =rows.get(k);
+                for (int l=0;l<tableRow.size();l++){
+                    cell = row.createCell(l);
+                    cell.setCellValue(tableRow.get(l));
+                }
             }
         }
 
