@@ -9,13 +9,20 @@ import com.data.extractor.model.beans.user.UserBean;
 import com.data.extractor.model.data.access.layer.TemplateInfoDAO;
 import com.data.extractor.model.data.access.layer.TemplatesDAO;
 import com.data.extractor.model.data.access.layer.UsersDAO;
-import com.mongodb.MongoClient;
+import com.data.extractor.model.db.connect.dbInitializer;
+import com.google.gson.Gson;
+import com.mongodb.*;
 
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Testing {
+
+    private static final String dbName="staging";
+    private static final String collectionName="extractedData";
+    private static DBCollection collection;
+
     public static void main(String[] args) throws UnknownHostException {
 //        InsertDataParser insertDataParser=new InsertDataParser();
 //        insertDataParser = setValues(insertDataParser);
@@ -26,50 +33,54 @@ public class Testing {
 //        System.out.println("testing");
 
         MongoClient mongoClient = new MongoClient("localhost",27017);
+        dbInitializer dbInitializer =new dbInitializer();
 
-        UserBean userBean = new UserBean();
-        UsersDAO usersDAO = new UsersDAO(mongoClient);
+        DB db=dbInitializer.getDB(mongoClient,dbName);
+        collection = dbInitializer.getCollection(db,collectionName);
 
-        userBean.setUserName("hello");
-        userBean.setId("24");
-        //TemplatesDAO templatesDAO = new TemplatesDAO(mongoClient);
-        //templatesDAO.removeUserFromNode("1","0",userBean.getId());
-        usersDAO.getUser("0");
+        BasicDBObject searchQuery = new BasicDBObject();
+
+        searchQuery.put("id", "31");
+        searchQuery.put("dataType", "regex");
+
+//        DBCursor cursor = collection.find(searchQuery);
+//        Gson gson = new Gson();
+//        List<RegexDataParser> regexDataParserList = new ArrayList<RegexDataParser>();
+//        while (cursor.hasNext()){
+//            RegexDataParser regexDataParser= gson.fromJson(cursor.next().toString(), RegexDataParser.class);
+//            regexDataParserList.add(regexDataParser);
+//        }
+
+        BasicDBObject regexElementObj = new BasicDBObject();
+
+        regexElementObj.put("metaName", 1);
+        regexElementObj.put("dictionaryId", 2);
+
+        BasicDBObject regexPairObj = new BasicDBObject();
+        ArrayList regexPairData = new ArrayList();
 
 
-//        RegexDataElement regexDataElement = new RegexDataElement();
-//        RawDataElement rawDataElement = new RawDataElement();
-//
-//        RegexStartElement regexStartElement = new RegexStartElement();
-//        RegexEndElement regexEndElement = new RegexEndElement();
-//
-//        regexStartElement.setTag("a");
-//
-//        regexEndElement.setTag("a");
-//
-//        RegexPairElement regexPairElement = new RegexPairElement();
-//        regexPairElement.setRegexStartElement(regexStartElement);
-//        regexPairElement.setRegexEndElement(regexEndElement);
-//
-//        List<RegexPairElement> regexPairElements = new ArrayList<RegexPairElement>();
-//        regexPairElements.add(regexPairElement);
-//
-//        regexDataElement.setRegexPairElements(regexPairElements);
-//        regexDataElement.setMetaName("1");
-//        regexDataElement.setRawData(rawDataElement);
-//
-//        TemplateInfoDAO templateInfoDAO = new TemplateInfoDAO(mongoClient);
-//
-//        List<RegexDataElement> regexDataElementList = new ArrayList<RegexDataElement>();
-//        regexDataElementList.add( regexDataElement);
-//
-//        RegexDataParser regexDataParser = new RegexDataParser();
-//        regexDataParser.setRegexDataElements(regexDataElementList);
-//        regexDataParser.setId("1");
-//        regexDataParser.setDataType("regex");
-//
-//        templateInfoDAO.createTemplateInfo("1","regex",regexDataElement);
-//        templateInfoDAO.updateTemplateInfo(regexDataParser,regexDataElement);
+
+            BasicDBObject startElementObj = new BasicDBObject();
+            BasicDBObject endElementObj = new BasicDBObject();
+
+            startElementObj.put("tag",3);
+            endElementObj.put("tag",4);
+
+            regexPairData.add(new BasicDBObject("regexStartElement",startElementObj)
+                    .append("regexEndElement",endElementObj).append("value",6)
+                    .append("metaName",8).append("dictionaryId",7)
+                    .append("dictionaryName",6));
+
+
+        regexElementObj.put("regexPairElements", regexPairData);
+
+        BasicDBObject updateObject = new BasicDBObject();
+        updateObject.put("$push", new BasicDBObject("regexDataElements", regexElementObj));
+        collection.update(searchQuery, updateObject);
+
+
+        int x=0;
 
     }
 

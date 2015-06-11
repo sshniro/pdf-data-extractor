@@ -1,5 +1,6 @@
 package com.data.extractor.model.testing;
 
+import com.data.extractor.model.beans.template.info.ExtractedData;
 import com.data.extractor.model.beans.template.info.image.ImageDataParser;
 import com.data.extractor.model.beans.template.info.insert.InsertDataParser;
 import com.data.extractor.model.beans.template.info.pattern.ColumnDataElement;
@@ -38,6 +39,7 @@ public class ExcelGenerator {
 
         List<TableDataParser> tableDataParserList = extractedDataDAO.getTableRecord("27");
         List<RegexDataParser> regexDataParserList= extractedDataDAO.getRegexRecord("27");
+        List<PatternDataParser> patternDataParserList = extractedDataDAO.getPatternRecord("25");
 
         //insertDataParser.setTableDataParser(tableDataParserList.get(0));
 
@@ -47,7 +49,9 @@ public class ExcelGenerator {
         //Create a blank sheet
         XSSFSheet sheet = workbook.createSheet("Document Extraction Data");
 
-        addRecordsForRegex(sheet,extractedDataDAO,"27");
+        //addRecordsForRegex(sheet,extractedDataDAO,"27");
+        addRecordsForPattern(sheet, extractedDataDAO, "25");
+        //testing(extractedDataDAO, "25");
 
         //responseGenerator(insertDataParser);
         //write to the Excel File
@@ -152,54 +156,93 @@ public class ExcelGenerator {
 
     }
 
-
-    public static XSSFSheet addRecordsForPattern(XSSFSheet sheet,int rowCount,ExtractedDataDAO extractedDataDAO,String nodeId){
-
-        List<PatternDataParser> patternDataParsers = extractedDataDAO.getPatternRecord(nodeId);
-
-        List<List<PatternDataElement>> complexPatternList = new ArrayList<List<PatternDataElement>>();
+    public static ExtractedData testing(ExtractedDataDAO extractedDataDAO,String nodeId){
 
 
+        List<PatternDataParser> patternDataParserList = extractedDataDAO.getPatternRecord(nodeId);
+        ExtractedData extractedData=new ExtractedData();
 
-        for (int i=0;i<complexPatternList.size();i++){
-            List<PatternDataElement> patternDataElementList = complexPatternList.get(i);
-            for (int j=0;j<patternDataElementList.size();j++){
-                PatternDataElement patternDataElement = patternDataElementList.get(j);
-                List<ColumnDataElement> columnDataElementList=patternDataElement.getColumnDataElements();
+        if (patternDataParserList.size() != 0) {
+            extractedData.setPatternDataElements(patternDataParserList.get(0).getPatternDataElements());
+            List<PatternDataElement> patternDataElements = extractedData.getPatternDataElements();
 
-                RegexDataElement regexDataElement = patternDataElement.getRegexDataElements();
+            for(PatternDataElement p:patternDataElements){
+                List<ColumnDataElement> columnDataElements = p.getColumnDataElements();
 
+                List<String> values=new ArrayList<String>();
+                String value=null;
+                ColumnDataElement column;
 
-                List<RegexPairElement> regexPairElements = regexDataElement.getRegexPairElements();
-                for (int k=0;k<regexPairElements.size();k++){
-                    RegexPairElement regexPairElement= regexPairElements.get(k);
-                    regexPairElement.getValue();
-                    regexDataElement.getDictionaryId();
+                int rowSize = columnDataElements.get(0).getCellValues().size();
+                List<List<String>> rowList = new ArrayList<List<String>>();
+                for (int j=0;j<rowSize;j++){
 
-                    Row row=sheet.createRow(rowCount++);
-                    Cell cell1 = row.createCell(0);
-                    cell1.setCellValue(regexPairElement.getMetaName());
-                    Cell cell2 = row.createCell(1);
-                    cell2.setCellValue(regexPairElement.getDictionaryId());
-                    Cell cell3 = row.createCell(2);
-                    cell3.setCellValue(regexPairElement.getValue());
+                    for (int k=0;k<columnDataElements.size();k++){
+                        column= columnDataElements.get(k);
+                        value = column.getCellValues().get(j);
+                        values.add(value);
+                    }
+                    rowList.add(values);
+                    values = new ArrayList<String>();
+                }
+                p.setRows(rowList);
+
+                // remove unwanted values
+                for (ColumnDataElement c:columnDataElements){
+                    c.setCellValues(null);
                 }
 
-                // get the column size to iterate
+            }
+
+        }
+        return extractedData;
+
+    }
+
+    public static XSSFSheet addRecordsForPattern(XSSFSheet sheet,ExtractedDataDAO extractedDataDAO,String nodeId){
+
+        //List<PatternDataParser> patternDataParsers = extractedDataDAO.getPatternRecord(nodeId);
+        ExtractedData extractedData = testing(extractedDataDAO,nodeId);
+
+        List<PatternDataElement> patternDataElementList = extractedData.getPatternDataElements();
+
+        for (int j=0;j<patternDataElementList.size();j++){
+
+            PatternDataElement patternDataElement = patternDataElementList.get(j);
+
+            List<ColumnDataElement> columnDataElementList=patternDataElement.getColumnDataElements();
+            List<List<String>> rows = patternDataElement.getRows();
+
+            RegexDataElement regexDataElement = patternDataElement.getRegexDataElements();
+
+            // Add a Header for the Cells
+            Row patternHeadRow=sheet.createRow(rowCount++);
+            Cell headCell = patternHeadRow.createCell(0);
+            headCell.setCellValue("Pattern Element Data");
+
+            List<RegexPairElement> regexPairElements = regexDataElement.getRegexPairElements();
+            for (int k=0;k<regexPairElements.size();k++){
+                RegexPairElement regexPairElement= regexPairElements.get(k);
+                regexPairElement.getValue();
+                regexDataElement.getDictionaryId();
+
+                Row row=sheet.createRow(rowCount++);
+                Cell cell1 = row.createCell(0);
+                cell1.setCellValue(regexPairElement.getMetaName());
+                Cell cell2 = row.createCell(1);
+                cell2.setCellValue(regexPairElement.getDictionaryId());
+                Cell cell3 = row.createCell(2);
+                cell3.setCellValue(regexPairElement.getValue());
+            }
+
+            // get the column size to iterate
 
 
-                for (int k=0;k<columnDataElementList.size();k++){
-                    ColumnDataElement columnDataElement = columnDataElementList.get(k);
+            for (int k=0;k<rows.size();k++){
+                ColumnDataElement columnDataElement = columnDataElementList.get(k);
 
-                }
             }
         }
-
-
-
-
-
-
 
         return sheet;
 

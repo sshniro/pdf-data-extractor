@@ -16,6 +16,8 @@ public class ColumnDataElement {
     private ColumnEndElement columnEndElement;
     @Expose
     private List<Cell> cellList = new ArrayList<Cell>();
+    @Expose
+    private List<String> cellValues = new ArrayList<String>();
 
     public String getMetaName() {
         return metaName;
@@ -47,5 +49,13 @@ public class ColumnDataElement {
 
     public void setCellList(List<Cell> cellList) {
         this.cellList = cellList;
+    }
+
+    public List<String> getCellValues() {
+        return cellValues;
+    }
+
+    public void setCellValues(List<String> cellValues) {
+        this.cellValues = cellValues;
     }
 }

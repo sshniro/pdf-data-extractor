@@ -387,10 +387,8 @@ public class ExtractedDataDAO {
 
             BasicDBObject startElementObj = new BasicDBObject();
             BasicDBObject endElementObj = new BasicDBObject();
-            BasicDBObject valueElementObj = new BasicDBObject();
 
             startElementObj.put("tag",regexStartElement.getTag());
-            endElementObj.put("tag",regexEndElement.getTag());
             endElementObj.put("tag",regexEndElement.getTag());
 
             regexPairData.add(new BasicDBObject("regexStartElement",startElementObj)
@@ -492,8 +490,6 @@ public class ExtractedDataDAO {
 
         collection.insert(insertObject);
     }
-
-
 
     public void updateTemplateInfo(String nodeId , TextDataParser textDataParser,TextDataElement textDataElement){
 
@@ -701,9 +697,8 @@ public class ExtractedDataDAO {
 
         BasicDBObject searchQuery = new BasicDBObject();
 
-        searchQuery.put("id", regexDataParser.getId());
+        searchQuery.put("id", nodeId);
         searchQuery.put("dataType", regexDataParser.getDataType());
-        List<BasicDBObject> regexDataElementsInsert = new ArrayList<BasicDBObject>();
 
         BasicDBObject regexElementObj = new BasicDBObject();
 

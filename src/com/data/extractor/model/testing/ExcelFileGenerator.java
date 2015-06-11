@@ -20,8 +20,6 @@ public class ExcelFileGenerator {
 
     public Boolean generateExcel(String parentId,String nodeId,String rootPath,MongoClient mongoClient){
 
-
-
         ExtractedDataDAO extractedDataDAO = new ExtractedDataDAO(mongoClient);
 
         //Blank workbook
@@ -30,7 +28,7 @@ public class ExcelFileGenerator {
         //Create a blank sheet
         XSSFSheet sheet = workbook.createSheet("Document Extraction Data");
 
-        addRecordsForRegex(sheet,extractedDataDAO,nodeId);
+        sheet = addRecordsForRegex(sheet,extractedDataDAO,nodeId);
         writeToExcel(workbook,rootPath,parentId,nodeId);
 
 
