@@ -23,7 +23,7 @@ public class ExcelFileGenerator {
 
     private static int rowCount = 1;
 
-    public Boolean generateExcel(String parentId,String nodeId,String rootPath,MongoClient mongoClient){
+    public String generateExcel(String parentId,String nodeId,String rootPath,MongoClient mongoClient){
 
         ExtractedDataDAO extractedDataDAO = new ExtractedDataDAO(mongoClient);
 
@@ -35,10 +35,10 @@ public class ExcelFileGenerator {
 
         sheet = addRecordsForRegex(sheet,extractedDataDAO,nodeId);
         sheet = addRecordsForPattern(sheet,extractedDataDAO,nodeId);
-        writeToExcel(workbook,rootPath,parentId,nodeId);
+        String excelPath = writeToExcel(workbook,rootPath,parentId,nodeId);
 
 
-        return true;
+        return excelPath;
     }
 
     public static XSSFSheet addRecordsForRegex(XSSFSheet sheet,ExtractedDataDAO extractedDataDAO,String nodeId){
@@ -145,8 +145,8 @@ public class ExcelFileGenerator {
 
     }
 
-    public static void writeToExcel(XSSFWorkbook workbook ,String rootPath,String parentId,String nodeId){
-
+    public static String writeToExcel(XSSFWorkbook workbook ,String rootPath,String parentId,String nodeId){
+        String excelPath=null;
         // Make Download Path
         File saveLocation = new File(rootPath + File.separator + "uploads"+File.separator+"temp" + File.separator + parentId +
                 File.separator + nodeId + File.separator);
@@ -159,6 +159,8 @@ public class ExcelFileGenerator {
 
             // Concatenate TemplateName with Document Name
             File excelFile = new File(saveLocation + File.separator + nodeId +".xlsx");
+
+            excelPath= saveLocation.getAbsolutePath() + File.separator + nodeId + ".xlsx";
 
 
             if(excelFile.exists())
@@ -182,6 +184,7 @@ public class ExcelFileGenerator {
         {
             e.printStackTrace();
         }
+        return excelPath;
     }
 
     public static ExtractedData testing(ExtractedDataDAO extractedDataDAO,String nodeId){

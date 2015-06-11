@@ -32,7 +32,12 @@ public class ExcelExtractController extends HttpServlet {
         MongoClient mongoClient = (MongoClient) request.getServletContext().getAttribute("MONGO_CLIENT");
 
         ExcelFileGenerator excelFileGenerator = new ExcelFileGenerator();
-        excelFileGenerator.generateExcel(extractStatus.getParent(),extractStatus.getId(),extractStatus.getRootPath(),mongoClient);
+        String excelPath = excelFileGenerator.generateExcel(extractStatus.getParent(),extractStatus.getId(),extractStatus.getRootPath(),mongoClient);
+
+        UploadStatus uploadStatus=new UploadStatus();
+        uploadStatus.setExcelPath(excelPath);
+
+        response.getWriter().print(gson.toJson(excelPath));
 
     }
 }

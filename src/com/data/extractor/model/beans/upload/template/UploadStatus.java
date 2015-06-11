@@ -20,6 +20,7 @@ public class UploadStatus {
     private String  text;
     private String  type;
     private String  id;
+    private String  excelPath;
     private InsertDataParser insertDataParser;
 
     public InsertDataParser getInsertDataParser() {
@@ -116,5 +117,13 @@ public class UploadStatus {
 
     public void setDocName(String docName) {
         this.docName = docName;
+    }
+
+    public String getExcelPath() {
+        return excelPath;
+    }
+
+    public void setExcelPath(String excelPath) {
+        this.excelPath = excelPath;
     }
 }
