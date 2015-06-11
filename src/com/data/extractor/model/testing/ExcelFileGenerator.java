@@ -26,6 +26,7 @@ public class ExcelFileGenerator {
     public String generateExcel(String parentId,String nodeId,String rootPath,MongoClient mongoClient){
 
         ExtractedDataDAO extractedDataDAO = new ExtractedDataDAO(mongoClient);
+        rowCount = 1;
 
         //Blank workbook
         XSSFWorkbook workbook = new XSSFWorkbook();
