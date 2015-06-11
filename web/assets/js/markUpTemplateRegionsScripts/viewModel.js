@@ -867,9 +867,11 @@ function ViewModel(){
                 $('#overlay').css('display','none');
                 var url = data.replace(/['"]+/g, "");
                 //"file:///" +
-                $("a#fileLink").attr("href",url);
-                $("a#fileLink").text("Download Link");
+                //$("a#fileLink").attr("href",url);
+                $("a#fileLink").text(url);
                 $("a#fileLink").css("display","block");
+                $("p#fileLink").text(url);
+                $("p#fileLink").css("display","block");
 
 
                // window.open(url);
