@@ -106,6 +106,40 @@ public class ExtractedDataDAO {
         return tableDataParserList;
     }
 
+    public  List<PatternDataParser> getPatternRecord(String nodeId){
+
+        BasicDBObject searchQuery = new BasicDBObject();
+        searchQuery.put("id",nodeId);
+        searchQuery.put("dataType","pattern");
+
+        DBCursor cursor = collection.find(searchQuery);
+        Gson gson = new Gson();
+        List<PatternDataParser> patternDataParserList = new ArrayList<PatternDataParser>();
+        while (cursor.hasNext()){
+            PatternDataParser patternDataParser= gson.fromJson(cursor.next().toString(), PatternDataParser.class);
+            patternDataParserList.add(patternDataParser);
+        }
+
+        return patternDataParserList;
+    }
+
+    public  List<RegexDataParser> getRegexRecord(String nodeId){
+
+        BasicDBObject searchQuery = new BasicDBObject();
+        searchQuery.put("id",nodeId);
+        searchQuery.put("dataType","regex");
+
+        DBCursor cursor = collection.find(searchQuery);
+        Gson gson = new Gson();
+        List<RegexDataParser> regexDataParserList = new ArrayList<RegexDataParser>();
+        while (cursor.hasNext()){
+            RegexDataParser regexDataParser= gson.fromJson(cursor.next().toString(), RegexDataParser.class);
+            regexDataParserList.add(regexDataParser);
+        }
+
+        return regexDataParserList;
+    }
+
 
 
     public void createTemplateInfo(String nodeId, String parentId ,String dataType,TextDataElement textDataElement){

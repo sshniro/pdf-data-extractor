@@ -2,10 +2,21 @@ package com.data.extractor.model.testing;
 
 import com.data.extractor.model.beans.template.info.image.ImageDataParser;
 import com.data.extractor.model.beans.template.info.insert.InsertDataParser;
+import com.data.extractor.model.beans.template.info.pattern.ColumnDataElement;
+import com.data.extractor.model.beans.template.info.pattern.PatternDataElement;
+import com.data.extractor.model.beans.template.info.pattern.PatternDataParser;
+import com.data.extractor.model.beans.template.info.regex.RegexDataElement;
+import com.data.extractor.model.beans.template.info.regex.RegexDataParser;
+import com.data.extractor.model.beans.template.info.regex.RegexPairElement;
 import com.data.extractor.model.beans.template.info.table.Column;
 import com.data.extractor.model.beans.template.info.table.TableDataElement;
 import com.data.extractor.model.beans.template.info.table.TableDataParser;
 import com.data.extractor.model.beans.template.info.text.TextDataParser;
+import com.data.extractor.model.data.access.layer.ExtractedDataDAO;
+import com.data.extractor.model.db.connect.dbInitializer;
+import com.mongodb.DB;
+import com.mongodb.DBCollection;
+import com.mongodb.MongoClient;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -13,11 +24,189 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.net.UnknownHostException;
 import java.util.*;
 
 public class ExcelGenerator {
 
-    public void responseGenerator(InsertDataParser insertDataParser)
+    private static int rowCount=1;
+
+    public static void main(String[] args) throws UnknownHostException {
+        MongoClient mongoClient = new MongoClient("localhost",27017);
+        InsertDataParser insertDataParser= new InsertDataParser();
+        ExtractedDataDAO extractedDataDAO = new ExtractedDataDAO(mongoClient);
+
+        List<TableDataParser> tableDataParserList = extractedDataDAO.getTableRecord("27");
+        List<RegexDataParser> regexDataParserList= extractedDataDAO.getRegexRecord("27");
+
+        //insertDataParser.setTableDataParser(tableDataParserList.get(0));
+
+        //Blank workbook
+        XSSFWorkbook workbook = new XSSFWorkbook();
+
+        //Create a blank sheet
+        XSSFSheet sheet = workbook.createSheet("Document Extraction Data");
+
+        addRecordsForRegex(sheet,extractedDataDAO,"27");
+
+        //responseGenerator(insertDataParser);
+        //write to the Excel File
+        writeToExcel(workbook);
+
+    }
+
+    public static void writeToExcel(XSSFWorkbook workbook){
+        try
+        {
+            File myFile=new File("/Users/niro273/Desktop/enhanzer/howtodoinjava_demo.xlsx");
+
+            if(myFile.exists())
+            {
+                System.out.println("howtodoinjava.xlsx is available on disk.");
+                //Write the workbook in file system
+                FileOutputStream out = new FileOutputStream(myFile);
+                workbook.write(out);
+                out.close();
+            }else
+            {
+                //Write the workbook in file system
+                FileOutputStream out = new FileOutputStream(myFile);
+                workbook.write(out);
+                out.close();
+
+                System.out.println("howtodoinjava_demo_test.xlsx written successfully on disk.");
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    public static void getRecords() throws UnknownHostException {
+
+        MongoClient mongoClient = new MongoClient("localhost",27017);
+        InsertDataParser insertDataParser= new InsertDataParser();
+        ExtractedDataDAO extractedDataDAO = new ExtractedDataDAO(mongoClient);
+
+        String nodeId = "10";
+
+        dbInitializer dbInitializer =new dbInitializer();
+
+        DB db=dbInitializer.getDB(mongoClient,"staging");
+        DBCollection collection = dbInitializer.getCollection(db,"extractedData");
+
+        List<TextDataParser> textDataParserList = extractedDataDAO.getTextRecord(nodeId);
+        List<ImageDataParser> imageDataParserList = extractedDataDAO.getImageRecord(nodeId);
+        List<TableDataParser> tableDataParserList = extractedDataDAO.getTableRecord(nodeId);
+        List<PatternDataParser> patternDataParserList = extractedDataDAO.getPatternRecord(nodeId);
+        List<RegexDataParser> regexDataParserList = extractedDataDAO.getRegexRecord(nodeId);
+
+
+    }
+
+    public static XSSFSheet addRecordsForRegex(XSSFSheet sheet,ExtractedDataDAO extractedDataDAO,String nodeId){
+
+        RegexDataParser regexDataParser =null;
+        List<RegexDataParser> regexDataParserList = extractedDataDAO.getRegexRecord(nodeId);
+
+        Row emptyRow = sheet.createRow(rowCount++);
+        Cell cell = emptyRow.createCell(0);
+        cell.setCellValue("");
+
+
+        for (int i=0;i<regexDataParserList.size();i++){
+            Row regexHeader = sheet.createRow(rowCount++);
+            Cell headerCell1 = regexHeader.createCell(0);
+            Cell headerCell2 = regexHeader.createCell(1);
+            Cell headerCell3 = regexHeader.createCell(2);
+
+            headerCell1.setCellValue("MetaName");
+            headerCell2.setCellValue("Dictionary ID");
+            headerCell3.setCellValue("Value");
+
+            regexDataParser = regexDataParserList.get(i);
+            List<RegexDataElement> regexDataElements = regexDataParser.getRegexDataElements();
+            for (int j=0;j<regexDataElements.size();j++){
+                RegexDataElement regexDataElement = regexDataElements.get(j);
+                List<RegexPairElement> regexPairElements = regexDataElement.getRegexPairElements();
+                for (int k=0;k<regexPairElements.size();k++){
+                    RegexPairElement regexPairElement= regexPairElements.get(k);
+                    regexPairElement.getValue();
+                    regexDataElement.getDictionaryId();
+
+                    Row row=sheet.createRow(rowCount++);
+                    Cell cell1 = row.createCell(0);
+                    cell1.setCellValue(regexPairElement.getMetaName());
+                    Cell cell2 = row.createCell(1);
+                    cell2.setCellValue(regexPairElement.getDictionaryId());
+                    Cell cell3 = row.createCell(2);
+                    cell3.setCellValue(regexPairElement.getValue());
+
+
+                }
+            }
+        }
+
+        return sheet;
+
+    }
+
+
+    public static XSSFSheet addRecordsForPattern(XSSFSheet sheet,int rowCount,ExtractedDataDAO extractedDataDAO,String nodeId){
+
+        List<PatternDataParser> patternDataParsers = extractedDataDAO.getPatternRecord(nodeId);
+
+        List<List<PatternDataElement>> complexPatternList = new ArrayList<List<PatternDataElement>>();
+
+
+
+        for (int i=0;i<complexPatternList.size();i++){
+            List<PatternDataElement> patternDataElementList = complexPatternList.get(i);
+            for (int j=0;j<patternDataElementList.size();j++){
+                PatternDataElement patternDataElement = patternDataElementList.get(j);
+                List<ColumnDataElement> columnDataElementList=patternDataElement.getColumnDataElements();
+
+                RegexDataElement regexDataElement = patternDataElement.getRegexDataElements();
+
+
+                List<RegexPairElement> regexPairElements = regexDataElement.getRegexPairElements();
+                for (int k=0;k<regexPairElements.size();k++){
+                    RegexPairElement regexPairElement= regexPairElements.get(k);
+                    regexPairElement.getValue();
+                    regexDataElement.getDictionaryId();
+
+                    Row row=sheet.createRow(rowCount++);
+                    Cell cell1 = row.createCell(0);
+                    cell1.setCellValue(regexPairElement.getMetaName());
+                    Cell cell2 = row.createCell(1);
+                    cell2.setCellValue(regexPairElement.getDictionaryId());
+                    Cell cell3 = row.createCell(2);
+                    cell3.setCellValue(regexPairElement.getValue());
+                }
+
+                // get the column size to iterate
+
+
+                for (int k=0;k<columnDataElementList.size();k++){
+                    ColumnDataElement columnDataElement = columnDataElementList.get(k);
+
+                }
+            }
+        }
+
+
+
+
+
+
+
+        return sheet;
+
+    }
+
+
+    public static void responseGenerator(InsertDataParser insertDataParser)
     {
         //TextDataParser textDataParser = insertDataParser.getTextDataParser();
         //ImageDataParser imageDataParser = insertDataParser.getImageDataParser();
@@ -30,86 +219,90 @@ public class ExcelGenerator {
         XSSFWorkbook workbook = new XSSFWorkbook();
 
         //Create a blank sheet
-        XSSFSheet sheet = workbook.createSheet("Employee Data1");
+        XSSFSheet sheet = workbook.createSheet("Document Extraction Data");
 
-
-
-        //This data needs to be written (Object[])
-        Map<String, Object[]> data = new TreeMap<String, Object[]>();
-        //data.put("1", new Object[] {"ID", "NAME", "LASTNAME"});
-        //data.put("2", new Object[] {1, "Amit", "Shukla"});
-        //data.put("3", new Object[] {2, "Lokesh", "Gupta"});
-        //data.put("4", new Object[] {3, "John", "Adwards"});
-
-        if(tableDataParser != null){
-            sb.append("\nExtracted Table : \n" );
-            List<TableDataElement> tableList= tableDataParser.getTableDataElements();
-
-            for (int i=0 ; i < tableList.size() ; i++) {
-
-                TableDataElement table=tableList.get(i);
-                sb.append("Table " ).append(i+1).append(" -name (").append(table.getMetaId()).append(")").append("\n");
-                List<Column> columnList=table.getColumns();
-
-                int rowCount= columnList.get(0).getCellList().size();
-                for(Integer a=0 ; a<rowCount ; a++){
-
-                    Object[] objects=new Object[columnList.size()];
-
-                     for (int j=0 ; j < columnList.size() ; j++){
-                        objects[j]=columnList.get(j).getCellList().get(a).getValue();
-                    }
-
-                    data.put( a.toString() , objects);
-                }
-
-                for (int j=0 ; j < columnList.size() ; j++){
-
-                    Object[] objects=new Object[columnList.size()];
-
-                    Column column=columnList.get(j);
-                    sb.append("Column ").append(j+1).append(" -name (").append(column.getMetaId()).append(") : ");
-                    List<com.data.extractor.model.beans.template.info.table.Cell> cellList = column.getCellList();
-
-                    for(int c=0 ; c < cellList.size() ; c++ ){
-
-
-                        com.data.extractor.model.beans.template.info.table.Cell cell=cellList.get(c);
-                        sb.append(cell.getValue());
-                        /* append ',' until the element before the last */
-                        if(c != cellList.size()-1){
-                            sb.append(" , ");
-                        }
-                    }
-                    sb.append("\n");
-                }
-            }
-        }
-
-
-
-
-
-        //Iterate over data and write to sheet
-        Set<String> keyset = data.keySet();
-        int rownum = 0;
-        for (String key : keyset)
-        {
-            Row row = sheet.createRow(rownum++);
-            Object [] objArr = data.get(key);
-            int cellnum = 0;
-            for (Object obj : objArr)
-            {
-                Cell cell = row.createCell(cellnum++);
-                if(obj instanceof String)
-                    cell.setCellValue((String)obj);
-                else if(obj instanceof Integer)
-                    cell.setCellValue((Integer)obj);
-            }
-        }
+//        //This data needs to be written (Object[])
+//        Map<String, Object[]> data = new TreeMap<String, Object[]>();
+//        Integer rowNum = 1;
+//
+//        if(tableDataParser != null){
+//            sb.append("\nExtracted Table : \n" );
+//            List<TableDataElement> tableList= tableDataParser.getTableDataElements();
+//
+//            for (int i=0 ; i < tableList.size() ; i++) {
+//
+//                TableDataElement table=tableList.get(i);
+//                sb.append("Table " ).append(i+1).append(" -name (").append(table.getMetaId()).append(")").append("\n");
+//
+//                List<Column> columnList=table.getColumns();
+//
+//                // Assign column names to the rows
+//                Row columnNameRow = sheet.createRow(rowNum++);
+//
+//                for (int k=0;k<columnList.size();k++){
+//                    Cell cell = columnNameRow.createCell(k);
+//                    cell.setCellValue(columnList.get(k).getMetaName());
+//                }
+//
+//                int rowCount= columnList.get(0).getCellValues().size();
+//                for(Integer a=0 ; a<rowCount ; a++){
+//
+//                    Object[] objects=new Object[columnList.size()];
+//                    Row row = sheet.createRow(rowNum++);
+//
+//                     for (int j=0 ; j < columnList.size() ; j++){
+//                         Cell cell0 = row.createCell(j);
+//                         cell0.setCellValue(columnList.get(j).getCellValues().get(a));
+//                    }
+//                }
+//
+//                for (int j=0 ; j < columnList.size() ; j++){
+//
+//                    Object[] objects=new Object[columnList.size()];
+//
+//                    Column column=columnList.get(j);
+//                    sb.append("Column ").append(j+1).append(" -name (").append(column.getMetaId()).append(") : ");
+//                    List<String> cellValues = column.getCellValues();
+//
+//                    for(int c=0 ; c < cellValues.size() ; c++ ){
+//
+//
+//                        String cell=cellValues.get(c);
+//                        sb.append(cell);
+//                        /* append ',' until the element before the last */
+//                        if(c != cellValues.size()-1){
+//                            sb.append(" , ");
+//                        }
+//                    }
+//                    sb.append("\n");
+//                }
+//            }
+//        }
+//
+//
+//
+//
+////
+////        //Iterate over data and write to sheet
+////        Set<String> keyset = data.keySet();
+////        int rownum = 0;
+////        for (String key : keyset)
+////        {
+////            Row row = sheet.createRow(rownum++);
+////            Object [] objArr = data.get(key);
+////            int cellnum = 0;
+////            for (Object obj : objArr)
+////            {
+////                Cell cell = row.createCell(cellnum++);
+////                if(obj instanceof String)
+////                    cell.setCellValue((String)obj);
+////                else if(obj instanceof Integer)
+////                    cell.setCellValue((Integer)obj);
+////            }
+////        }
         try
         {
-            File myFile=new File("/home/niro273/brandix_doc_mining/ExcelDemosWithPOI/howtodoinjava_demo.xlsx");
+            File myFile=new File("/Users/niro273/Desktop/enhanzer/howtodoinjava_demo.xlsx");
 
             if(myFile.exists())
             {
@@ -121,7 +314,7 @@ public class ExcelGenerator {
             }else
             {
                 //Write the workbook in file system
-                FileOutputStream out = new FileOutputStream(new File("I:/Test_Excel/howtodoinjava__.xlmx"));
+                FileOutputStream out = new FileOutputStream(myFile);
                 workbook.write(out);
                 out.close();
 

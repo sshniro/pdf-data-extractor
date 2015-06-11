@@ -80,6 +80,10 @@
         <servlet-name>ExtractDocViewerServlet</servlet-name>
         <servlet-class>com.data.extractor.controllers.ExtractDocViewerServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ExcelExtractController</servlet-name>
+        <servlet-class>com.data.extractor.controllers.ExcelExtractController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>TemplateUploadController</servlet-name>
         <url-pattern>/TemplateUploadController</url-pattern>
@@ -143,6 +147,10 @@
     <servlet-mapping>
         <servlet-name>ExtractDocViewerServlet</servlet-name>
         <url-pattern>/ExtractDocViewerServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ExcelExtractController</servlet-name>
+        <url-pattern>/ExcelExtractController</url-pattern>
     </servlet-mapping>
 
 
