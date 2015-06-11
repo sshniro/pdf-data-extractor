@@ -261,11 +261,16 @@
             <div class="well well-sm row" style="margin-top: 20px">
                <div>
                     <h4 style="display: inline;">Extracted Data For Pdf ID <span id="extractedPdfId" data-bind="text:extractedPdfId"></span></h4>
+                    <button id="downloadExcel" class="form-control pull-right" data-bind="click:downloadExcel" style=" width: 85px; display: none">Download Excel</button>
                     <button id="editTemplate" class="form-control pull-right" data-bind="click:editTemplate" style=" width: 50px; display: none">Edit</button>
-                    <button id="downloadExcel" class="form-control pull-right" data-bind="click:downloadExcel" style=" width: 50px; display: none">Download Excel</button>
+
 
 
                </div>
+                <div id="downloadLink">
+
+                    <a id="fileLink" style="display: none" download></a>
+                </div>
                 <div id="extractedText"></div>
             </div>
         </div>
