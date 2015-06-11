@@ -1,5 +1,9 @@
 package com.data.extractor.model.testing;
 
+import com.data.extractor.model.beans.template.info.ExtractedData;
+import com.data.extractor.model.beans.template.info.pattern.ColumnDataElement;
+import com.data.extractor.model.beans.template.info.pattern.PatternDataElement;
+import com.data.extractor.model.beans.template.info.pattern.PatternDataParser;
 import com.data.extractor.model.beans.template.info.regex.RegexDataElement;
 import com.data.extractor.model.beans.template.info.regex.RegexDataParser;
 import com.data.extractor.model.beans.template.info.regex.RegexPairElement;
@@ -12,6 +16,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ExcelFileGenerator {
@@ -29,6 +34,7 @@ public class ExcelFileGenerator {
         XSSFSheet sheet = workbook.createSheet("Document Extraction Data");
 
         sheet = addRecordsForRegex(sheet,extractedDataDAO,nodeId);
+        sheet = addRecordsForPattern(sheet,extractedDataDAO,nodeId);
         writeToExcel(workbook,rootPath,parentId,nodeId);
 
 
@@ -82,6 +88,63 @@ public class ExcelFileGenerator {
 
     }
 
+    public static XSSFSheet addRecordsForPattern(XSSFSheet sheet,ExtractedDataDAO extractedDataDAO,String nodeId){
+
+        //List<PatternDataParser> patternDataParsers = extractedDataDAO.getPatternRecord(nodeId);
+        ExtractedData extractedData = testing(extractedDataDAO,nodeId);
+
+        List<PatternDataElement> patternDataElementList = extractedData.getPatternDataElements();
+
+        for (int j=0;j<patternDataElementList.size();j++){
+
+            PatternDataElement patternDataElement = patternDataElementList.get(j);
+
+            List<ColumnDataElement> columnDataElementList=patternDataElement.getColumnDataElements();
+            List<List<String>> rows = patternDataElement.getRows();
+
+            RegexDataElement regexDataElement = patternDataElement.getRegexDataElements();
+
+            // Add a Header for the Cells
+            Row patternHeadRow=sheet.createRow(rowCount++);
+            Cell headCell = patternHeadRow.createCell(0);
+            headCell.setCellValue("Pattern Element Data");
+
+            List<RegexPairElement> regexPairElements = regexDataElement.getRegexPairElements();
+            for (int k=0;k<regexPairElements.size();k++){
+                RegexPairElement regexPairElement= regexPairElements.get(k);
+                regexPairElement.getValue();
+                regexDataElement.getDictionaryId();
+
+                Row row=sheet.createRow(rowCount++);
+                Cell cell1 = row.createCell(0);
+                cell1.setCellValue(regexPairElement.getMetaName());
+                Cell cell2 = row.createCell(1);
+                cell2.setCellValue(regexPairElement.getDictionaryId());
+                Cell cell3 = row.createCell(2);
+                cell3.setCellValue(regexPairElement.getValue());
+            }
+
+            // get the column size to iterate
+            Row patternTableHeadRow=sheet.createRow(rowCount++);
+            Cell headTableCell = patternTableHeadRow.createCell(0);
+            headTableCell.setCellValue("Pattern Element Data Tabular");
+
+            for (int k=0;k<rows.size();k++){
+
+                Row row=sheet.createRow(rowCount++);
+                Cell cell;
+                List<String> tableRow =rows.get(k);
+                for (int l=0;l<tableRow.size();l++){
+                    cell = row.createCell(l);
+                    cell.setCellValue(tableRow.get(l));
+                }
+            }
+        }
+
+        return sheet;
+
+    }
+
     public static void writeToExcel(XSSFWorkbook workbook ,String rootPath,String parentId,String nodeId){
 
         // Make Download Path
@@ -120,4 +183,49 @@ public class ExcelFileGenerator {
             e.printStackTrace();
         }
     }
+
+    public static ExtractedData testing(ExtractedDataDAO extractedDataDAO,String nodeId){
+
+
+        List<PatternDataParser> patternDataParserList = extractedDataDAO.getPatternRecord(nodeId);
+        ExtractedData extractedData=new ExtractedData();
+
+        if (patternDataParserList.size() != 0) {
+            extractedData.setPatternDataElements(patternDataParserList.get(0).getPatternDataElements());
+            List<PatternDataElement> patternDataElements = extractedData.getPatternDataElements();
+
+            for(PatternDataElement p:patternDataElements){
+                List<ColumnDataElement> columnDataElements = p.getColumnDataElements();
+
+                List<String> values=new ArrayList<String>();
+                String value=null;
+                ColumnDataElement column;
+
+                int rowSize = columnDataElements.get(0).getCellValues().size();
+                List<List<String>> rowList = new ArrayList<List<String>>();
+                for (int j=0;j<rowSize;j++){
+
+                    for (int k=0;k<columnDataElements.size();k++){
+                        column= columnDataElements.get(k);
+                        value = column.getCellValues().get(j);
+                        values.add(value);
+                    }
+                    rowList.add(values);
+                    values = new ArrayList<String>();
+                }
+                p.setRows(rowList);
+
+                // remove unwanted values
+                for (ColumnDataElement c:columnDataElements){
+                    c.setCellValues(null);
+                }
+
+            }
+
+        }
+        return extractedData;
+
+    }
+
+
 }

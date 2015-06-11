@@ -87,28 +87,6 @@ public class ExcelGenerator {
         }
     }
 
-    public static void getRecords() throws UnknownHostException {
-
-        MongoClient mongoClient = new MongoClient("localhost",27017);
-        InsertDataParser insertDataParser= new InsertDataParser();
-        ExtractedDataDAO extractedDataDAO = new ExtractedDataDAO(mongoClient);
-
-        String nodeId = "10";
-
-        dbInitializer dbInitializer =new dbInitializer();
-
-        DB db=dbInitializer.getDB(mongoClient,"staging");
-        DBCollection collection = dbInitializer.getCollection(db,"extractedData");
-
-        List<TextDataParser> textDataParserList = extractedDataDAO.getTextRecord(nodeId);
-        List<ImageDataParser> imageDataParserList = extractedDataDAO.getImageRecord(nodeId);
-        List<TableDataParser> tableDataParserList = extractedDataDAO.getTableRecord(nodeId);
-        List<PatternDataParser> patternDataParserList = extractedDataDAO.getPatternRecord(nodeId);
-        List<RegexDataParser> regexDataParserList = extractedDataDAO.getRegexRecord(nodeId);
-
-
-    }
-
     public static XSSFSheet addRecordsForRegex(XSSFSheet sheet,ExtractedDataDAO extractedDataDAO,String nodeId){
 
         RegexDataParser regexDataParser =null;
