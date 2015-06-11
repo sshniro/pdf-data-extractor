@@ -10,6 +10,14 @@
  this.pageNumberName     = ko.observable('Page '+this.pageNumber().toString());
  this.activeStatus       = ko.observable(data.activeStatus);
  }*/
+
+var toBeDeleted;
+
+function openInNewTab(url){
+    var win = window.open(url,'_blank');
+    win.focus();
+}
+
 function ViewModel(){
 
     var self = this;
@@ -842,6 +850,26 @@ function ViewModel(){
                 window.location = '/MarkUpTemplateRegions.jsp'
             });
         //$('button#editTemplate').css('display','none');
+    };
+
+    self.downloadExcel =  function(){
+        self.overlayNotification('Loading...');
+        $('#overlay').css('display','block');
+        var editData = {
+            "parent"          : self.currentSelectedTreeNode().id(),
+            "id"              : self.extractedPdfId()
+        };
+        $.post("ExcelExtractController",JSON.stringify(editData))
+            .done(function(data){
+                //alert("Check Variable 'toBeDeleted'");
+                console.log(data);
+                $('#overlay').css('display','none');
+                var url = "file:///" + data.excelPath;
+
+                openInNewTab(url);
+                //window.location = '/MarkUpTemplateRegions.jsp'
+            });
+
     };
 
     self.redirectToEditTemplate = function(){
