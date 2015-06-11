@@ -836,6 +836,7 @@ function ViewModel(){
         $('#overlay').css('display', 'block');
     };
 
+
     self.editTemplate =  function(){
         self.overlayNotification('Loading...');
         $('#overlay').css('display','block');
@@ -864,9 +865,15 @@ function ViewModel(){
                 //alert("Check Variable 'toBeDeleted'");
                 console.log(data);
                 $('#overlay').css('display','none');
-                var url = "file:///" + data.excelPath;
+                var url = data.replace(/['"]+/g, "");
+                //"file:///" +
+                $("a#fileLink").attr("href",url);
+                $("a#fileLink").text("Download Link");
+                $("a#fileLink").css("display","block");
 
-                openInNewTab(url);
+
+               // window.open(url);
+                //openInNewTab(url);
                 //window.location = '/MarkUpTemplateRegions.jsp'
             });
 
