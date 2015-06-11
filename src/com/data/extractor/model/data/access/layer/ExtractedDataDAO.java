@@ -18,6 +18,7 @@ import com.google.gson.Gson;
 import com.mongodb.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class ExtractedDataDAO {
@@ -105,6 +106,40 @@ public class ExtractedDataDAO {
         return tableDataParserList;
     }
 
+    public  List<PatternDataParser> getPatternRecord(String nodeId){
+
+        BasicDBObject searchQuery = new BasicDBObject();
+        searchQuery.put("id",nodeId);
+        searchQuery.put("dataType","pattern");
+
+        DBCursor cursor = collection.find(searchQuery);
+        Gson gson = new Gson();
+        List<PatternDataParser> patternDataParserList = new ArrayList<PatternDataParser>();
+        while (cursor.hasNext()){
+            PatternDataParser patternDataParser= gson.fromJson(cursor.next().toString(), PatternDataParser.class);
+            patternDataParserList.add(patternDataParser);
+        }
+
+        return patternDataParserList;
+    }
+
+    public  List<RegexDataParser> getRegexRecord(String nodeId){
+
+        BasicDBObject searchQuery = new BasicDBObject();
+        searchQuery.put("id",nodeId);
+        searchQuery.put("dataType","regex");
+
+        DBCursor cursor = collection.find(searchQuery);
+        Gson gson = new Gson();
+        List<RegexDataParser> regexDataParserList = new ArrayList<RegexDataParser>();
+        while (cursor.hasNext()){
+            RegexDataParser regexDataParser= gson.fromJson(cursor.next().toString(), RegexDataParser.class);
+            regexDataParserList.add(regexDataParser);
+        }
+
+        return regexDataParserList;
+    }
+
 
 
     public void createTemplateInfo(String nodeId, String parentId ,String dataType,TextDataElement textDataElement){
@@ -113,6 +148,7 @@ public class ExtractedDataDAO {
         insertObject.put("id", nodeId);
         insertObject.put("parent", parentId);
         insertObject.put("dataType", dataType);
+        insertObject.put("dateCreated",new Date());
 
         List<BasicDBObject> textDataElementsInsert = new ArrayList<BasicDBObject>();
 
@@ -186,6 +222,7 @@ public class ExtractedDataDAO {
         insertObject.put("id", nodeId);
         insertObject.put("parent", parentId);
         insertObject.put("dataType", dataType);
+        insertObject.put("dateCreated",new Date());
 
         List<BasicDBObject> imageDataElementsInsert=new ArrayList<BasicDBObject>();
 
@@ -238,6 +275,7 @@ public class ExtractedDataDAO {
         insertObject.put("id",nodeId);
         insertObject.put("parent",parent);
         insertObject.put("dataType",dataType);
+        insertObject.put("dateCreated",new Date());
 
         List<BasicDBObject> tableDataElementsInsert=new ArrayList<BasicDBObject>();
 
@@ -327,6 +365,7 @@ public class ExtractedDataDAO {
         insertObject.put("id", nodeId);
         insertObject.put("parent",parentId);
         insertObject.put("dataType", dataType);
+        insertObject.put("dateCreated",new Date());
 
         List<BasicDBObject> regexDataElementsInsert = new ArrayList<BasicDBObject>();
 
@@ -339,7 +378,6 @@ public class ExtractedDataDAO {
         RegexStartElement regexStartElement;
         RegexEndElement regexEndElement;
 
-        BasicDBObject regexPairObj = new BasicDBObject();
         ArrayList regexPairData = new ArrayList();
 
         for (RegexPairElement r : regexPairElements){
@@ -349,14 +387,14 @@ public class ExtractedDataDAO {
 
             BasicDBObject startElementObj = new BasicDBObject();
             BasicDBObject endElementObj = new BasicDBObject();
-            BasicDBObject valueElementObj = new BasicDBObject();
 
             startElementObj.put("tag",regexStartElement.getTag());
             endElementObj.put("tag",regexEndElement.getTag());
-            endElementObj.put("tag",regexEndElement.getTag());
 
             regexPairData.add(new BasicDBObject("regexStartElement",startElementObj)
-                    .append("regexEndElement",endElementObj).append("value",r.getValue()));
+                    .append("regexEndElement",endElementObj).append("value",r.getValue())
+                    .append("metaName",r.getMetaName()).append("dictionaryId",r.getDictionaryId())
+                    .append("dictionaryName",r.getDictionaryName()));
 
         }
 
@@ -373,6 +411,7 @@ public class ExtractedDataDAO {
         BasicDBObject insertObject = new BasicDBObject();
         insertObject.put("id", nodeId);
         insertObject.put("dataType", dataType);
+        insertObject.put("dateCreated",new Date());
 
         RegexDataElement regexDataElement = patternDataElement.getRegexDataElements();
         List<ColumnDataElement> columnDataElementList = patternDataElement.getColumnDataElements();
@@ -451,8 +490,6 @@ public class ExtractedDataDAO {
 
         collection.insert(insertObject);
     }
-
-
 
     public void updateTemplateInfo(String nodeId , TextDataParser textDataParser,TextDataElement textDataElement){
 
@@ -660,9 +697,8 @@ public class ExtractedDataDAO {
 
         BasicDBObject searchQuery = new BasicDBObject();
 
-        searchQuery.put("id", regexDataParser.getId());
+        searchQuery.put("id", nodeId);
         searchQuery.put("dataType", regexDataParser.getDataType());
-        List<BasicDBObject> regexDataElementsInsert = new ArrayList<BasicDBObject>();
 
         BasicDBObject regexElementObj = new BasicDBObject();
 
@@ -689,7 +725,9 @@ public class ExtractedDataDAO {
             endElementObj.put("tag",regexEndElement.getTag());
 
             regexPairData.add(new BasicDBObject("regexStartElement",startElementObj)
-                    .append("regexEndElement",endElementObj).append("value",r.getValue()));
+                    .append("regexEndElement",endElementObj).append("value",r.getValue())
+                    .append("metaName",r.getMetaName()).append("dictionaryId",r.getDictionaryId())
+                    .append("dictionaryName",r.getDictionaryName()));
 
         }
         regexElementObj.put("regexPairElements", regexPairData);
@@ -706,7 +744,7 @@ public class ExtractedDataDAO {
 
         BasicDBObject searchQuery = new BasicDBObject();
 
-        searchQuery.put("id", patternDataParser.getId());
+        searchQuery.put("id", nodeId);
         searchQuery.put("dataType", patternDataParser.getDataType());
 
         RegexDataElement regexDataElement = patternDataElement.getRegexDataElements();
@@ -735,7 +773,9 @@ public class ExtractedDataDAO {
             endElementObj.put("tag",regexEndElement.getTag());
 
             regexPairData.add(new BasicDBObject("regexStartElement",startElementObj)
-                    .append("regexEndElement",endElementObj).append("value",r.getValue()));
+                    .append("regexEndElement",endElementObj).append("value",r.getValue())
+                    .append("metaName",r.getMetaName()).append("dictionaryId",r.getDictionaryId())
+                    .append("dictionaryName",r.getDictionaryName()));
 
         }
 

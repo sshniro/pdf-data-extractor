@@ -67,7 +67,7 @@
                 <li class="menu-width text-center">
                     <a href="/default.jsp">
                         <img class="menu-icon" src="assets/img/images/m1.png" alt="" /> <br>
-                        <span class="menu-span text-center">Manage Nodes</span>
+                        <span class="menu-span text-center">Manage Templates</span>
                     </a>
                 </li>
 
@@ -81,14 +81,14 @@
                 <li class="menu-width text-center">
                     <a href="/ExtractPdf.jsp">
                         <img class="menu-icon" src="assets/img/images/m3.png" alt="" /> <br>
-                        <span class="menu-span text-center">Extract Doc</span>
+                        <span class="menu-span text-center">Extract</span>
                     </a>
                 </li>
 
                 <li class="menu-width text-center">
                     <a href="/user-management.jsp">
                         <img class="menu-icon" src="assets/img/images/m4.png" alt="" /> <br>
-                        <span class="menu-span text-center">User Man.</span>
+                        <span class="menu-span text-center">Users</span>
                     </a>
                 </li>
 
@@ -101,13 +101,11 @@
 
                 <li class="menu-dwidth row">
                     <div class="col-sm-10">
-                        <span class="username-text">Administrator</span> <br/>
-                        <span class="username-text role">admin</span>
+
                     </div>
                     <div class="col-sm-2">
                         <a href="#" onclick="logout()">
-                            <img class="menu-icon" src="assets/img/images/logout.png" alt="" /> <br>
-                            <span class="menu-span text-center">Logout</span>
+                                                    <span class="menu-span text-center">Logout</span>
                         </a>
                     </div>
                 </li>
@@ -133,10 +131,10 @@
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
                         <li><a href="/index.jsp">Home <span class="sr-only">(current)</span></a></li>
-                        <li><a href="default.jsp">Manage Catogory/Templates</a></li>
+                        <li><a href="default.jsp">Manage Templates</a></li>
                         <li class="active"><a href="data-dictionary.jsp">Data Dictionary</a></li>
-                        <li><a href="/ExtractPdf.jsp">Extract Doc</a></li>
-                        <li><a href="/user-management.jsp">User Management</a></li>
+                        <li><a href="/ExtractPdf.jsp">Extract</a></li>
+                        <li><a href="/user-management.jsp">Users</a></li>
                         <li><a href="#">Help</a></li>
                         <li><a href="#" onclick="logout()">Logout</a></li>
                     </ul>
@@ -251,7 +249,7 @@
 </div>
 </div>
 
-<footer>
+<!--footer>
     <div class="navbar container-footer">
         <div class="col-md-12">
             <div class="col-md-7">
@@ -282,7 +280,7 @@
         </div>
 
     </div>
-</footer>
+</footer-->
 
 
 
