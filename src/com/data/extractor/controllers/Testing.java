@@ -13,6 +13,7 @@ import com.data.extractor.model.db.connect.dbInitializer;
 import com.google.gson.Gson;
 import com.mongodb.*;
 
+import java.io.File;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +25,26 @@ public class Testing {
     private static DBCollection collection;
 
     public static void main(String[] args) throws UnknownHostException {
+
+
+        String fullPath = "http://enh-external.cloudapp.net:8080/home/enhanzer/tomcat/apace-tomcat/webapps/ROOT/uploads/temp/26/19/19.xlsx";
+        String[] relativePath = fullPath.split("uploads",2);
+        relativePath[1] = File.separator + "uploads" + relativePath[1];
+        System.out.println(relativePath[1]);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //        InsertDataParser insertDataParser=new InsertDataParser();
 //        insertDataParser = setValues(insertDataParser);
 //
@@ -32,16 +53,16 @@ public class Testing {
 //        complex = findSimilarities(insertDataParser.getTableDataParser());
 //        System.out.println("testing");
 
-        MongoClient mongoClient = new MongoClient("localhost",27017);
-        dbInitializer dbInitializer =new dbInitializer();
-
-        DB db=dbInitializer.getDB(mongoClient,dbName);
-        collection = dbInitializer.getCollection(db,collectionName);
-
-        BasicDBObject searchQuery = new BasicDBObject();
-
-        searchQuery.put("id", "31");
-        searchQuery.put("dataType", "regex");
+//        MongoClient mongoClient = new MongoClient("localhost",27017);
+//        dbInitializer dbInitializer =new dbInitializer();
+//
+//        DB db=dbInitializer.getDB(mongoClient,dbName);
+//        collection = dbInitializer.getCollection(db,collectionName);
+//
+//        BasicDBObject searchQuery = new BasicDBObject();
+//
+//        searchQuery.put("id", "31");
+//        searchQuery.put("dataType", "regex");
 
 //        DBCursor cursor = collection.find(searchQuery);
 //        Gson gson = new Gson();
@@ -50,37 +71,37 @@ public class Testing {
 //            RegexDataParser regexDataParser= gson.fromJson(cursor.next().toString(), RegexDataParser.class);
 //            regexDataParserList.add(regexDataParser);
 //        }
-
-        BasicDBObject regexElementObj = new BasicDBObject();
-
-        regexElementObj.put("metaName", 1);
-        regexElementObj.put("dictionaryId", 2);
-
-        BasicDBObject regexPairObj = new BasicDBObject();
-        ArrayList regexPairData = new ArrayList();
-
-
-
-            BasicDBObject startElementObj = new BasicDBObject();
-            BasicDBObject endElementObj = new BasicDBObject();
-
-            startElementObj.put("tag",3);
-            endElementObj.put("tag",4);
-
-            regexPairData.add(new BasicDBObject("regexStartElement",startElementObj)
-                    .append("regexEndElement",endElementObj).append("value",6)
-                    .append("metaName",8).append("dictionaryId",7)
-                    .append("dictionaryName",6));
-
-
-        regexElementObj.put("regexPairElements", regexPairData);
-
-        BasicDBObject updateObject = new BasicDBObject();
-        updateObject.put("$push", new BasicDBObject("regexDataElements", regexElementObj));
-        collection.update(searchQuery, updateObject);
-
-
-        int x=0;
+//
+//        BasicDBObject regexElementObj = new BasicDBObject();
+//
+//        regexElementObj.put("metaName", 1);
+//        regexElementObj.put("dictionaryId", 2);
+//
+//        BasicDBObject regexPairObj = new BasicDBObject();
+//        ArrayList regexPairData = new ArrayList();
+//
+//
+//
+//            BasicDBObject startElementObj = new BasicDBObject();
+//            BasicDBObject endElementObj = new BasicDBObject();
+//
+//            startElementObj.put("tag",3);
+//            endElementObj.put("tag",4);
+//
+//            regexPairData.add(new BasicDBObject("regexStartElement",startElementObj)
+//                    .append("regexEndElement",endElementObj).append("value",6)
+//                    .append("metaName",8).append("dictionaryId",7)
+//                    .append("dictionaryName",6));
+//
+//
+//        regexElementObj.put("regexPairElements", regexPairData);
+//
+//        BasicDBObject updateObject = new BasicDBObject();
+//        updateObject.put("$push", new BasicDBObject("regexDataElements", regexElementObj));
+//        collection.update(searchQuery, updateObject);
+//
+//
+//        int x=0;
 
     }
 

@@ -34,10 +34,13 @@ public class ExcelExtractController extends HttpServlet {
         ExcelFileGenerator excelFileGenerator = new ExcelFileGenerator();
         String excelPath = excelFileGenerator.generateExcel(extractStatus.getParent(),extractStatus.getId(),extractStatus.getRootPath(),mongoClient);
 
-        UploadStatus uploadStatus=new UploadStatus();
-        uploadStatus.setExcelPath(excelPath);
+        String[] relativePath = excelPath.split("uploads",2);
+        relativePath[1] = File.separator + "uploads" + relativePath[1];
 
-        response.getWriter().print(gson.toJson(excelPath));
+        UploadStatus uploadStatus=new UploadStatus();
+        uploadStatus.setExcelPath(relativePath[1]);
+
+        response.getWriter().print(gson.toJson(relativePath[1]));
 
     }
 }
