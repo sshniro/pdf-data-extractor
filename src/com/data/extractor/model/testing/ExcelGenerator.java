@@ -37,7 +37,7 @@ public class ExcelGenerator {
         InsertDataParser insertDataParser= new InsertDataParser();
         ExtractedDataDAO extractedDataDAO = new ExtractedDataDAO(mongoClient);
 
-        List<TableDataParser> tableDataParserList = extractedDataDAO.getTableRecord("27");
+        List<TableDataParser> tableDataParserList = extractedDataDAO.getTableRecord("26");
         List<RegexDataParser> regexDataParserList= extractedDataDAO.getRegexRecord("27");
         List<PatternDataParser> patternDataParserList = extractedDataDAO.getPatternRecord("25");
 
@@ -50,7 +50,7 @@ public class ExcelGenerator {
         XSSFSheet sheet = workbook.createSheet("Document Extraction Data");
 
         //addRecordsForRegex(sheet,extractedDataDAO,"27");
-        addRecordsForPattern(sheet, extractedDataDAO, "25");
+        addRecordsForTable(sheet, extractedDataDAO, "26");
         //testing(extractedDataDAO, "25");
 
         //responseGenerator(insertDataParser);
@@ -58,6 +58,93 @@ public class ExcelGenerator {
         writeToExcel(workbook);
 
     }
+
+    public static XSSFSheet addRecordsForTable(XSSFSheet sheet,ExtractedDataDAO extractedDataDAO,String nodeId){
+
+        //List<PatternDataParser> patternDataParsers = extractedDataDAO.getPatternRecord(nodeId);
+        ExtractedData extractedData = testingTable(extractedDataDAO,nodeId);
+
+        List<TableDataElement> tableDataElementList = extractedData.getTableDataElements();
+
+        for (int j=0;j<tableDataElementList.size();j++){
+
+            TableDataElement tableDataElement = tableDataElementList.get(j);
+
+            List<Column> columnList=tableDataElement.getColumns();
+            List<List<String>> rows = tableDataElement.getRows();
+
+
+            // get the column size to iterate
+            Row patternTableHeadRow=sheet.createRow(rowCount++);
+            Row tableColumnHead=sheet.createRow(rowCount++);
+            Cell headTableCell = patternTableHeadRow.createCell(0);
+            headTableCell.setCellValue("Table Data");
+
+            for (int k=0;k<columnList.size();k++){
+                Cell cell =tableColumnHead.createCell(k);
+                cell.setCellValue(columnList.get(k).getMetaName());
+            }
+
+            for (int k=0;k<rows.size();k++){
+
+                Row row=sheet.createRow(rowCount++);
+                Cell cell;
+                List<String> tableRow =rows.get(k);
+                for (int l=0;l<tableRow.size();l++){
+                    cell = row.createCell(l);
+                    cell.setCellValue(tableRow.get(l));
+                }
+            }
+        }
+
+        return sheet;
+
+    }
+
+
+    public static ExtractedData testingTable(ExtractedDataDAO extractedDataDAO,String nodeId){
+
+
+        List<TableDataParser> tableDataParserList = extractedDataDAO.getTableRecord(nodeId);
+        ExtractedData extractedData=new ExtractedData();
+
+        if (tableDataParserList.size() != 0) {
+            extractedData.setTableDataElements(tableDataParserList.get(0).getTableDataElements());
+            List<TableDataElement> tableDataElements = extractedData.getTableDataElements();
+
+            for(TableDataElement t:tableDataElements){
+                List<Column> columnList = t.getColumns();
+
+
+                List<String> values=new ArrayList<String>();
+                String value=null;
+                Column column;
+
+                int rowSize = columnList.get(0).getCellValues().size();
+                List<List<String>> rowList = new ArrayList<List<String>>();
+                for (int j=0;j<rowSize;j++){
+
+                    for (int k=0;k<columnList.size();k++){
+                        column= columnList.get(k);
+                        value = column.getCellValues().get(j);
+                        values.add(value);
+                    }
+                    rowList.add(values);
+                    values = new ArrayList<String>();
+                }
+                t.setRows(rowList);
+
+                // remove unwanted values
+                for (Column c:columnList){
+                    c.setCellValues(null);
+                }
+            }
+
+        }
+        return extractedData;
+
+    }
+
 
     public static void writeToExcel(XSSFWorkbook workbook){
         try

@@ -48,6 +48,8 @@ public class TableDataElement {
     private Double pdfHeight;
     @Expose
     private List<Column> columns = new ArrayList<Column>();
+    @Expose
+    private List<List<String>> rows = new ArrayList<List<String>>();
 
 
     public String getMetaId() {
@@ -178,4 +180,11 @@ public class TableDataElement {
 
     public void setDictionaryName(String dictionaryName) {        this.dictionaryName = dictionaryName;    }
 
+    public List<List<String>> getRows() {
+        return rows;
+    }
+
+    public void setRows(List<List<String>> rows) {
+        this.rows = rows;
+    }
 }
