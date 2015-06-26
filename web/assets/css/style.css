@@ -93,8 +93,21 @@ body{
 
     background-attachment: scroll;
     background-clip: border-box;
-    background-color: #E9E9E9;
-    background-image: url("../img/images/backgnd.png");
+    background-origin: padding-box;
+    background-position: 0 0;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
+
+.container-login{
+    margin: 0;
+    padding: 10px 20px 10px 20px;
+    width: 100%;
+
+    background-attachment: scroll;
+    background-clip: border-box;
+    background-color: rgb(64,64,64);
+    /*background-image: url("../img/images/backgnd.png");*/
     background-origin: padding-box;
     background-position: 0 0;
     background-repeat: no-repeat;
@@ -243,13 +256,27 @@ header nav{
     font-size: 12px;
 }
 
-.header-main-menu :hover ,.header-main-menu .active{
+.header-main-menu :hover img  {
+    /*background-color: #000;*/
+    /*border: 2px solid #000;*/
+    /*border-radius: 40px;*/
+    /*opacity: 0.4;*/
 
-    background-color: #000;
-    border: 2px solid #000;
+    background-color: black;
+
     border-radius: 40px;
-    opacity: 0.4;
 }
+
+.header-main-menu .active{
+    background-color: black;
+
+    border-radius: 40px;
+    /*opacity: 0.4;*/
+    /*border: 2px solid #000;*/
+}
+
+
+
 
 
 
@@ -257,6 +284,17 @@ header nav{
     width: 65px;
     height:65px;
 }
+
+
+.home-menu-icon{
+    width: 65px;
+    height:65px;
+}
+
+.home-menu-icon:hover {
+    background-color: black;
+
+    border-radius: 40px;}
 
 /*
 .menu-width:hover{

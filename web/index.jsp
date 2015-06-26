@@ -42,15 +42,15 @@
             <img class="menu-logo" src="assets/img/images/logo.png" alt="" />
         </div>
         <div class="col-md-9">
-            <ul class="list-inline text-left header-main-menu pull-right">
-                <li class="menu-width text-center">
-                    <a href="#">
-                        <img class="menu-icon" src="assets/img/images/m6.png" alt="" /> <br>
-                        <span class="menu-span text-center">Help</span>
-                    </a>
-                </li>
+            <%--<ul class="list-inline text-left header-main-menu pull-right">--%>
+            <%--<li class="menu-width text-center">--%>
+            <%--<a href="#">--%>
+            <%--<img class="menu-icon" src="assets/img/images/m6.png" alt="" /> <br>--%>
+            <%--<span class="menu-span text-center">Help</span>--%>
+            <%--</a>--%>
+            <%--</li>--%>
 
-            </ul>
+            <%--</ul>--%>
         </div>
 
         <!-- mobile menu -->
@@ -80,67 +80,73 @@
     <div class="row"></div>
 </header>
 
-<div class="container-new">
-    <div class="well well-lg sign-cont-body" style="max-width: 500px; margin:10% auto;">
-        <form class="form-horizontal" role="form">
-            <fieldset>
-                <legend>Data Extractor</legend>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label" for="userName">Username</label>
-                    <div class="col-sm-10">
-                        <input class="form-control" id="userName" name="userName" type="text" placeholder="username" autofocus="autofocus" required />
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label" for="pass">Password</label>
-                    <div class="col-sm-10">
-                        <input class="form-control" id="pass" name="pass" type="password" placeholder="password" required />
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-sm-offset-2 col-sm-10">
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" id="rememberMe" name="rememberMe"> Remember me
-                            </label>
+<div class="container-login">
+    <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-4">
+            <div class="well well-lg sign-cont-body" style="width: 500px; margin-top: 40%; margin-left:10%;   ">
+                <form class="form-horizontal" role="form">
+                    <fieldset>
+                        <%--<legend>Data Extractor</legend>--%>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" for="userName">Username</label>
+                            <div class="col-sm-10">
+                                <input class="form-control" id="userName" name="userName" type="text" placeholder="username" autofocus="autofocus" required />
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-sm-offset-2 col-sm-10">
-                        <button class="btn btn-warning" id="submit" type="button">SIGN IN &nbsp;<span class="glyphicon glyphicon-log-in"></span></button>
-                    </div>
-                </div>
-            </fieldset>
-        </form>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" for="pass">Password</label>
+                            <div class="col-sm-10">
+                                <input class="form-control" id="pass" name="pass" type="password" placeholder="password" required />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" id="rememberMe" name="rememberMe"> Remember me
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button class="btn btn-warning" id="submit" type="button">SIGN IN &nbsp;<span class="glyphicon glyphicon-log-in"></span></button>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-2"></div>
+        <div class="col-md-5">
+            <div  style="max-width: 800px; margin:10% auto;">
+                <img style="width: 800px;" src="assets/img/login_logo.png" alt="" />
+
+            </div>
+        </div>
+        <div class="col-md-1"></div>
     </div>
+
+
 </div>
 
 <footer>
     <div class="navbar container-footer">
         <div class="col-md-12">
-            <div class="col-md-7">
+            <div class="col-md-8">
+                <%--<img class="menu-logo" style="width: 150px;  " src="assets/img/images/enhanzer_innovation.png" alt=""/></a>--%>
                 <p class="copyright footer-h5">COPYRIGHT &copy; 2015 XTRACTOR</p>
             </div>
-            <div class="col-md-5">
+            <div class="col-md-4">
                 <ul class="list-inline text-center">
                     <li class="text-center footer-img-li">
-                        <a href=""><img class="footer-img" src="assets/img/images/1.png" alt="" /> <br></a>
                     </li>
                     <li class="text-center footer-img-li">
-                        <a href=""><img class="footer-img" src="assets/img/images/2.png" alt="" /> <br></a>
+                        <a href="https://www.facebook.com/pages/Enhanzer-Innovation/584253195050668"><img  class="footer-img" src="assets/img/images/facebook.png" style="width: 25px; height: 25px;" alt="" /> <br></a>
                     </li>
                     <li class="text-center footer-img-li">
-                        <a href=""><img class="footer-img" src="assets/img/images/3.png" alt="" /> <br></a>
-                    </li>
-                    <li class="text-center footer-img-li">
-                        <a href=""><img class="footer-img" src="assets/img/images/4.png" alt="" /> <br></a>
-                    </li>
-                    <li class="text-center footer-img-li">
-                        <a href=""><img class="footer-img" src="assets/img/images/5.png" alt="" /> <br></a>
-                    </li>
-                    <li class="text-center footer-img-li">
-                        <a href=""><img class="footer-img" src="assets/img/images/6.png" alt="" /> <br></a>
+                        <a href="https://twitter.com/enzinnov"><img class="footer-img"  style="width: 25px; height: 25px;" src="assets/img/images/twitter.png" alt="" /> <br></a>
                     </li>
                 </ul>
             </div>
@@ -174,7 +180,7 @@
                 var loginReturn = login({username:userName, password:pass},$('#rememberMe').is(':checked'),localStorage.getItem('xtractor_lastPage'));
             }
             else{
-                var loginReturn = login({username:userName, password:pass},$('#rememberMe').is(':checked'),'default.jsp');
+                var loginReturn = login({username:userName, password:pass},$('#rememberMe').is(':checked'),'Home_Page.html');
             }
 
         });
