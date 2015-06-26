@@ -334,12 +334,15 @@ function ViewModel(){
     //Adding sub element
     self.addSubElement = function (data){
         var subElement = new SubDataElement(data);
+
+        //Backed up cache
         self.elementBuffer.subElements.push(ko.toJS(subElement));
 
         if (data.elementType === 'text') {
             var relevantTextElement  = self.textElements.remove(function(item) {
                 return item.elementId === data.elementId;
             })[0];
+            relevantTextElement.metaName(data.relevantData);
             relevantTextElement.relevantData(subElement.relevantData());
             relevantTextElement.subElements.push(subElement);
             self.textElements.push(relevantTextElement);
@@ -348,6 +351,7 @@ function ViewModel(){
             var relevantTableElement  = self.tableElements.remove(function(item) {
                 return item.elementId === data.elementId;
             })[0];
+            subElement.metaName(data.relevantData);
             relevantTableElement.relevantData(subElement.relevantData());
 
             relevantTableElement.subElements.push(subElement);
@@ -377,7 +381,9 @@ function ViewModel(){
             })[0];
             relevantRegexElement.extractedData(subElement.relevantData());
             subElement.subElementStartTag(subElement.relevantData());
-            relevantRegexElement.subElements.push(subElement);
+            subElement.metaName(data.relevantData);
+
+            //relevantRegexElement.subElements.push(subElement);
 
             //Used in workflow for meta generations for column headers
             relevantRegexElement.setCurrentSubElement(subElement);
@@ -396,7 +402,9 @@ function ViewModel(){
                 return item.elementId === data.elementId;
             })[0];
             relevantPatternElement.extractedData(subElement.relevantData());
-            subElement.subElementStartTag(subElement.relevantData());
+            subElement.subElementStartTag(subElement.relevantData())
+            //subElement.metaName(data.relevantData);
+
             relevantPatternElement.subElements.push(subElement);
 
             //Used in workflow for meta generations for column headers
@@ -639,6 +647,7 @@ function ViewModel(){
 //        data.tableDataElements   =   self.tableElements();
 //        data.pictureDataELements   =   self.pictureElements();
 //        self.sendingJson(ko.toJSON(data));
+
         var currentPage = self.currentPage();
         self.savePage(currentPage);
         data.textDataElements   =   []
@@ -867,9 +876,11 @@ function ViewModel(){
                 $('#overlay').css('display','none');
                 var url = data.replace(/['"]+/g, "");
                 //"file:///" +
-                $("a#fileLink").attr("href",url);
-                $("a#fileLink").text("Download Link");
+                //$("a#fileLink").attr("href",url);
+                $("a#fileLink").text(url);
                 $("a#fileLink").css("display","block");
+                $("p#fileLink").text(url);
+                $("p#fileLink").css("display","block");
 
 
                // window.open(url);
