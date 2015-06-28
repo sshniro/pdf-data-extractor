@@ -58,16 +58,9 @@
         <div class="col-md-9">
             <ul class="list-inline text-left header-main-menu">
                 <li class="menu-width text-center">
-                    <a href="/index.jsp">
-                        <img class="menu-icon" src="assets/img/images/home.png" alt="" /> <br>
-                        <span class="menu-span text-center">Home</span>
-                    </a>
-                </li>
-
-                <li class="menu-width text-center">
-                    <a href="/default.jsp">
+                    <a href="/Home_Page.html">
                         <img class="menu-icon" src="assets/img/images/m1.png" alt="" /> <br>
-                        <span class="menu-span text-center">Manage Templates</span>
+                        <span class="menu-span text-center">Home</span>
                     </a>
                 </li>
 
@@ -79,6 +72,15 @@
                 </li>
 
                 <li class="menu-width text-center">
+                    <a href="/default.jsp">
+                        <img class="menu-icon" src="assets/img/images/m4.png" alt="" /> <br>
+                        <span class="menu-span text-center">Templates</span>
+                    </a>
+                </li>
+
+
+
+                <li class="menu-width text-center">
                     <a href="/ExtractPdf.jsp">
                         <img class="menu-icon" src="assets/img/images/m3.png" alt="" /> <br>
                         <span class="menu-span text-center">Extract</span>
@@ -87,13 +89,13 @@
 
                 <li class="menu-width text-center">
                     <a href="/user-management.jsp">
-                        <img class="menu-icon" src="assets/img/images/m4.png" alt="" /> <br>
+                        <img class="menu-icon" src="assets/img/images/m5.png" alt="" /> <br>
                         <span class="menu-span text-center">Users</span>
                     </a>
                 </li>
 
                 <li class="menu-width text-center">
-                    <a href="#">
+                    <a href="http://localhost:8080/assets/docs/User_Guide.pdf" target="_blank">
                         <img class="menu-icon" src="assets/img/images/m6.png" alt="" /> <br>
                         <span class="menu-span text-center">Help</span>
                     </a>
@@ -105,7 +107,7 @@
                     </div>
                     <div class="col-sm-2">
                         <a href="#" onclick="logout()">
-                                                    <span class="menu-span text-center">Logout</span>
+                            <span class="menu-span text-center">Logout</span>
                         </a>
                     </div>
                 </li>
