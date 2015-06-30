@@ -108,7 +108,7 @@ var drawingRouter = (function (baseUiComponent, selection){
         selectionInitializer('div#'+rectangle.id+'.mainElement',drawingRouter);
     }
     else{
-        //This is the end of the work flow for elements other than the table regex and pattern
+        //This is the end of the work flow for elements other than the table
 
         var response  = getSubExtraction(rectangle,vm.currentSelection());
         rectangle.relevantData = response.extractedData;

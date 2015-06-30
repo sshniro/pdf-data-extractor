@@ -271,8 +271,6 @@
                 <div id="downloadLink">
 
                     <a id="fileLink" style="display: none" download></a>
-                    <p id="fileLink" style="display: none" ></p>
-
                 </div>
                 <div id="extractedText"></div>
             </div>
