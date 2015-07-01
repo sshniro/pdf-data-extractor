@@ -79,9 +79,11 @@ function DataElement(rectangle, subElements){
     self.pageNumber = ko.observable(rectangle.pageNumber);
 
     self.extractedData = ko.observable(rectangle.extractedData);
+
     self.labelExtractedData = ko.observable(rectangle.labelExtractedData);
     //Change at message broker to meta id
-    self.metaName = ko.observable(rectangle.metaName);
+    self.metaName = ko.observable();
+
     self.elementViseCurrentDic = ko.observable(ko.utils.unwrapObservable(vm.currentDic));
     self.selectedDictionaryItem = ko.observable();
     if(rectangle.selectedDictionaryItem !== undefined){
@@ -268,6 +270,8 @@ function SubDataElement(rectangle) {
 
     //getMainExtraction gives extactedData
     self.extractedData = ko.observable(rectangle.extractedData);
+    self.metaName(ko.utils.unwrapObservable(self.extractedData));
+
     //getSubExtraction gives relevantData
     self.relevantData = ko.observable(rectangle.relevantData);
 
