@@ -383,7 +383,7 @@ function ViewModel(){
             subElement.subElementStartTag(subElement.relevantData());
             subElement.metaName(data.relevantData);
 
-            //relevantRegexElement.subElements.push(subElement);
+            relevantRegexElement.subElements.push(subElement);
 
             //Used in workflow for meta generations for column headers
             relevantRegexElement.setCurrentSubElement(subElement);
@@ -403,7 +403,7 @@ function ViewModel(){
             })[0];
             relevantPatternElement.extractedData(subElement.relevantData());
             subElement.subElementStartTag(subElement.relevantData())
-            //subElement.metaName(data.relevantData);
+            subElement.metaName(data.relevantData);
 
             relevantPatternElement.subElements.push(subElement);
 
