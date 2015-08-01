@@ -9,6 +9,8 @@ import com.data.extractor.model.beans.template.info.insert.InsertDataParser;
 import com.data.extractor.model.beans.template.info.pattern.PatternDataElement;
 import com.data.extractor.model.beans.template.info.pattern.PatternDataParser;
 import com.data.extractor.model.beans.template.info.regex.*;
+import com.data.extractor.model.beans.template.info.table.Column;
+import com.data.extractor.model.beans.template.info.table.TableDataElement;
 import com.data.extractor.model.beans.template.info.table.TableDataParser;
 import com.data.extractor.model.beans.template.info.text.TextDataElement;
 import com.data.extractor.model.beans.template.info.text.TextDataParser;
@@ -121,7 +123,35 @@ public class DataElementsProcessor {
             DataProcessor processor = new DataProcessor();
             tableDataParser = processor.processTable(tableDataParser, extractStatus);
 
-            dataInserter.insert(tableDataParser, extractStatus , mongoClient);
+            /* TODO change this temporary fix */
+
+            PDDocument doc = PDDocument.load(extractStatus.getUploadedPdfFile());
+
+            /* Adding column name to the table data parser */
+            List<TableDataElement> tableDataElements = tableDataParser.getTableDataElements();
+            for(TableDataElement tableDataElement : tableDataElements){
+                List<Column> columns =  tableDataElement.getColumns();
+
+                for (Column column : columns){
+                    // Extract the text in the column area
+
+                    TextDataElement textDataElement = new TextDataElement();
+                    textDataElement.setTotalX1(column.getMetaX1());
+                    textDataElement.setTotalY1(column.getMetaY1());
+                    textDataElement.setTotalWidth(column.getMetaWidth());
+                    textDataElement.setTotalHeight(column.getMetaHeight());
+
+                    textDataElement.setPageNumber(tableDataElement.getPageNumber());
+
+                    FullSelectionTextExtractor fullExtractor = new FullSelectionTextExtractor();
+                    String extractedText = fullExtractor.extract(doc, textDataElement);
+
+                    column.setExtractedText(extractedText);
+                }
+            }
+
+
+            dataInserter.insert(tableDataParser, extractStatus, mongoClient);
         }
         /*  to present it to the extracted HTML   */
         insertDataParser.setTableDataParser(tableDataParser);

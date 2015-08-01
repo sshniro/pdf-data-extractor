@@ -16,6 +16,8 @@ public class Column {
     @Expose
     private String metaName;
     @Expose
+    private String extractedText;
+    @Expose
     private String dictionaryId;
     @Expose
     private String dictionaryName;
@@ -90,5 +92,11 @@ public class Column {
 
     public void setDictionaryName(String dictionaryName) {        this.dictionaryName = dictionaryName;    }
 
+    public String getExtractedText() {
+        return extractedText;
+    }
 
+    public void setExtractedText(String extractedText) {
+        this.extractedText = extractedText;
+    }
 }
