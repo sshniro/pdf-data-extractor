@@ -83,7 +83,8 @@ public class DataExtractor {
                     else
                         columnName = column.getMetaName();
 
-                    sb.append("Column ").append(j+1).append(" -(").append(columnName).append(") : ");
+                    sb.append("Column ").append(j+1).append(" value - ").append(column.getExtractedText())
+                    .append(" : ");
 
                     if(!isFromTemplateEdit){
                         List<Cell> cellList = column.getCellList();

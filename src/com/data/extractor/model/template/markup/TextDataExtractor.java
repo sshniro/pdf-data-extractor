@@ -52,8 +52,42 @@ public class TextDataExtractor {
 
         }else {
             /* If There is a metaArea defined exclude the metaArea and only extract the otherArea */
+//            MetaSelectionTextExtractor metaSelectionTextExtractor =new MetaSelectionTextExtractor();
+//            extractedText= metaSelectionTextExtractor.extractWithOutLabel(doc,textDataElement);
+//
+//
+//            String test = new String();
+
+
+
+
+
+            /* If There is a metaArea defined exclude the metaArea and only extract the otherArea */
             MetaSelectionTextExtractor metaSelectionTextExtractor =new MetaSelectionTextExtractor();
-            extractedText= metaSelectionTextExtractor.extractWithOutLabel(doc,textDataElement);
+
+            /* Now extracting the Meta Area */
+            TextDataElement metaTextDataElement = new TextDataElement();
+            metaTextDataElement =  textDataElement;
+            metaTextDataElement.setTotalX1(metaTextDataElement.getMetaX1());
+            metaTextDataElement.setTotalY1(metaTextDataElement.getMetaY1());
+            metaTextDataElement.setTotalWidth(metaTextDataElement.getMetaWidth());
+            metaTextDataElement.setTotalHeight(metaTextDataElement.getMetaHeight());
+
+            FullSelectionTextExtractor fullExtractor=new FullSelectionTextExtractor();
+
+            String metaAreaText =fullExtractor.extract(doc,metaTextDataElement);
+
+//            extractedText = "Masked Area : " + metaAreaText + System.getProperty("line.separator");
+            extractedText = metaAreaText;
+
+//            String unmaskedArea = metaSelectionTextExtractor.extractWithOutLabel(doc,textDataElement);
+
+
+
+//            extractedText = extractedText + "UnMasked Area : " + unmaskedArea;
+
+
+
 
         }
 

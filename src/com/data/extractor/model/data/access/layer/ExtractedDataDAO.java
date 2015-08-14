@@ -349,7 +349,7 @@ public class ExtractedDataDAO {
                             .append("dictionaryId",c.getDictionaryId()).append("dictionaryName",c.getDictionaryName())
                             .append("metaX1",c.getMetaX1()).append("metaY1", c.getMetaY1()).append("metaWidth",c.getMetaWidth())
                             .append("metaHeight", c.getMetaHeight()).append("rawData" , columnRawDataObj)
-                            .append("cellValues",cellValues));
+                            .append("cellValues",cellValues).append("extractedText",c.getExtractedText()));
         }
 
         tableElementObject.put("columns",columnData);
@@ -683,7 +683,7 @@ public class ExtractedDataDAO {
                             .append("dictionaryId",c.getDictionaryId()).append("dictionaryName",c.getDictionaryName())
                             .append("metaX1",c.getMetaX1()).append("metaY1",c.getMetaY1()).append("metaWidth",c.getMetaWidth())
                             .append("metaHeight",c.getMetaHeight()).append("rawData",columnRawDataObj)
-                            .append("cellValues",cellValues));
+                            .append("cellValues",cellValues).append("extractedText",c.getExtractedText()));
         }
         tableElementObject.put("columns",columnData);
 
