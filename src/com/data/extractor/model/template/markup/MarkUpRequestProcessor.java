@@ -35,7 +35,7 @@ public class MarkUpRequestProcessor {
                 markUpResponse=tableDataExtractor.extractTable(jsonRequest,mongoClient);
             }
 
-            if(dataType.equals("text") ){
+            if(dataType.equals("pattern") ){
                 TextDataExtractor textDataExtractor = new TextDataExtractor();
                 markUpResponse=textDataExtractor.extractText(jsonRequest,mongoClient);
             }
