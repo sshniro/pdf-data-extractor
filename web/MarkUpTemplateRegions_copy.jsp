@@ -296,6 +296,19 @@
                                 <div class="col-sm-2"><a data-bind="click:$parent.removeRepeatingElement" class="btn btn-danger" style="border-radius: 50%; height:24px; width:24px; padding: 2 0"><span class="glyphicon glyphicon-remove-circle"></span></a></div>
                             </div>
                         </div>
+
+                        <table class="table table-striped">
+                            <thead>
+                            <tr><th>Start</th><th>End</th></tr>
+                            </thead>
+                            <tbody data-bind="foreach:repeatingSubElements">
+                            <tr>
+                                <td data-bind="text:start"></td>
+                                <td data-bind="text:end"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+
                         <!-- form elements -->
                         <div class="form-group">
                             <label class="col-sm-2 control-label">Start</label>

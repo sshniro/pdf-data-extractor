@@ -106,6 +106,12 @@ var getSubExtraction=  function(rectangleObject, dataType){
             tempRectangleObject.startY = rectangleObject.startY + bufferedElement.startY;
             ajaxReponse = getMainExtraction(tempRectangleObject,"text");
             break;
+        case 'pattern2':
+            //Reusing basic main text extraction
+            var tempRectangleObject =  $.extend(true, {}, rectangleObject);
+            //TODO: Put in Correct Contoller name and Deserialize Data
+            ajaxReponse = ajaxExtract("patternExtract",tempRectangleObject,true,'POST');
+            break;
     }
     return ajaxReponse;
 }
