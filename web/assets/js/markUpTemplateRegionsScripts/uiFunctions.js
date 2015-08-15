@@ -138,12 +138,6 @@ var drawingRouter = (function (baseUiComponent, selection){
                 vm.currentProcessingSubElement('');
                 selectionInitializer('#'+baseUiComponent.id+'.mainElement',drawingRouter,rectangle.id);
             }
-            else if(vm.currentProcessingSubElement() == 'PE'){  // if start element set to repeating element
-                // will never reach... if do, there is some error  :)
-            }
-            else if(vm.currentProcessingSubElement() == 'LEE'){  // if start element set to non-ending element
-                // will never reach... if do, there is some error  :)
-            }
         }
         else{
             rectangle.elementId = baseUiComponent.id;
@@ -350,12 +344,16 @@ function bindSubElementAppearing(elementId){
 function resetEnvironment(){
     var currentElement = vm.elementBuffer;
     $("button#textSelect").attr('disabled', false);
-
     $("button#tableSelect").attr('disabled', false);
     $("button#pictureSelect").attr('disabled', false);
+    $("button#regexSelect").attr('disabled', false);
+    $("button#patternSelect").attr('disabled', false);
+
     $("button#textSelect").removeClass("active");
     $("button#tableSelect").removeClass("active");
     $("button#pictureSelect").removeClass("active");
+    $("button#regexSelect").removeClass("active");
+    $("button#patternSelect").removeClass("active");
 
     $("#runningInstructions").text('Select Element Type');
     $("div.subElement").css('background-color','rgba(0, 0, 0,0)');
@@ -394,11 +392,15 @@ function resetEnvironment(){
 
 function selectionStarted(currentElement){
     $("button.removeElement").css('visibility','hidden');
+
     $("button#textSelect").attr('disabled', true);  
     $("button#tableSelect").attr('disabled', true);
     $("button#pictureSelect").attr('disabled', true);  
-    $("button#tableSelect").attr('disabled', true);
+    $("button#regexSelect").attr('disabled', true);
+    $("button#patternSelect").attr('disabled', true);
+
     $("button#enableEditableDivs").attr('disabled', true);
+
 
     $("button#cancelSelection").attr('disabled', false);
     $("button#saveSelection").attr('disabled', false);
