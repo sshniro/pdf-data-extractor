@@ -221,6 +221,24 @@ function SubDataElement(rectangle) {
         else if (data == 'PE') {
             self.isHavingEndTag(false);
             self.isHavingRepeatedHeaders(true);
+            //Bringing VM logic
+            var data = getSubExtraction(rectangle,"pattern2");
+            ///TODO: DESERIALIZE AND INTEGRATE HERE
+            var data = [];
+            var pair1 = {
+                start:"Hardcoded1Start",
+                end:"Hardcoded1End"
+            };
+            var pair2 = {
+                start:"Hardcoded2Start",
+                end:"Hardcoded2End"
+            };
+            data.push(pair1);
+            data.push(pair2);
+            for(var pairkey in data){
+                self.repeatingSubElements.push(data[pairkey]);
+            }
+
         }
         else if (data == 'LEE') {
             self.isHavingEndTag(false);
@@ -253,6 +271,7 @@ function SubDataElement(rectangle) {
 
     self.completeElement = function () {
         vm.currentProcessingSubElement('');
+        $('.addStartEnd').hide();
         selectionInitializer('#' + vm.immediateSelectedObject().baseUiComponent.id + '.mainElement', drawingRouter, vm.immediateSelectedObject().rectangle.id);
     };
     /////////////////////////////////////////////////////

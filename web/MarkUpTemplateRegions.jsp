@@ -289,32 +289,70 @@
                 <div class="well well-sm" style="position: absolute; width:400px" data-bind="id:id, visible:((elementType()=='pattern') && (isHavingRepeatedHeaders())), style:{left: ($parent.uiData.removeX() + 12), top:$parent.uiData.removeY}">
                     <form class="form-horizontal" role="form">
                         <!-- added elements *** do foreach *** -->
-                        <div data-bind="foreach:repeatingSubElements">
-                            <div class="form-group">
-                                <label data-bind="text:start" class="col-sm-4 control-label">text</label>
-                                <label data-bind="text:end" class="col-sm-4 control-label">text</label>
-                                <div class="col-sm-2"><a data-bind="click:$parent.removeRepeatingElement" class="btn btn-danger" style="border-radius: 50%; height:24px; width:24px; padding: 2 0"><span class="glyphicon glyphicon-remove-circle"></span></a></div>
-                            </div>
+                        <%--<div data-bind="foreach:repeatingSubElements">--%>
+                            <%--<div class="form-group">--%>
+                                <%--<label data-bind="text:start" class="col-sm-4 control-label">text</label>--%>
+                                <%--<label data-bind="text:end" class="col-sm-4 control-label">text</label>--%>
+                                <%--<div class="col-sm-2"><a data-bind="click:$parent.removeRepeatingElement" class="btn btn-danger" style="border-radius: 50%; height:24px; width:24px; padding: 2 0"><span class="glyphicon glyphicon-remove-circle"></span></a></div>--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
+
+
+                        <table class="table table-striped">
+                            <thead>
+                            <tr><th>Start</th><th>End</th><th></th></tr>
+                            </thead>
+                            <tbody data-bind="foreach:repeatingSubElements">
+                            <tr>
+                                <td ><input data-bind="value:start" type="text" class="form-control sub" /></td>
+                                <td ><input data-bind="value:end" type="text" class="form-control sub" /></td>
+                                <td style="width:1px;">
+                                    <div>
+                                        <a data-bind="click:$parent.removeRepeatingElement" class="btn btn-danger" style="border-radius: 39%; /* height: 16px; */ /* width: 10px; */ padding: 5px;/* MARGIN: 0; */">
+                                            <span class="glyphicon glyphicon-remove-circle" style=" padding: 0px;"></span>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <div class="form-group addStartEnd">
+                            <table class="table table-striped " >
+
+                                <tbody>
+                                <tr>
+                                    <td>  <input data-bind="value:bufferedRepeatingElement_start" type="text" class="form-control sub" /> </td>
+                                    <td>  <input data-bind="value:bufferedRepeatingElement_end" type="text" class="form-control sub" /> </td>
+                                    <td >
+                                        <a class="btn btn-default" data-bind="click:addRepeatingElement" onclick="$('.sub').focus()"><span class="glyphicon glyphicon-ok"></span>
+                                        </a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <div style="margin-left: 5%;"><button data-bind="click:completeElement" class="btn btn-default" style="background-color: green; color:#ffffff">Complete Pattern Element</button></div>
                         </div>
-                        <!-- form elements -->
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">Start</label>
-                            <div class="col-sm-10">
-                                <input data-bind="value:bufferedRepeatingElement_start" type="text" class="form-control sub" />
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">End</label>
-                            <div class="col-sm-10">
-                                <input data-bind="value:bufferedRepeatingElement_end" type="text" class="form-control sub" />
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-sm-offset-10 col-sm-2">
-                                <a class="btn btn-default" data-bind="click:addRepeatingElement" onclick="$('.sub').focus()"><span class="glyphicon glyphicon-ok"></span></a>
-                            </div>
-                        </div>
-                        <div class="form-group"><div class="col-sm-offset-2 col-sm-8"><button data-bind="click:completeElement" class="btn btn-default" style="background-color: green; color:#ffffff">complete pattern element</button></div></div>
+
+
+                        <%--<!-- form elements -->--%>
+                        <%--<div class="form-group">--%>
+                            <%--<label class="col-sm-2 control-label">Start</label>--%>
+                            <%--<div class="col-sm-10">--%>
+                                <%--<input data-bind="value:bufferedRepeatingElement_start" type="text" class="form-control sub" />--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
+                        <%--<div class="form-group">--%>
+                            <%--<label class="col-sm-2 control-label">End</label>--%>
+                            <%--<div class="col-sm-10">--%>
+                                <%--<input data-bind="value:bufferedRepeatingElement_end" type="text" class="form-control sub" />--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
+                        <%--<div class="form-group">--%>
+                            <%--<div class="col-sm-offset-10 col-sm-2">--%>
+                                <%--<a class="btn btn-default" data-bind="click:addRepeatingElement" onclick="$('.sub').focus()"><span class="glyphicon glyphicon-ok"></span></a>--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
+                        <%--<div class="form-group"><div class="col-sm-offset-2 col-sm-8"><button data-bind="click:completeElement" class="btn btn-default" style="background-color: green; color:#ffffff">complete pattern element</button></div></div>--%>
                     </form>
                 </div>
 

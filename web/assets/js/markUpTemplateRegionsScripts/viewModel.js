@@ -99,7 +99,7 @@ function ViewModel(){
         vm.currentSelection("regex");
         selectionStarted();
         selectionInitializer("img.templatingImage",drawingRouter);
-        $("#runningInstructions").text('Select Starting Tag');
+        $("#runningInstructions").text('REGEX');
     }
 
     self.patternButton= function(){
@@ -107,11 +107,12 @@ function ViewModel(){
         vm.currentSelection("pattern");
         selectionStarted();
         selectionInitializer("img.templatingImage",drawingRouter);
-        $("#runningInstructions").text('Select Starting Tag');
+        $("#runningInstructions").text('PATTERN');
     }
 
     self.editButton= function(){
         event.stopPropagation()
+
         $("#runningInstructions").text('Drag or Resize Elements');
         editStarted();
         draggableActivator();
