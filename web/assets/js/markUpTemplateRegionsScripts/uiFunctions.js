@@ -110,9 +110,19 @@ var drawingRouter = (function (baseUiComponent, selection){
     else{
         //This is the end of the work flow for elements other than the table regex and pattern
 
-        var response  = getSubExtraction(rectangle,vm.currentSelection());
-        rectangle.relevantData = response.extractedData;
-        //The table selection allows to select an infinite amount of sub elements within the main table rectangle
+
+        var response = {};
+        if (vm.currentSelection() === 'pattern'){
+            rectangle.relevantData = "Select Content Space to View Stripped Tags";
+            response.extractedData = "Select Content Space to View Stripped Tags";
+            //An extraction will happen within models for pattern workflow
+            //which is different from the normal workflow
+        }
+        else{
+            response  = getSubExtraction(rectangle,vm.currentSelection());
+            rectangle.relevantData = response.extractedData;
+            //The table selection allows to select an infinite amount of sub elements within the main table rectangle
+        }
         if (vm.currentSelection() === 'table') {
             rectangle.elementId = baseUiComponent.id;
             //Hide earlier meta for deco
@@ -122,7 +132,7 @@ var drawingRouter = (function (baseUiComponent, selection){
             $('#'+baseUiComponent.id).css('cursor','crosshair');
             selectionInitializer('#'+baseUiComponent.id+'.mainElement',drawingRouter,rectangle.id);
         }
-        else if((vm.currentSelection() === 'regex')||(vm.currentSelection() === 'pattern')){
+        else if((vm.currentSelection() === 'regex')){
             if(vm.currentProcessingSubElement()=='') {   // if regex drawing start element
                 rectangle.elementId = baseUiComponent.id;
                 //Hide earlier meta for deco

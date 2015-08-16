@@ -47,8 +47,7 @@ var getMainExtraction =  function(rectangleObject, dataType){
             break;
         case 'pattern':
             var data = {};
-            data.extractedData = "Select Start Tags and End Tags to View Tag Extraction";
-            ajaxReponse = data;
+            data.extractedData = "Select Content Space to View Stripped Tags";
             ajaxReponse = data;
             break;
         case 'picture':
@@ -101,17 +100,14 @@ var getSubExtraction=  function(rectangleObject, dataType){
         case 'pattern':
             //Reusing basic main text extraction
             var tempRectangleObject =  $.extend(true, {}, rectangleObject);
-            tempRectangleObject.dataType ="text";
-            tempRectangleObject.startX = rectangleObject.startX + bufferedElement.startX;
-            tempRectangleObject.startY = rectangleObject.startY + bufferedElement.startY;
-            ajaxReponse = getMainExtraction(tempRectangleObject,"text");
+            var dataDTO = new PatternDataDTO(initData);
+            //special pattern extraction implementation, just a text extraction happening
+            var textDTO = new TextDataElementDTO(tempRectangleObject);
+            dataDTO.patternDataElements.push(textDTO);
+            ajaxReponse = ajaxExtract(effectiveController,dataDTO,false,'POST');
+
             break;
-        case 'pattern2':
-            //Reusing basic main text extraction
-            var tempRectangleObject =  $.extend(true, {}, rectangleObject);
-            //TODO: Put in Correct Contoller name and Deserialize Data
-            ajaxReponse = ajaxExtract("patternExtract",tempRectangleObject,true,'POST');
-            break;
+
     }
     return ajaxReponse;
 }

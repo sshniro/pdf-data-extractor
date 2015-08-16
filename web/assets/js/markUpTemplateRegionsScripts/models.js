@@ -222,7 +222,7 @@ function SubDataElement(rectangle) {
             self.isHavingEndTag(false);
             self.isHavingRepeatedHeaders(true);
             //Bringing VM logic
-            var data = getSubExtraction(rectangle,"pattern2");
+            var data = getSubExtraction(rectangle,"pattern");
             ///TODO: DESERIALIZE AND INTEGRATE HERE
             var data = [];
             var pair1 = {

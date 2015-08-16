@@ -316,20 +316,22 @@
                             </tr>
                             </tbody>
                         </table>
-                        <div class="form-group addStartEnd">
-                            <table class="table table-striped " >
+                        <div class="form-group addStartEnd" style="cursor: default;padding: 0px 15px;">
+                            <div>
+                                <table class="table table-striped " >
 
-                                <tbody>
-                                <tr>
-                                    <td>  <input data-bind="value:bufferedRepeatingElement_start" type="text" class="form-control sub" /> </td>
-                                    <td>  <input data-bind="value:bufferedRepeatingElement_end" type="text" class="form-control sub" /> </td>
-                                    <td >
-                                        <a class="btn btn-default" data-bind="click:addRepeatingElement" onclick="$('.sub').focus()"><span class="glyphicon glyphicon-ok"></span>
-                                        </a>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
+                                    <tbody>
+                                    <tr>
+                                        <td>  <input data-bind="value:bufferedRepeatingElement_start" type="text" class="form-control sub" /> </td>
+                                        <td>  <input data-bind="value:bufferedRepeatingElement_end" type="text" class="form-control sub" /> </td>
+                                        <td style="padding: 10px 0px;">
+                                            <a class="btn btn-default" data-bind="click:addRepeatingElement" onclick="$('.sub').focus()"><span class="glyphicon glyphicon-ok"></span>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                             <div style="margin-left: 5%;"><button data-bind="click:completeElement" class="btn btn-default" style="background-color: green; color:#ffffff">Complete Pattern Element</button></div>
                         </div>
 
