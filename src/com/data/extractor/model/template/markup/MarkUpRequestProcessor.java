@@ -43,6 +43,7 @@ public class MarkUpRequestProcessor {
 
                 PatternDataExtractor patternDataExtractor = new PatternDataExtractor();
                 List<FormPairData> pairDatas = patternDataExtractor.processRequest(markUpResponse.getExtractedData());
+                markUpResponse.setFormPairDatas(pairDatas);
             }
 
         }
