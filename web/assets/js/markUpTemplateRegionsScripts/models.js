@@ -222,6 +222,9 @@ function SubDataElement(rectangle) {
             self.isHavingEndTag(false);
             self.isHavingRepeatedHeaders(true);
             //Bringing VM logic
+            rectangle.startX += rectangle.baseUiComponentStartX;
+            rectangle.startY += rectangle.baseUiComponentStartY;
+
             var data = getSubExtraction(rectangle,"pattern");
             for(var pairkey in data.formPairDatas){
                 self.repeatingSubElements.push(data.formPairDatas[pairkey]);

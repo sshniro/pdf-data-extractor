@@ -405,7 +405,6 @@ function ViewModel(){
             relevantPatternElement.extractedData(subElement.relevantData());
             subElement.subElementStartTag(subElement.relevantData())
             subElement.metaName(data.relevantData);
-
             relevantPatternElement.subElements.push(subElement);
 
             //Used in workflow for meta generations for column headers
