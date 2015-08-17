@@ -38,10 +38,8 @@ public class MarkUpRequestProcessor {
             }
 
             if(dataType.equals("pattern") ){
-                TextDataExtractor textDataExtractor = new TextDataExtractor();
-                markUpResponse=textDataExtractor.extractText(jsonRequest,mongoClient);
-
                 PatternDataExtractor patternDataExtractor = new PatternDataExtractor();
+                markUpResponse=patternDataExtractor.extractText(jsonRequest,mongoClient);
                 List<FormPairData> pairDatas = patternDataExtractor.processRequest(markUpResponse.getExtractedData());
                 markUpResponse.setFormPairDatas(pairDatas);
             }
