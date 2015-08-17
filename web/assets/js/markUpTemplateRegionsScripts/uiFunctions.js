@@ -114,7 +114,8 @@ var drawingRouter = (function (baseUiComponent, selection){
         var response = {};
         if (vm.currentSelection() === 'pattern'){
             rectangle.relevantData = "Select Content Space to View Stripped Tags";
-            response.extractedData = "Select Content Space to View Stripped Tags";
+            response.extractedData = "Select Content Space to View Stripped Tags"
+            vm.addSubElement(rectangle);
             //An extraction will happen within models for pattern workflow
             //which is different from the normal workflow
         }

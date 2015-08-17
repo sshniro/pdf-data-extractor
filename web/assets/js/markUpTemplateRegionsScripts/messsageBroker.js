@@ -100,10 +100,11 @@ var getSubExtraction=  function(rectangleObject, dataType){
         case 'pattern':
             //Reusing basic main text extraction
             var tempRectangleObject =  $.extend(true, {}, rectangleObject);
-            var dataDTO = new PatternDataDTO(initData);
+            var dataDTO = new TextDataDTO(initData);
+            dataDTO.dataType = "pattern";
             //special pattern extraction implementation, just a text extraction happening
             var textDTO = new TextDataElementDTO(tempRectangleObject);
-            dataDTO.patternDataElements.push(textDTO);
+            dataDTO.textDataElements.push(textDTO);
             ajaxReponse = ajaxExtract(effectiveController,dataDTO,false,'POST');
 
             break;
