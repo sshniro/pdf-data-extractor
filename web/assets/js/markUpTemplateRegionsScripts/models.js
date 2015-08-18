@@ -65,6 +65,7 @@ function PageCache(pageNumber) {
 function DataElement(rectangle, subElements){
     var self = this;
     self.rectangle = rectangle;
+
     self.id = ko.observable(rectangle.id);
     self.name = ko.observable();
     self.elementId  = self.id();
@@ -222,8 +223,12 @@ function SubDataElement(rectangle) {
             self.isHavingEndTag(false);
             self.isHavingRepeatedHeaders(true);
             //Bringing VM logic
-            rectangle.startX += rectangle.baseUiComponentStartX;
-            rectangle.startY += rectangle.baseUiComponentStartY;
+            var relevantPatternElement  = vm.patternElements.remove(function(item) {
+                return item.elementId === rectangle.elementId;
+            })[0];
+            rectangle.startX += relevantPatternElement.startX();
+            rectangle.startY += relevantPatternElement.startY();
+            vm.patternElements.push(relevantPatternElement);
 
             var data = getSubExtraction(rectangle,"pattern");
             for(var pairkey in data.formPairDatas){

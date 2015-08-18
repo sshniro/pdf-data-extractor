@@ -110,20 +110,13 @@ var drawingRouter = (function (baseUiComponent, selection){
     else{
         //This is the end of the work flow for elements other than the table regex and pattern
 
-
+        //SUB EXTRACTION HANDLED AT MODELS FOR PATTERN
         var response = {};
-        if (vm.currentSelection() === 'pattern'){
-            rectangle.relevantData = "Select Content Space to View Stripped Tags";
-            response.extractedData = "Select Content Space to View Stripped Tags"
-            vm.addSubElement(rectangle);
-            //An extraction will happen within models for pattern workflow
-            //which is different from the normal workflow
-        }
-        else{
-            response  = getSubExtraction(rectangle,vm.currentSelection());
-            rectangle.relevantData = response.extractedData;
-            //The table selection allows to select an infinite amount of sub elements within the main table rectangle
-        }
+
+        response  = getSubExtraction(rectangle,vm.currentSelection());
+        rectangle.relevantData = response.extractedData;
+
+        //TABLE AND REGEX WORKLOAD
         if (vm.currentSelection() === 'table') {
             rectangle.elementId = baseUiComponent.id;
             //Hide earlier meta for deco
@@ -133,8 +126,10 @@ var drawingRouter = (function (baseUiComponent, selection){
             $('#'+baseUiComponent.id).css('cursor','crosshair');
             selectionInitializer('#'+baseUiComponent.id+'.mainElement',drawingRouter,rectangle.id);
         }
-        else if((vm.currentSelection() === 'regex')){
+        else if((vm.currentSelection() === 'regex') || vm.currentSelection() === 'pattern'){
             if(vm.currentProcessingSubElement()=='') {   // if regex drawing start element
+                rectangle.relevantData = "Select Content Space to View Stripped Tags";
+                response.extractedData = "Select Content Space to View Stripped Tags";
                 rectangle.elementId = baseUiComponent.id;
                 //Hide earlier meta for deco
                 $(".subElementDecoMeta").hide();
@@ -151,6 +146,7 @@ var drawingRouter = (function (baseUiComponent, selection){
             }
         }
         else{
+            //WHEN TEXT
             rectangle.elementId = baseUiComponent.id;
             vm.addSubElement(rectangle);
             $('#'+baseUiComponent.id).unbind();
