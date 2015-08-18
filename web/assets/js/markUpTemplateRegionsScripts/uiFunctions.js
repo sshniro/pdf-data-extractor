@@ -114,7 +114,7 @@ var drawingRouter = (function (baseUiComponent, selection){
         var response = {};
 
         response  = getSubExtraction(rectangle,vm.currentSelection());
-        rectangle.relevantData = response.extractedData;
+        rectangle.relevantData = response ? response.extractedData : undefined;
 
         //TABLE AND REGEX WORKLOAD
         if (vm.currentSelection() === 'table') {
@@ -127,11 +127,13 @@ var drawingRouter = (function (baseUiComponent, selection){
             selectionInitializer('#'+baseUiComponent.id+'.mainElement',drawingRouter,rectangle.id);
         }
         else if((vm.currentSelection() === 'regex') || vm.currentSelection() === 'pattern'){
-            if(vm.currentProcessingSubElement()=='') {   // if regex drawing start element
-                rectangle.relevantData = "Select Content Space to View Stripped Tags";
-                response.extractedData = "Select Content Space to View Stripped Tags";
+            if(vm.currentProcessingSubElement()=='') {   // if regex drawi Stripped Tags";
+                //if is activated when
+                //regex (sub loop)
+                //pattern (sub loop) - PE/RE/LEE - 1st loop(before selection PE/RE/LEE selection is made)
                 rectangle.elementId = baseUiComponent.id;
                 //Hide earlier meta for deco
+                rectangle.subElementStartTag = rectangle.relevantData;
                 $(".subElementDecoMeta").hide();
                 vm.addSubElement(rectangle);
                 $('#'+rectangle.id).css('cursor','default');
@@ -143,6 +145,7 @@ var drawingRouter = (function (baseUiComponent, selection){
                 vm.completeSubElement(rectangle);
                 vm.currentProcessingSubElement('');
                 selectionInitializer('#'+baseUiComponent.id+'.mainElement',drawingRouter,rectangle.id);
+                //End of REGEX inside Pattern
             }
         }
         else{
@@ -204,7 +207,7 @@ var reDrawingRouter = (function (baseUiComponent, selection,removedElement){
         //This is the end of the work flow for elements other than the table
 
         var response  = getSubExtraction(rectangle,vm.currentSelection());
-        rectangle.relevantData = response.extractedData;
+        rectangle.relevantData = response ? response.extractedData : undefined;
         //The table selection allows to select an infinite amount of sub elements within the main table rectangle
         if (vm.currentSelection() === 'table') {
             rectangle.elementId = baseUiComponent.id;

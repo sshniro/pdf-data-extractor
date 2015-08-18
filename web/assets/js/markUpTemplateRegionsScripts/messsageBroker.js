@@ -25,7 +25,7 @@ var ajaxExtract = function(urlData,sendData,asyncState,methodType){
 //First Pulse Extraction call method
 //sneds coordinates of a reactangle and gets any data within it[picture(url), text]
 var getMainExtraction =  function(rectangleObject, dataType){
-    var ajaxReponse;
+    var ajaxReponse = {};
     switch (dataType){
         case 'text':
             var dataDTO = new TextDataDTO(initData);
@@ -98,14 +98,32 @@ var getSubExtraction=  function(rectangleObject, dataType){
             break;
 
         case 'pattern':
-            //Reusing basic main text extraction
-            var tempRectangleObject =  $.extend(true, {}, rectangleObject);
-            var dataDTO = new TextDataDTO(initData);
-            dataDTO.dataType = "pattern";
-            //special pattern extraction implementation, just a text extraction happening
-            var textDTO = new TextDataElementDTO(tempRectangleObject);
-            dataDTO.textDataElements.push(textDTO);
-            ajaxReponse = ajaxExtract(effectiveController,dataDTO,false,'POST');
+
+
+            if(vm.currentProcessingSubElement() === 'PE') {
+                var tempRectangleObject = $.extend(true, {}, rectangleObject);
+
+                var dataDTO = new TextDataDTO(initData);
+                dataDTO.dataType = "pattern";
+                tempRectangleObject.startX = rectangleObject.startX + bufferedElement.startX;
+                tempRectangleObject.startY = rectangleObject.startY + bufferedElement.startY;
+                //special pattern extraction implementation, just a text extraction happening
+                var textDTO = new TextDataElementDTO(tempRectangleObject);
+                dataDTO.textDataElements.push(textDTO);
+                ajaxReponse = ajaxExtract(effectiveController, dataDTO, false, 'POST');
+            }
+            else if(vm.currentProcessingSubElement() === 'RE' || vm.currentProcessingSubElement() === ''){
+                //This "if" is Activated in 2 scenarios in the Pattern Workflow
+                //1 - 1st selection for RE/LEE
+                //2 - 2nd time for RE
+
+                //Reusing basic main text extraction
+                var tempRectangleObject =  $.extend(true, {}, rectangleObject);
+                tempRectangleObject.dataType ="text";
+                tempRectangleObject.startX = rectangleObject.startX + bufferedElement.startX;
+                tempRectangleObject.startY = rectangleObject.startY + bufferedElement.startY;
+                ajaxReponse = getMainExtraction(tempRectangleObject,"text");
+            }
 
             break;
 
