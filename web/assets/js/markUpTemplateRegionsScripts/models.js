@@ -222,18 +222,15 @@ function SubDataElement(rectangle) {
         else if (data == 'PE') {
             self.isHavingEndTag(false);
             self.isHavingRepeatedHeaders(true);
-            //Bringing VM logic
-            var relevantPatternElement  = vm.patternElements.remove(function(item) {
-                return item.elementId === rectangle.elementId;
-            })[0];
-            rectangle.startX += relevantPatternElement.startX();
-            rectangle.startY += relevantPatternElement.startY();
-            vm.patternElements.push(relevantPatternElement);
 
             var data = getSubExtraction(rectangle,"pattern");
             for(var pairkey in data.formPairDatas){
                 self.repeatingSubElements.push(data.formPairDatas[pairkey]);
             }
+            vm.currentProcessingSubElement('');
+            //End of REGEX inside Pattern
+
+
 
         }
         else if (data == 'LEE') {
@@ -242,6 +239,7 @@ function SubDataElement(rectangle) {
             self.subElementEndTag('eol');
             vm.currentProcessingSubElement('');
             selectionInitializer('#' + vm.immediateSelectedObject().baseUiComponent.id + '.mainElement', drawingRouter, vm.immediateSelectedObject().rectangle.id);
+
         }
     };
 
@@ -268,6 +266,9 @@ function SubDataElement(rectangle) {
     self.completeElement = function () {
         vm.currentProcessingSubElement('');
         $('.addStartEnd').hide();
+        var elements =$('.addStartEnd');
+        elements.removeClass('.addStartEnd');
+        elements.addClass('.addStartEndCompleted');
         selectionInitializer('#' + vm.immediateSelectedObject().baseUiComponent.id + '.mainElement', drawingRouter, vm.immediateSelectedObject().rectangle.id);
     };
     /////////////////////////////////////////////////////
