@@ -8,6 +8,8 @@
 *.so
 *.pdb
 *.iml
+# ...except this one: it is the only build definition (no Maven/Gradle), so keep it tracked.
+!dev_extractor.iml
 
 # Build output (Java + .NET) #
 ##############################
