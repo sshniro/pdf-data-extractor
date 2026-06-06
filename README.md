@@ -225,5 +225,4 @@ For maintainers (see also the expanded `.gitignore`):
 
 ## License
 
-No license file is currently present, so default copyright applies (all rights reserved). If you
-want others to reuse this, add a `LICENSE` (e.g. MIT or Apache-2.0).
+Released under the [Apache License 2.0](./LICENSE).
